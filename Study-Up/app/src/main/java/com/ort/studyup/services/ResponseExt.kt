@@ -8,5 +8,5 @@ fun <T> Response<T>.check(): T {
             return it
         }
     }
-    throw Exception() //TODO: custom error
+    throw ServiceException(this)
 }

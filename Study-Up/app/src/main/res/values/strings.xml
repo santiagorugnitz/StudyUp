@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Study Up</string>
+    <string name="log_in">Log in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="username_or_mail">Username or email</string>
+    <string name="password">Password</string>
+    <string name="password_error">Password must have at least 6 characters</string>
+    <string name="user_empty">User must not be empty</string>
+    <string name="generic_error">Something happened</string>
 </resources>

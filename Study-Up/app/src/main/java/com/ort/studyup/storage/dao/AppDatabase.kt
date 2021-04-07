@@ -2,13 +2,13 @@ package com.ort.studyup.storage.dao
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.ort.studyup.common.ui.models.User
+import com.ort.studyup.common.models.User
 
 @Database(
     entities = [
         User::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 
