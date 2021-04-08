@@ -7,4 +7,6 @@
     <string name="password_error">Password must have at least 6 characters</string>
     <string name="user_empty">User must not be empty</string>
     <string name="generic_error">Something happened</string>
+    <string name="decks">Decks</string>
+    <string name="email">Email</string>
 </resources>

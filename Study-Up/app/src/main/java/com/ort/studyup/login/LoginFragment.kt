@@ -6,6 +6,8 @@ import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.ort.studyup.R
 import com.ort.studyup.common.ui.BaseFragment
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -27,15 +29,12 @@ class LoginFragment : BaseFragment() {
     }
 
     private fun initUI() {
-        username.title.text = getString(R.string.username_or_mail)
-        password.title.text = getString(R.string.password)
-        password.textInputEditText.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
-        password.textInputEditText.transformationMethod = PasswordTransformationMethod.getInstance()
         logInButton.setOnClickListener {
-            viewModel.login(username.textInputEditText.text.toString(), password.textInputEditText.text.toString()).observe(
+            viewModel.login(emailInput.text.toString(), passwordInput.text.toString()).observe(
                 viewLifecycleOwner, {
                     if (it) {
-                        //TODO: navigate to home
+                        requireActivity().finish()
+                        findNavController().navigate(R.id.action_loginFragment_to_homeActivity)
                     }
                 }
             )
