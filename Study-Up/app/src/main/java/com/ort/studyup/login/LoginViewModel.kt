@@ -32,13 +32,13 @@ class LoginViewModel(
 
     private fun validateUser(user: String): Boolean {
         val valid = user.isNotEmpty()
-        error.postValue(ServiceError(INTERNAL_ERROR_CODE, resourceWrapper.getString(R.string.user_empty)))
+        if(!valid) error.postValue(ServiceError(INTERNAL_ERROR_CODE, resourceWrapper.getString(R.string.user_empty)))
         return valid
     }
 
     private fun validatePassword(password: String): Boolean {
         val valid = password.length >= 6
-        error.postValue(ServiceError(INTERNAL_ERROR_CODE, resourceWrapper.getString(R.string.password_error)))
+        if(!valid) error.postValue(ServiceError(INTERNAL_ERROR_CODE, resourceWrapper.getString(R.string.password_error)))
         return valid
     }
 }
