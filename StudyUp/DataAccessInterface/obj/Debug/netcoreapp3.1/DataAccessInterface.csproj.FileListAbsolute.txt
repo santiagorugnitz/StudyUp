@@ -1,0 +1,12 @@
+C:\Users\pauar\Desktop\Obligatorio ISP\StudyUp\DataAccessInterface\bin\Debug\netcoreapp3.1\DataAccessInterface.deps.json
+C:\Users\pauar\Desktop\Obligatorio ISP\StudyUp\DataAccessInterface\bin\Debug\netcoreapp3.1\DataAccessInterface.dll
+C:\Users\pauar\Desktop\Obligatorio ISP\StudyUp\DataAccessInterface\bin\Debug\netcoreapp3.1\DataAccessInterface.pdb
+C:\Users\pauar\Desktop\Obligatorio ISP\StudyUp\DataAccessInterface\bin\Debug\netcoreapp3.1\Domain.dll
+C:\Users\pauar\Desktop\Obligatorio ISP\StudyUp\DataAccessInterface\bin\Debug\netcoreapp3.1\Domain.pdb
+C:\Users\pauar\Desktop\Obligatorio ISP\StudyUp\DataAccessInterface\obj\Debug\netcoreapp3.1\DataAccessInterface.csprojAssemblyReference.cache
+C:\Users\pauar\Desktop\Obligatorio ISP\StudyUp\DataAccessInterface\obj\Debug\netcoreapp3.1\DataAccessInterface.AssemblyInfoInputs.cache
+C:\Users\pauar\Desktop\Obligatorio ISP\StudyUp\DataAccessInterface\obj\Debug\netcoreapp3.1\DataAccessInterface.AssemblyInfo.cs
+C:\Users\pauar\Desktop\Obligatorio ISP\StudyUp\DataAccessInterface\obj\Debug\netcoreapp3.1\DataAccessInterface.csproj.CoreCompileInputs.cache
+C:\Users\pauar\Desktop\Obligatorio ISP\StudyUp\DataAccessInterface\obj\Debug\netcoreapp3.1\DataAccessInterface.csproj.CopyComplete
+C:\Users\pauar\Desktop\Obligatorio ISP\StudyUp\DataAccessInterface\obj\Debug\netcoreapp3.1\DataAccessInterface.dll
+C:\Users\pauar\Desktop\Obligatorio ISP\StudyUp\DataAccessInterface\obj\Debug\netcoreapp3.1\DataAccessInterface.pdb
