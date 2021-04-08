@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/background</item>
+    </style>
+
+    <style name="BaseButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@drawable/button_background</item>
+        <item name="android:textColor">@drawable/button_text</item>
+        <item name="android:textSize">14sp</item>
+        <item name="elevation">@dimen/elevation</item>
+    </style>
+
+</resources>
