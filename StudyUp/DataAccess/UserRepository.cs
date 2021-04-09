@@ -24,9 +24,9 @@ namespace DataAccess
             return dbSet.Where(x => x.Email == email && x.Password == password).FirstOrDefault();
         }
 
-        public User GetUserByNameAndPassword(string name, string password)
+        public User GetUserByNameAndPassword(string username, string password)
         {
-            return dbSet.Where(x => x.Name == name && x.Password == password).FirstOrDefault();
+            return dbSet.Where(x => x.Username == username && x.Password == password).FirstOrDefault();
         }
     }
 }

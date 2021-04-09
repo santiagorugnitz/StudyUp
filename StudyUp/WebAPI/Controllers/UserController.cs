@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using WebAPI.Models;
 using Domain;
 using Exceptions;
+using WebAPI.Filters;
 
 namespace WebAPI.Controllers
 {
+    [ServiceFilter(typeof(ExceptionFilter))]
     [Route("api/users")]
     [ApiController]
     public class UserController : Controller
@@ -24,19 +26,8 @@ namespace WebAPI.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] UserModel userModel)
         {
-            try
-            {
-                User newUser = logic.AddUser(userModel.ToEntity());
-                return Ok(newUser);
-            }
-            catch (AlreadyExistsException e)
-            {
-                return BadRequest(e.Message);
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
+            User newUser = logic.AddUser(userModel.ToEntity());
+            return Ok(newUser);
         }
     }
 }

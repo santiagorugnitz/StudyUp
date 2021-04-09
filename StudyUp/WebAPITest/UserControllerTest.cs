@@ -25,8 +25,8 @@ namespace WebAPITest
 
             userModelExample = new UserModel()
             {
-                Name = "Jose",
-                IsATeacher = false,
+                Username = "Jose",
+                IsStudent = false,
                 Email = "jose@hotmail.com",
                 Password = "contraseña123",
             };
@@ -43,8 +43,9 @@ namespace WebAPITest
 
             logicMock.VerifyAll();
         }
-
+      
         [TestMethod]
+        [ExpectedException(typeof(AlreadyExistsException))]
         public void PostUserAlreadyExistsTest()
         {
             logicMock.Setup(x => x.AddUser(It.IsAny<User>())).Throws(new AlreadyExistsException(UserMessage.EMAIL_ALREADY_EXISTS));

@@ -20,10 +20,10 @@ namespace BusinessLogicTest
         {
             userExample = new User()
             {
-                Name = "Maria",
+                Username = "Maria",
                 Email = "maria@gmail.com",
                 Password = "maria1234",
-                IsATeacher = false
+                IsStudent = false
             };
 
             userMock = new Mock<IUserRepository>(MockBehavior.Strict);

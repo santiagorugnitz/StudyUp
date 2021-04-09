@@ -28,10 +28,10 @@ namespace DataAccess.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsATeacher")
+                    b.Property<bool>("IsStudent")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Userame")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")

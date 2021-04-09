@@ -6,8 +6,8 @@ namespace Domain
     {
         public int Id { get; set; }
         public string Email { get; set; }
-        public bool IsATeacher { get; set; }
-        public string Name { get; set; }
+        public bool IsStudent { get; set; }
+        public string Username { get; set; }
         public string Password { get; set; }
 
         public override bool Equals(object o)
