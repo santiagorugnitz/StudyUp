@@ -21,4 +21,9 @@
         <item name="elevation">@dimen/elevation</item>
     </style>
 
+    <style name="Subtitle">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
 </resources>

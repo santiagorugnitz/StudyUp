@@ -5,6 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class User(
-    @PrimaryKey val username:String,
-    val isStudent:Boolean,
+    @PrimaryKey val id: Int,
+    val username: String,
+    val isStudent: Boolean,
 )

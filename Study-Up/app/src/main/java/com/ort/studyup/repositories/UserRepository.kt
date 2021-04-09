@@ -17,12 +17,13 @@ class UserRepository(
     suspend fun login(username: String, password: String): User {
         val result = userService.login(LoginRequest(username, password)).check()
         val user = User(
+            result.id,
             result.username,
             result.isStudent
         )
         userDao.deleteUser()
         userDao.insert(user)
-        preferenceHelper.set(TOKEN_KEY, result.token)
+        preferenceHelper.setString(TOKEN_KEY, result.token)
         return user
     }
 

@@ -8,7 +8,7 @@ import com.ort.studyup.common.models.User
     entities = [
         User::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 
