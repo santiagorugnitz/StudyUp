@@ -28,5 +28,15 @@ namespace DataAccess
         {
             return dbSet.Where(x => x.Username == username && x.Password == password).FirstOrDefault();
         }
+
+        public User GetUserByToken(string token)
+        {
+            if (token == null)
+            {
+                return null;
+            }
+
+            return dbSet.Where(x => x.Token == token).FirstOrDefault();
+        }
     }
 }

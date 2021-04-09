@@ -14,6 +14,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{EBCF0348-EEF9-47D4-9E4B-250C93467808}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogicTest", "BusinessLogicTest\BusinessLogicTest.csproj", "{86DA5F93-E575-4335-8780-502C283AB70C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{64330351-E96C-4D00-8DB8-D29BDDE1647E} = {64330351-E96C-4D00-8DB8-D29BDDE1647E}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI.csproj", "{D25564C5-95FA-48AA-946A-91000A6B54F2}"
 EndProject

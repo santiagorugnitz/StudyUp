@@ -19,7 +19,7 @@ namespace WebAPI.Filters
         public void OnException(ExceptionContext context)
         {
             int code = SERVER_ERROR_STATUS_CODE;
-            if (context.Exception is AlreadyExistsException) code = BAD_REQUEST_STATUS_CODE;
+            if (context.Exception is AlreadyExistsException || context.Exception is InvalidException) code = BAD_REQUEST_STATUS_CODE;
 
             context.Result = new ContentResult()
             {

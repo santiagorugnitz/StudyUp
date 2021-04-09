@@ -25,7 +25,17 @@ namespace BusinessLogic
             if (sameEmail != null && (sameEmail.Count() > 0))
                 throw new AlreadyExistsException(UserMessage.EMAIL_ALREADY_EXISTS);
 
+            user.Token = Guid.NewGuid().ToString();
             repository.Add(user);
+            return user;
+        }
+
+        public User Login(string email, string password)
+        {
+            User user = userRepository.GetUserByEmailAndPassword(email, password);
+            if (user == null) throw new InvalidException("Wrong email or password");
+            user.Token = Guid.NewGuid().ToString();
+            repository.Update(user);
             return user;
         }
     }
