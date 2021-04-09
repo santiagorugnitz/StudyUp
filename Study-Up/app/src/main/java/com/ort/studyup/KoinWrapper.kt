@@ -8,6 +8,7 @@ import com.ort.studyup.login.LoginViewModel
 import com.ort.studyup.repositories.UserRepository
 import com.ort.studyup.services.ServiceFactory
 import com.ort.studyup.services.UserService
+import com.ort.studyup.splash.SplashViewModel
 import com.ort.studyup.storage.dao.AppDatabase
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -40,6 +41,7 @@ object KoinWrapper {
 
     private fun viewModels() = module {
         factory { LoginViewModel(get()) }
+        factory { SplashViewModel() }
     }
 
     private fun repositories() = module {

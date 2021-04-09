@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name="com.ort.studyup.login.LoginActivity"
+            android:name="com.ort.studyup.splash.SplashActivity"
             android:screenOrientation="portrait"
             >
             <intent-filter>
@@ -21,6 +21,8 @@
         </activity>
 
         <activity android:name=".home.HomeActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.ort.studyup.login.LoginActivity"
             android:screenOrientation="portrait"/>
     </application>
 
