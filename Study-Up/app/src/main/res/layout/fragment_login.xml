@@ -4,49 +4,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingHorizontal="16dp">
+    android:paddingHorizontal="28dp">
 
-    <include
-        android:id="@+id/username"
-        layout="@layout/item_text_input"
+    <EditText
+        android:id="@+id/emailInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="220dp"
+        android:hint="@string/username_or_mail"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <include
-        android:layout_marginTop="8dp"
-        android:id="@+id/password"
-        android:layout_width="match_parent"
+    <EditText
+        android:id="@+id/passwordInput"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/username"
-        layout="@layout/item_text_input"/>
+        android:layout_marginTop="42dp"
+        android:ellipsize="start"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailInput" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/logInButton"
         style="@style/BaseButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_background"
         android:layout_marginHorizontal="48dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/button_background"
         android:text="@string/log_in"
         app:layout_constraintBottom_toTopOf="@+id/signUp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="16dp"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/signUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="128dp"
         android:text="@string/sign_up"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        />
-
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

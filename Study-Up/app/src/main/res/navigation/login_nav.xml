@@ -5,5 +5,13 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.ort.studyup.login.LoginFragment"
-        android:label="LoginFragment" />
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_homeActivity"
+            app:destination="@id/homeActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/homeActivity"
+        android:name="com.ort.studyup.home.HomeActivity"
+        android:label="HomeActivity" />
 </navigation>
