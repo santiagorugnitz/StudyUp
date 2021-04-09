@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/decks_nav"
+    app:startDestination="@id/decksFragment">
+
+    <fragment
+        android:id="@+id/decksFragment"
+        android:name="com.ort.studyup.home.DecksFragment"
+        android:label="DecksFragment" />
+</navigation>

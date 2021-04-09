@@ -15,7 +15,7 @@ open class BaseViewModel : ViewModel() /*,KoinComponent*/ {
 
     val loading: MutableLiveData<CustomLoader.LoaderConfig> = MutableLiveData()
 
-    fun executeService(loader: CustomLoader.Visibility = CustomLoader.Visibility.TRANSLUCENT, service: suspend () -> Unit) {
+    protected fun executeService(loader: CustomLoader.Visibility = CustomLoader.Visibility.TRANSLUCENT, service: suspend () -> Unit) {
         loading.postValue(CustomLoader.LoaderConfig(true, loader))
         GlobalScope.launch {
             coroutineScope {
