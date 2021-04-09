@@ -55,5 +55,17 @@ namespace WebAPITest
 
             logicMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void GetDecksOkTest()
+        {
+            logicMock.Setup(x => x.GetAllDecks()).Returns(new List<Deck>());
+
+            var result = controller.GetAllDecks();
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as List<Deck>;
+
+            logicMock.VerifyAll();
+        }
     }
 }

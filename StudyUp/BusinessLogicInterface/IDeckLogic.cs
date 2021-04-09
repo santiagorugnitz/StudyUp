@@ -8,5 +8,6 @@ namespace BusinessLogicInterface
     public interface IDeckLogic
     {
         Deck AddDeck(Deck deck);
+        IEnumerable<Deck> GetAllDecks();
     }
 }

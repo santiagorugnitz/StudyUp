@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace BusinessLogicTest
@@ -54,5 +55,27 @@ namespace BusinessLogicTest
             Assert.AreEqual(deckExample, result);
         }
 
+        [TestMethod]
+        public void GetAllDecksTest()
+        {
+            Deck deck = new Deck
+            {
+                Id = 1,
+                Name = "Clase 02",
+                Author = userExample,
+                Difficulty = Domain.Enumerations.Difficulty.Hard,
+                IsHidden = false,
+                Flashcards = new List<Flashcard>(),
+                Subject = "German" 
+            };
+
+            deckRepositoryMock.Setup(b => b.GetAll()).Returns(new List<Deck>() { deck });
+
+            var result = deckLogic.GetAllDecks().Count();
+
+            deckRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(1, result);
+        }
     }
 }

@@ -27,5 +27,10 @@ namespace BusinessLogic
             repository.Add(deck);
             return deck;
         }
+
+        public IEnumerable<Deck> GetAllDecks()
+        {
+            return repository.GetAll();
+        }
     }
 }

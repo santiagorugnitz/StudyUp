@@ -21,6 +21,19 @@ namespace WebAPI.Controllers
             this.logic = logic;
         }
 
+        [HttpGet]
+        public IActionResult GetAllDecks()
+        {
+            try
+            {
+                return Ok(logic.GetAllDecks());
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpPost]
         public IActionResult Post([FromBody] DeckModel deckModel)
         {
