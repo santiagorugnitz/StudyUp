@@ -20,10 +20,12 @@ class UserRepository(
             result.username,
             result.isStudent
         )
-        userDao.deleteAll()
+        userDao.deleteUser()
         userDao.insert(user)
         preferenceHelper.set(TOKEN_KEY, result.token)
         return user
     }
+
+    suspend fun getUser() = userDao.getUser()
 
 }

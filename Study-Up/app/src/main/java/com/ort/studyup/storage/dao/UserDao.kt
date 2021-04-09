@@ -11,5 +11,5 @@ interface UserDao: IDao<User> {
     suspend fun getUser(): User?
 
     @Query("DELETE FROM user")
-    suspend fun deleteAll()
+    suspend fun deleteUser()
 }
