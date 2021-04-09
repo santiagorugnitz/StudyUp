@@ -39,11 +39,17 @@ namespace StudyUp
                 });
             });
 
+            services.AddControllers().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling =
+                    Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            }); ;
+
             services.AddControllers().AddNewtonsoftJson(options => { options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore; });
             services.AddControllers();
 
             services.AddDbContext<DbContext, DBContext>(
-                o => o.UseSqlServer(@"Server=.\SQLEXPRESS;Database=ObligatorioISP;Trusted_Connection=True;MultipleActiveResultSets=True;", b => b.MigrationsAssembly("WebAPI"))
+                o => o.UseSqlServer(Configuration.GetConnectionString("StudyUp"), b => b.MigrationsAssembly("WebAPI"))
             );
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
