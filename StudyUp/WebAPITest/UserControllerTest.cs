@@ -1,5 +1,6 @@
 using BusinessLogicInterface;
 using Domain;
+using Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -46,7 +47,7 @@ namespace WebAPITest
         [TestMethod]
         public void PostUserAlreadyExistsTest()
         {
-            logicMock.Setup(x => x.AddUser(It.IsAny<User>())).Throws(new Exception());
+            logicMock.Setup(x => x.AddUser(It.IsAny<User>())).Throws(new AlreadyExistsException(UserMessage.EMAIL_ALREADY_EXISTS));
 
             var result = controller.Post(userModelExample);
             var okResult = result as BadRequestObjectResult;

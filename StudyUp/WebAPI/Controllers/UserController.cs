@@ -6,6 +6,7 @@ using BusinessLogicInterface;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Models;
 using Domain;
+using Exceptions;
 
 namespace WebAPI.Controllers
 {
@@ -27,6 +28,10 @@ namespace WebAPI.Controllers
             {
                 User newUser = logic.AddUser(userModel.ToEntity());
                 return Ok(newUser);
+            }
+            catch (AlreadyExistsException e)
+            {
+                return BadRequest(e.Message);
             }
             catch (Exception)
             {

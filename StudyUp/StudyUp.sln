@@ -3,21 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogicInterface", "BusinessLogicInterface\BusinessLogicInterface.csproj", "{EC86F04B-A8EA-47F3-8721-5F3717FF198A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogicInterface", "BusinessLogicInterface\BusinessLogicInterface.csproj", "{EC86F04B-A8EA-47F3-8721-5F3717FF198A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{B26730E8-E171-467E-9242-1B24279D168F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{B26730E8-E171-467E-9242-1B24279D168F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogic", "BusinessLogic\BusinessLogic.csproj", "{B78CA42E-2CF8-421E-8FBE-B5091BC5D965}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogic", "BusinessLogic\BusinessLogic.csproj", "{B78CA42E-2CF8-421E-8FBE-B5091BC5D965}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessInterface", "DataAccessInterface\DataAccessInterface.csproj", "{AEBE7149-AADC-4048-A205-D3D8CE1A047D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessInterface", "DataAccessInterface\DataAccessInterface.csproj", "{AEBE7149-AADC-4048-A205-D3D8CE1A047D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{EBCF0348-EEF9-47D4-9E4B-250C93467808}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{EBCF0348-EEF9-47D4-9E4B-250C93467808}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogicTest", "BusinessLogicTest\BusinessLogicTest.csproj", "{86DA5F93-E575-4335-8780-502C283AB70C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogicTest", "BusinessLogicTest\BusinessLogicTest.csproj", "{86DA5F93-E575-4335-8780-502C283AB70C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI.csproj", "{D25564C5-95FA-48AA-946A-91000A6B54F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPITest", "WebAPITest\WebAPITest.csproj", "{42DA5D8F-0BC0-4EE0-A4A0-E8E7A7BE21D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPITest", "WebAPITest\WebAPITest.csproj", "{42DA5D8F-0BC0-4EE0-A4A0-E8E7A7BE21D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exceptions", "Exceptions\Exceptions.csproj", "{64330351-E96C-4D00-8DB8-D29BDDE1647E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{42DA5D8F-0BC0-4EE0-A4A0-E8E7A7BE21D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42DA5D8F-0BC0-4EE0-A4A0-E8E7A7BE21D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42DA5D8F-0BC0-4EE0-A4A0-E8E7A7BE21D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64330351-E96C-4D00-8DB8-D29BDDE1647E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64330351-E96C-4D00-8DB8-D29BDDE1647E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64330351-E96C-4D00-8DB8-D29BDDE1647E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64330351-E96C-4D00-8DB8-D29BDDE1647E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

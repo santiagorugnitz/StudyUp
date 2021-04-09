@@ -1,6 +1,7 @@
 ﻿using BusinessLogicInterface;
 using DataAccessInterface;
 using Domain;
+using Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace BusinessLogic
         {
             IEnumerable<User> sameEmail = repository.GetAll().Where(x => x.Email.Equals(user.Email));
             if (sameEmail != null && (sameEmail.Count() > 0))
-                throw new Exception("This email address already belongs to a registered user.");
+                throw new AlreadyExistsException(UserMessage.EMAIL_ALREADY_EXISTS);
 
             repository.Add(user);
             return user;
