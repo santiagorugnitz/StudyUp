@@ -16,6 +16,7 @@ namespace BusinessLogicTest
         User userExample;
         Deck deckExample;
         Mock<IRepository<Deck>> deckRepositoryMock;
+        Mock<IRepository<User>> userRepositoryMock;
         DeckLogic deckLogic;
 
         [TestInitialize]
@@ -23,6 +24,7 @@ namespace BusinessLogicTest
         {
             userExample = new User()
             {
+                Id = 1,
                 Name = "Ana",
                 Email = "ana@gmail.com",
                 Password = "ana1234",
@@ -31,6 +33,7 @@ namespace BusinessLogicTest
 
             deckExample = new Deck()
             {
+                Id =1,
                 Name = "Clase 7",
                 Author = userExample,
                 Difficulty = Domain.Enumerations.Difficulty.Medium,
@@ -40,7 +43,8 @@ namespace BusinessLogicTest
             };
 
             deckRepositoryMock = new Mock<IRepository<Deck>>(MockBehavior.Strict);
-            deckLogic = new DeckLogic(deckRepositoryMock.Object);
+            userRepositoryMock = new Mock<IRepository<User>>(MockBehavior.Strict);
+            deckLogic = new DeckLogic(deckRepositoryMock.Object, userRepositoryMock.Object);
         }
 
         [TestMethod]
@@ -48,8 +52,12 @@ namespace BusinessLogicTest
         {
             deckRepositoryMock.Setup(m => m.Add(It.IsAny<Deck>()));
             deckRepositoryMock.Setup(m => m.GetAll()).Returns(new List<Deck>());
+            userRepositoryMock.Setup(m => m.GetById(1)).Returns(userExample);
+            userRepositoryMock.Setup(a => a.Update(It.IsAny<User>()));
 
-            var result = deckLogic.AddDeck(deckExample);
+            userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
+
+            var result = deckLogic.AddDeck(deckExample, userExample.Id);
 
             deckRepositoryMock.VerifyAll();
             Assert.AreEqual(deckExample, result);
@@ -72,6 +80,18 @@ namespace BusinessLogicTest
             deckRepositoryMock.Setup(b => b.GetAll()).Returns(new List<Deck>() { deck });
 
             var result = deckLogic.GetAllDecks().Count();
+
+            deckRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(1, result);
+        }
+
+        [TestMethod]
+        public void GetDecksByAuthorTest()
+        {
+            deckRepositoryMock.Setup(b => b.FindByCondition(d => d.Author.Id == 1)).Returns(new List<Deck>() { deckExample });
+            
+            var result = deckLogic.GetDecksByAuthor(1).Count();
 
             deckRepositoryMock.VerifyAll();
 

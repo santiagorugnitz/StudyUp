@@ -15,5 +15,6 @@ namespace Exceptions
     public static class DeckMessage
     {
         public const string DECK_ALREADY_EXISTS = "Name already exists.";
+        public const string EMPTY_NAME_MESSAGE = "Name field cannot be empty.";
     }
 }

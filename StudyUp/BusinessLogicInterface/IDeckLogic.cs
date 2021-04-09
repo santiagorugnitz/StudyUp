@@ -7,7 +7,8 @@ namespace BusinessLogicInterface
 {
     public interface IDeckLogic
     {
-        Deck AddDeck(Deck deck);
+        Deck AddDeck(Deck deck, int userId);
         IEnumerable<Deck> GetAllDecks();
+        IEnumerable<Deck> GetDecksByAuthor(int userId);
     }
 }

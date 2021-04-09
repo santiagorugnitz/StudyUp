@@ -1,5 +1,6 @@
 ﻿using BusinessLogicInterface;
 using Domain;
+using Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -28,6 +29,7 @@ namespace WebAPITest
 
             userModelExample = new UserModel()
             {
+                Id =1,
                 Name = "Jose",
                 IsATeacher = false,
                 Email = "jose@hotmail.com",
@@ -47,13 +49,31 @@ namespace WebAPITest
         [TestMethod]
         public void PostDeckOkTest()
         {
-            logicMock.Setup(x => x.AddDeck(It.IsAny<Deck>())).Returns(new Deck());
+            logicMock.Setup(x => x.AddDeck(It.IsAny<Deck>(), 1)).Returns(new Deck());
 
-            var result = controller.Post(deckModelExample);
+            var result = controller.Post(deckModelExample, userModelExample.Id);
             var okResult = result as OkObjectResult;
             var value = okResult.Value as User;
 
             logicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void PostDeckBadRequestTest()
+        {
+            DeckModel anotherDeckModelExample = new DeckModel()
+            {
+                Name = null, 
+                Author = userModelExample.ToEntity(),
+                Difficulty = Domain.Enumerations.Difficulty.Hard,
+                IsHidden = false,
+                Subject = "Latin"
+            };
+            logicMock.Setup(x => x.AddDeck(anotherDeckModelExample.ToEntity(), 1)).Throws(new InvalidException(DeckMessage.EMPTY_NAME_MESSAGE));
+
+            var result = controller.Post(anotherDeckModelExample, 1);
+            var okResult = result as BadRequestObjectResult;
+
         }
 
         [TestMethod]
@@ -62,6 +82,18 @@ namespace WebAPITest
             logicMock.Setup(x => x.GetAllDecks()).Returns(new List<Deck>());
 
             var result = controller.GetAllDecks();
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as List<Deck>;
+
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void GetDecksByAuthorOkTest()
+        {
+            logicMock.Setup(x => x.GetDecksByAuthor(1)).Returns(new List<Deck>() { deckModelExample.ToEntity()});
+
+            var result = controller.GetDecksByAuthor(1);
             var okResult = result as OkObjectResult;
             var value = okResult.Value as List<Deck>;
 

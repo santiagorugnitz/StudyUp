@@ -35,16 +35,34 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] DeckModel deckModel)
+        public IActionResult Post([FromBody] DeckModel deckModel, [FromQuery] int userId)
         {
             try
             {
-                Deck newDeck = logic.AddDeck(deckModel.ToEntity());
+                Deck newDeck = logic.AddDeck(deckModel.ToEntity(), userId);
                 return Ok(newDeck);
             }
             catch (AlreadyExistsException e)
             {
                 return BadRequest(e.Message);
+            }
+            catch (InvalidException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("byAuthor")]
+        public IActionResult GetDecksByAuthor([FromQuery] int userId)
+        {
+            try
+            {
+                IEnumerable<Deck> decksList = logic.GetDecksByAuthor(userId);
+                return Ok(decksList);
             }
             catch (Exception)
             {
