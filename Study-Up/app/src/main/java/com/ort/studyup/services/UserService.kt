@@ -11,4 +11,7 @@ interface UserService {
     suspend fun login(@Body request: LoginRequest): Response<UserResponse>
 
 
+    @POST("register")
+    suspend fun register(@Body request: RegisterRequest): Response<UserResponse>
+
 }

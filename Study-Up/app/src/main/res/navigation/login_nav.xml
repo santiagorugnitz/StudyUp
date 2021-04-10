@@ -9,9 +9,20 @@
         <action
             android:id="@+id/action_loginFragment_to_homeActivity"
             app:destination="@id/homeActivity" />
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
     </fragment>
     <activity
         android:id="@+id/homeActivity"
         android:name="com.ort.studyup.home.HomeActivity"
         android:label="HomeActivity" />
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.ort.studyup.login.RegisterFragment"
+        android:label="RegisterFragment" >
+        <action
+            android:id="@+id/action_registerFragment_to_homeActivity"
+            app:destination="@id/homeActivity" />
+    </fragment>
 </navigation>

@@ -1,11 +1,14 @@
 package com.ort.studyup.common.ui
 
+import android.view.View
+import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import com.ort.studyup.R
 import com.ort.studyup.services.ServiceError
+import kotlinx.android.synthetic.main.item_spinner.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
@@ -38,5 +41,13 @@ open class BaseFragment : Fragment() {
             viewModel.loading.observe(this, onLoad)
             viewModel
         }
+
+    protected fun initSpinner(input: View, array: Array<String>, title: String) {
+        ArrayAdapter(requireActivity(), android.R.layout.simple_spinner_item, array).also {
+            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            input.spinner.adapter = it
+        }
+        input.spinnerTitle.text = title
+    }
 
 }

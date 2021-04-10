@@ -18,6 +18,12 @@
     <string name="save">Save</string>
     <string name="save_changes">Save changes</string>
     <string name="error_empty_fields">There are empty fields</string>
+    <string name="confirm_password_error">Passwords don\'t match</string>
+    <string name="mail_invalid">Invalid email</string>
+    <string name="register">Register</string>
+    <string name="username">Username</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="role">Role</string>
 
 
     <string-array name="difficulties">
@@ -29,6 +35,11 @@
     <string-array name="visibilities">
         <item>Visible</item>
         <item>Hidden</item>
+    </string-array>
+
+    <string-array name="roles">
+        <item>Student</item>
+        <item>Teacher</item>
     </string-array>
 </resources>
 
