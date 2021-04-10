@@ -16,5 +16,7 @@ namespace Exceptions
     {
         public const string DECK_ALREADY_EXISTS = "Name already exists.";
         public const string EMPTY_NAME_MESSAGE = "Name field cannot be empty.";
+        public const string INVALID_DIFFICULTY = "Choose a valid difficulty.";
+        public const string DECK_NOT_FOUND = "This deck does not exist.";
     }
 }

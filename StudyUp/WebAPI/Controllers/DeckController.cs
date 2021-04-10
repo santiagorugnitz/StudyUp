@@ -69,5 +69,27 @@ namespace WebAPI.Controllers
                 return BadRequest();
             }
         }
+
+        [HttpPut]
+        public IActionResult Update([FromQuery] int deckId, [FromBody] UpdateDeckModel updateDeckModel)
+        {
+            try
+            {
+                return Ok(logic.EditDeck(deckId, updateDeckModel.Name, 
+                    updateDeckModel.Difficulty, updateDeckModel.IsHidden));
+            }
+            catch (InvalidException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (NotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
     }
 }

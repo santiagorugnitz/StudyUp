@@ -29,7 +29,7 @@ namespace WebAPITest
 
             userModelExample = new UserModel()
             {
-                Id =1,
+                Id = 1,
                 Name = "Jose",
                 IsATeacher = false,
                 Email = "jose@hotmail.com",
@@ -63,7 +63,7 @@ namespace WebAPITest
         {
             DeckModel anotherDeckModelExample = new DeckModel()
             {
-                Name = null, 
+                Name = null,
                 Author = userModelExample.ToEntity(),
                 Difficulty = Domain.Enumerations.Difficulty.Hard,
                 IsHidden = false,
@@ -91,11 +91,33 @@ namespace WebAPITest
         [TestMethod]
         public void GetDecksByAuthorOkTest()
         {
-            logicMock.Setup(x => x.GetDecksByAuthor(1)).Returns(new List<Deck>() { deckModelExample.ToEntity()});
+            logicMock.Setup(x => x.GetDecksByAuthor(1)).Returns(new List<Deck>() { deckModelExample.ToEntity() });
 
             var result = controller.GetDecksByAuthor(1);
             var okResult = result as OkObjectResult;
             var value = okResult.Value as List<Deck>;
+
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void UpdateDeckTest()
+        {
+            logicMock.Setup(x => x.AddDeck(It.IsAny<Deck>(), userModelExample.Id)).Returns(new Deck());
+            logicMock.Setup(x => x.EditDeck(1, "new name", Domain.Enumerations.Difficulty.Easy,
+                true)).Returns(new Deck());
+
+            UpdateDeckModel updateDeckModel = new UpdateDeckModel()
+            {
+                Difficulty = Domain.Enumerations.Difficulty.Easy,
+                Name = "new name",
+                IsHidden = true
+            };
+            controller.Post(deckModelExample, userModelExample.Id);
+
+            var result = controller.Update(1, updateDeckModel);
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as Deck;
 
             logicMock.VerifyAll();
         }

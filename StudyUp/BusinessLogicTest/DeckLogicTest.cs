@@ -1,6 +1,7 @@
 ﻿using BusinessLogic;
 using DataAccessInterface;
 using Domain;
+using Domain.Enumerations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -33,7 +34,7 @@ namespace BusinessLogicTest
 
             deckExample = new Deck()
             {
-                Id =1,
+                Id = 1,
                 Name = "Clase 7",
                 Author = userExample,
                 Difficulty = Domain.Enumerations.Difficulty.Medium,
@@ -74,7 +75,7 @@ namespace BusinessLogicTest
                 Difficulty = Domain.Enumerations.Difficulty.Hard,
                 IsHidden = false,
                 Flashcards = new List<Flashcard>(),
-                Subject = "German" 
+                Subject = "German"
             };
 
             deckRepositoryMock.Setup(b => b.GetAll()).Returns(new List<Deck>() { deck });
@@ -90,12 +91,33 @@ namespace BusinessLogicTest
         public void GetDecksByAuthorTest()
         {
             deckRepositoryMock.Setup(b => b.FindByCondition(d => d.Author.Id == 1)).Returns(new List<Deck>() { deckExample });
-            
+
             var result = deckLogic.GetDecksByAuthor(1).Count();
 
             deckRepositoryMock.VerifyAll();
 
             Assert.AreEqual(1, result);
+        }
+
+        [TestMethod]
+        public void EditDeckOkTest()
+        {
+            string newName = "new name";
+            Difficulty newDifficulty = Difficulty.Hard;
+            bool newVisibility = true;
+
+            deckRepositoryMock.Setup(m => m.Update(It.IsAny<Deck>()));
+            deckRepositoryMock.Setup(m => m.GetById(1)).Returns(deckExample);
+            deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == newName && a.Id != 1)).Returns(new List<Deck>() { });
+
+            deckExample.Name = newName;
+            deckExample.IsHidden = newVisibility;
+            deckExample.Difficulty = newDifficulty;
+            var result = deckLogic.EditDeck(1, newName, newDifficulty, newVisibility);
+
+            deckRepositoryMock.VerifyAll();
+
+            Assert.IsTrue(result.Equals(deckExample));
         }
     }
 }

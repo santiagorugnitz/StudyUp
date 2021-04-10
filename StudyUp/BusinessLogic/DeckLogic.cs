@@ -1,6 +1,7 @@
 ﻿using BusinessLogicInterface;
 using DataAccessInterface;
 using Domain;
+using Domain.Enumerations;
 using Exceptions;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Text;
 
 namespace BusinessLogic
 {
-    public class DeckLogic:IDeckLogic
+    public class DeckLogic : IDeckLogic
     {
         private IRepository<Deck> deckRepository;
         private IRepository<User> userRepository;
@@ -45,6 +46,26 @@ namespace BusinessLogic
             ICollection<Deck> toReturn = new List<Deck>();
             var authorsDecks = deckRepository.FindByCondition(t => t.Author.Id == userId);
             return authorsDecks;
+        }
+
+
+        public Deck EditDeck(int deckId, string newName, Difficulty newDifficulty, bool newVisibility)
+        {
+            Deck deck = deckRepository.GetById(deckId);
+            ICollection<Deck> sameName = deckRepository.FindByCondition(a => a.Name == newName && a.Id != deckId);
+            if (sameName != null && sameName.Count > 0)
+                throw new InvalidException(DeckMessage.DECK_ALREADY_EXISTS);
+            if ((int)newDifficulty > 2 || (int)newDifficulty < 0) 
+                throw new InvalidException(DeckMessage.INVALID_DIFFICULTY);
+            if (deck != null )
+            {
+                deck.Name = newName; 
+                deck.Difficulty = newDifficulty;
+                deck.IsHidden = newVisibility;
+                deckRepository.Update(deck);
+                return deck;
+            }
+            else throw new NotFoundException(DeckMessage.DECK_NOT_FOUND);
         }
     }
 }

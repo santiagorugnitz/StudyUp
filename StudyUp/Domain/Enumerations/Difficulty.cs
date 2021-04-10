@@ -4,5 +4,5 @@ using System.Text;
 
 namespace Domain.Enumerations
 {
-    public enum Difficulty { Easy, Medium, Hard};
+    public enum Difficulty { Easy =0, Medium=1, Hard=2};
 }
