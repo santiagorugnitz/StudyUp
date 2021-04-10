@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Domain
 {
     public class User
     {
         public int Id { get; set; }
+        public virtual List<Deck> Decks { get; set; }
         public string Email { get; set; }
         public bool IsStudent { get; set; }
         public string Username { get; set; }

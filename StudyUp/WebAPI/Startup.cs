@@ -55,6 +55,7 @@ namespace StudyUp
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserLogic, UserLogic>();
+            services.AddScoped<IDeckLogic, DeckLogic>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
