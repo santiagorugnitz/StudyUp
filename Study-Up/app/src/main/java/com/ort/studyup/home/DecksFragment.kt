@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ort.studyup.R
 import com.ort.studyup.common.renderers.DeckItemRenderer
@@ -31,7 +33,7 @@ class DecksFragment : BaseFragment(), DeckItemRenderer.Callback {
 
     private fun initUI() {
         fab.setOnClickListener {
-            //TODO: navigate to addFrag with flag EDIT=false
+            findNavController().navigate(R.id.action_decksFragment_to_newDeckFragment)
         }
         adapter.addRenderer(SubtitleRenderer())
         adapter.addRenderer(DeckItemRenderer(this))
@@ -40,9 +42,9 @@ class DecksFragment : BaseFragment(), DeckItemRenderer.Callback {
     }
 
     private fun initViewModel(){
-        viewModel.loadDecks().observe(viewLifecycleOwner,{
+        viewModel.loadDecks().observe(viewLifecycleOwner) {
             adapter.setItems(it)
-        })
+        }
     }
 
     override fun onDeckClicked(deckId: Int) {

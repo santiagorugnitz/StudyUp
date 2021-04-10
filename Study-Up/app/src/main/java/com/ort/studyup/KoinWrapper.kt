@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.ort.studyup.common.ui.ResourceWrapper
 import com.ort.studyup.common.utils.EncryptedPreferencesHelper
 import com.ort.studyup.home.DecksViewModel
+import com.ort.studyup.home.NewDeckViewModel
 import com.ort.studyup.login.LoginViewModel
 import com.ort.studyup.repositories.UserRepository
 import com.ort.studyup.services.ServiceFactory
@@ -44,6 +45,7 @@ object KoinWrapper {
         factory { LoginViewModel(get()) }
         factory { SplashViewModel() }
         factory { DecksViewModel() }
+        factory { NewDeckViewModel(get()) }
     }
 
     private fun repositories() = module {
