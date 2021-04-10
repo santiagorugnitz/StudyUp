@@ -37,7 +37,7 @@ namespace WebAPI.Controllers
             return Ok(responseUserModel);
         }
 
-        [HttpPost("login")]
+        [HttpPost("/login")]
         public IActionResult Login([FromBody] LoginModel loginModel)
         {
             var user = logic.Login(loginModel.Email, loginModel.Password);
