@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.ort.studyup.R
 import com.ort.studyup.common.ui.BaseFragment
@@ -31,16 +32,16 @@ class LoginFragment : BaseFragment() {
     private fun initUI() {
         logInButton.setOnClickListener {
             viewModel.login(emailInput.text.toString(), passwordInput.text.toString()).observe(
-                viewLifecycleOwner, {
-                    if (it) {
-                        requireActivity().finish()
-                        findNavController().navigate(R.id.action_loginFragment_to_homeActivity)
-                    }
+                viewLifecycleOwner
+            ) {
+                if (it) {
+                    requireActivity().finish()
+                    findNavController().navigate(R.id.action_loginFragment_to_homeActivity)
                 }
-            )
+            }
         }
         signUp.setOnClickListener {
-            //TODO: navigate to register
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
 
 

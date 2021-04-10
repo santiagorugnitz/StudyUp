@@ -60,12 +60,6 @@ class NewDeckFragment : BaseFragment() {
 
     }
 
-    private fun initSpinner(input: View, array: Array<String>, title: String) {
-        ArrayAdapter(requireActivity(), android.R.layout.simple_spinner_item, array).also {
-            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            input.spinner.adapter = it
-        }
-        input.spinnerTitle.text = title
-    }
+
 
 }

@@ -7,6 +7,7 @@ import com.ort.studyup.common.utils.EncryptedPreferencesHelper
 import com.ort.studyup.home.DecksViewModel
 import com.ort.studyup.home.NewDeckViewModel
 import com.ort.studyup.login.LoginViewModel
+import com.ort.studyup.login.RegisterViewModel
 import com.ort.studyup.repositories.UserRepository
 import com.ort.studyup.services.ServiceFactory
 import com.ort.studyup.services.UserService
@@ -43,6 +44,7 @@ object KoinWrapper {
 
     private fun viewModels() = module {
         factory { LoginViewModel(get()) }
+        factory { RegisterViewModel(get()) }
         factory { SplashViewModel() }
         factory { DecksViewModel() }
         factory { NewDeckViewModel(get()) }
