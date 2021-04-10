@@ -26,10 +26,10 @@ namespace BusinessLogicTest
             userExample = new User()
             {
                 Id = 1,
-                Name = "Ana",
+                Username = "Ana",
                 Email = "ana@gmail.com",
                 Password = "ana1234",
-                IsATeacher = true
+                IsStudent = true
             };
 
             deckExample = new Deck()

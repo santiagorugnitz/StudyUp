@@ -30,8 +30,8 @@ namespace WebAPITest
             userModelExample = new UserModel()
             {
                 Id = 1,
-                Name = "Jose",
-                IsATeacher = false,
+                Username = "Jose",
+                IsStudent = false,
                 Email = "jose@hotmail.com",
                 Password = "contraseña123",
             };
