@@ -27,7 +27,29 @@ namespace WebAPI.Controllers
         public IActionResult Post([FromBody] UserModel userModel)
         {
             User newUser = logic.AddUser(userModel.ToEntity());
-            return Ok(newUser);
+            ResponseUserModel responseUserModel = new ResponseUserModel() {
+                Id = newUser.Id,
+                Email = newUser.Email,
+                IsStudent = newUser.IsStudent,
+                Username = newUser.Username,
+                Token = newUser.Token
+            };
+            return Ok(responseUserModel);
+        }
+
+        [HttpPost("/login")]
+        public IActionResult Login([FromBody] LoginModel loginModel)
+        {
+            var user = logic.Login(loginModel.Email, loginModel.Password);
+            ResponseUserModel responseUserModel = new ResponseUserModel()
+            {
+                Id = user.Id,
+                Email = user.Email,
+                IsStudent = user.IsStudent,
+                Username = user.Username,
+                Token = user.Token
+            };
+            return Ok(responseUserModel);
         }
     }
 }

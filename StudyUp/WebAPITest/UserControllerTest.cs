@@ -16,6 +16,7 @@ namespace WebAPITest
         Mock<IUserLogic> logicMock;
         UserController controller;
         UserModel userModelExample;
+        LoginModel loginModelExample;
 
         [TestInitialize]
         public void SetUp()
@@ -30,6 +31,12 @@ namespace WebAPITest
                 Email = "jose@hotmail.com",
                 Password = "contraseña123",
             };
+
+            loginModelExample = new LoginModel()
+            {
+                Email = "jose@hotmail.com",
+                Password = "contraseña123"
+            };
         }
 
         [TestMethod]
@@ -39,7 +46,7 @@ namespace WebAPITest
 
             var result = controller.Post(userModelExample);
             var okResult = result as OkObjectResult;
-            var value = okResult.Value as User;
+            var value = okResult.Value as ResponseUserModel;
 
             logicMock.VerifyAll();
         }
@@ -51,6 +58,30 @@ namespace WebAPITest
             logicMock.Setup(x => x.AddUser(It.IsAny<User>())).Throws(new AlreadyExistsException(UserMessage.EMAIL_ALREADY_EXISTS));
 
             var result = controller.Post(userModelExample);
+            var okResult = result as BadRequestObjectResult;
+
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void LoginOkTest()
+        {
+            logicMock.Setup(x => x.Login(It.IsAny<string>(), It.IsAny<string>())).Returns(new User());
+
+            var result = controller.Login(loginModelExample);
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as ResponseUserModel;
+
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidException))]
+        public void LoginCredentialsAreWrongTest()
+        {
+            logicMock.Setup(x => x.Login(It.IsAny<string>(), It.IsAny<string>())).Throws(new InvalidException(UserMessage.USER_NOT_FOUND));
+
+            var result = controller.Login(loginModelExample);
             var okResult = result as BadRequestObjectResult;
 
             logicMock.VerifyAll();
