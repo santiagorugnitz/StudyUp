@@ -10,6 +10,8 @@
     <color name="background">#F9F9F9</color>
     <color name="translucent">#66FFFFFF</color>
     <color name="disabled">#E0E9F2</color>
-    <color name="text_disabled">#80A2CA</color>
+    <color name="textDisabled">#80A2CA</color>
     <color name="error">#C40C1B</color>
+    <color name="inputBorder">#B2B4CD</color>
+
 </resources>

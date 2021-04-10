@@ -9,4 +9,27 @@
     <string name="generic_error">Something happened</string>
     <string name="decks">Decks</string>
     <string name="email">Email</string>
+    <string name="name">Name</string>
+    <string name="subject">Subject</string>
+    <string name="new_deck">New deck</string>
+    <string name="difficulty">Difficulty</string>
+    <string name="edit_deck">Edit deck</string>
+    <string name="visibility">Visibility</string>
+    <string name="save">Save</string>
+    <string name="save_changes">Save changes</string>
+    <string name="error_empty_fields">There are empty fields</string>
+
+
+    <string-array name="difficulties">
+        <item>Easy</item>
+        <item>Medium</item>
+        <item>Hard</item>
+    </string-array>
+
+    <string-array name="visibilities">
+        <item>Visible</item>
+        <item>Hidden</item>
+    </string-array>
 </resources>
+
+

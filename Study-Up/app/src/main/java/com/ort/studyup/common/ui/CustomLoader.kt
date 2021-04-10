@@ -24,7 +24,7 @@ class CustomLoader(context: Context, attrs: AttributeSet?) : View(context, attrs
     }
 
     private fun showTranslucent(){
-        val view = inflate()
+        inflate()
     }
 
     private fun showTransparent() {
@@ -46,7 +46,6 @@ class CustomLoader(context: Context, attrs: AttributeSet?) : View(context, attrs
             val view = root?.findViewById<ConstraintLayout>(R.id.loaderContainer)
             root?.removeView(view)
         } catch (e: Exception) {
-            e
         }
     }
 

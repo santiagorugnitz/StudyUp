@@ -18,9 +18,9 @@ class EncryptedPreferencesHelper(
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM)
 
 
-    fun set(key:String,value:String) = preferences.edit().putString(key,value).apply()
+    fun setString(key:String, value:String) = preferences.edit().putString(key,value).apply()
 
-    fun get(key:String,default:String?=null) = preferences.getString(key,default)
+    fun getString(key:String, default:String?=null) = preferences.getString(key,default)
 
     fun clear(key:String) = preferences.edit().remove(key).apply()
 }

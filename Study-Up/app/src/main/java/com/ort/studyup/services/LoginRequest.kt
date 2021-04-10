@@ -8,6 +8,7 @@ class LoginRequest(
 )
 
 class UserResponse(
+    @SerializedName("id") val id: Int,
     @SerializedName("username") val username: String,
     @SerializedName("isStudent") val isStudent: Boolean,
     @SerializedName("token") val token: String,
