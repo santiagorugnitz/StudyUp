@@ -12,14 +12,16 @@ namespace WebAPI.Filters
     {
         private static readonly int SERVER_ERROR_STATUS_CODE = 500;
         private static readonly int BAD_REQUEST_STATUS_CODE = 400;
-        //Not used yet
-        //private static readonly int NOT_FOUND_STATUS_CODE = 404;
+        private static readonly int NOT_FOUND_STATUS_CODE = 404;
 
 
         public void OnException(ExceptionContext context)
         {
             int code = SERVER_ERROR_STATUS_CODE;
-            if (context.Exception is AlreadyExistsException || context.Exception is InvalidException) code = BAD_REQUEST_STATUS_CODE;
+            if (context.Exception is AlreadyExistsException || context.Exception is InvalidException) 
+                code = BAD_REQUEST_STATUS_CODE;
+            if (context.Exception is NotFoundException)
+                code = NOT_FOUND_STATUS_CODE;
 
             context.Result = new ContentResult()
             {

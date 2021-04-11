@@ -7,9 +7,11 @@ using BusinessLogicInterface;
 using Exceptions;
 using Domain;
 using WebAPI.Models;
+using WebAPI.Filters;
 
 namespace WebAPI.Controllers
 {
+    [ServiceFilter(typeof(ExceptionFilter))]
     [Route("api/decks")]
     [ApiController]
     public class DeckController : ControllerBase
@@ -24,72 +26,28 @@ namespace WebAPI.Controllers
         [HttpGet]
         public IActionResult GetAllDecks()
         {
-            try
-            {
-                return Ok(logic.GetAllDecks());
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
+            return Ok(logic.GetAllDecks());
         }
 
         [HttpPost]
         public IActionResult Post([FromBody] DeckModel deckModel, [FromQuery] int userId)
         {
-            try
-            {
-                Deck newDeck = logic.AddDeck(deckModel.ToEntity(), userId);
-                return Ok(newDeck);
-            }
-            catch (AlreadyExistsException e)
-            {
-                return BadRequest(e.Message);
-            }
-            catch (InvalidException e)
-            {
-                return BadRequest(e.Message);
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
+            Deck newDeck = logic.AddDeck(deckModel.ToEntity(), userId);
+            return Ok(newDeck);
         }
 
         [HttpGet("byAuthor")]
         public IActionResult GetDecksByAuthor([FromQuery] int userId)
         {
-            try
-            {
-                IEnumerable<Deck> decksList = logic.GetDecksByAuthor(userId);
-                return Ok(decksList);
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
+            IEnumerable<Deck> decksList = logic.GetDecksByAuthor(userId);
+            return Ok(decksList);
         }
 
         [HttpPut]
         public IActionResult Update([FromQuery] int deckId, [FromBody] UpdateDeckModel updateDeckModel)
         {
-            try
-            {
-                return Ok(logic.EditDeck(deckId, updateDeckModel.Name, 
-                    updateDeckModel.Difficulty, updateDeckModel.IsHidden));
-            }
-            catch (InvalidException e)
-            {
-                return BadRequest(e.Message);
-            }
-            catch (NotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
+            return Ok(logic.EditDeck(deckId, updateDeckModel.Name,
+                updateDeckModel.Difficulty, updateDeckModel.IsHidden));
         }
     }
 }
