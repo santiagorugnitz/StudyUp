@@ -24,6 +24,7 @@
     <string name="username">Username</string>
     <string name="confirm_password">Confirm password</string>
     <string name="role">Role</string>
+    <string name="confirm">Confirm</string>
 
 
     <string-array name="difficulties">
