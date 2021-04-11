@@ -22,5 +22,7 @@ namespace Exceptions
         public const string EMPTY_NAME_MESSAGE = "Name field cannot be empty.";
         public const string INVALID_DIFFICULTY = "Choose a valid difficulty.";
         public const string DECK_NOT_FOUND = "This deck does not exist.";
+        public const string INVALID_DIFFICULTY_MESSAGE = "Invalid difficulty";
+        public const string EMPTY_SUBJECT_MESSAGE = "Subject field cannot be empty.";
     }
 }

@@ -25,5 +25,5 @@ namespace WebAPI.Models
             Author = this.Author,
             Subject = this.Subject
         };
-     }
+    }
 }

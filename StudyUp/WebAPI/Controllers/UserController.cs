@@ -27,7 +27,8 @@ namespace WebAPI.Controllers
         public IActionResult Post([FromBody] UserModel userModel)
         {
             User newUser = logic.AddUser(userModel.ToEntity());
-            ResponseUserModel responseUserModel = new ResponseUserModel() {
+            ResponseUserModel responseUserModel = new ResponseUserModel()
+            {
                 Id = newUser.Id,
                 Email = newUser.Email,
                 IsStudent = newUser.IsStudent,

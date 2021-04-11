@@ -30,7 +30,7 @@ namespace BusinessLogic
             if (!validationService.PasswordValidation(user.Password))
                 throw new InvalidException(UserMessage.INVALID_PASSWORD);
 
-            if(!validationService.EmailValidation(user.Email))
+            if (!validationService.EmailValidation(user.Email))
                 throw new InvalidException(UserMessage.INVALID_EMAIL);
 
             user.Token = Guid.NewGuid().ToString();

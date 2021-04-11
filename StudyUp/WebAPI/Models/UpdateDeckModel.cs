@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Models
 {
-    public class UpdateDeckModel 
+    public class UpdateDeckModel
     {
         public string Name { get; set; }
         public Difficulty Difficulty { get; set; }

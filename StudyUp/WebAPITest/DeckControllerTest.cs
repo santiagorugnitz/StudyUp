@@ -58,7 +58,7 @@ namespace WebAPITest
             logicMock.VerifyAll();
         }
 
-        
+
         [TestMethod]
         [ExpectedException(typeof(InvalidException))]
         public void PostDeckBadRequestTest()

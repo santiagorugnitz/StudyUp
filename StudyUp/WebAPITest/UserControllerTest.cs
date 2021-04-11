@@ -50,7 +50,7 @@ namespace WebAPITest
 
             logicMock.VerifyAll();
         }
-      
+
         [TestMethod]
         [ExpectedException(typeof(AlreadyExistsException))]
         public void PostUserAlreadyExistsTest()

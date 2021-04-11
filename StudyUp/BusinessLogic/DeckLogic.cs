@@ -28,6 +28,11 @@ namespace BusinessLogic
                 throw new AlreadyExistsException(DeckMessage.DECK_ALREADY_EXISTS);
             else if (deck.Name is null)
                 throw new InvalidException(DeckMessage.EMPTY_NAME_MESSAGE);
+            else if ((int)deck.Difficulty < 0 || (int)deck.Difficulty > 2)
+                throw new InvalidException(DeckMessage.INVALID_DIFFICULTY_MESSAGE);
+            else if (deck.Subject is null)
+                throw new InvalidException(DeckMessage.EMPTY_SUBJECT_MESSAGE);
+
             deckRepository.Add(deck);
 
             User user = userRepository.GetById(userId);
@@ -54,11 +59,11 @@ namespace BusinessLogic
             ICollection<Deck> sameName = deckRepository.FindByCondition(a => a.Name == newName && a.Id != deckId);
             if (sameName != null && sameName.Count > 0)
                 throw new InvalidException(DeckMessage.DECK_ALREADY_EXISTS);
-            if ((int)newDifficulty > 2 || (int)newDifficulty < 0) 
+            if ((int)newDifficulty > 2 || (int)newDifficulty < 0)
                 throw new InvalidException(DeckMessage.INVALID_DIFFICULTY);
-            if (deck != null )
+            if (deck != null)
             {
-                deck.Name = newName; 
+                deck.Name = newName;
                 deck.Difficulty = newDifficulty;
                 deck.IsHidden = newVisibility;
                 deckRepository.Update(deck);

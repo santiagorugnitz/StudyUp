@@ -16,6 +16,11 @@ namespace Domain
         public bool IsHidden { get; set; }
         public User Author { get; set; }
 
+        public Deck()
+        {
+            IsHidden = false;
+        }
+
         public override bool Equals(object o)
         {
             if (o == null || !GetType().Equals(o.GetType()))

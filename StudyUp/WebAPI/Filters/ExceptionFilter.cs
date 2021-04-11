@@ -18,7 +18,7 @@ namespace WebAPI.Filters
         public void OnException(ExceptionContext context)
         {
             int code = SERVER_ERROR_STATUS_CODE;
-            if (context.Exception is AlreadyExistsException || context.Exception is InvalidException) 
+            if (context.Exception is AlreadyExistsException || context.Exception is InvalidException)
                 code = BAD_REQUEST_STATUS_CODE;
             if (context.Exception is NotFoundException)
                 code = NOT_FOUND_STATUS_CODE;
