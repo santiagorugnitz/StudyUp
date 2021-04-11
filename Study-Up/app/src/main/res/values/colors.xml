@@ -13,5 +13,6 @@
     <color name="textDisabled">#80A2CA</color>
     <color name="error">#C40C1B</color>
     <color name="inputBorder">#B2B4CD</color>
+    <color name="dialogBackground">#80505d68</color>
 
 </resources>
