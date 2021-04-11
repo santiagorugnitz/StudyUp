@@ -15,7 +15,6 @@ namespace BusinessLogic
         private IRepository<Deck> deckRepository;
         private IRepository<User> userRepository;
 
-
         public DeckLogic(IRepository<Deck> repository, IRepository<User> userRepository)
         {
             this.deckRepository = repository;

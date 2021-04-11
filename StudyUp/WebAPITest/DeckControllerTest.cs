@@ -58,12 +58,14 @@ namespace WebAPITest
             logicMock.VerifyAll();
         }
 
+        
         [TestMethod]
+        [ExpectedException(typeof(InvalidException))]
         public void PostDeckBadRequestTest()
         {
             DeckModel anotherDeckModelExample = new DeckModel()
             {
-                Name = null,
+                Name = "Clase 7",
                 Author = userModelExample.ToEntity(),
                 Difficulty = Domain.Enumerations.Difficulty.Hard,
                 IsHidden = false,
@@ -73,7 +75,6 @@ namespace WebAPITest
 
             var result = controller.Post(anotherDeckModelExample, 1);
             var okResult = result as BadRequestObjectResult;
-
         }
 
         [TestMethod]

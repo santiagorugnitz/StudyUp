@@ -23,7 +23,7 @@ namespace BusinessLogicTest
             {
                 Username = "Maria",
                 Email = "maria@gmail.com",
-                Password = "maria1234",
+                Password = "Mari1-",
                 IsStudent = false,
                 Token = "New token"
             };
@@ -59,6 +59,46 @@ namespace BusinessLogicTest
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidException))]
+        public void AddUserInvalidPasswordTest()
+        {
+            User userToAdd = new User()
+            {
+                Email = "ana@gmail.com",
+                IsStudent = false,
+                Password = "Incorrect",
+                Username = "anaanaana",
+                Token = "new token"
+            };
+
+            userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
+            userRepositoryMock.Setup(m => m.GetAll()).Returns(new List<User>() { userExample });
+
+            var result = userLogic.AddUser(userToAdd);
+            userRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidException))]
+        public void AddUserInvalidEmailTest()
+        {
+            User invalidEmailUser = new User()
+            {
+                Email = "jose.com",
+                IsStudent = false,
+                Password = "Password1-",
+                Username = "Jose",
+                Token = "new token"
+            };
+
+            userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
+            userRepositoryMock.Setup(m => m.GetAll()).Returns(new List<User>() { userExample });
+
+            var result = userLogic.AddUser(invalidEmailUser);
+            userRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
         public void CorrectLoginTest()
         {
             userMock.Setup(m => m.GetUserByEmailAndPassword(It.IsAny<string>(), It.IsAny<string>())).Returns(userExample);
@@ -79,7 +119,5 @@ namespace BusinessLogicTest
 
             userMock.VerifyAll();
         }
-
-
     }
 }

@@ -8,8 +8,12 @@ namespace Exceptions
 {
     public static class UserMessage
     {
+        public const string INVALID_PASSWORD = "Password must be 6 characters long and contain at least" +
+            " one number, an uppercase letter and a lowercase letter.";
         public const string USER_NOT_FOUND = "User does not exist.";
         public const string EMAIL_ALREADY_EXISTS = "This email address already belongs to a registered user.";
+        public const string WRONG_EMAIL_OR_PASSWORD = "Wrong email or password.";
+        public const string INVALID_EMAIL = "Invalid mail address.";
     }
 
     public static class DeckMessage
