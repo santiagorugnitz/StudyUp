@@ -25,6 +25,7 @@
     <string name="confirm_password">Confirm password</string>
     <string name="role">Role</string>
     <string name="confirm">Confirm</string>
+    <string name="invalid_password">Password must contain at least one number digit, one uppercase letter and one lowercase letter</string>
 
 
     <string-array name="difficulties">
