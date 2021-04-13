@@ -26,6 +26,8 @@
     <string name="role">Role</string>
     <string name="confirm">Confirm</string>
     <string name="invalid_password">Password must contain at least one number digit, one uppercase letter and one lowercase letter</string>
+    <string name="delete">Delete</string>
+    <string name="delete_deck_confirmation">Are you sure you want to delete the deck? This can not be undone</string>
 
 
     <string-array name="difficulties">

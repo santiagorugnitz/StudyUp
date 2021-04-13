@@ -4,10 +4,7 @@ import com.ort.studyup.common.models.Deck
 import com.ort.studyup.common.models.DeckData
 import com.ort.studyup.common.models.NewDeckRequest
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.PUT
+import retrofit2.http.*
 
 interface DeckService {
 
@@ -20,5 +17,8 @@ interface DeckService {
 
     @PUT("TBD")
     suspend fun updateDeck(id: Int, data: NewDeckRequest): Response<*>
+
+    @DELETE("TBD")
+    suspend fun deleteDeck(id: Int): Response<*>
 
 }

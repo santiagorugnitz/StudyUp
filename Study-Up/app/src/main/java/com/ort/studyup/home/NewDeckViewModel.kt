@@ -45,4 +45,13 @@ class NewDeckViewModel(
         return data.name.isNotEmpty() && data.subject.isNotEmpty()
     }
 
+    fun deleteDeck():LiveData<Boolean>{
+        val result = MutableLiveData<Boolean>()
+        executeService {
+            //deckRepository.delete(deckId)
+            result.postValue(true)
+        }
+        return result
+    }
+
 }
