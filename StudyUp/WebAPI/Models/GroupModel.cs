@@ -9,7 +9,6 @@ namespace WebAPI.Models
     public class GroupModel
     {
         public string Name { get; set; }
-        public string CreatorToken { get; set; }
         public Group ToEntity() => new Group()
         {
             Name = this.Name
