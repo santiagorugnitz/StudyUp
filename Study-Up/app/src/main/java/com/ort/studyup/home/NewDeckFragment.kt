@@ -4,16 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import androidx.lifecycle.observe
 import com.ort.studyup.R
 import com.ort.studyup.common.DECK_DATA_KEY
 import com.ort.studyup.common.models.DeckData
 import com.ort.studyup.common.ui.BaseFragment
+import com.ort.studyup.common.ui.ConfirmationDialog
 import kotlinx.android.synthetic.main.fragment_new_deck.*
 import kotlinx.android.synthetic.main.item_spinner.view.*
 
-class NewDeckFragment : BaseFragment() {
+class NewDeckFragment : BaseFragment(), ConfirmationDialog.Callback {
 
     private val viewModel: NewDeckViewModel by injectViewModel(NewDeckViewModel::class)
 
@@ -31,17 +30,26 @@ class NewDeckFragment : BaseFragment() {
         initSpinner(difficultyInput, resources.getStringArray(R.array.difficulties), getString(R.string.difficulty))
         initSpinner(visibilityInput, resources.getStringArray(R.array.visibilities), getString(R.string.visibility))
 
-        (arguments?.getSerializable(DECK_DATA_KEY) as DeckData?)?.let {
-            viewModel.deckId = it.id
+        (arguments?.getSerializable(DECK_DATA_KEY) as DeckData?)?.let { deckData ->
+            viewModel.deckId = deckData.id
             header.text = getString(R.string.edit_deck)
-            nameInput.setText(it.name)
-            subjectInput.setText(it.subject)
-            difficultyInput.spinner.setSelection(it.difficulty)
-            if (it.isHidden) {
+            nameInput.setText(deckData.name)
+            subjectInput.setText(deckData.subject)
+            difficultyInput.spinner.setSelection(deckData.difficulty)
+            if (deckData.isHidden) {
                 visibilityInput.spinner.setSelection(1)
             }
             saveButton.text = getString(R.string.save_changes)
-        }
+            deleteButton.visibility = View.VISIBLE
+            deleteButton.setOnClickListener {
+                ConfirmationDialog(
+                        requireContext(),
+                        getString(R.string.delete_deck_confirmation),
+                        this,
+                        attrs = null
+                ).show()
+            }
+
 
         saveButton.setOnClickListener {
             viewModel.sendData(
@@ -51,11 +59,11 @@ class NewDeckFragment : BaseFragment() {
                     difficulty = difficultyInput.spinner.selectedItemPosition,
                     isHidden = visibilityInput.spinner.selectedItemPosition == 1
                 )
-            ).observe(viewLifecycleOwner) {
-                if(it>0){
+            ).observe(viewLifecycleOwner, {
+                if (it > 0) {
                     //TODO: navigate to deckDetail using it as id
                 }
-            }
+            })
         }
 
     }
@@ -63,3 +71,12 @@ class NewDeckFragment : BaseFragment() {
 
 
 }
+
+    override fun onButtonClick() {
+        viewModel.deleteDeck().observe(viewLifecycleOwner, {
+            if(it){
+                requireActivity().onBackPressed()
+            }
+        })
+    }
+    }
