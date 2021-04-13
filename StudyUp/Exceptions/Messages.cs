@@ -25,4 +25,10 @@ namespace Exceptions
         public const string INVALID_DIFFICULTY_MESSAGE = "Invalid difficulty";
         public const string EMPTY_SUBJECT_MESSAGE = "Subject field cannot be empty.";
     }
+
+    public static class GroupMessage
+    {
+        public const string GROUP_ALREADY_EXISTS = "Name already exists.";
+        public const string EMPTY_NAME_MESSAGE = "Name field cannot be empty.";
+    }
 }
