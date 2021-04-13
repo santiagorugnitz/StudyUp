@@ -4,8 +4,9 @@ import android.app.Application
 import androidx.room.Room
 import com.ort.studyup.common.ui.ResourceWrapper
 import com.ort.studyup.common.utils.EncryptedPreferencesHelper
-import com.ort.studyup.home.DecksViewModel
-import com.ort.studyup.home.NewDeckViewModel
+import com.ort.studyup.home.decks.DeckDetailViewModel
+import com.ort.studyup.home.decks.DecksViewModel
+import com.ort.studyup.home.decks.NewDeckViewModel
 import com.ort.studyup.login.LoginViewModel
 import com.ort.studyup.login.RegisterViewModel
 import com.ort.studyup.repositories.UserRepository
@@ -47,6 +48,7 @@ object KoinWrapper {
         factory { RegisterViewModel(get()) }
         factory { SplashViewModel() }
         factory { DecksViewModel() }
+        factory { DeckDetailViewModel() }
         factory { NewDeckViewModel(get()) }
     }
 

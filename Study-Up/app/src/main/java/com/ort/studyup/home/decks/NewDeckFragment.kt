@@ -1,4 +1,4 @@
-package com.ort.studyup.home
+package com.ort.studyup.home.decks
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -51,32 +51,32 @@ class NewDeckFragment : BaseFragment(), ConfirmationDialog.Callback {
             }
 
 
-        saveButton.setOnClickListener {
-            viewModel.sendData(
-                DeckData(
-                    name = nameInput.text.toString(),
-                    subject = subjectInput.text.toString(),
-                    difficulty = difficultyInput.spinner.selectedItemPosition,
-                    isHidden = visibilityInput.spinner.selectedItemPosition == 1
-                )
-            ).observe(viewLifecycleOwner, {
-                if (it > 0) {
-                    //TODO: navigate to deckDetail using it as id
-                }
-            })
+            saveButton.setOnClickListener {
+                viewModel.sendData(
+                        DeckData(
+                                name = nameInput.text.toString(),
+                                creator = "",
+                                subject = subjectInput.text.toString(),
+                                difficulty = difficultyInput.spinner.selectedItemPosition,
+                                isHidden = visibilityInput.spinner.selectedItemPosition == 1
+                        )
+                ).observe(viewLifecycleOwner, {
+                    if (it > 0) {
+                        //TODO: navigate to deckDetail using it as id
+                    }
+                })
+            }
+
         }
+
 
     }
 
-
-
-}
-
     override fun onButtonClick() {
         viewModel.deleteDeck().observe(viewLifecycleOwner, {
-            if(it){
+            if (it) {
                 requireActivity().onBackPressed()
             }
         })
     }
-    }
+}

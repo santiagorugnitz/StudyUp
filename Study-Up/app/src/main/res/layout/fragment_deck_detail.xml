@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/background"
+        android:elevation="@dimen/elevation"
+        android:layout_width="match_parent"
+        android:id="@+id/headerView"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/Header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Verbs"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/creator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:textSize="14sp"
+            android:layout_marginStart="10dp"
+            android:textStyle="bold"
+            android:drawablePadding="6dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            tools:text="Creator"
+            app:drawableStartCompat="@drawable/ic_user" />
+
+        <TextView
+            android:id="@+id/subject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:textSize="14sp"
+            android:layout_marginStart="8dp"
+            android:textStyle="bold"
+            android:drawablePadding="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/creator"
+            tools:text="Software Architecture"
+            app:drawableStartCompat="@drawable/ic_subject" />
+
+        <TextView
+            android:id="@+id/visibility"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:textSize="14sp"
+            android:layout_marginStart="8dp"
+            android:textStyle="bold"
+            android:drawablePadding="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/subject"
+            tools:text="Visible"
+            app:drawableStartCompat="@drawable/ic_visibility" />
+
+        <TextView
+            android:id="@+id/difficulty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:textSize="14sp"
+            android:layout_marginStart="8dp"
+            android:textStyle="bold"
+            android:drawablePadding="7dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/visibility"
+            tools:text="Easy"
+            app:drawableStartCompat="@drawable/ic_difficulty" />
+
+        <TextView
+            android:id="@+id/editLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/difficulty"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@string/edit"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            android:layout_marginStart="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimaryDark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <ImageView
+        android:id="@+id/addButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/circle"
+        app:layout_constraintEnd_toEndOf="@id/headerView"
+        app:layout_constraintBottom_toBottomOf="@id/headerView"
+        app:layout_constraintTop_toBottomOf="@id/headerView"
+        android:elevation="@dimen/elevation"
+        android:padding="12dp"
+        android:src="@drawable/ic_add"
+        android:layout_marginEnd="16dp"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/flashcardList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerView"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

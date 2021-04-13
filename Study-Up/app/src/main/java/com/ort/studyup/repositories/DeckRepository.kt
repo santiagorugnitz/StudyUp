@@ -31,5 +31,9 @@ class DeckRepository(
         deckService.deleteDeck(id).check()
     }
 
+    suspend fun getDeck(id:Int):Deck{
+        return deckService.getDeck(id).check()
+    }
+
 
 }
