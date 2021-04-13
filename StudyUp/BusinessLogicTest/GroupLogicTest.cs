@@ -2,6 +2,7 @@
 using DataAccessInterface;
 using Domain;
 using Domain.Enumerations;
+using Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -50,6 +51,36 @@ namespace BusinessLogicTest
         [TestMethod]
         public void AddDeckOkTest()
         {
+            groupRepositoryMock.Setup(m => m.Add(It.IsAny<Group>()));
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            userRepositoryMock.Setup(a => a.Update(It.IsAny<User>()));
+
+            var result = groupLogic.AddGroup(groupExample, "token");
+
+            groupRepositoryMock.VerifyAll();
+            Assert.AreEqual(groupExample, result);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(AlreadyExistsException))]
+        public void AddDeckRepeatedNameTest()
+        {
+            userExample.Groups.Add(groupExample);
+            groupRepositoryMock.Setup(m => m.Add(It.IsAny<Group>()));
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            userRepositoryMock.Setup(a => a.Update(It.IsAny<User>()));
+
+            var result = groupLogic.AddGroup(groupExample, "token");
+
+            groupRepositoryMock.VerifyAll();
+            Assert.AreEqual(groupExample, result);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidException))]
+        public void AddDeckEmptyNameTest()
+        {
+            groupExample.Name = "   ";
             groupRepositoryMock.Setup(m => m.Add(It.IsAny<Group>()));
             userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
             userRepositoryMock.Setup(a => a.Update(It.IsAny<User>()));
