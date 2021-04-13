@@ -1,4 +1,5 @@
-﻿using DataAccessInterface;
+﻿using BusinessLogicInterface;
+using DataAccessInterface;
 using Domain;
 using Exceptions;
 using System;
@@ -8,7 +9,7 @@ using System.Text;
 
 namespace BusinessLogic
 {
-    public class GroupLogic
+    public class GroupLogic : IGroupLogic
     {
         private IRepository<Group> groupRepository;
         private IRepository<User> userRepository;

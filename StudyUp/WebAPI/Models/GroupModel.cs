@@ -12,8 +12,7 @@ namespace WebAPI.Models
         public string CreatorToken { get; set; }
         public Group ToEntity() => new Group()
         {
-            Name = this.Name,
-            CreatorToken = this.CreatorToken
+            Name = this.Name
         };
     }
 }

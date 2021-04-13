@@ -8,7 +8,7 @@ namespace Domain
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public User Creator { get; set; }
+        public virtual User Creator { get; set; }
 
         public override bool Equals(object o)
         {

@@ -58,6 +58,7 @@ namespace StudyUp
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserLogic, UserLogic>();
             services.AddScoped<IDeckLogic, DeckLogic>();
+            services.AddScoped<IGroupLogic, GroupLogic>();
             services.AddScoped<ExceptionFilter>();
 
             services.AddSwaggerGen(options =>
