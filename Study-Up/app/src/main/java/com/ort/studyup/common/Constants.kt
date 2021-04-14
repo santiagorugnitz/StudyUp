@@ -1,5 +1,6 @@
 package com.ort.studyup.common
 
+const val TOKEN_HEADER = "token"
 const val INTERNAL_ERROR_CODE = 500
 
 const val TOKEN_KEY = "token_key"

@@ -1,17 +1,18 @@
 package com.ort.studyup.services
 
 import android.content.Context
+import android.media.session.MediaSession
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
+import com.ort.studyup.services.interceptors.TokenInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class ServiceFactory() {
+class ServiceFactory(private val context: Context) {
 
     private val okHttpClient: OkHttpClient by lazy { okHttpClient() }
-
 
     fun <T> createInstance(clazz: Class<T>): T {
 
@@ -22,24 +23,24 @@ class ServiceFactory() {
     private fun okHttpClient(): OkHttpClient {
         val clientBuilder = OkHttpClient.Builder()
         clientBuilder.apply {
-            //TODO: add more interceptors if needed
             addInterceptor(
-                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+                    HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
             )
+            addInterceptor(TokenInterceptor(context))
         }
         return clientBuilder.build()
     }
 
     private fun retrofit() = Retrofit.Builder()
-        //TODO: add url to BuildConfig
-        .baseUrl("")
-        .client(okHttpClient)
-        .addConverterFactory(gsonConverterFactory())
-        .build()
+            //TODO: add url to BuildConfig
+            .baseUrl("")
+            .client(okHttpClient)
+            .addConverterFactory(gsonConverterFactory())
+            .build()
 
     private fun gsonConverterFactory() = GsonConverterFactory.create(
-        GsonBuilder()
-            .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-            .create()
+            GsonBuilder()
+                    .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                    .create()
     )
 }
