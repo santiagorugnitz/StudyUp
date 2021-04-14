@@ -14,14 +14,17 @@ namespace BusinessLogic
     {
         private IRepository<Deck> deckRepository;
         private IRepository<User> userRepository;
+        private IUserRepository userTokenRepository;
 
-        public DeckLogic(IRepository<Deck> repository, IRepository<User> userRepository)
+        public DeckLogic(IRepository<Deck> repository, IRepository<User> userRepository,
+            IUserRepository userTokenRepository)
         {
             this.deckRepository = repository;
             this.userRepository = userRepository;
+            this.userTokenRepository = userTokenRepository;
         }
 
-        public Deck AddDeck(Deck deck, int userId)
+        public Deck AddDeck(Deck deck, string userToken)
         {
             IEnumerable<Deck> sameName = deckRepository.GetAll().Where(x => x.Name.Equals(deck.Name));
             if (sameName != null && (sameName.Count() > 0))
@@ -34,8 +37,8 @@ namespace BusinessLogic
                 throw new InvalidException(DeckMessage.EMPTY_SUBJECT_MESSAGE);
 
             deckRepository.Add(deck);
-
-            User user = userRepository.GetById(userId);
+            User user = userTokenRepository.GetUserByToken(userToken);
+            User userById = userRepository.GetById(user.Id);
             userRepository.Update(user);
             return deck;
         }

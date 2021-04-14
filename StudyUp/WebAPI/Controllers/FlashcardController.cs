@@ -23,9 +23,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] FlashcardModel flashcardModel, [FromQuery] int userId)
+        public IActionResult Post([FromBody] FlashcardModel flashcardModel, [FromHeader] string token)
         {
-            Flashcard newFlashcard = logic.AddFlashcard(flashcardModel.ToEntity(), userId);
+            Flashcard newFlashcard = logic.AddFlashcard(flashcardModel.ToEntity(), token);
             return Ok(newFlashcard);
         }
 

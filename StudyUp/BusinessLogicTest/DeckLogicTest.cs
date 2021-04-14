@@ -18,6 +18,7 @@ namespace BusinessLogicTest
         Deck deckExample;
         Mock<IRepository<Deck>> deckRepositoryMock;
         Mock<IRepository<User>> userRepositoryMock;
+        Mock<IUserRepository> userTokenRepository;
         DeckLogic deckLogic;
 
         [TestInitialize]
@@ -29,7 +30,8 @@ namespace BusinessLogicTest
                 Username = "Ana",
                 Email = "ana@gmail.com",
                 Password = "ana1234",
-                IsStudent = true
+                IsStudent = true,
+                Token = "token"
             };
 
             deckExample = new Deck()
@@ -45,7 +47,9 @@ namespace BusinessLogicTest
 
             deckRepositoryMock = new Mock<IRepository<Deck>>(MockBehavior.Strict);
             userRepositoryMock = new Mock<IRepository<User>>(MockBehavior.Strict);
-            deckLogic = new DeckLogic(deckRepositoryMock.Object, userRepositoryMock.Object);
+            userTokenRepository = new Mock<IUserRepository>(MockBehavior.Strict);
+            deckLogic = new DeckLogic(deckRepositoryMock.Object, userRepositoryMock.Object,
+                 userTokenRepository.Object);
         }
 
         [TestMethod]
@@ -54,11 +58,12 @@ namespace BusinessLogicTest
             deckRepositoryMock.Setup(m => m.Add(It.IsAny<Deck>()));
             deckRepositoryMock.Setup(m => m.GetAll()).Returns(new List<Deck>());
             userRepositoryMock.Setup(m => m.GetById(1)).Returns(userExample);
+            userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
             userRepositoryMock.Setup(a => a.Update(It.IsAny<User>()));
 
             userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
 
-            var result = deckLogic.AddDeck(deckExample, userExample.Id);
+            var result = deckLogic.AddDeck(deckExample, userExample.Token);
 
             deckRepositoryMock.VerifyAll();
             Assert.AreEqual(deckExample, result);

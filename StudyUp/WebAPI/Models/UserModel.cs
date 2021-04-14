@@ -13,13 +13,15 @@ namespace WebAPI.Models
         public bool IsStudent { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
+        public string Token { get; set; }
 
         public User ToEntity() => new User()
         {
             Email = this.Email,
             IsStudent = this.IsStudent,
             Username = this.Username,
-            Password = this.Password
+            Password = this.Password,
+            Token = this.Token
         };
 
     }

@@ -30,9 +30,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] DeckModel deckModel, [FromQuery] int userId)
+        public IActionResult Post([FromBody] DeckModel deckModel, [FromHeader] string token)
         {
-            Deck newDeck = logic.AddDeck(deckModel.ToEntity(), userId);
+            Deck newDeck = logic.AddDeck(deckModel.ToEntity(), token);
             return Ok(newDeck);
         }
 

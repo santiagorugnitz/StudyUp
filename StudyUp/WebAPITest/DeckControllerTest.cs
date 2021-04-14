@@ -34,6 +34,7 @@ namespace WebAPITest
                 IsStudent = false,
                 Email = "jose@hotmail.com",
                 Password = "contraseña123",
+                Token = "token"
             };
 
             deckModelExample = new DeckModel()
@@ -49,9 +50,9 @@ namespace WebAPITest
         [TestMethod]
         public void PostDeckOkTest()
         {
-            logicMock.Setup(x => x.AddDeck(It.IsAny<Deck>(), 1)).Returns(new Deck());
+            logicMock.Setup(x => x.AddDeck(It.IsAny<Deck>(), It.IsAny<string>())).Returns(new Deck());
 
-            var result = controller.Post(deckModelExample, userModelExample.Id);
+            var result = controller.Post(deckModelExample, userModelExample.Token);
             var okResult = result as OkObjectResult;
             var value = okResult.Value as User;
 
@@ -71,9 +72,9 @@ namespace WebAPITest
                 IsHidden = false,
                 Subject = "Latin"
             };
-            logicMock.Setup(x => x.AddDeck(anotherDeckModelExample.ToEntity(), 1)).Throws(new InvalidException(DeckMessage.EMPTY_NAME_MESSAGE));
+            logicMock.Setup(x => x.AddDeck(anotherDeckModelExample.ToEntity(), userModelExample.Token)).Throws(new InvalidException(DeckMessage.EMPTY_NAME_MESSAGE));
 
-            var result = controller.Post(anotherDeckModelExample, 1);
+            var result = controller.Post(anotherDeckModelExample, userModelExample.Token);
             var okResult = result as BadRequestObjectResult;
         }
 
@@ -104,7 +105,7 @@ namespace WebAPITest
         [TestMethod]
         public void UpdateDeckTest()
         {
-            logicMock.Setup(x => x.AddDeck(It.IsAny<Deck>(), userModelExample.Id)).Returns(new Deck());
+            logicMock.Setup(x => x.AddDeck(It.IsAny<Deck>(), userModelExample.Token)).Returns(new Deck());
             logicMock.Setup(x => x.EditDeck(1, "new name", Domain.Enumerations.Difficulty.Easy,
                 true)).Returns(new Deck());
 
@@ -114,7 +115,7 @@ namespace WebAPITest
                 Name = "new name",
                 IsHidden = true
             };
-            controller.Post(deckModelExample, userModelExample.Id);
+            controller.Post(deckModelExample, userModelExample.Token);
 
             var result = controller.Update(1, updateDeckModel);
             var okResult = result as OkObjectResult;

@@ -31,7 +31,8 @@ namespace BusinessLogicTest
                 Username = "Julia",
                 Email = "julia@gmail.com",
                 Password = "Julia12-",
-                IsStudent = true
+                IsStudent = true,
+                Token = "token"
             };
 
             deckExample = new Deck()
@@ -70,10 +71,11 @@ namespace BusinessLogicTest
 
             userRepositoryMock.Setup(m => m.GetAll()).Returns(new List<User>() { userExample });
             userRepositoryMock.Setup(a => a.Update(It.IsAny<User>()));
+            userTokenRepository.Setup(t => t.GetUserByToken(It.IsAny<string>())).Returns(userExample);
 
             userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
 
-            var result = flashcardLogic.AddFlashcard(flashcardExample, 1);
+            var result = flashcardLogic.AddFlashcard(flashcardExample, userExample.Token);
 
             flashcardRepositoryMock.VerifyAll();
             Assert.AreEqual(flashcardExample, result);
@@ -98,7 +100,7 @@ namespace BusinessLogicTest
 
             userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
 
-            var result = flashcardLogic.AddFlashcard(toAdd, userExample.Id);
+            var result = flashcardLogic.AddFlashcard(toAdd, userExample.Token);
 
             flashcardRepositoryMock.VerifyAll();
         }
@@ -121,10 +123,11 @@ namespace BusinessLogicTest
             userRepositoryMock.Setup(m => m.GetById(3)).Throws(new NotFoundException(UserMessage.USER_NOT_FOUND));
             userRepositoryMock.Setup(m => m.GetAll()).Returns(new List<User>());
             userRepositoryMock.Setup(a => a.Update(It.IsAny<User>()));
+            userTokenRepository.Setup(t => t.GetUserByToken(It.IsAny<string>())).Returns(It.IsAny<User>());
 
             userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
 
-            var result = flashcardLogic.AddFlashcard(toAdd, 3);
+            var result = flashcardLogic.AddFlashcard(toAdd, userExample.Token);
 
             flashcardRepositoryMock.VerifyAll();
         }

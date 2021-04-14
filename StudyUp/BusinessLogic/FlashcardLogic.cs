@@ -23,24 +23,26 @@ namespace BusinessLogic
             this.userTokenRepository = userTokenRepository;
         }
 
-        public Flashcard AddFlashcard(Flashcard flashcard, int userId)
+        public Flashcard AddFlashcard(Flashcard flashcard, string token)
         {
             if (flashcard.Question is null || flashcard.Answer is null
                 || flashcard.Question.Length == 0 || flashcard.Answer.Length == 0)
                 throw new InvalidException(FlashcardMessage.EMPTY_QUESTION_OR_ANSWER);
 
-            IEnumerable<User> userLogged = userRepository.GetAll().Where(x => x.Id == userId);
+            User userLoggedByToken = userTokenRepository.GetUserByToken(token);
+
+            //IEnumerable<User> userLogged = userRepository.GetAll().Where(x => x.Id == userByToken.Id);
             IEnumerable<User> flashcardsAuthor = userRepository.GetAll().Where(x => x.Id == flashcard.Deck.Author.Id);
 
-            if (userLogged != null && flashcardsAuthor != null && userId != flashcard.Deck.Author.Id)
+            if (userLoggedByToken != null && flashcardsAuthor != null && userLoggedByToken.Id != flashcard.Deck.Author.Id)
                 throw new InvalidException(FlashcardMessage.NOT_AUTHORIZED);
 
-            if (userLogged is null || flashcardsAuthor is null)
+            if (userLoggedByToken is null || flashcardsAuthor is null)
                 throw new InvalidException(FlashcardMessage.ERROR_ASSOCIATING_USER);
 
             flashcardRepository.Add(flashcard);
 
-            User user = userRepository.GetById(userId);
+            User user = userRepository.GetById(userLoggedByToken.Id);
             userRepository.Update(user);
             return flashcard;
         }

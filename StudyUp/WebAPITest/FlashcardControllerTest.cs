@@ -57,9 +57,9 @@ namespace WebAPITest
         [TestMethod]
         public void PostFlashcardOkTest()
         {
-            logicMock.Setup(x => x.AddFlashcard(It.IsAny<Flashcard>(), 1)).Returns(new FlashcardModel().ToEntity());
+            logicMock.Setup(x => x.AddFlashcard(It.IsAny<Flashcard>(), It.IsAny<string>())).Returns(new FlashcardModel().ToEntity());
 
-            var result = controller.Post(flashcardModelExample, userModelExample.Id);
+            var result = controller.Post(flashcardModelExample, userModelExample.Token);
             var okResult = result as OkObjectResult;
             var value = okResult.Value as Flashcard;
 
