@@ -34,4 +34,10 @@ namespace Exceptions
         public const string FLASHCARD_NOT_FOUND = "This flashcard does not exist.";
         public const string NOT_AUTHORIZED_EDIT = "Only this flashcards author can edit it.";
     }
+
+    public static class GroupMessage
+    {
+        public const string GROUP_ALREADY_EXISTS = "Name already exists.";
+        public const string EMPTY_NAME_MESSAGE = "Name field cannot be empty.";
+    }
 }

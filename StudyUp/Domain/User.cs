@@ -7,6 +7,7 @@ namespace Domain
     {
         public int Id { get; set; }
         public virtual List<Deck> Decks { get; set; }
+        public virtual List<Group> Groups { get; set; }
         public string Email { get; set; }
         public bool IsStudent { get; set; }
         public string Username { get; set; }

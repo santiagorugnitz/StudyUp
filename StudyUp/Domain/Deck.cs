@@ -14,7 +14,7 @@ namespace Domain
         public virtual List<Flashcard> Flashcards { get; set; }
 
         public bool IsHidden { get; set; }
-        public User Author { get; set; }
+        public virtual User Author { get; set; }
 
         public Deck()
         {
