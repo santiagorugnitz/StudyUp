@@ -57,7 +57,7 @@ object KoinWrapper {
     }
 
     private fun services() = module {
-        factory { ServiceFactory().createInstance(UserService::class.java) }
+        factory { ServiceFactory(get()).createInstance(UserService::class.java) }
     }
 
     private fun database() = module {
