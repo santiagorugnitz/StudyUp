@@ -12,12 +12,13 @@ import com.ort.studyup.common.DECK_DATA_KEY
 import com.ort.studyup.common.DECK_ID_KEY
 import com.ort.studyup.common.models.Deck
 import com.ort.studyup.common.models.DeckData
+import com.ort.studyup.common.renderers.FlashcardItemRenderer
 import com.ort.studyup.common.ui.BaseFragment
 import com.thinkup.easylist.RendererAdapter
 import kotlinx.android.synthetic.main.fragment_deck_detail.*
 import kotlinx.android.synthetic.main.fragment_decks.title
 
-class DeckDetailFragment : BaseFragment() {
+class DeckDetailFragment : BaseFragment(), FlashcardItemRenderer.Callback {
 
     private val adapter = RendererAdapter()
     private val viewModel: DeckDetailViewModel by injectViewModel(DeckDetailViewModel::class)
@@ -31,8 +32,7 @@ class DeckDetailFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
         val deckId = arguments?.getInt(DECK_ID_KEY)
 
-        //TODO:
-        //adapter.addRenderer()
+        adapter.addRenderer(FlashcardItemRenderer(this))
         flashcardList.layoutManager = LinearLayoutManager(requireContext())
         flashcardList.adapter = adapter
         initViewModel(deckId ?: 0)
@@ -54,12 +54,25 @@ class DeckDetailFragment : BaseFragment() {
     }
 
     private fun initViewModel(id: Int) {
-        viewModel.loadDetails(id).observe(viewLifecycleOwner, {
-            //TODO: probably use map
-            adapter.setItems(it.flashcards)
-            initUI(it)
+        viewModel.loadDetails(id).observe(viewLifecycleOwner, { deck ->
+            adapter.setItems(deck.flashcards.map{
+                FlashcardItemRenderer.Item(
+                        it.id,
+                        it.question,
+                        it.answer
+                )
+            })
+            initUI(deck)
         }
         )
+    }
+
+    override fun onEditFlashcard(id: Int, question: String, answer: String) {
+        //TODO navigate to NewFlashcardFragment with values on bundle
+    }
+
+    override fun onShowAnswerChanged() {
+        adapter.notifyDataSetChanged()
     }
 
 }

@@ -9,7 +9,7 @@ class Deck(
         difficulty: Int,
         subject: String,
         isHidden: Boolean,
-        val flashcards: List<Any>,
+        val flashcards: List<Flashcard>,
 ) : DeckData(id, creator, name, difficulty, subject, isHidden)
 
 open class DeckData(
@@ -19,7 +19,7 @@ open class DeckData(
         val difficulty: Int,
         val subject: String,
         val isHidden: Boolean,
-):Serializable
+) : Serializable
 
 //TODO: add name tags
 class NewDeckRequest(
@@ -27,4 +27,10 @@ class NewDeckRequest(
         val difficulty: Int,
         val subject: String,
         val isHidden: Boolean,
+)
+
+class Flashcard(
+        val id: Int,
+        val question: String,
+        val answer: String,
 )
