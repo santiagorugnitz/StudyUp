@@ -7,5 +7,6 @@ namespace DataAccessInterface
     {
         public User GetUserByEmailAndPassword(string email, string password);
         public User GetUserByNameAndPassword(string username, string password);
+        public User GetUserByToken(string token);
     }
 }
