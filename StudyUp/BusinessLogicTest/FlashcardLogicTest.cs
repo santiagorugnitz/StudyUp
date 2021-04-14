@@ -128,8 +128,6 @@ namespace BusinessLogicTest
             userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
 
             var result = flashcardLogic.AddFlashcard(toAdd, userExample.Token);
-
-            flashcardRepositoryMock.VerifyAll();
         }
 
         [TestMethod]
@@ -161,6 +159,34 @@ namespace BusinessLogicTest
 
             flashcardRepositoryMock.VerifyAll();
             Assert.AreEqual(flashcardAfterEdit, result);
+        }
+
+        [ExpectedException(typeof(InvalidException))]
+        [TestMethod]
+        public void EditFlashcardDifferentAuthorTest()
+        {
+            User anotherUserExample = new User()
+            {
+                Decks = new List<Deck>(),
+                Email = "anotheremail@gmail.com",
+                Id = 2,
+                IsStudent = false,
+                Password = "Password1234",
+                Token = "different token",
+                Username = "Another User"
+            };
+
+            deckRepositoryMock.Setup(m => m.GetAll()).Returns(new List<Deck>());
+            flashcardRepositoryMock.Setup(f => f.Update(It.IsAny<Flashcard>()));
+            flashcardRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(flashcardExample);
+            userRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(userExample);
+            userRepositoryMock.Setup(m => m.GetAll()).Returns(new List<User>() { userExample });
+            userRepositoryMock.Setup(a => a.Update(It.IsAny<User>()));
+            userTokenRepository.Setup(u => u.GetUserByToken("different token")).Returns(anotherUserExample);
+            userRepositoryMock.Setup(m => m.Add(userExample));
+            userRepositoryMock.Setup(m => m.Add(anotherUserExample));
+
+            var result = flashcardLogic.EditFlashcard("different token", 1, "new question", "new answer");
         }
 
     }

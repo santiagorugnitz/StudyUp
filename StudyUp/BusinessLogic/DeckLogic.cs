@@ -61,7 +61,7 @@ namespace BusinessLogic
             Deck deck = deckRepository.GetById(deckId);
             ICollection<Deck> sameName = deckRepository.FindByCondition(a => a.Name == newName && a.Id != deckId);
             if (sameName != null && sameName.Count > 0)
-                throw new InvalidException(DeckMessage.DECK_ALREADY_EXISTS);
+                throw new AlreadyExistsException(DeckMessage.DECK_ALREADY_EXISTS);
             if ((int)newDifficulty > 2 || (int)newDifficulty < 0)
                 throw new InvalidException(DeckMessage.INVALID_DIFFICULTY);
             if (deck != null)

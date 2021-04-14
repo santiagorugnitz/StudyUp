@@ -2,6 +2,7 @@
 using DataAccessInterface;
 using Domain;
 using Domain.Enumerations;
+using Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -69,6 +70,71 @@ namespace BusinessLogicTest
             Assert.AreEqual(deckExample, result);
         }
 
+        [ExpectedException(typeof(InvalidException))]
+        [TestMethod]
+        public void AddDeckNullNameTest()
+        {
+            deckExample.Name = null;
+            deckRepositoryMock.Setup(m => m.Add(It.IsAny<Deck>()));
+            deckRepositoryMock.Setup(m => m.GetAll()).Returns(new List<Deck>());
+            userRepositoryMock.Setup(m => m.GetById(1)).Returns(userExample);
+            userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            userRepositoryMock.Setup(a => a.Update(It.IsAny<User>()));
+
+            userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
+
+            var result = deckLogic.AddDeck(deckExample, userExample.Token);
+
+            deckRepositoryMock.VerifyAll();
+        }
+
+        [ExpectedException(typeof(AlreadyExistsException))]
+        [TestMethod]
+        public void AddDeckNameAlreadyExistsTest()
+        {
+            Deck anotherDeckExample = new Deck()
+            {
+                Id = 2,
+                Name = "Clase 7",
+                Author = userExample,
+                Difficulty = Domain.Enumerations.Difficulty.Hard,
+                IsHidden = true,
+                Subject = "Russian",
+                Flashcards = new List<Flashcard>()
+            };
+
+            deckRepositoryMock.Setup(m => m.Add(It.IsAny<Deck>()));
+            deckRepositoryMock.Setup(m => m.GetAll()).Returns(new List<Deck>() { anotherDeckExample });
+            userRepositoryMock.Setup(m => m.GetById(1)).Returns(userExample);
+            userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            userRepositoryMock.Setup(a => a.Update(It.IsAny<User>()));
+
+            userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
+
+            deckLogic.AddDeck(anotherDeckExample, userExample.Token);
+            var result = deckLogic.AddDeck(deckExample, userExample.Token);
+
+            deckRepositoryMock.VerifyAll();
+        }
+
+        [ExpectedException(typeof(InvalidException))]
+        [TestMethod]
+        public void AddDeckNullSubjectTest()
+        {
+            deckExample.Subject = null;
+            deckRepositoryMock.Setup(m => m.Add(It.IsAny<Deck>()));
+            deckRepositoryMock.Setup(m => m.GetAll()).Returns(new List<Deck>());
+            userRepositoryMock.Setup(m => m.GetById(1)).Returns(userExample);
+            userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            userRepositoryMock.Setup(a => a.Update(It.IsAny<User>()));
+
+            userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
+
+            var result = deckLogic.AddDeck(deckExample, userExample.Token);
+
+            deckRepositoryMock.VerifyAll();
+        }
+
         [TestMethod]
         public void GetAllDecksTest()
         {
@@ -123,6 +189,38 @@ namespace BusinessLogicTest
             deckRepositoryMock.VerifyAll();
 
             Assert.IsTrue(result.Equals(deckExample));
+        }
+
+        [ExpectedException(typeof(AlreadyExistsException))]
+        [TestMethod]
+        public void EditDeckNameAlreadyExistsTest()
+        {
+            Deck anotherDeckExample = new Deck()
+            {
+                Author = userExample,
+                Difficulty = Difficulty.Easy,
+                Flashcards = new List<Flashcard>(),
+                Id = 2,
+                IsHidden = false,
+                Name = "another deck",
+                Subject = "P.E"
+            };
+
+            Difficulty newDifficulty = Difficulty.Hard;
+            bool newVisibility = true;
+
+            deckRepositoryMock.Setup(m => m.Update(It.IsAny<Deck>()));
+            deckRepositoryMock.Setup(m => m.GetById(1)).Returns(deckExample);
+            deckRepositoryMock.Setup(m => m.Add(deckExample));
+            deckRepositoryMock.Setup(m => m.Add(anotherDeckExample));
+
+            string newName = anotherDeckExample.Name;
+            int deckId = deckExample.Id;
+            deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == newName && a.Id != deckId)).Returns(new List<Deck>() { anotherDeckExample});
+
+            var result = deckLogic.EditDeck(1, anotherDeckExample.Name, newDifficulty, newVisibility);
+
+            deckRepositoryMock.VerifyAll();
         }
     }
 }
