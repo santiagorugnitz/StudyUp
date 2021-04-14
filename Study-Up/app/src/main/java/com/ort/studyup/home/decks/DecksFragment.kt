@@ -1,4 +1,4 @@
-package com.ort.studyup.home
+package com.ort.studyup.home.decks
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,12 +8,12 @@ import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ort.studyup.R
+import com.ort.studyup.common.DECK_ID_KEY
 import com.ort.studyup.common.renderers.DeckItemRenderer
 import com.ort.studyup.common.renderers.SubtitleRenderer
 import com.ort.studyup.common.ui.BaseFragment
 import com.thinkup.easylist.RendererAdapter
 import kotlinx.android.synthetic.main.fragment_decks.*
-import org.koin.android.ext.android.inject
 
 class DecksFragment : BaseFragment(), DeckItemRenderer.Callback {
 
@@ -41,14 +41,14 @@ class DecksFragment : BaseFragment(), DeckItemRenderer.Callback {
         deckList.adapter = adapter
     }
 
-    private fun initViewModel(){
+    private fun initViewModel() {
         viewModel.loadDecks().observe(viewLifecycleOwner) {
             adapter.setItems(it)
         }
     }
 
     override fun onDeckClicked(deckId: Int) {
-        //TODO: navigate to deck detail with deckId in bundle
+        findNavController().navigate(R.id.action_decksFragment_to_deckDetailFragment, Bundle().apply { putInt(DECK_ID_KEY, deckId) })
     }
 
 }

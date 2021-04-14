@@ -21,4 +21,7 @@ interface DeckService {
     @DELETE("TBD")
     suspend fun deleteDeck(id: Int): Response<*>
 
+    @GET("TBD")
+    suspend fun getDeck(id: Int): Response<Deck>
+
 }
