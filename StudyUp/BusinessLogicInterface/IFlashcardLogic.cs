@@ -8,5 +8,6 @@ namespace BusinessLogicInterface
     public interface IFlashcardLogic
     {
         Flashcard AddFlashcard(Flashcard flashcard, int userId);
+        Flashcard EditFlashcard(string token, int flashcardId, string newQuestion, string newAnswer);
     }
 }

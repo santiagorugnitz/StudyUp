@@ -65,5 +65,26 @@ namespace WebAPITest
 
             logicMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void EditFlashcardOkTest()
+        {
+            EditFlashcardModel editFlashcardModel = new EditFlashcardModel()
+            {
+                Id = flashcardModelExample.Id,
+                Answer = "new answer",
+                Question = "new question"
+            };
+
+            logicMock.Setup(x => x.EditFlashcard(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
+                It.IsAny<string>())).Returns(new FlashcardModel().ToEntity());
+
+            var result = controller.EditFlashcard("token", editFlashcardModel);
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as Flashcard;
+
+            logicMock.VerifyAll();
+
+        }
     }
 }

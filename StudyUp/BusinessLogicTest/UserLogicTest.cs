@@ -23,7 +23,7 @@ namespace BusinessLogicTest
             {
                 Username = "Maria",
                 Email = "maria@gmail.com",
-                Password = "Mari1-",
+                Password = "Mari1k",
                 IsStudent = false,
                 Token = "New token"
             };

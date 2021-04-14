@@ -28,5 +28,13 @@ namespace WebAPI.Controllers
             Flashcard newFlashcard = logic.AddFlashcard(flashcardModel.ToEntity(), userId);
             return Ok(newFlashcard);
         }
+
+        [HttpPut("edit-flashcard")]
+        public IActionResult EditFlashcard([FromHeader] string token,
+            [FromBody] EditFlashcardModel editFlashcardModel)
+        {
+            return Ok(logic.EditFlashcard(token, editFlashcardModel.Id, editFlashcardModel.Question,
+                editFlashcardModel.Answer));
+        }
     }
 }

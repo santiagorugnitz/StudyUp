@@ -19,6 +19,7 @@ namespace BusinessLogicTest
         Mock<IRepository<Deck>> deckRepositoryMock;
         Mock<IRepository<User>> userRepositoryMock;
         Mock<IRepository<Flashcard>> flashcardRepositoryMock;
+        Mock<IUserRepository> userTokenRepository;
         FlashcardLogic flashcardLogic;
 
         [TestInitialize]
@@ -55,7 +56,9 @@ namespace BusinessLogicTest
             deckRepositoryMock = new Mock<IRepository<Deck>>(MockBehavior.Strict);
             userRepositoryMock = new Mock<IRepository<User>>(MockBehavior.Strict);
             flashcardRepositoryMock = new Mock<IRepository<Flashcard>>(MockBehavior.Strict);
-            flashcardLogic = new FlashcardLogic(flashcardRepositoryMock.Object, userRepositoryMock.Object);
+            userTokenRepository = new Mock<IUserRepository>(MockBehavior.Strict);
+            flashcardLogic = new FlashcardLogic(flashcardRepositoryMock.Object, userRepositoryMock.Object,
+                userTokenRepository.Object);
         }
 
         [TestMethod]
@@ -65,7 +68,7 @@ namespace BusinessLogicTest
             deckRepositoryMock.Setup(m => m.GetAll()).Returns(new List<Deck>());
             userRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(userExample);
 
-            userRepositoryMock.Setup(m => m.GetAll()).Returns(new List<User>() { userExample});
+            userRepositoryMock.Setup(m => m.GetAll()).Returns(new List<User>() { userExample });
             userRepositoryMock.Setup(a => a.Update(It.IsAny<User>()));
 
             userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
@@ -126,6 +129,36 @@ namespace BusinessLogicTest
             flashcardRepositoryMock.VerifyAll();
         }
 
+        [TestMethod]
+        public void EditFlashcardOkTest()
+        {
+            Flashcard flashcardAfterEdit = new Flashcard()
+            {
+                Id = flashcardExample.Id,
+                Answer = "new answer",
+                Question = "new question",
+                Deck = deckExample
+            };
+
+            deckRepositoryMock.Setup(m => m.GetAll()).Returns(new List<Deck>());
+            userRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(userExample);
+
+            flashcardRepositoryMock.Setup(m => m.GetById(1)).Returns(flashcardAfterEdit);
+            flashcardRepositoryMock.Setup(f => f.Update(It.IsAny<Flashcard>()));
+
+
+            userRepositoryMock.Setup(m => m.GetAll()).Returns(new List<User>() { userExample });
+            userRepositoryMock.Setup(a => a.Update(It.IsAny<User>()));
+
+            userTokenRepository.Setup(u => u.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+
+            userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
+
+            var result = flashcardLogic.EditFlashcard("token", 1, "new question", "new answer");
+
+            flashcardRepositoryMock.VerifyAll();
+            Assert.AreEqual(flashcardAfterEdit, result);
+        }
 
     }
 }
