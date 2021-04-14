@@ -24,9 +24,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] GroupModel groupModel, [FromHeader] string creatorsToken)
+        public IActionResult Post([FromBody] GroupModel groupModel, [FromHeader] string token)
         {
-            Group newGroup = logic.AddGroup(groupModel.ToEntity(), creatorsToken);
+            Group newGroup = logic.AddGroup(groupModel.ToEntity(), token);
             /* TODO: Check if response is going to be a JSON */ 
             return Ok("The model was created successfully");
         }
