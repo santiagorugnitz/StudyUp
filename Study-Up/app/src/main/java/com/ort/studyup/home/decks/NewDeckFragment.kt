@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.ort.studyup.R
 import com.ort.studyup.common.DECK_DATA_KEY
+import com.ort.studyup.common.DECK_ID_KEY
 import com.ort.studyup.common.models.DeckData
 import com.ort.studyup.common.ui.BaseFragment
 import com.ort.studyup.common.ui.ConfirmationDialog
@@ -62,7 +64,7 @@ class NewDeckFragment : BaseFragment(), ConfirmationDialog.Callback {
                         )
                 ).observe(viewLifecycleOwner, {
                     if (it > 0) {
-                        //TODO: navigate to deckDetail using it as id
+                        findNavController().navigate(R.id.action_newDeckFragment_to_deckDetailFragment,Bundle().apply { putInt(DECK_ID_KEY,it) })
                     }
                 })
             }

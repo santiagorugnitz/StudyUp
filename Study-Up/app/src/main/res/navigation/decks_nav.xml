@@ -17,7 +17,11 @@
     <fragment
         android:id="@+id/newDeckFragment"
         android:name="com.ort.studyup.home.decks.NewDeckFragment"
-        android:label="NewDeckFragment" />
+        android:label="NewDeckFragment" >
+        <action
+            android:id="@+id/action_newDeckFragment_to_deckDetailFragment"
+            app:destination="@id/deckDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/deckDetailFragment"
         android:name="com.ort.studyup.home.decks.DeckDetailFragment"
