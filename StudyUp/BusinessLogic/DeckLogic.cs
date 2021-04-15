@@ -74,5 +74,14 @@ namespace BusinessLogic
             }
             else throw new NotFoundException(DeckMessage.DECK_NOT_FOUND);
         }
+
+        public Deck GetDeckById(int deckId)
+        {
+            Deck deck = this.deckRepository.GetById(deckId);
+            if (deck != null)
+                return deck;
+            else
+                throw new NotFoundException(DeckMessage.DECK_NOT_FOUND);
+        }
     }
 }

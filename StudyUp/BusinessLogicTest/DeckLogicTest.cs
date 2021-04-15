@@ -216,11 +216,31 @@ namespace BusinessLogicTest
 
             string newName = anotherDeckExample.Name;
             int deckId = deckExample.Id;
-            deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == newName && a.Id != deckId)).Returns(new List<Deck>() { anotherDeckExample});
+            deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == newName && a.Id != deckId)).Returns(new List<Deck>() { anotherDeckExample });
 
             var result = deckLogic.EditDeck(1, anotherDeckExample.Name, newDifficulty, newVisibility);
 
             deckRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void GetDeckByIdTest()
+        {
+            deckRepositoryMock.Setup(b => b.GetById(1)).Returns(deckExample);
+
+            var result = deckLogic.GetDeckById(1);
+
+            deckRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(deckExample, result);
+        }
+
+        [ExpectedException(typeof(NotFoundException))]
+        [TestMethod]
+        public void GetDeckByIdNotFoundTest()
+        {
+            deckRepositoryMock.Setup(b => b.GetById(7)).Throws(new NotFoundException(It.IsAny<string>()));
+            var result = deckLogic.GetDeckById(7);
         }
     }
 }

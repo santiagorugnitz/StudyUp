@@ -49,5 +49,12 @@ namespace WebAPI.Controllers
             return Ok(logic.EditDeck(deckId, updateDeckModel.Name,
                 updateDeckModel.Difficulty, updateDeckModel.IsHidden));
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetDeckById([FromQuery] int deckId)
+        {
+            Deck deck = logic.GetDeckById(deckId);
+            return Ok(deck);
+        }
     }
 }

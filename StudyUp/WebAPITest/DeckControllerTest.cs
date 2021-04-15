@@ -123,5 +123,27 @@ namespace WebAPITest
 
             logicMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void GetDeckByIdOkTest()
+        {
+            logicMock.Setup(x => x.GetDeckById(1)).Returns(It.IsAny<Deck>());
+
+            var result = controller.GetDeckById(1);
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as List<Deck>;
+
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NotFoundException))]
+        public void PostDeckByIdBadRequestTest()
+        {
+            logicMock.Setup(x => x.GetDeckById(1)).Throws(new NotFoundException(DeckMessage.DECK_NOT_FOUND));
+
+            var result = controller.GetDeckById(1);
+            var okResult = result as BadRequestObjectResult;
+        }
     }
 }
