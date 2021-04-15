@@ -24,6 +24,8 @@ namespace Exceptions
         public const string DECK_NOT_FOUND = "This deck does not exist.";
         public const string INVALID_DIFFICULTY_MESSAGE = "Invalid difficulty";
         public const string EMPTY_SUBJECT_MESSAGE = "Subject field cannot be empty.";
+        public const string NOT_AUTHORIZED = "Only this decks author can delete it.";
+
     }
 
     public static class FlashcardMessage

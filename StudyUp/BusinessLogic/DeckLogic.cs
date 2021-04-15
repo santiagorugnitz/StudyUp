@@ -14,14 +14,16 @@ namespace BusinessLogic
     {
         private IRepository<Deck> deckRepository;
         private IRepository<User> userRepository;
+        private IRepository<Flashcard> flashcardRepository;
         private IUserRepository userTokenRepository;
 
         public DeckLogic(IRepository<Deck> repository, IRepository<User> userRepository,
-            IUserRepository userTokenRepository)
+            IUserRepository userTokenRepository, IRepository<Flashcard> flashcardRepository)
         {
             this.deckRepository = repository;
             this.userRepository = userRepository;
             this.userTokenRepository = userTokenRepository;
+            this.flashcardRepository = flashcardRepository;
         }
 
         public Deck AddDeck(Deck deck, string userToken)
@@ -82,6 +84,26 @@ namespace BusinessLogic
                 return deck;
             else
                 throw new NotFoundException(DeckMessage.DECK_NOT_FOUND);
+        }
+
+        public bool DeleteDeck(int deckId, string token)
+        {
+            Deck deck = GetDeckById(deckId);
+
+            if (deck is null)
+                throw new NotFoundException(DeckMessage.DECK_NOT_FOUND);
+
+            if (deck.Author.Token != token)
+            {
+                throw new InvalidException(DeckMessage.NOT_AUTHORIZED);
+            }
+
+            foreach (Flashcard flashcard in deck.Flashcards)
+            {
+                flashcardRepository.Delete(flashcard);
+            }
+            deckRepository.Delete(deck);
+            return true;
         }
     }
 }

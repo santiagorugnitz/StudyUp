@@ -56,5 +56,12 @@ namespace WebAPI.Controllers
             Deck deck = logic.GetDeckById(deckId);
             return Ok(deck);
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete([FromQuery] int deckId, [FromHeader] string token)
+        {
+            logic.DeleteDeck(deckId, token);
+            return Ok("Successfully deleted.");
+        }
     }
 }

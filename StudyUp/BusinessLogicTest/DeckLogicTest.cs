@@ -19,6 +19,7 @@ namespace BusinessLogicTest
         Deck deckExample;
         Mock<IRepository<Deck>> deckRepositoryMock;
         Mock<IRepository<User>> userRepositoryMock;
+        Mock<IRepository<Flashcard>> flashcardRepositoryMock;
         Mock<IUserRepository> userTokenRepository;
         DeckLogic deckLogic;
 
@@ -48,9 +49,10 @@ namespace BusinessLogicTest
 
             deckRepositoryMock = new Mock<IRepository<Deck>>(MockBehavior.Strict);
             userRepositoryMock = new Mock<IRepository<User>>(MockBehavior.Strict);
+            flashcardRepositoryMock = new Mock<IRepository<Flashcard>>(MockBehavior.Strict);
             userTokenRepository = new Mock<IUserRepository>(MockBehavior.Strict);
             deckLogic = new DeckLogic(deckRepositoryMock.Object, userRepositoryMock.Object,
-                 userTokenRepository.Object);
+                 userTokenRepository.Object, flashcardRepositoryMock.Object);
         }
 
         [TestMethod]
@@ -241,6 +243,48 @@ namespace BusinessLogicTest
         {
             deckRepositoryMock.Setup(b => b.GetById(7)).Throws(new NotFoundException(It.IsAny<string>()));
             var result = deckLogic.GetDeckById(7);
+        }
+
+        [ExpectedException(typeof(NotFoundException))]
+        [TestMethod]
+        public void DeleteDeckNotFoundTest()
+        {
+            deckRepositoryMock.Setup(b => b.GetById(1)).Throws(new NotFoundException(It.IsAny<string>()));
+            deckRepositoryMock.Setup(d => d.Delete(deckExample));
+
+            var result = deckLogic.DeleteDeck(1, "token");
+        }
+
+        [ExpectedException(typeof(InvalidException))]
+        [TestMethod]
+        public void DeleteDeckDifferentAuthorTest()
+        {
+            deckRepositoryMock.Setup(b => b.GetById(deckExample.Id)).Throws(new InvalidException(It.IsAny<string>()));
+            deckRepositoryMock.Setup(d => d.Delete(deckExample));
+            var result = deckLogic.DeleteDeck(deckExample.Id, "different token");
+        }
+
+        [TestMethod]
+        public void DeleteDeckOkTest()
+        {
+            Flashcard flashcard = new Flashcard()
+            {
+                Id = 1,
+                Answer = "Choose questions wisely.",
+                Question = "How do you write a good answer?",
+            };
+            deckExample.Flashcards.Add(flashcard);
+
+            deckRepositoryMock.Setup(b => b.GetById(1)).Returns(deckExample);
+            deckRepositoryMock.Setup(b => b.Delete(deckExample));
+            flashcardRepositoryMock.Setup(b => b.Delete(flashcard));
+
+
+            var result = deckLogic.DeleteDeck(1, "token");
+
+            deckRepositoryMock.VerifyAll();
+
+            Assert.IsTrue(result);
         }
     }
 }
