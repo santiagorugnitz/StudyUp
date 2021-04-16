@@ -31,7 +31,7 @@ object KoinWrapper {
                     utils(),
                     viewModels(),
                     repositories(),
-                    //services(),
+                    services(),
                     database(),
                 )
             )
@@ -45,7 +45,7 @@ object KoinWrapper {
     }
 
     private fun viewModels() = module {
-        factory { LoginViewModel(get()) }
+        factory { LoginViewModel(get(),get()) }
         factory { RegisterViewModel(get()) }
         factory { SplashViewModel() }
         factory { DecksViewModel() }
