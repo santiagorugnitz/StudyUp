@@ -4,13 +4,13 @@ import java.io.Serializable
 
 class Deck(
         id: Int,
-        creator: String,
+        author: String,
         name: String,
         difficulty: Int,
         subject: String,
         isHidden: Boolean,
         val flashcards: List<Flashcard>,
-) : DeckData(id, creator, name, difficulty, subject, isHidden)
+) : DeckData(id, author, name, difficulty, subject, isHidden)
 
 open class DeckData(
         val id: Int = -1,
