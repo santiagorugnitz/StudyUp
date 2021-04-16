@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ort.studyup.R
 import com.ort.studyup.common.INTERNAL_ERROR_CODE
+import com.ort.studyup.common.models.User
 import com.ort.studyup.common.ui.BaseViewModel
 import com.ort.studyup.common.ui.ResourceWrapper
 import com.ort.studyup.repositories.UserRepository
@@ -15,16 +16,16 @@ class LoginViewModel(
 ) : BaseViewModel() {
 
 
-    fun login(user: String, password: String): LiveData<Boolean> {
-        val result = MutableLiveData<Boolean>()
+    fun login(user: String, password: String): LiveData<User> {
+        val result = MutableLiveData<User>()
         if (validateUser(user) && validatePassword(password)) {
             executeService {
                 //TODO: uncomment when service is ready
                 //userRepository.login(user, password)
-                result.postValue(true)
+                result.postValue(User(1,"",true))
             }
         } else {
-            result.postValue(false)
+            result.postValue(null)
         }
 
         return result

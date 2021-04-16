@@ -32,9 +32,13 @@ class RegisterFragment : BaseFragment() {
                 confirmPasswordInput.text.toString(),
                 roleInput.spinner.selectedItemPosition == 0
             ).observe(viewLifecycleOwner) {
-                if (it) {
+                if (it.isStudent) {
                     requireActivity().finish()
-                    findNavController().navigate(R.id.action_registerFragment_to_homeActivity)
+                    findNavController().navigate(R.id.action_registerFragment_to_studentHomeActivity)
+                }
+                else{
+                    requireActivity().finish()
+                    findNavController().navigate(R.id.action_registerFragment_to_teacherHomeActivity)
                 }
             }
         }

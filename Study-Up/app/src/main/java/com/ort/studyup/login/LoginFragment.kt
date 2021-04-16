@@ -34,9 +34,13 @@ class LoginFragment : BaseFragment() {
             viewModel.login(emailInput.text.toString(), passwordInput.text.toString()).observe(
                 viewLifecycleOwner
             ) {
-                if (it) {
+                if (it.isStudent) {
                     requireActivity().finish()
-                    findNavController().navigate(R.id.action_loginFragment_to_homeActivity)
+                    findNavController().navigate(R.id.action_loginFragment_to_studentHomeActivity)
+                }
+                else{
+                    requireActivity().finish()
+                    findNavController().navigate(R.id.action_loginFragment_to_teacherHomeActivity)
                 }
             }
         }

@@ -6,7 +6,10 @@ import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.Observer
 import com.ort.studyup.R
+import com.ort.studyup.common.STUDENT_EXTRA
 import com.ort.studyup.common.ui.BaseActivity
+import com.ort.studyup.home.StudentHomeActivity
+import com.ort.studyup.home.TeacherHomeActivity
 import com.ort.studyup.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -23,11 +26,11 @@ class SplashActivity : BaseActivity() {
 
     private fun initAnimation() {
         icon.animate()
-            .alpha(1.0F)
-            .scaleX(2.0F)
-            .scaleY(2.0F)
-            .setDuration(750)
-            .start()
+                .alpha(1.0F)
+                .scaleX(2.0F)
+                .scaleY(2.0F)
+                .setDuration(750)
+                .start()
     }
 
     override fun onResume() {
@@ -40,13 +43,15 @@ class SplashActivity : BaseActivity() {
     private fun initViewModel() {
         viewModel.getUser().observe(this, {
             it?.let {
-                if(it.isStudent){
-                    val intent = Intent(this,LoginActivity::class.java)
-                    startActivity(intent)
-                    this.finish()
+                val intent = if(it.isStudent){
+                    Intent(this, StudentHomeActivity::class.java)
+                }else{
+                    Intent(this, TeacherHomeActivity::class.java)
                 }
+                startActivity(intent)
+                this.finish()
             } ?: run {
-                val intent = Intent(this,LoginActivity::class.java)
+                val intent = Intent(this, TeacherHomeActivity::class.java)
                 startActivity(intent)
                 this.finish()
             }

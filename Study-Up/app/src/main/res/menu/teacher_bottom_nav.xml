@@ -5,4 +5,9 @@
         android:enabled="true"
         android:icon="@drawable/ic_deck"
         android:title="@string/decks"/>
+    <item
+        android:id="@+id/groups_nav"
+        android:enabled="true"
+        android:icon="@drawable/ic_group"
+        android:title="@string/groups"/>
 </menu>
