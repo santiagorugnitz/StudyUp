@@ -138,7 +138,7 @@ namespace BusinessLogicTest
             deckRepositoryMock.VerifyAll();
         }
 
-        [ExpectedException(typeof(InvalidException))]
+        [ExpectedException(typeof(NotAuthenticatedException))]
         [TestMethod]
         public void AddDeckBadToken()
         {
@@ -181,6 +181,21 @@ namespace BusinessLogicTest
         [TestMethod]
         public void GetDecksByAuthorTest()
         {
+            userRepositoryMock.Setup(m => m.GetById(1)).Returns(userExample);
+            deckRepositoryMock.Setup(b => b.FindByCondition(d => d.Author.Id == 1)).Returns(new List<Deck>() { deckExample });
+
+            var result = deckLogic.GetDecksByAuthor(1).Count();
+
+            deckRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(1, result);
+        }
+
+        [ExpectedException(typeof(NotFoundException))]
+        [TestMethod]
+        public void GetDecksByIncorrectAuthorTest()
+        {
+            userRepositoryMock.Setup(m => m.GetById(1)).Returns((User)null);
             deckRepositoryMock.Setup(b => b.FindByCondition(d => d.Author.Id == 1)).Returns(new List<Deck>() { deckExample });
 
             var result = deckLogic.GetDecksByAuthor(1).Count();

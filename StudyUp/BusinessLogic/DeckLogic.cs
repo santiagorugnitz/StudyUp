@@ -41,7 +41,7 @@ namespace BusinessLogic
             User user = userTokenRepository.GetUserByToken(userToken);
             if (user == null)
             {
-                throw new InvalidException(DeckMessage.NOT_AUTHORIZED);
+                throw new NotAuthenticatedException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
             }
               
             deck.Author = user;
@@ -60,6 +60,9 @@ namespace BusinessLogic
         public IEnumerable<Deck> GetDecksByAuthor(int userId)
         {
             ICollection<Deck> toReturn = new List<Deck>();
+            if (userRepository.GetById(userId) == null)
+                throw new NotFoundException(UserMessage.USER_NOT_FOUND);
+
             var authorsDecks = deckRepository.FindByCondition(t => t.Author.Id == userId);
             return authorsDecks;
         }
