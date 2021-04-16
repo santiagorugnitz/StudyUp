@@ -13,14 +13,13 @@ class FlashcardItemRenderer(private val callback: Callback) : ViewRenderer<Flash
     override fun bind(view: View, model: Item, position: Int) {
         view.question.text = model.question
         view.answer.text = model.answer
-        view.setOnClickListener {
+        view.editButton.setOnClickListener {
             callback.onEditFlashcard(model.id, model.question, model.answer)
         }
 
-        if (model.showAnswer){
+        if (model.showAnswer) {
             view.answer.setBackgroundColor(view.resources.getColor(R.color.white))
-        }
-        else{
+        } else {
             view.answer.setBackgroundColor(view.resources.getColor(R.color.black))
         }
 
@@ -34,7 +33,7 @@ class FlashcardItemRenderer(private val callback: Callback) : ViewRenderer<Flash
             val id: Int,
             val question: String,
             val answer: String,
-            var showAnswer:Boolean = false
+            var showAnswer: Boolean = false
     )
 
     interface Callback {

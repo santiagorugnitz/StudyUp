@@ -1,32 +1,31 @@
-package com.ort.studyup.home.decks
+package com.ort.studyup.home.flashcards
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ort.studyup.R
 import com.ort.studyup.common.INTERNAL_ERROR_CODE
-import com.ort.studyup.common.models.DeckData
 import com.ort.studyup.common.ui.BaseViewModel
 import com.ort.studyup.common.ui.ResourceWrapper
 import com.ort.studyup.services.ServiceError
 
-class NewDeckViewModel(
-    private val resourceWrapper: ResourceWrapper
-//    val deckRepository: DeckRepository
+class NewFlashcardViewModel(
+        private val resourceWrapper: ResourceWrapper
+//    val flashcardRepository: FlashcardRepository
 ) : BaseViewModel() {
 
     //TODO uncomment when ready
-    var deckId = -1
+    var flashcardId = -1
 
-    fun sendData(data: DeckData): LiveData<Int> {
+    fun sendData(deckId: Int, question: String, answer: String): LiveData<Int> {
         val result = MutableLiveData<Int>()
         executeService {
-            if (validate(data)) {
-                if (deckId != -1) {
-                    //deckRepository.updateDeck(deckId,data)
+            if (validate(question) && validate(answer)) {
+                if (flashcardId != -1) {
+                    //flashcardRepository.updateFlashcard(flashcardId,question,answer)
                 } else {
-                    //deckId = deckRepository.createDeck(data).id
+                    //flashcardRepository.createFlashcard(deckId,question,answer)
                 }
-                result.postValue(deckId)
+                result.postValue(flashcardId)
             } else {
                 error.postValue(ServiceError(INTERNAL_ERROR_CODE, resourceWrapper.getString(R.string.error_empty_fields)))
                 result.postValue(-1)
@@ -35,14 +34,14 @@ class NewDeckViewModel(
         return result
     }
 
-    private fun validate(data: DeckData): Boolean {
-        return data.name.isNotEmpty() && data.subject.isNotEmpty()
+    private fun validate(field: String): Boolean {
+        return field.isNotEmpty()
     }
 
-    fun deleteDeck():LiveData<Boolean>{
+    fun deleteFlashcard(): LiveData<Boolean> {
         val result = MutableLiveData<Boolean>()
         executeService {
-            //deckRepository.delete(deckId)
+            //flashcardRepository.delete(flashcardId)
             result.postValue(true)
         }
         return result

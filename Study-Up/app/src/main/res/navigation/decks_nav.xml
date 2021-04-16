@@ -29,5 +29,12 @@
         <action
             android:id="@+id/action_deckDetailFragment_to_newDeckFragment"
             app:destination="@id/newDeckFragment" />
+        <action
+            android:id="@+id/action_deckDetailFragment_to_newFlashcardFragment"
+            app:destination="@id/newFlashcardFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/newFlashcardFragment"
+        android:name="com.ort.studyup.home.flashcards.NewFlashcardFragment"
+        android:label="NewFlashcardFragment" />
 </navigation>

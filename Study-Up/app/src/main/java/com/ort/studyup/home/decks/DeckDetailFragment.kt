@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ort.studyup.R
-import com.ort.studyup.common.DECK_DATA_KEY
-import com.ort.studyup.common.DECK_ID_KEY
+import com.ort.studyup.common.*
 import com.ort.studyup.common.models.Deck
 import com.ort.studyup.common.models.DeckData
 import com.ort.studyup.common.renderers.FlashcardItemRenderer
@@ -22,6 +22,7 @@ class DeckDetailFragment : BaseFragment(), FlashcardItemRenderer.Callback {
 
     private val adapter = RendererAdapter()
     private val viewModel: DeckDetailViewModel by injectViewModel(DeckDetailViewModel::class)
+    private var deckId: Int = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreate(savedInstanceState)
@@ -30,7 +31,7 @@ class DeckDetailFragment : BaseFragment(), FlashcardItemRenderer.Callback {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val deckId = arguments?.getInt(DECK_ID_KEY)
+        deckId = arguments?.getInt(DECK_ID_KEY) ?: 0
 
         adapter.addRenderer(FlashcardItemRenderer(this))
         flashcardList.layoutManager = LinearLayoutManager(requireContext())
@@ -49,13 +50,13 @@ class DeckDetailFragment : BaseFragment(), FlashcardItemRenderer.Callback {
             findNavController().navigate(R.id.action_deckDetailFragment_to_newDeckFragment, Bundle().apply { putSerializable(DECK_DATA_KEY, deck as DeckData) })
         }
         addButton.setOnClickListener {
-            //TODO: navigate to newFlashcardFragment
+            findNavController().navigate(R.id.action_deckDetailFragment_to_newFlashcardFragment, Bundle().apply { putInt(DECK_ID_KEY, deck.id) })
         }
     }
 
     private fun initViewModel(id: Int) {
         viewModel.loadDetails(id).observe(viewLifecycleOwner, { deck ->
-            adapter.setItems(deck.flashcards.map{
+            adapter.setItems(deck.flashcards.map {
                 FlashcardItemRenderer.Item(
                         it.id,
                         it.question,
@@ -68,7 +69,13 @@ class DeckDetailFragment : BaseFragment(), FlashcardItemRenderer.Callback {
     }
 
     override fun onEditFlashcard(id: Int, question: String, answer: String) {
-        //TODO navigate to NewFlashcardFragment with values on bundle
+        findNavController().navigate(R.id.action_deckDetailFragment_to_newFlashcardFragment,
+                Bundle().apply {
+                    putInt(DECK_ID_KEY, deckId)
+                    putInt(FLASHCARD_ID_KEY, id)
+                    putString(QUESTION_KEY, question)
+                    putString(ANSWER_KEY, answer)
+                })
     }
 
     override fun onShowAnswerChanged() {
