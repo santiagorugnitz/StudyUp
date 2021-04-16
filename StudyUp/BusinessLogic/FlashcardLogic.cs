@@ -49,11 +49,11 @@ namespace BusinessLogic
             if (userLoggedByToken is null || flashcardsAuthor is null)
                 throw new InvalidException(FlashcardMessage.ERROR_ASSOCIATING_USER);
 
-            deck.Flashcards.Add(flashcard);
-            deckRepository.Update(deck);
-
             flashcard.Deck = deck;
             flashcardRepository.Add(flashcard);
+
+            deck.Flashcards.Add(flashcard);
+            deckRepository.Update(deck);
             return flashcard;
         }
 
