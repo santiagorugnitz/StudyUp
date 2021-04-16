@@ -7,6 +7,7 @@ import com.ort.studyup.common.utils.EncryptedPreferencesHelper
 import com.ort.studyup.home.decks.DeckDetailViewModel
 import com.ort.studyup.home.decks.DecksViewModel
 import com.ort.studyup.home.decks.NewDeckViewModel
+import com.ort.studyup.home.flashcards.NewFlashcardViewModel
 import com.ort.studyup.login.LoginViewModel
 import com.ort.studyup.login.RegisterViewModel
 import com.ort.studyup.repositories.UserRepository
@@ -50,6 +51,7 @@ object KoinWrapper {
         factory { DecksViewModel() }
         factory { DeckDetailViewModel() }
         factory { NewDeckViewModel(get()) }
+        factory { NewFlashcardViewModel(get()) }
     }
 
     private fun repositories() = module {

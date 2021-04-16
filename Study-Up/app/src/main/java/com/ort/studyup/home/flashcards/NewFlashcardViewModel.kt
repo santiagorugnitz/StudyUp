@@ -9,22 +9,21 @@ import com.ort.studyup.common.ui.ResourceWrapper
 import com.ort.studyup.services.ServiceError
 
 class NewFlashcardViewModel(
-    private val resourceWrapper: ResourceWrapper
-//    val deckRepository: DeckRepository
+        private val resourceWrapper: ResourceWrapper
+//    val flashcardRepository: FlashcardRepository
 ) : BaseViewModel() {
 
     //TODO uncomment when ready
     var flashcardId = -1
 
-    fun sendData(deckId: Int,question: String, answer: String): LiveData<Int> {
+    fun sendData(deckId: Int, question: String, answer: String): LiveData<Int> {
         val result = MutableLiveData<Int>()
         executeService {
             if (validate(question) && validate(answer)) {
                 if (flashcardId != -1) {
-                    //deckRepository.updateDeck(deckId,data)
+                    //flashcardRepository.updateFlashcard(flashcardId,question,answer)
                 } else {
-                    //deckId = deckRepository.createDeck(data).id
-                    //TODO: setDeck
+                    //flashcardRepository.createFlashcard(deckId,question,answer)
                 }
                 result.postValue(flashcardId)
             } else {
@@ -39,10 +38,10 @@ class NewFlashcardViewModel(
         return field.isNotEmpty()
     }
 
-    fun deleteDeck():LiveData<Boolean>{
+    fun deleteFlashcard(): LiveData<Boolean> {
         val result = MutableLiveData<Boolean>()
         executeService {
-            //deckRepository.delete(deckId)
+            //flashcardRepository.delete(flashcardId)
             result.postValue(true)
         }
         return result

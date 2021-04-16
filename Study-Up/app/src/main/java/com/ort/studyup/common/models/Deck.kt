@@ -29,8 +29,3 @@ class NewDeckRequest(
         val isHidden: Boolean,
 )
 
-class Flashcard(
-        val id: Int,
-        val question: String,
-        val answer: String,
-)

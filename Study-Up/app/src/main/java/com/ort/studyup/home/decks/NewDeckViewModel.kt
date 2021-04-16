@@ -25,7 +25,6 @@ class NewDeckViewModel(
                     //deckRepository.updateDeck(deckId,data)
                 } else {
                     //deckId = deckRepository.createDeck(data).id
-                    //TODO: setDeck
                 }
                 result.postValue(deckId)
             } else {
