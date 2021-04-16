@@ -7,7 +7,7 @@ namespace BusinessLogicInterface
 {
     public interface IFlashcardLogic
     {
-        Flashcard AddFlashcard(Flashcard flashcard, string token);
+        Flashcard AddFlashcard(Flashcard flashcard, int deckId, string token);
         Flashcard EditFlashcard(string token, int flashcardId, string newQuestion, string newAnswer);
     }
 }

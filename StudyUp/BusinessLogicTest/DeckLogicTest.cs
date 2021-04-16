@@ -33,7 +33,8 @@ namespace BusinessLogicTest
                 Email = "ana@gmail.com",
                 Password = "ana1234",
                 IsStudent = true,
-                Token = "token"
+                Token = "token",
+                Decks = new List<Deck>()
             };
 
             deckExample = new Deck()
@@ -48,7 +49,7 @@ namespace BusinessLogicTest
             };
 
             deckRepositoryMock = new Mock<IRepository<Deck>>(MockBehavior.Strict);
-            userRepositoryMock = new Mock<IRepository<User>>(MockBehavior.Strict);
+            userRepositoryMock = new Mock<IRepository<User>>(MockBehavior.Loose);
             flashcardRepositoryMock = new Mock<IRepository<Flashcard>>(MockBehavior.Strict);
             userTokenRepository = new Mock<IUserRepository>(MockBehavior.Strict);
             deckLogic = new DeckLogic(deckRepositoryMock.Object, userRepositoryMock.Object,
@@ -128,6 +129,23 @@ namespace BusinessLogicTest
             deckRepositoryMock.Setup(m => m.GetAll()).Returns(new List<Deck>());
             userRepositoryMock.Setup(m => m.GetById(1)).Returns(userExample);
             userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            userRepositoryMock.Setup(a => a.Update(It.IsAny<User>()));
+
+            userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
+
+            var result = deckLogic.AddDeck(deckExample, userExample.Token);
+
+            deckRepositoryMock.VerifyAll();
+        }
+
+        [ExpectedException(typeof(InvalidException))]
+        [TestMethod]
+        public void AddDeckBadToken()
+        {
+            deckRepositoryMock.Setup(m => m.Add(It.IsAny<Deck>()));
+            deckRepositoryMock.Setup(m => m.GetAll()).Returns(new List<Deck>());
+            userRepositoryMock.Setup(m => m.GetById(1)).Returns(userExample);
+            userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns((User)null);
             userRepositoryMock.Setup(a => a.Update(It.IsAny<User>()));
 
             userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));

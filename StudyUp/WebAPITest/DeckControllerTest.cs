@@ -26,7 +26,6 @@ namespace WebAPITest
             logicMock = new Mock<IDeckLogic>(MockBehavior.Strict);
             controller = new DeckController(logicMock.Object);
 
-
             userModelExample = new UserModel()
             {
                 Id = 1,
@@ -40,7 +39,6 @@ namespace WebAPITest
             deckModelExample = new DeckModel()
             {
                 Name = "Clase 7",
-                Author = userModelExample.ToEntity(),
                 Difficulty = Domain.Enumerations.Difficulty.Easy,
                 IsHidden = false,
                 Subject = "French"
@@ -67,7 +65,6 @@ namespace WebAPITest
             DeckModel anotherDeckModelExample = new DeckModel()
             {
                 Name = "Clase 7",
-                Author = userModelExample.ToEntity(),
                 Difficulty = Domain.Enumerations.Difficulty.Hard,
                 IsHidden = false,
                 Subject = "Latin"
@@ -95,7 +92,7 @@ namespace WebAPITest
         {
             logicMock.Setup(x => x.GetDecksByAuthor(1)).Returns(new List<Deck>() { deckModelExample.ToEntity() });
 
-            var result = controller.GetDecksByAuthor(1);
+            var result = controller.GetAllDecks(1);
             var okResult = result as OkObjectResult;
             var value = okResult.Value as List<Deck>;
 

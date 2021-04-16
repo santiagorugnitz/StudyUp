@@ -24,9 +24,20 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllDecks()
+        public IActionResult GetAllDecks([FromQuery] int userId = -1)
         {
-            return Ok(logic.GetAllDecks());
+            IEnumerable<Deck> decksList;
+            
+            if (userId > 0)
+            {
+                decksList = logic.GetDecksByAuthor(userId);
+            } 
+            else
+            {
+                decksList = logic.GetAllDecks();
+            }
+             
+            return Ok(decksList);
         }
 
         [HttpPost]
@@ -36,31 +47,24 @@ namespace WebAPI.Controllers
             return Ok(newDeck);
         }
 
-        [HttpGet("byAuthor")]
-        public IActionResult GetDecksByAuthor([FromQuery] int userId)
+        [HttpPut("{id}")]
+        public IActionResult Update([FromRoute] int id, [FromBody] UpdateDeckModel updateDeckModel)
         {
-            IEnumerable<Deck> decksList = logic.GetDecksByAuthor(userId);
-            return Ok(decksList);
-        }
-
-        [HttpPut]
-        public IActionResult Update([FromQuery] int deckId, [FromBody] UpdateDeckModel updateDeckModel)
-        {
-            return Ok(logic.EditDeck(deckId, updateDeckModel.Name,
+            return Ok(logic.EditDeck(id, updateDeckModel.Name,
                 updateDeckModel.Difficulty, updateDeckModel.IsHidden));
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetDeckById([FromQuery] int deckId)
+        public IActionResult GetDeckById([FromRoute] int id)
         {
-            Deck deck = logic.GetDeckById(deckId);
+            Deck deck = logic.GetDeckById(id);
             return Ok(deck);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete([FromQuery] int deckId, [FromHeader] string token)
+        public IActionResult Delete([FromRoute] int id, [FromHeader] string token)
         {
-            logic.DeleteDeck(deckId, token);
+            logic.DeleteDeck(id, token);
             return Ok("Successfully deleted.");
         }
     }

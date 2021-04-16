@@ -10,11 +10,9 @@ namespace WebAPI.Models
 {
     public class DeckModel
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public Difficulty Difficulty { get; set; }
         public bool IsHidden { get; set; }
-        public User Author { get; set; }
         public string Subject { get; set; }
 
         public Deck ToEntity() => new Deck()
@@ -22,7 +20,6 @@ namespace WebAPI.Models
             Name = this.Name,
             Difficulty = this.Difficulty,
             IsHidden = this.IsHidden,
-            Author = this.Author,
             Subject = this.Subject
         };
     }

@@ -7,7 +7,6 @@ namespace WebAPI.Models
 {
     public class EditFlashcardModel
     {
-        public int Id; //flashcard to modify
         public string Answer;
         public string Question;
     }

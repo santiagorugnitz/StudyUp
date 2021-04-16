@@ -38,9 +38,16 @@ namespace BusinessLogic
             else if (deck.Subject is null)
                 throw new InvalidException(DeckMessage.EMPTY_SUBJECT_MESSAGE);
 
-            deckRepository.Add(deck);
             User user = userTokenRepository.GetUserByToken(userToken);
-            User userById = userRepository.GetById(user.Id);
+            if (user == null)
+            {
+                throw new InvalidException(DeckMessage.NOT_AUTHORIZED);
+            }
+              
+            deck.Author = user;
+            deckRepository.Add(deck);
+
+            user.Decks.Add(deck);
             userRepository.Update(user);
             return deck;
         }
@@ -102,6 +109,10 @@ namespace BusinessLogic
             {
                 flashcardRepository.Delete(flashcard);
             }
+
+            User author = deck.Author;
+            author.Decks.Remove(deck);
+            userRepository.Update(author);
             deckRepository.Delete(deck);
             return true;
         }
