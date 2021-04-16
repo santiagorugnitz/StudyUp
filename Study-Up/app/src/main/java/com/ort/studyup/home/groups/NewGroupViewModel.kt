@@ -11,40 +11,20 @@ import com.ort.studyup.services.ServiceError
 
 class NewGroupViewModel(
     private val resourceWrapper: ResourceWrapper
-//    val deckRepository: DeckRepository
+//    val groupRepository: GroupRepository
 ) : BaseViewModel() {
 
-    //TODO uncomment when ready
-    var deckId = -1
 
-    fun sendData(data: DeckData): LiveData<Int> {
-        val result = MutableLiveData<Int>()
-        executeService {
-            if (validate(data)) {
-                if (deckId != -1) {
-                    //deckRepository.updateDeck(deckId,data)
-                } else {
-                    //deckId = deckRepository.createDeck(data).id
-                    //TODO: setDeck
-                }
-                result.postValue(deckId)
-            } else {
-                error.postValue(ServiceError(INTERNAL_ERROR_CODE, resourceWrapper.getString(R.string.error_empty_fields)))
-                result.postValue(-1)
-            }
-        }
-        return result
-    }
-
-    private fun validate(data: DeckData): Boolean {
-        return data.name.isNotEmpty() && data.subject.isNotEmpty()
-    }
-
-    fun deleteDeck():LiveData<Boolean>{
+    fun createGroup(name: String): LiveData<Boolean> {
         val result = MutableLiveData<Boolean>()
         executeService {
-            //deckRepository.delete(deckId)
-            result.postValue(true)
+            if (name.isNotEmpty()) {
+                    //groupRepository.createGroup(name)
+                result.postValue(true)
+            } else {
+                error.postValue(ServiceError(INTERNAL_ERROR_CODE, resourceWrapper.getString(R.string.error_empty_fields)))
+                result.postValue(false)
+            }
         }
         return result
     }
