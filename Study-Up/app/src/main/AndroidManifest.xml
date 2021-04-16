@@ -20,7 +20,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".home.HomeActivity"
+        <activity android:name=".home.StudentHomeActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".home.TeacherHomeActivity"
             android:screenOrientation="portrait"/>
         <activity android:name="com.ort.studyup.login.LoginActivity"
             android:screenOrientation="portrait"/>

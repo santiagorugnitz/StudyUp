@@ -7,22 +7,32 @@
         android:name="com.ort.studyup.login.LoginFragment"
         android:label="LoginFragment" >
         <action
-            android:id="@+id/action_loginFragment_to_homeActivity"
-            app:destination="@id/homeActivity" />
-        <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_teacherHomeActivity"
+            app:destination="@id/teacherHomeActivity" />
+        <action
+            android:id="@+id/action_loginFragment_to_studentHomeActivity"
+            app:destination="@id/studentHomeActivity" />
     </fragment>
-    <activity
-        android:id="@+id/homeActivity"
-        android:name="com.ort.studyup.home.HomeActivity"
-        android:label="HomeActivity" />
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.ort.studyup.login.RegisterFragment"
         android:label="RegisterFragment" >
         <action
-            android:id="@+id/action_registerFragment_to_homeActivity"
-            app:destination="@id/homeActivity" />
+            android:id="@+id/action_registerFragment_to_studentHomeActivity"
+            app:destination="@id/studentHomeActivity" />
+        <action
+            android:id="@+id/action_registerFragment_to_teacherHomeActivity"
+            app:destination="@id/teacherHomeActivity" />
     </fragment>
+    <activity
+        android:id="@+id/studentHomeActivity"
+        android:name="com.ort.studyup.home.StudentHomeActivity"
+        android:label="StudentHomeActivity" />
+    <activity
+        android:id="@+id/teacherHomeActivity"
+        android:name="com.ort.studyup.home.TeacherHomeActivity"
+        android:label="TeacherHomeActivity" />
 </navigation>
