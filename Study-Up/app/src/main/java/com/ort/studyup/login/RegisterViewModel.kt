@@ -13,7 +13,7 @@ import com.ort.studyup.repositories.UserRepository
 import com.ort.studyup.services.ServiceError
 
 class RegisterViewModel(
-    //private val userRepository: UserRepository,
+    private val userRepository: UserRepository,
     private val resourceWrapper: ResourceWrapper
 ) : BaseViewModel() {
 
@@ -26,9 +26,7 @@ class RegisterViewModel(
             && validatePasswords(password, confirmPassword)
         ) {
             executeService {
-                //TODO: uncomment when service is ready
-                //userRepository.register(user, mail, password,isStudent)
-                result.postValue(User(1,"",true))
+                result.postValue(userRepository.register(user, mail, password,isStudent))
             }
         } else {
             result.postValue(null)

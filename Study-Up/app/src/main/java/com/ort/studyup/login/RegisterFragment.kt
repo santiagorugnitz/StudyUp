@@ -8,7 +8,6 @@ import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.ort.studyup.R
 import com.ort.studyup.common.ui.BaseFragment
-import kotlinx.android.synthetic.main.fragment_new_deck.*
 import kotlinx.android.synthetic.main.fragment_register.*
 import kotlinx.android.synthetic.main.item_spinner.view.*
 

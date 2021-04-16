@@ -3,7 +3,7 @@ package com.ort.studyup.services
 import com.google.gson.annotations.SerializedName
 
 class LoginRequest(
-    @SerializedName("username") val username: String,
+    @SerializedName("email") val username: String,
     @SerializedName("password") val password: String
 )
 

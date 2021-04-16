@@ -1,6 +1,5 @@
 package com.ort.studyup.repositories
 
-import androidx.lifecycle.LiveData
 import com.ort.studyup.common.TOKEN_KEY
 import com.ort.studyup.common.models.User
 import com.ort.studyup.common.utils.EncryptedPreferencesHelper

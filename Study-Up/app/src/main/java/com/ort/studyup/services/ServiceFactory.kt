@@ -18,7 +18,6 @@ import javax.net.ssl.X509TrustManager
 
 class ServiceFactory(private val context: Context) {
 
-    //private val okHttpClient: OkHttpClient by lazy { UnsafeOkHttpClient.getUnsafeOkHttpClient() }
     private val okHttpClient: OkHttpClient by lazy { okHttpClient() }
 
     fun <T> createInstance(clazz: Class<T>): T {

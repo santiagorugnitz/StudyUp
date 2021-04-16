@@ -1,9 +1,7 @@
 package com.ort.studyup.services
 
-import retrofit2.Response
+class ServiceException(code: Int, msg: String) : Exception() {
 
-class ServiceException(response: Response<*>) : Exception() {
-
-    var error: ServiceError = ServiceError(response.code(),response.message())
+    var error: ServiceError = ServiceError(code, msg)
 
 }

@@ -27,13 +27,13 @@ object KoinWrapper {
             androidLogger()
             androidContext(application)
             modules(
-                listOf(
-                    utils(),
-                    viewModels(),
-                    repositories(),
-                    services(),
-                    database(),
-                )
+                    listOf(
+                            utils(),
+                            viewModels(),
+                            repositories(),
+                            services(),
+                            database(),
+                    )
             )
         }
     }
@@ -45,8 +45,8 @@ object KoinWrapper {
     }
 
     private fun viewModels() = module {
-        factory { LoginViewModel(get(),get()) }
-        factory { RegisterViewModel(get()) }
+        factory { LoginViewModel(get(), get()) }
+        factory { RegisterViewModel(get(), get()) }
         factory { SplashViewModel() }
         factory { DecksViewModel() }
         factory { DeckDetailViewModel() }
@@ -55,7 +55,7 @@ object KoinWrapper {
     }
 
     private fun repositories() = module {
-        factory { UserRepository(get(), get(),get()) }
+        factory { UserRepository(get(), get(), get()) }
     }
 
     private fun services() = module {
@@ -65,11 +65,11 @@ object KoinWrapper {
     private fun database() = module {
         single {
             Room.databaseBuilder(
-                androidContext(),
-                AppDatabase::class.java, "studyUpDatabase"
+                    androidContext(),
+                    AppDatabase::class.java, "studyUpDatabase"
             )
-                .fallbackToDestructiveMigration()
-                .build()
+                    .fallbackToDestructiveMigration()
+                    .build()
         }
         factory { get<AppDatabase>().userDao() }
     }

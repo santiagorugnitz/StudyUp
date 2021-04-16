@@ -3,10 +3,7 @@ package com.ort.studyup.home.decks
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ort.studyup.common.models.Deck
-import com.ort.studyup.common.models.DeckData
 import com.ort.studyup.common.models.Flashcard
-import com.ort.studyup.common.renderers.DeckItemRenderer
-import com.ort.studyup.common.renderers.SubtitleRenderer
 import com.ort.studyup.common.ui.BaseViewModel
 
 class DeckDetailViewModel(

@@ -1,18 +1,14 @@
 package com.ort.studyup.login
 
 import android.os.Bundle
-import android.text.InputType
-import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.ort.studyup.R
 import com.ort.studyup.common.ui.BaseFragment
 import kotlinx.android.synthetic.main.fragment_login.*
-import kotlinx.android.synthetic.main.item_text_input.view.*
 
 class LoginFragment : BaseFragment() {
 

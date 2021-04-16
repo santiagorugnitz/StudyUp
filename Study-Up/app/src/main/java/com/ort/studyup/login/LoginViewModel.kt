@@ -20,8 +20,7 @@ class LoginViewModel(
         val result = MutableLiveData<User>()
         if (validateUser(user) && validatePassword(password)) {
             executeService {
-                userRepository.login(user, password)
-                result.postValue(true)
+                result.postValue( userRepository.login(user, password))
             }
         } else {
             result.postValue(null)

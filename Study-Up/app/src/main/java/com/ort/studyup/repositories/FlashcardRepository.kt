@@ -1,7 +1,7 @@
 package com.ort.studyup.repositories
 
-import com.ort.studyup.common.models.*
-import com.ort.studyup.services.DeckService
+import com.ort.studyup.common.models.EditFlashCardRequest
+import com.ort.studyup.common.models.NewFlashCardRequest
 import com.ort.studyup.services.FlashcardService
 import com.ort.studyup.services.check
 

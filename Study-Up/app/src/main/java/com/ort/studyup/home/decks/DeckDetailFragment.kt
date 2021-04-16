@@ -34,7 +34,7 @@ class DeckDetailFragment : BaseFragment(), FlashcardItemRenderer.Callback {
         adapter.addRenderer(FlashcardItemRenderer(this))
         flashcardList.layoutManager = LinearLayoutManager(requireContext())
         flashcardList.adapter = adapter
-        initViewModel(deckId ?: 0)
+        initViewModel(deckId)
     }
 
     private fun initUI(deck: Deck) {
