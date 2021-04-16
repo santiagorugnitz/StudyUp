@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -49,7 +50,7 @@ class DeckDetailFragment : BaseFragment(), FlashcardItemRenderer.Callback {
             findNavController().navigate(R.id.action_deckDetailFragment_to_newDeckFragment, Bundle().apply { putSerializable(DECK_DATA_KEY, deck as DeckData) })
         }
         addButton.setOnClickListener {
-            //TODO: navigate to newFlashcardFragment
+            findNavController().navigate(R.id.action_deckDetailFragment_to_newFlashcardFragment, Bundle().apply { putInt(DECK_ID_KEY,deck.id) })
         }
     }
 

@@ -29,6 +29,9 @@
     <string name="delete">Delete</string>
     <string name="delete_deck_confirmation">Are you sure you want to delete this deck? This can not be undone</string>
     <string name="edit">Edit</string>
+    <string name="new_flashcard">New Flashcard</string>
+    <string name="question">Question</string>
+    <string name="answer">Answer</string>
 
 
     <string-array name="difficulties">

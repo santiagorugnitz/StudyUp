@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:paddingBottom="64dp"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="28dp"
+        app:layout_constraintBottom_toTopOf="@id/saveButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/header"
+            style="@style/Header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/new_flashcard" />
+
+        <EditText
+            android:id="@+id/questionInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:hint="@string/question"
+            android:inputType="textMultiLine"
+            android:minLines="5"/>
+
+        <EditText
+            android:id="@+id/answerInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:hint="@string/answer"
+            android:inputType="textMultiLine"
+            android:minLines="5"/>
+
+    </LinearLayout>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/saveButton"
+        style="@style/BottomButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_background"
+        android:text="@string/save"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@id/deleteButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:visibility="gone"
+        android:layout_marginBottom="8dp"
+        android:id="@+id/deleteButton"
+        style="@style/BottomButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_background"
+        android:backgroundTint="@color/error"
+        android:text="@string/delete"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
