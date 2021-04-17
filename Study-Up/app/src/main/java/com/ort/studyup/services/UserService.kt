@@ -1,5 +1,8 @@
 package com.ort.studyup.services
 
+import com.ort.studyup.common.models.LoginRequest
+import com.ort.studyup.common.models.RegisterRequest
+import com.ort.studyup.common.models.UserResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST

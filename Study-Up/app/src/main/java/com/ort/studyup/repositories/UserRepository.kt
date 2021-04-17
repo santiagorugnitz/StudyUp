@@ -1,10 +1,10 @@
 package com.ort.studyup.repositories
 
 import com.ort.studyup.common.TOKEN_KEY
+import com.ort.studyup.common.models.LoginRequest
+import com.ort.studyup.common.models.RegisterRequest
 import com.ort.studyup.common.models.User
 import com.ort.studyup.common.utils.EncryptedPreferencesHelper
-import com.ort.studyup.services.LoginRequest
-import com.ort.studyup.services.RegisterRequest
 import com.ort.studyup.services.UserService
 import com.ort.studyup.services.check
 import com.ort.studyup.storage.dao.UserDao

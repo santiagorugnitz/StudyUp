@@ -1,5 +1,7 @@
 package com.ort.studyup.common.models
 
+import com.google.gson.annotations.SerializedName
+
 
 class Flashcard(
         val id: Int,
@@ -7,14 +9,13 @@ class Flashcard(
         val answer: String,
 )
 
-//TODO: add name tags
 class NewFlashCardRequest(
-        val deckId: Int,
-        val question: String,
-        val answer: String,
+        @SerializedName("deckId") val deckId: Int,
+        @SerializedName("question") val question: String,
+        @SerializedName("answer") val answer: String,
 )
 
 class EditFlashCardRequest(
-        val question: String,
-        val answer: String,
+        @SerializedName("question") val question: String,
+        @SerializedName("answer") val answer: String,
 )

@@ -5,9 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import com.ort.studyup.common.models.Deck
 import com.ort.studyup.common.models.Flashcard
 import com.ort.studyup.common.ui.BaseViewModel
+import com.ort.studyup.repositories.DeckRepository
 
 class DeckDetailViewModel(
-//    val deckRepository: DeckRepository
+    private val deckRepository: DeckRepository
 ) : BaseViewModel() {
 
     private val items = mutableListOf<Any>()
@@ -16,19 +17,7 @@ class DeckDetailViewModel(
         val result = MutableLiveData<Deck>()
         executeService {
             items.clear()
-            //val deck = deckRepository.getDeck(id)
-            //TODO: remove hardcoded values
-            val deck = Deck(1,
-                    "Santiago",
-                    "Design Patterns",
-                    2,
-                    "Software Architecture",
-                    false,
-                    listOf(
-                            Flashcard(1, "2+2?", "4"),
-                            Flashcard(1, "0==0?", "true"),
-                            Flashcard(1, "Which pattern would you use when having a system with multiple stuff", "yes"),
-                    ))
+            val deck = deckRepository.getDeck(id)
             result.postValue(deck)
         }
         return result

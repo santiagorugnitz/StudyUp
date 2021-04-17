@@ -11,8 +11,7 @@ import com.ort.studyup.home.flashcards.NewFlashcardViewModel
 import com.ort.studyup.login.LoginViewModel
 import com.ort.studyup.login.RegisterViewModel
 import com.ort.studyup.repositories.UserRepository
-import com.ort.studyup.services.ServiceFactory
-import com.ort.studyup.services.UserService
+import com.ort.studyup.services.*
 import com.ort.studyup.splash.SplashViewModel
 import com.ort.studyup.storage.dao.AppDatabase
 import org.koin.android.ext.koin.androidContext
@@ -48,10 +47,10 @@ object KoinWrapper {
         factory { LoginViewModel(get(), get()) }
         factory { RegisterViewModel(get(), get()) }
         factory { SplashViewModel() }
-        factory { DecksViewModel() }
-        factory { DeckDetailViewModel() }
-        factory { NewDeckViewModel(get()) }
-        factory { NewFlashcardViewModel(get()) }
+        factory { DecksViewModel(get(), get()) }
+        factory { DeckDetailViewModel(get()) }
+        factory { NewDeckViewModel(get(), get()) }
+        factory { NewFlashcardViewModel(get(), get()) }
     }
 
     private fun repositories() = module {
@@ -60,6 +59,9 @@ object KoinWrapper {
 
     private fun services() = module {
         factory { ServiceFactory(get()).createInstance(UserService::class.java) }
+        factory { ServiceFactory(get()).createInstance(DeckService::class.java) }
+        factory { ServiceFactory(get()).createInstance(FlashcardService::class.java) }
+        factory { ServiceFactory(get()).createInstance(GroupService::class.java) }
     }
 
     private fun database() = module {

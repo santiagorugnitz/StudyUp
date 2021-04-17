@@ -15,14 +15,14 @@ class FlashcardRepository(
         ).check()
     }
 
-    suspend fun editFlashcard(id: Int,question: String, answer: String){
+    suspend fun updateFlashcard(id: Int,question: String, answer: String){
         flashcardService.updateFlashcard(
             id,
             EditFlashCardRequest(question, answer)
         ).check()
     }
 
-    suspend fun deleteDeck(id:Int){
+    suspend fun deleteFlashcard(id:Int){
         flashcardService.deleteFlashcard(id).check()
     }
 

@@ -6,14 +6,14 @@ import com.ort.studyup.R
 import com.ort.studyup.common.INTERNAL_ERROR_CODE
 import com.ort.studyup.common.ui.BaseViewModel
 import com.ort.studyup.common.ui.ResourceWrapper
+import com.ort.studyup.repositories.FlashcardRepository
 import com.ort.studyup.services.ServiceError
 
 class NewFlashcardViewModel(
-        private val resourceWrapper: ResourceWrapper
-//    val flashcardRepository: FlashcardRepository
+        private val resourceWrapper: ResourceWrapper,
+        private val flashcardRepository: FlashcardRepository
 ) : BaseViewModel() {
 
-    //TODO uncomment when ready
     var flashcardId = -1
 
     fun sendData(deckId: Int, question: String, answer: String): LiveData<Int> {
@@ -21,9 +21,9 @@ class NewFlashcardViewModel(
         executeService {
             if (validate(question) && validate(answer)) {
                 if (flashcardId != -1) {
-                    //flashcardRepository.updateFlashcard(flashcardId,question,answer)
+                    flashcardRepository.updateFlashcard(flashcardId,question,answer)
                 } else {
-                    //flashcardRepository.createFlashcard(deckId,question,answer)
+                    flashcardRepository.createFlashcard(deckId,question,answer)
                 }
                 result.postValue(flashcardId)
             } else {
@@ -41,7 +41,7 @@ class NewFlashcardViewModel(
     fun deleteFlashcard(): LiveData<Boolean> {
         val result = MutableLiveData<Boolean>()
         executeService {
-            //flashcardRepository.delete(flashcardId)
+            flashcardRepository.deleteFlashcard(flashcardId)
             result.postValue(true)
         }
         return result
