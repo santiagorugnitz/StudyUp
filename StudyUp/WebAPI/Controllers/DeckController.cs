@@ -51,7 +51,7 @@ namespace WebAPI.Controllers
         public IActionResult Update([FromRoute] int id, [FromBody] UpdateDeckModel updateDeckModel)
         {
             return Ok(logic.EditDeck(id, updateDeckModel.Name,
-                updateDeckModel.Difficulty, updateDeckModel.IsHidden));
+                updateDeckModel.Difficulty, updateDeckModel.IsHidden, updateDeckModel.Subject));
         }
 
         [HttpGet("{id}")]

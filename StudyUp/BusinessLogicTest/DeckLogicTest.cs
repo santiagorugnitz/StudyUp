@@ -208,6 +208,7 @@ namespace BusinessLogicTest
         [TestMethod]
         public void EditDeckOkTest()
         {
+            string newSubject = "new subject";
             string newName = "new name";
             Difficulty newDifficulty = Difficulty.Hard;
             bool newVisibility = true;
@@ -219,7 +220,8 @@ namespace BusinessLogicTest
             deckExample.Name = newName;
             deckExample.IsHidden = newVisibility;
             deckExample.Difficulty = newDifficulty;
-            var result = deckLogic.EditDeck(1, newName, newDifficulty, newVisibility);
+            deckExample.Subject = newSubject;
+            var result = deckLogic.EditDeck(1, newName, newDifficulty, newVisibility, newSubject);
 
             deckRepositoryMock.VerifyAll();
 
@@ -249,11 +251,30 @@ namespace BusinessLogicTest
             deckRepositoryMock.Setup(m => m.Add(deckExample));
             deckRepositoryMock.Setup(m => m.Add(anotherDeckExample));
 
+            string newSubject = anotherDeckExample.Subject;
             string newName = anotherDeckExample.Name;
             int deckId = deckExample.Id;
             deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == newName && a.Id != deckId)).Returns(new List<Deck>() { anotherDeckExample });
 
-            var result = deckLogic.EditDeck(1, anotherDeckExample.Name, newDifficulty, newVisibility);
+            var result = deckLogic.EditDeck(1, anotherDeckExample.Name, newDifficulty, newVisibility, newSubject);
+
+            deckRepositoryMock.VerifyAll();
+        }
+
+        [ExpectedException(typeof(InvalidException))]
+        [TestMethod]
+        public void EditDeckEmptySubjectTest()
+        {
+            Difficulty newDifficulty = Difficulty.Hard;
+            bool newVisibility = true;
+
+            deckRepositoryMock.Setup(m => m.Update(It.IsAny<Deck>()));
+            deckRepositoryMock.Setup(m => m.GetById(1)).Returns(deckExample);
+            deckRepositoryMock.Setup(m => m.Add(deckExample));
+            
+            deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == "Name" && a.Id != 1)).Returns(new List<Deck>());
+
+            var result = deckLogic.EditDeck(1, "Name", newDifficulty, newVisibility, "");
 
             deckRepositoryMock.VerifyAll();
         }

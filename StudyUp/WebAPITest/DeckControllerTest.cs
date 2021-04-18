@@ -104,13 +104,14 @@ namespace WebAPITest
         {
             logicMock.Setup(x => x.AddDeck(It.IsAny<Deck>(), userModelExample.Token)).Returns(new Deck());
             logicMock.Setup(x => x.EditDeck(1, "new name", Domain.Enumerations.Difficulty.Easy,
-                true)).Returns(new Deck());
+                true, "new subject")).Returns(new Deck());
 
             UpdateDeckModel updateDeckModel = new UpdateDeckModel()
             {
                 Difficulty = Domain.Enumerations.Difficulty.Easy,
                 Name = "new name",
-                IsHidden = true
+                IsHidden = true,
+                Subject = "new subject"
             };
             controller.Post(deckModelExample, userModelExample.Token);
 
