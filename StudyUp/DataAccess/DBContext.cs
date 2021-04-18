@@ -27,6 +27,16 @@ namespace DataAccess
                 .HasMany(g => g.Groups)
                 .WithOne(c => c.Creator)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<User>()
+                .HasMany(d => d.Decks)
+                .WithOne(a => a.Author)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Deck>()
+                .HasMany(f => f.Flashcards)
+                .WithOne(d => d.Deck)
+                .OnDelete(DeleteBehavior.Cascade);
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { optionsBuilder.UseLazyLoadingProxies(); }
 

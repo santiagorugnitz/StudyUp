@@ -13,37 +13,47 @@ namespace BusinessLogic
     {
         private IRepository<Flashcard> flashcardRepository;
         private IRepository<User> userRepository;
+        private IRepository<Deck> deckRepository;
         private IUserRepository userTokenRepository;
 
         public FlashcardLogic(IRepository<Flashcard> repository, IRepository<User> userRepository,
-            IUserRepository userTokenRepository)
+            IUserRepository userTokenRepository, IRepository<Deck> deckRepository)
         {
             this.flashcardRepository = repository;
             this.userRepository = userRepository;
             this.userTokenRepository = userTokenRepository;
+            this.deckRepository = deckRepository;
         }
 
-        public Flashcard AddFlashcard(Flashcard flashcard, string token)
+        public Flashcard AddFlashcard(Flashcard flashcard, int deckId, string token)
         {
             if (flashcard.Question is null || flashcard.Answer is null
                 || flashcard.Question.Length == 0 || flashcard.Answer.Length == 0)
                 throw new InvalidException(FlashcardMessage.EMPTY_QUESTION_OR_ANSWER);
 
             User userLoggedByToken = userTokenRepository.GetUserByToken(token);
+            if (userLoggedByToken == null)
+            {
+                throw new InvalidException(FlashcardMessage.NOT_AUTHORIZED);
+            }
 
-            //IEnumerable<User> userLogged = userRepository.GetAll().Where(x => x.Id == userByToken.Id);
-            IEnumerable<User> flashcardsAuthor = userRepository.GetAll().Where(x => x.Id == flashcard.Deck.Author.Id);
+            Deck deck = deckRepository.GetById(deckId);
+            if (deck == null)
+                throw new NotFoundException(DeckMessage.DECK_NOT_FOUND);
 
-            if (userLoggedByToken != null && flashcardsAuthor != null && userLoggedByToken.Id != flashcard.Deck.Author.Id)
+            IEnumerable<User> flashcardsAuthor = userRepository.GetAll().Where(x => x.Id == deck.Author.Id);
+
+            if (userLoggedByToken != null && flashcardsAuthor != null && userLoggedByToken.Id != deck.Author.Id)
                 throw new InvalidException(FlashcardMessage.NOT_AUTHORIZED);
 
             if (userLoggedByToken is null || flashcardsAuthor is null)
                 throw new InvalidException(FlashcardMessage.ERROR_ASSOCIATING_USER);
 
+            flashcard.Deck = deck;
             flashcardRepository.Add(flashcard);
 
-            User user = userRepository.GetById(userLoggedByToken.Id);
-            userRepository.Update(user);
+            deck.Flashcards.Add(flashcard);
+            deckRepository.Update(deck);
             return flashcard;
         }
 

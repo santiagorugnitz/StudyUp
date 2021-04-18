@@ -26,7 +26,6 @@ namespace WebAPITest
             logicMock = new Mock<IFlashcardLogic>(MockBehavior.Strict);
             controller = new FlashcardController(logicMock.Object);
 
-
             userModelExample = new UserModel()
             {
                 Id = 1,
@@ -39,7 +38,6 @@ namespace WebAPITest
             deckModelExample = new DeckModel()
             {
                 Name = "Clase de repaso",
-                Author = userModelExample.ToEntity(),
                 Difficulty = Domain.Enumerations.Difficulty.Easy,
                 IsHidden = false,
                 Subject = "Russian"
@@ -47,17 +45,16 @@ namespace WebAPITest
 
             flashcardModelExample = new FlashcardModel()
             {
-                Id = 1,
+                DeckId = 1,
                 Question = "who is the president of the united states?",
-                Answer = "Joe Biden",
-                Deck = deckModelExample.ToEntity()
+                Answer = "Joe Biden"
             };
         }
 
         [TestMethod]
         public void PostFlashcardOkTest()
         {
-            logicMock.Setup(x => x.AddFlashcard(It.IsAny<Flashcard>(), It.IsAny<string>())).Returns(new FlashcardModel().ToEntity());
+            logicMock.Setup(x => x.AddFlashcard(It.IsAny<Flashcard>(), It.IsAny<int>(), It.IsAny<string>())).Returns(new FlashcardModel().ToEntity());
 
             var result = controller.Post(flashcardModelExample, userModelExample.Token);
             var okResult = result as OkObjectResult;
@@ -71,7 +68,6 @@ namespace WebAPITest
         {
             EditFlashcardModel editFlashcardModel = new EditFlashcardModel()
             {
-                Id = flashcardModelExample.Id,
                 Answer = "new answer",
                 Question = "new question"
             };
@@ -79,7 +75,7 @@ namespace WebAPITest
             logicMock.Setup(x => x.EditFlashcard(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
                 It.IsAny<string>())).Returns(new FlashcardModel().ToEntity());
 
-            var result = controller.EditFlashcard("token", editFlashcardModel);
+            var result = controller.EditFlashcard(1, "token", editFlashcardModel);
             var okResult = result as OkObjectResult;
             var value = okResult.Value as Flashcard;
 

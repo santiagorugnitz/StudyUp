@@ -28,6 +28,12 @@ namespace Exceptions
 
     }
 
+    public static class UnauthenticatedMessage
+    {
+        public const string UNAUTHENTICATED_USER = "The user is not authenticated.";
+
+    }
+
     public static class FlashcardMessage
     {
         public const string EMPTY_QUESTION_OR_ANSWER = "Question and answer fields cannot be empty.";

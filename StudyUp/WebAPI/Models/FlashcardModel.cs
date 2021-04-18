@@ -9,15 +9,12 @@ namespace WebAPI.Models
 {
     public class FlashcardModel
     {
-        public int Id { get; set; }
-        public Deck Deck { get; set; }
+        public int DeckId { get; set; }
         public string Question { get; set; }
         public string Answer { get; set; }
 
         public Flashcard ToEntity() => new Flashcard()
         {
-           Id = this.Id,
-           Deck = this.Deck,
            Question = this.Question,
            Answer = this.Answer
         };

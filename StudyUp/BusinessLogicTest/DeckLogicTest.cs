@@ -33,7 +33,8 @@ namespace BusinessLogicTest
                 Email = "ana@gmail.com",
                 Password = "ana1234",
                 IsStudent = true,
-                Token = "token"
+                Token = "token",
+                Decks = new List<Deck>()
             };
 
             deckExample = new Deck()
@@ -48,7 +49,7 @@ namespace BusinessLogicTest
             };
 
             deckRepositoryMock = new Mock<IRepository<Deck>>(MockBehavior.Strict);
-            userRepositoryMock = new Mock<IRepository<User>>(MockBehavior.Strict);
+            userRepositoryMock = new Mock<IRepository<User>>(MockBehavior.Loose);
             flashcardRepositoryMock = new Mock<IRepository<Flashcard>>(MockBehavior.Strict);
             userTokenRepository = new Mock<IUserRepository>(MockBehavior.Strict);
             deckLogic = new DeckLogic(deckRepositoryMock.Object, userRepositoryMock.Object,
@@ -137,6 +138,23 @@ namespace BusinessLogicTest
             deckRepositoryMock.VerifyAll();
         }
 
+        [ExpectedException(typeof(NotAuthenticatedException))]
+        [TestMethod]
+        public void AddDeckBadToken()
+        {
+            deckRepositoryMock.Setup(m => m.Add(It.IsAny<Deck>()));
+            deckRepositoryMock.Setup(m => m.GetAll()).Returns(new List<Deck>());
+            userRepositoryMock.Setup(m => m.GetById(1)).Returns(userExample);
+            userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns((User)null);
+            userRepositoryMock.Setup(a => a.Update(It.IsAny<User>()));
+
+            userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
+
+            var result = deckLogic.AddDeck(deckExample, userExample.Token);
+
+            deckRepositoryMock.VerifyAll();
+        }
+
         [TestMethod]
         public void GetAllDecksTest()
         {
@@ -163,6 +181,21 @@ namespace BusinessLogicTest
         [TestMethod]
         public void GetDecksByAuthorTest()
         {
+            userRepositoryMock.Setup(m => m.GetById(1)).Returns(userExample);
+            deckRepositoryMock.Setup(b => b.FindByCondition(d => d.Author.Id == 1)).Returns(new List<Deck>() { deckExample });
+
+            var result = deckLogic.GetDecksByAuthor(1).Count();
+
+            deckRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(1, result);
+        }
+
+        [ExpectedException(typeof(NotFoundException))]
+        [TestMethod]
+        public void GetDecksByIncorrectAuthorTest()
+        {
+            userRepositoryMock.Setup(m => m.GetById(1)).Returns((User)null);
             deckRepositoryMock.Setup(b => b.FindByCondition(d => d.Author.Id == 1)).Returns(new List<Deck>() { deckExample });
 
             var result = deckLogic.GetDecksByAuthor(1).Count();

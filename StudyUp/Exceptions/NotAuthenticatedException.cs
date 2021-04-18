@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Exceptions
 {
-    public class NotAuthenticatedException : Exception
+    public class AlreadyExistsException : Exception
     {
-        public NotAuthenticatedException(string msg) : base(msg) { }
+        public AlreadyExistsException(string msg) : base(msg) { }
     }
 }

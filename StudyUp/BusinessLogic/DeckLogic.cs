@@ -38,9 +38,16 @@ namespace BusinessLogic
             else if (deck.Subject is null)
                 throw new InvalidException(DeckMessage.EMPTY_SUBJECT_MESSAGE);
 
-            deckRepository.Add(deck);
             User user = userTokenRepository.GetUserByToken(userToken);
-            User userById = userRepository.GetById(user.Id);
+            if (user == null)
+            {
+                throw new NotAuthenticatedException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
+            }
+              
+            deck.Author = user;
+            deckRepository.Add(deck);
+
+            user.Decks.Add(deck);
             userRepository.Update(user);
             return deck;
         }
@@ -53,6 +60,9 @@ namespace BusinessLogic
         public IEnumerable<Deck> GetDecksByAuthor(int userId)
         {
             ICollection<Deck> toReturn = new List<Deck>();
+            if (userRepository.GetById(userId) == null)
+                throw new NotFoundException(UserMessage.USER_NOT_FOUND);
+
             var authorsDecks = deckRepository.FindByCondition(t => t.Author.Id == userId);
             return authorsDecks;
         }
@@ -102,6 +112,10 @@ namespace BusinessLogic
             {
                 flashcardRepository.Delete(flashcard);
             }
+
+            User author = deck.Author;
+            author.Decks.Remove(deck);
+            userRepository.Update(author);
             deckRepository.Delete(deck);
             return true;
         }

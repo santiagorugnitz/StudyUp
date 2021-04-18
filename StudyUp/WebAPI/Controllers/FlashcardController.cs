@@ -25,15 +25,15 @@ namespace WebAPI.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] FlashcardModel flashcardModel, [FromHeader] string token)
         {
-            Flashcard newFlashcard = logic.AddFlashcard(flashcardModel.ToEntity(), token);
+            Flashcard newFlashcard = logic.AddFlashcard(flashcardModel.ToEntity(), flashcardModel.DeckId, token);
             return Ok(newFlashcard);
         }
 
-        [HttpPut("edit-flashcard")]
-        public IActionResult EditFlashcard([FromHeader] string token,
+        [HttpPut("{id}")]
+        public IActionResult EditFlashcard([FromRoute] int id, [FromHeader] string token,
             [FromBody] EditFlashcardModel editFlashcardModel)
         {
-            return Ok(logic.EditFlashcard(token, editFlashcardModel.Id, editFlashcardModel.Question,
+            return Ok(logic.EditFlashcard(token, id, editFlashcardModel.Question,
                 editFlashcardModel.Answer));
         }
     }
