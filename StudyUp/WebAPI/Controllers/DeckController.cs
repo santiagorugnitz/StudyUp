@@ -25,19 +25,26 @@ namespace WebAPI.Controllers
 
         [HttpGet]
         public IActionResult GetAllDecks([FromQuery] int userId = -1)
-        {
-            IEnumerable<Deck> decksList;
-            
+        {   
             if (userId > 0)
             {
-                decksList = logic.GetDecksByAuthor(userId);
+                return Ok(logic.GetDecksByAuthor(userId));
             } 
-            else
-            {
-                decksList = logic.GetAllDecks();
-            }
-             
-            return Ok(decksList);
+            
+            return Ok(ConvertDecks(logic.GetAllDecks()));
+        }
+
+        private IEnumerable<ResponseDeckModel> ConvertDecks(IEnumerable<Deck> decksList)
+        {
+            return decksList.Select(deck => new ResponseDeckModel() 
+            { 
+                Id = deck.Id, 
+                AuthorId = deck.Author.Id, 
+                Name = deck.Name, 
+                Subject = deck.Subject, 
+                Difficulty = deck.Difficulty, 
+                IsHidden = deck.IsHidden
+            });
         }
 
         [HttpPost]
