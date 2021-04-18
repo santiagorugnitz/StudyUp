@@ -119,5 +119,27 @@ namespace BusinessLogicTest
 
             userMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void CorrectLoginByUsernameTest()
+        {
+            userMock.Setup(m => m.GetUserByNameAndPassword(It.IsAny<string>(), It.IsAny<string>())).Returns(userExample);
+
+            var result = userLogic.LoginByUsername("username", "password");
+
+            userMock.VerifyAll();
+            Assert.AreEqual(userExample, result);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidException))]
+        public void InCorrectUsernameOrPasswordLoginTest()
+        {
+            userMock.Setup(m => m.GetUserByNameAndPassword(It.IsAny<string>(), It.IsAny<string>())).Returns((User)null);
+
+            var result = userLogic.LoginByUsername("username", "password");
+
+            userMock.VerifyAll();
+        }
     }
 }

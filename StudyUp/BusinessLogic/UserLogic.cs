@@ -43,6 +43,18 @@ namespace BusinessLogic
         {
             User user = userRepository.GetUserByEmailAndPassword(email, password);
             if (user == null) throw new InvalidException(UserMessage.WRONG_EMAIL_OR_PASSWORD);
+            return GenerateToken(user);
+        }
+
+        public User LoginByUsername(string username, string password)
+        {
+            User user = userRepository.GetUserByNameAndPassword(username, password);
+            if (user == null) throw new InvalidException(UserMessage.WRONG_USERNAME_OR_PASSWORD);
+            return GenerateToken(user);
+        }
+
+        private User GenerateToken(User user)
+        {
             user.Token = Guid.NewGuid().ToString();
             repository.Update(user);
             return user;

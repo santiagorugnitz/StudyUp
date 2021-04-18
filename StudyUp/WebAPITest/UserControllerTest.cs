@@ -76,6 +76,19 @@ namespace WebAPITest
         }
 
         [TestMethod]
+        public void LoginWithUsernameTest()
+        {
+            logicMock.Setup(x => x.LoginByUsername(It.IsAny<string>(), It.IsAny<string>())).Returns(new User());
+            loginModelExample.Username = "username";
+
+            var result = controller.Login(loginModelExample);
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as ResponseUserModel;
+
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(InvalidException))]
         public void LoginCredentialsAreWrongTest()
         {

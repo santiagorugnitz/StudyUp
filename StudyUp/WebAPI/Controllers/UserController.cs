@@ -41,14 +41,24 @@ namespace WebAPI.Controllers
         [HttpPost("/login")]
         public IActionResult Login([FromBody] LoginModel loginModel)
         {
-            var user = logic.Login(loginModel.Email, loginModel.Password);
+            User loguedUser = new User();
+            
+            if (loginModel.Username != null && loginModel.Username.Trim().Length > 0)
+            {
+                loguedUser = logic.LoginByUsername(loginModel.Username, loginModel.Password);
+            } 
+            else
+            {
+                loguedUser = logic.Login(loginModel.Email, loginModel.Password);
+            }
+
             ResponseUserModel responseUserModel = new ResponseUserModel()
             {
-                Id = user.Id,
-                Email = user.Email,
-                IsStudent = user.IsStudent,
-                Username = user.Username,
-                Token = user.Token
+                Id = loguedUser.Id,
+                Email = loguedUser.Email,
+                IsStudent = loguedUser.IsStudent,
+                Username = loguedUser.Username,
+                Token = loguedUser.Token
             };
             return Ok(responseUserModel);
         }

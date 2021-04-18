@@ -7,5 +7,6 @@ namespace BusinessLogicInterface
     {
         User AddUser(User user);
         User Login(string email, string password);
+        User LoginByUsername(string username, string password);
     }
 }
