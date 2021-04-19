@@ -26,7 +26,7 @@ class StudentHomeActivity : BaseActivity() {
     }
 
     private fun setUpBottomNavigationBar() {
-        val navGraphsIds = listOf(R.navigation.decks_nav,R.navigation.profile_nav)
+        val navGraphsIds = listOf(R.navigation.decks_nav,R.navigation.profile_nav,R.navigation.search_nav)
 
         val controller = bottomBar.setupWithNavController(
             navGraphsIds,

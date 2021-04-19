@@ -67,7 +67,7 @@ dependencies {
     //Room
     implementation "androidx.room:room-runtime:2.2.6"
     implementation "androidx.room:room-ktx:2.2.6"
-    kapt  "androidx.room:room-compiler:2.2.6"
+    kapt "androidx.room:room-compiler:2.2.6"
 
     //Koin
     implementation "org.koin:koin-android:2.0.1"
@@ -81,5 +81,6 @@ dependencies {
 
     //QR
     implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
+    implementation('eu.livotov.labs.android:CAMView:2.0.1@aar') { transitive = true }
 
 }
