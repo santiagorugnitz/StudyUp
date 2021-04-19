@@ -15,4 +15,6 @@ import com.ort.studyup.services.ServiceError
 class SearchViewModel(
 ) : BaseViewModel() {
 
+    var searchUsers= true
+
 }

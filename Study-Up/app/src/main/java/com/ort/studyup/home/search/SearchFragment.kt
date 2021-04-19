@@ -32,6 +32,20 @@ class SearchFragment : BaseFragment() {
     private fun initUI() {
 
 
+        searchBar.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.searchGroups -> {
+                    viewModel.searchUsers = false
+                    onSearch(searchInput.text.toString())
+                }
+                R.id.searchUsers -> {
+                    viewModel.searchUsers = true
+                    onSearch(searchInput.text.toString())
+                }
+            }
+            true
+        }
+
         qrScan.setOnClickListener {
             val intent = Intent(context, ScanActivity::class.java)
             startActivityForResult(intent, SCAN_ACTIVITY_REQUEST_CODE)
