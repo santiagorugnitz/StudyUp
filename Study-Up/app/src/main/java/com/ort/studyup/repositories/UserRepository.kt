@@ -16,7 +16,12 @@ class UserRepository(
 ) {
 
     suspend fun login(username: String, password: String): User {
-        val result = userService.login(LoginRequest(username, password)).check()
+
+        val result = if (username.contains('@')) {
+            userService.login(LoginRequest(null, username, password)).check()
+        } else {
+            userService.login(LoginRequest(username, null, password)).check()
+        }
         val user = User(
             result.id,
             result.username,
@@ -30,7 +35,7 @@ class UserRepository(
 
     suspend fun getUser() = userDao.getUser()
 
-    suspend fun register(username: String, mail: String, password: String,isStudent:Boolean):User{
+    suspend fun register(username: String, mail: String, password: String, isStudent: Boolean): User {
         val result = userService.register(RegisterRequest(username, mail, password, isStudent)).check()
         val user = User(
             result.id,
@@ -44,4 +49,4 @@ class UserRepository(
     }
 
 
-    }
+}

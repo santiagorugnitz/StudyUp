@@ -7,9 +7,9 @@ import retrofit2.http.*
 interface FlashcardService {
 
     @POST("api/flashcards")
-    suspend fun createFlashcard(@Body data: NewFlashCardRequest): Response<*>
+    suspend fun createFlashcard(@Body data: NewFlashCardRequest): Response<Flashcard>
 
-    @PUT("api/flashcards{id}")
+    @PUT("api/flashcards/{id}")
     suspend fun updateFlashcard(@Path("id") id: Int, @Body data: EditFlashCardRequest): Response<*>
 
     @DELETE("api/flashcards/{id}")

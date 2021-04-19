@@ -8,6 +8,7 @@ import com.ort.studyup.home.decks.DeckDetailViewModel
 import com.ort.studyup.home.decks.DecksViewModel
 import com.ort.studyup.home.decks.NewDeckViewModel
 import com.ort.studyup.home.flashcards.NewFlashcardViewModel
+import com.ort.studyup.home.groups.NewGroupViewModel
 import com.ort.studyup.login.LoginViewModel
 import com.ort.studyup.login.RegisterViewModel
 import com.ort.studyup.repositories.DeckRepository
@@ -54,6 +55,7 @@ object KoinWrapper {
         factory { DeckDetailViewModel(get()) }
         factory { NewDeckViewModel(get(), get()) }
         factory { NewFlashcardViewModel(get(), get()) }
+        factory { NewGroupViewModel(get(),get()) }
     }
 
     private fun repositories() = module {

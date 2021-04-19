@@ -10,8 +10,8 @@ import com.ort.studyup.repositories.FlashcardRepository
 import com.ort.studyup.services.ServiceError
 
 class NewFlashcardViewModel(
-        private val resourceWrapper: ResourceWrapper,
-        private val flashcardRepository: FlashcardRepository
+    private val resourceWrapper: ResourceWrapper,
+    private val flashcardRepository: FlashcardRepository
 ) : BaseViewModel() {
 
     var flashcardId = -1
@@ -21,9 +21,9 @@ class NewFlashcardViewModel(
         executeService {
             if (validate(question) && validate(answer)) {
                 if (flashcardId != -1) {
-                    flashcardRepository.updateFlashcard(flashcardId,question,answer)
+                    flashcardRepository.updateFlashcard(flashcardId, question, answer)
                 } else {
-                    flashcardRepository.createFlashcard(deckId,question,answer)
+                    flashcardId = flashcardRepository.createFlashcard(deckId, question, answer).id
                 }
                 result.postValue(flashcardId)
             } else {

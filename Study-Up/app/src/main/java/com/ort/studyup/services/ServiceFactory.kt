@@ -30,7 +30,7 @@ class ServiceFactory(private val context: Context) {
         val clientBuilder = OkHttpClient.Builder()
         clientBuilder.apply {
             addInterceptor(
-                    HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
             )
             addInterceptor(HeaderInterceptor(context))
         }
@@ -41,15 +41,16 @@ class ServiceFactory(private val context: Context) {
     }
 
     private fun retrofit() = Retrofit.Builder()
-            .baseUrl(API_URL)
-            .client(okHttpClient)
-            .addConverterFactory(gsonConverterFactory())
-            .build()
+        .baseUrl(API_URL)
+        .client(okHttpClient)
+        .addConverterFactory(gsonConverterFactory())
+        .build()
 
     private fun gsonConverterFactory() = GsonConverterFactory.create(
-            GsonBuilder()
-                    .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                    .create()
+        GsonBuilder()
+            .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+            .setLenient()
+            .create()
     )
 
     private fun acceptAllCertificates(clientBuilder: OkHttpClient.Builder): OkHttpClient.Builder {
@@ -57,26 +58,26 @@ class ServiceFactory(private val context: Context) {
         val trustAllCerts = getTrustManagerX509()
         sslContext.init(null, trustAllCerts, java.security.SecureRandom())
         clientBuilder
-                .sslSocketFactory(sslContext.socketFactory, trustAllCerts[0] as X509TrustManager)
-                .hostnameVerifier(HostnameVerifier { _, _ -> true })
+            .sslSocketFactory(sslContext.socketFactory, trustAllCerts[0] as X509TrustManager)
+            .hostnameVerifier(HostnameVerifier { _, _ -> true })
         return clientBuilder
     }
 
     private fun getTrustManagerX509(): Array<TrustManager> {
         return arrayOf(
-                object : X509TrustManager {
-                    @Throws(CertificateException::class)
-                    override fun checkClientTrusted(chain: Array<X509Certificate>, authType: String) {
-                    }
-
-                    @Throws(CertificateException::class)
-                    override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {
-                    }
-
-                    override fun getAcceptedIssuers(): Array<X509Certificate> {
-                        return arrayOf()
-                    }
+            object : X509TrustManager {
+                @Throws(CertificateException::class)
+                override fun checkClientTrusted(chain: Array<X509Certificate>, authType: String) {
                 }
+
+                @Throws(CertificateException::class)
+                override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {
+                }
+
+                override fun getAcceptedIssuers(): Array<X509Certificate> {
+                    return arrayOf()
+                }
+            }
         )
     }
 }

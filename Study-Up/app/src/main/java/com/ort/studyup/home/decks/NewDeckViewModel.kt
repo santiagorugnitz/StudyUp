@@ -42,7 +42,7 @@ class NewDeckViewModel(
     fun deleteDeck(): LiveData<Boolean> {
         val result = MutableLiveData<Boolean>()
         executeService {
-            //deckRepository.delete(deckId)
+            deckRepository.deleteDeck(deckId)
             result.postValue(true)
         }
         return result
