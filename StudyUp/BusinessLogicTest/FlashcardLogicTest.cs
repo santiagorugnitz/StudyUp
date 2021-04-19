@@ -236,5 +236,38 @@ namespace BusinessLogicTest
             var result = flashcardLogic.EditFlashcard("different token", 1, "new question", "new answer");
         }
 
+        [ExpectedException(typeof(InvalidException))]
+        [TestMethod]
+        public void DeleteFlashcardDifferentAuthorTest()
+        {
+            flashcardRepositoryMock.Setup(b => b.GetById(flashcardExample.Id)).Returns(flashcardExample);
+            flashcardRepositoryMock.Setup(d => d.Delete(flashcardExample));
+            userRepositoryMock.Setup(b => b.GetById(userExample.Id)).Returns(userExample);
+
+            flashcardLogic.DeleteFlashcard(flashcardExample.Id, "different token");
+        }
+
+        [ExpectedException(typeof(NotFoundException))]
+        [TestMethod]
+        public void DeleteFlashcardDoesNotExistTest()
+        {
+            flashcardRepositoryMock.Setup(b => b.GetById(10)).Returns(It.IsAny<Flashcard>());
+            flashcardRepositoryMock.Setup(d => d.Delete(flashcardExample));
+            flashcardLogic.DeleteFlashcard(10, userExample.Token);
+        }
+
+        [TestMethod]
+        public void DeleteFlashcardOkTest()
+        {
+            flashcardRepositoryMock.Setup(b => b.GetById(flashcardExample.Id)).Returns(flashcardExample);
+            userRepositoryMock.Setup(b => b.GetById(userExample.Id)).Returns(userExample);
+            userRepositoryMock.Setup(d => d.Update(userExample));
+
+            var result = flashcardLogic.DeleteFlashcard(flashcardExample.Id, userExample.Token);
+
+            flashcardRepositoryMock.VerifyAll();
+            Assert.IsTrue(result);
+        }
+
     }
 }

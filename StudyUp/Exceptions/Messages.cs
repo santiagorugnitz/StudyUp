@@ -42,6 +42,7 @@ namespace Exceptions
         public const string ERROR_ASSOCIATING_USER = "User must be logged and must be this decks author.";
         public const string FLASHCARD_NOT_FOUND = "This flashcard does not exist.";
         public const string NOT_AUTHORIZED_EDIT = "Only this flashcards author can edit it.";
+        public const string NOT_AUTHORIZED_TO_DELETE = "Only this flashcards author can delete it.";
     }
 
     public static class GroupMessage

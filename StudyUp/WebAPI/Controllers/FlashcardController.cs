@@ -36,5 +36,12 @@ namespace WebAPI.Controllers
             return Ok(logic.EditFlashcard(token, id, editFlashcardModel.Question,
                 editFlashcardModel.Answer));
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete([FromRoute] int id, [FromHeader] string token)
+        {
+            logic.DeleteFlashcard(id, token);
+            return Ok("Successfully deleted.");
+        }
     }
 }
