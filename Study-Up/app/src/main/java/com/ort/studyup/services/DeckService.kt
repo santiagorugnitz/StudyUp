@@ -8,20 +8,19 @@ import retrofit2.http.*
 
 interface DeckService {
 
-    //TODO
-    @GET("TBD")
-    suspend fun decksFromUser(id: Int): Response<List<Deck>>
+    @GET("api/decks")
+    suspend fun decksFromUser(@Query("userId")userId: Int): Response<List<Deck>>
 
-    @POST("TBD")
-    suspend fun createDeck(data: NewDeckRequest): Response<DeckData>
+    @POST("api/decks")
+    suspend fun createDeck(@Body data: NewDeckRequest): Response<DeckData>
 
-    @PUT("TBD")
-    suspend fun updateDeck(id: Int, data: NewDeckRequest): Response<*>
+    @PUT("api/decks/{id}")
+    suspend fun updateDeck(@Path("id") id: Int,@Body data: NewDeckRequest): Response<*>
 
-    @DELETE("TBD")
-    suspend fun deleteDeck(id: Int): Response<*>
+    @DELETE("api/decks/{id}")
+    suspend fun deleteDeck(@Path("id")id: Int): Response<*>
 
-    @GET("TBD")
-    suspend fun getDeck(id: Int): Response<Deck>
+    @GET("api/decks/{id}")
+    suspend fun getDeck(@Path("id")id: Int): Response<Deck>
 
 }

@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="64dp"
             android:hint="@string/question"
-            android:inputType="textMultiLine"
+            android:inputType="text"
             android:minLines="3"
             android:maxLines="3"
             />
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:hint="@string/answer"
-            android:inputType="textMultiLine"
+            android:inputType="text"
             android:minLines="3"
             android:maxLines="3"/>
 

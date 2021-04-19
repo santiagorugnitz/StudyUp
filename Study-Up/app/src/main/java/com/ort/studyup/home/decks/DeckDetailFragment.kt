@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.ort.studyup.R
 import com.ort.studyup.common.*
 import com.ort.studyup.common.models.Deck
@@ -16,7 +15,6 @@ import com.ort.studyup.common.renderers.FlashcardItemRenderer
 import com.ort.studyup.common.ui.BaseFragment
 import com.thinkup.easylist.RendererAdapter
 import kotlinx.android.synthetic.main.fragment_deck_detail.*
-import kotlinx.android.synthetic.main.fragment_decks.title
 
 class DeckDetailFragment : BaseFragment(), FlashcardItemRenderer.Callback {
 
@@ -36,7 +34,7 @@ class DeckDetailFragment : BaseFragment(), FlashcardItemRenderer.Callback {
         adapter.addRenderer(FlashcardItemRenderer(this))
         flashcardList.layoutManager = LinearLayoutManager(requireContext())
         flashcardList.adapter = adapter
-        initViewModel(deckId ?: 0)
+        initViewModel(deckId)
     }
 
     private fun initUI(deck: Deck) {

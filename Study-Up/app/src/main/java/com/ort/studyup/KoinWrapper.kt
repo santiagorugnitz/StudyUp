@@ -8,11 +8,14 @@ import com.ort.studyup.home.decks.DeckDetailViewModel
 import com.ort.studyup.home.decks.DecksViewModel
 import com.ort.studyup.home.decks.NewDeckViewModel
 import com.ort.studyup.home.flashcards.NewFlashcardViewModel
+import com.ort.studyup.home.groups.NewGroupViewModel
 import com.ort.studyup.login.LoginViewModel
 import com.ort.studyup.login.RegisterViewModel
+import com.ort.studyup.repositories.DeckRepository
+import com.ort.studyup.repositories.FlashcardRepository
+import com.ort.studyup.repositories.GroupRepository
 import com.ort.studyup.repositories.UserRepository
-import com.ort.studyup.services.ServiceFactory
-import com.ort.studyup.services.UserService
+import com.ort.studyup.services.*
 import com.ort.studyup.splash.SplashViewModel
 import com.ort.studyup.storage.dao.AppDatabase
 import org.koin.android.ext.koin.androidContext
@@ -31,7 +34,7 @@ object KoinWrapper {
                     utils(),
                     viewModels(),
                     repositories(),
-                    //services(),
+                    services(),
                     database(),
                 )
             )
@@ -45,21 +48,29 @@ object KoinWrapper {
     }
 
     private fun viewModels() = module {
-        factory { LoginViewModel(get()) }
-        factory { RegisterViewModel(get()) }
-        factory { SplashViewModel() }
-        factory { DecksViewModel() }
-        factory { DeckDetailViewModel() }
-        factory { NewDeckViewModel(get()) }
-        factory { NewFlashcardViewModel(get()) }
+        factory { LoginViewModel(get(), get()) }
+        factory { RegisterViewModel(get(), get()) }
+        factory { SplashViewModel(get()) }
+        factory { DecksViewModel(get(), get()) }
+        factory { DeckDetailViewModel(get()) }
+        factory { NewDeckViewModel(get(), get()) }
+        factory { NewFlashcardViewModel(get(), get()) }
+        factory { NewGroupViewModel(get(),get()) }
     }
 
     private fun repositories() = module {
-        factory { UserRepository(get(), get(),get()) }
+        factory { UserRepository(get(), get(), get()) }
+        factory { DeckRepository(get()) }
+        factory { FlashcardRepository(get()) }
+        factory { GroupRepository(get()) }
+
     }
 
     private fun services() = module {
         factory { ServiceFactory(get()).createInstance(UserService::class.java) }
+        factory { ServiceFactory(get()).createInstance(DeckService::class.java) }
+        factory { ServiceFactory(get()).createInstance(FlashcardService::class.java) }
+        factory { ServiceFactory(get()).createInstance(GroupService::class.java) }
     }
 
     private fun database() = module {

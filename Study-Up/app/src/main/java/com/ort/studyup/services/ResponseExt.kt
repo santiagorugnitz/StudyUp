@@ -8,5 +8,6 @@ fun <T> Response<T>.check(): T {
             return it
         }
     }
-    throw ServiceException(this)
+
+    throw ServiceException(code(),errorBody()?.string() ?: "")
 }

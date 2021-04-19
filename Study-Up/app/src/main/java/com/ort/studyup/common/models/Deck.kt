@@ -1,16 +1,17 @@
 package com.ort.studyup.common.models
 
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 class Deck(
         id: Int,
-        creator: String,
+        author: String,
         name: String,
         difficulty: Int,
         subject: String,
         isHidden: Boolean,
         val flashcards: List<Flashcard>,
-) : DeckData(id, creator, name, difficulty, subject, isHidden)
+) : DeckData(id, author, name, difficulty, subject, isHidden)
 
 open class DeckData(
         val id: Int = -1,
@@ -21,11 +22,10 @@ open class DeckData(
         val isHidden: Boolean,
 ) : Serializable
 
-//TODO: add name tags
 class NewDeckRequest(
-        val name: String,
-        val difficulty: Int,
-        val subject: String,
-        val isHidden: Boolean,
+        @SerializedName("name") val name: String,
+        @SerializedName("difficulty") val difficulty: Int,
+        @SerializedName("subject") val subject: String,
+        @SerializedName("isHidden") val isHidden: Boolean,
 )
 

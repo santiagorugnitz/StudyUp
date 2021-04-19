@@ -5,8 +5,6 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import androidx.annotation.DrawableRes
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import com.ort.studyup.R
 import com.ort.studyup.common.getActivity
 import kotlinx.android.synthetic.main.confirmation_dialog.view.*
