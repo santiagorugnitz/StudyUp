@@ -79,4 +79,7 @@ dependencies {
     //Easy List
     implementation 'com.github.nicolasCastro.easy-list:easylist:0.1.5'
 
+    //QR
+    implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
+
 }
