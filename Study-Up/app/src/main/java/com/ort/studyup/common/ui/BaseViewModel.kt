@@ -9,7 +9,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
-open class BaseViewModel : ViewModel() /*,KoinComponent*/ {
+open class BaseViewModel : ViewModel() {
 
     val error: MutableLiveData<ServiceError> = MutableLiveData()
 
@@ -31,6 +31,10 @@ open class BaseViewModel : ViewModel() /*,KoinComponent*/ {
                 loading.postValue(CustomLoader.LoaderConfig(false))
             }
         }
+    }
+
+    fun hideLoader() {
+        loading.postValue(CustomLoader.LoaderConfig(false))
     }
 
 }

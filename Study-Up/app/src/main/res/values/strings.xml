@@ -36,6 +36,8 @@
     <string name="edit_flashcard">Edit Flashcard</string>
     <string name="groups">Groups</string>
     <string name="new_group">New group</string>
+    <string name="profile">Profile</string>
+    <string name="search">Search</string>
 
 
     <string-array name="difficulties">

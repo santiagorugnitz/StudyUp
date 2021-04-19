@@ -18,3 +18,8 @@ const val API_URL = "https://192.168.1.11:45455/"
 const val REGEX_MAIL = "^([A-Z0-9._%+-]+)(@)([A-Z0-9.-]+)(\\.)([A-Z]{2,})\$"
 const val REGEX_PASSWORD = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)[A-Za-z\\d\$&+,:;=?@#|'<>.^*()%!-]{1,}\$"
 
+const val SCAN_ACTIVITY_REQUEST_CODE = 101
+const val PERMISSION_REQUEST_CODE = 200
+
+const val QR_EXTRA = "qr_extra"
+
