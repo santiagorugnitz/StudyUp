@@ -39,6 +39,8 @@
     <string name="profile">Profile</string>
     <string name="search">Search</string>
     <string name="users">Users</string>
+    <string name="follow">Follow</string>
+    <string name="unfollow">Unfollow</string>
 
 
     <string-array name="difficulties">

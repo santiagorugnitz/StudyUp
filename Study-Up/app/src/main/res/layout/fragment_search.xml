@@ -98,12 +98,13 @@
         app:menu="@menu/search_menu" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searchResultsList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/background"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchHeader"
+        app:layout_constraintTop_toBottomOf="@id/searchBar"
         app:layout_constraintBottom_toBottomOf="parent"
         />
 

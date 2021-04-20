@@ -1,6 +1,7 @@
 package com.ort.studyup.repositories
 
 import com.ort.studyup.common.TOKEN_KEY
+import com.ort.studyup.common.models.FollowRequest
 import com.ort.studyup.common.models.LoginRequest
 import com.ort.studyup.common.models.RegisterRequest
 import com.ort.studyup.common.models.User
@@ -46,6 +47,16 @@ class UserRepository(
         userDao.insert(user)
         preferenceHelper.setString(TOKEN_KEY, result.token)
         return user
+    }
+
+    suspend fun searchUser(name: String) = userService.searchUser(name).check()
+
+    suspend fun follow(username: String) {
+        userService.follow(FollowRequest(username)).check()
+    }
+
+    suspend fun unfollow(username: String) {
+        userService.unfollow(username).check()
     }
 
 
