@@ -7,7 +7,7 @@ import com.ort.studyup.services.DeckService
 import com.ort.studyup.services.check
 
 class DeckRepository(
-        private val deckService: DeckService,
+    private val deckService: DeckService,
 ) {
 
     suspend fun decksFromUser(id: Int): List<Deck> {
@@ -16,14 +16,14 @@ class DeckRepository(
 
     suspend fun createDeck(deckData: DeckData): DeckData {
         return deckService.createDeck(
-                NewDeckRequest(deckData.name, deckData.difficulty, deckData.subject, deckData.isHidden)
+            NewDeckRequest(deckData.name, deckData.difficulty, deckData.subject, deckData.isHidden)
         ).check()
     }
 
     suspend fun updateDeck(id: Int, deckData: DeckData) {
         deckService.updateDeck(
-                id,
-                NewDeckRequest(deckData.name, deckData.difficulty, deckData.subject, deckData.isHidden)
+            id,
+            NewDeckRequest(deckData.name, deckData.difficulty, deckData.subject, deckData.isHidden)
         ).check()
     }
 
@@ -35,7 +35,7 @@ class DeckRepository(
         return deckService.getDeck(id).check()
     }
 
-    suspend fun getFollowingDecks(): List<Deck>{
+    suspend fun getFollowingDecks(): List<Deck> {
         return deckService.getFollowingDecks().check()
     }
 

@@ -52,6 +52,14 @@ open class BaseFragment : Fragment() {
         input.spinnerTitle.text = title
     }
 
+    protected fun initBigSpinner(input: View, array: Array<String>, title: String) {
+        ArrayAdapter(requireActivity(), R.layout.big_spinner_item, array).also {
+            it.setDropDownViewResource(R.layout.big_spinner_dropdown_item)
+            input.spinner.adapter = it
+        }
+        input.spinnerTitle.text = title
+    }
+
     protected fun hideKeyboard() {
         activity?.let {
             val imm = it.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager

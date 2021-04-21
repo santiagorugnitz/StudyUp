@@ -2,16 +2,17 @@ package com.ort.studyup.home.decks
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.ort.studyup.R
 import com.ort.studyup.common.models.Deck
-import com.ort.studyup.common.models.DeckData
 import com.ort.studyup.common.renderers.DeckItemRenderer
 import com.ort.studyup.common.renderers.SubtitleRenderer
 import com.ort.studyup.common.ui.BaseViewModel
+import com.ort.studyup.common.ui.ResourceWrapper
 import com.ort.studyup.repositories.DeckRepository
-import com.ort.studyup.repositories.UserRepository
 
 class FollowingDecksViewModel(
-    private val deckRepository: DeckRepository
+    private val deckRepository: DeckRepository,
+    private val resourceWrapper: ResourceWrapper
 ) : BaseViewModel() {
 
     private val items = mutableListOf<Any>()
@@ -21,16 +22,17 @@ class FollowingDecksViewModel(
     fun loadDecks(): LiveData<List<Any>> {
         val result = MutableLiveData<List<Any>>()
         executeService {
-            items.clear()
             decks = deckRepository.getFollowingDecks().sortedWith { a, b -> a.subject.compareTo(b.subject) } as MutableList<Deck>
-            prepareDisplayList(decks)
-            authors = decks.map { it.creator }.distinct().toTypedArray()
+            val authorList = mutableListOf(resourceWrapper.getString(R.string.everyone))
+            authorList.addAll(decks.map { it.creator }.distinct())
+            authors = authorList.toTypedArray()
             result.postValue(items)
         }
         return result
     }
 
     private fun prepareDisplayList(decks: List<Deck>) {
+        items.clear()
         var currentSubject = ""
         decks.forEach {
             if (it.subject != currentSubject) {
