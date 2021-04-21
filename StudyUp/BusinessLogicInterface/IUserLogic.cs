@@ -1,5 +1,6 @@
 ﻿using Domain;
 using System;
+using System.Collections.Generic;
 
 namespace BusinessLogicInterface
 {
@@ -8,5 +9,6 @@ namespace BusinessLogicInterface
         User AddUser(User user);
         User Login(string email, string password);
         User LoginByUsername(string username, string password);
+        IEnumerable<User> GetUsers(string queryFilter);
     }
 }

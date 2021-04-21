@@ -62,5 +62,11 @@ namespace WebAPI.Controllers
             };
             return Ok(responseUserModel);
         }
+
+        [HttpGet]
+        public IActionResult GetUsers([FromQuery] string queryFilter = "")
+        {
+            return Ok(logic.GetUsers(queryFilter));
+        }
     }
 }

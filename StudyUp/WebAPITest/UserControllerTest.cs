@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Collections.Generic;
 using WebAPI.Controllers;
 using WebAPI.Models;
 
@@ -96,6 +97,30 @@ namespace WebAPITest
 
             var result = controller.Login(loginModelExample);
             var okResult = result as BadRequestObjectResult;
+
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void GetUsersOkWithParam()
+        {
+            logicMock.Setup(x => x.GetUsers(It.IsAny<string>())).Returns(new List<User>());
+
+            var result = controller.GetUsers("Name");
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as IEnumerable<User>;
+
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void GetUsersOkWithoutParam()
+        {
+            logicMock.Setup(x => x.GetUsers(It.IsAny<string>())).Returns(new List<User>());
+
+            var result = controller.GetUsers();
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as IEnumerable<User>;
 
             logicMock.VerifyAll();
         }

@@ -5,6 +5,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Exceptions;
 using System.Collections.Generic;
+using System;
+using System.Linq;
 
 namespace BusinessLogicTest
 {
@@ -12,6 +14,8 @@ namespace BusinessLogicTest
     public class UserLogicTest
     {
         User userExample;
+        User userListed;
+        IEnumerable<User> userList;
         Mock<IUserRepository> userMock;
         Mock<IRepository<User>> userRepositoryMock;
         UserLogic userLogic;
@@ -28,6 +32,16 @@ namespace BusinessLogicTest
                 Token = "New token"
             };
 
+            userListed = new User()
+            {
+                Username = "Maria Fernanda",
+                Email = "maria@gmail.com",
+                Password = "Mari1k",
+                IsStudent = false,
+                Token = "New token"
+            };
+
+            userList = new List<User>() { userListed, userExample };
             userMock = new Mock<IUserRepository>(MockBehavior.Strict);
             userRepositoryMock = new Mock<IRepository<User>>(MockBehavior.Loose);
             userLogic = new UserLogic(userRepositoryMock.Object, userMock.Object);
@@ -140,6 +154,34 @@ namespace BusinessLogicTest
             var result = userLogic.LoginByUsername("username", "password");
 
             userMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void GetUsersByName()
+        {
+            userRepositoryMock.Setup(m => m.FindByCondition(user => user.IsStudent && user.Username.Contains("Maria"))).Returns((ICollection<User>)userList);
+
+            var result = userLogic.GetUsers("Maria");
+
+            userRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual("Maria", result.ElementAt(0).Username.ToString());
+            Assert.AreEqual("Maria Fernanda", result.ElementAt(1).Username.ToString());
+        }
+
+        [TestMethod]
+        public void GetAllUsers()
+        {
+            userRepositoryMock.Setup(m => m.GetAll()).Returns((ICollection<User>)userList);
+
+            var result = userLogic.GetUsers("");
+
+            userRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual("Maria", result.ElementAt(0).Username.ToString());
+            Assert.AreEqual("Maria Fernanda", result.ElementAt(1).Username.ToString());
         }
     }
 }

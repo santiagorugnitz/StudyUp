@@ -39,6 +39,17 @@ namespace BusinessLogic
 
         }
 
+        public IEnumerable<User> GetUsers(string queryFilter)
+        {
+            if(queryFilter.Length == 0)
+            {
+                return repository.GetAll().OrderBy(user => user.Username.Length);
+            } 
+
+            return repository.FindByCondition(user => user.IsStudent && user.Username.Contains(queryFilter))
+                .OrderBy(user => user.Username.Length);
+        }
+
         public User Login(string email, string password)
         {
             User user = userRepository.GetUserByEmailAndPassword(email, password);
