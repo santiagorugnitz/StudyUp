@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/following_nav"
+    app:startDestination="@id/followingDecksFragment">
+    <fragment
+        android:id="@+id/followingDecksFragment"
+        android:name="com.ort.studyup.home.decks.FollowingDecksFragment"
+        android:label="FollowingDecksFragment" />
+</navigation>

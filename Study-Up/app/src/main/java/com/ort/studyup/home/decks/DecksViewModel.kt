@@ -10,8 +10,8 @@ import com.ort.studyup.repositories.DeckRepository
 import com.ort.studyup.repositories.UserRepository
 
 class DecksViewModel(
-        private val userRepository: UserRepository,
-        private val deckRepository: DeckRepository
+    private val userRepository: UserRepository,
+    private val deckRepository: DeckRepository
 ) : BaseViewModel() {
 
     private val items = mutableListOf<Any>()
@@ -30,14 +30,14 @@ class DecksViewModel(
                     if (it.subject != currentSubject) {
                         currentSubject = it.subject
                         items.add(
-                                SubtitleRenderer.Item(currentSubject)
+                            SubtitleRenderer.Item(currentSubject)
                         )
                     }
                     items.add(
-                            DeckItemRenderer.Item(
-                                    it.id,
-                                    it.name
-                            )
+                        DeckItemRenderer.Item(
+                            it.id,
+                            it.name
+                        )
                     )
                 }
                 result.postValue(items)
