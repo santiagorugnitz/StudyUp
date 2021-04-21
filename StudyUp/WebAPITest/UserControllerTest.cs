@@ -124,5 +124,29 @@ namespace WebAPITest
 
             logicMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void FollowUserOk()
+        {
+            logicMock.Setup(x => x.FollowUser(It.IsAny<string>(), It.IsAny<string>())).Returns(new User());
+
+            var result = controller.FollowUser("token", "Name");
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as User;
+
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void UnfollowUserOk()
+        {
+            logicMock.Setup(x => x.UnfollowUser(It.IsAny<string>(), It.IsAny<string>())).Returns(new User());
+
+            var result = controller.UnfollowUser("token", "Name");
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as User;
+
+            logicMock.VerifyAll();
+        }
     }
 }

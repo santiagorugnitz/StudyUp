@@ -33,6 +33,11 @@ namespace DataAccess
                 .WithOne(a => a.Author)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.FollowedUsers)
+                .WithOne(u => u)
+                .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<Deck>()
                 .HasMany(f => f.Flashcards)
                 .WithOne(d => d.Deck)

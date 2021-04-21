@@ -183,5 +183,105 @@ namespace BusinessLogicTest
             Assert.AreEqual("Maria", result.ElementAt(0).Username.ToString());
             Assert.AreEqual("Maria Fernanda", result.ElementAt(1).Username.ToString());
         }
+
+        [TestMethod]
+        public void CheckUsernameOk()
+        {
+            userRepositoryMock.Setup(m => m.FindByCondition(user => user.Username.Equals("Maria"))).Returns(new List<User>() { userExample });
+
+            var result = userLogic.CheckUsername("Maria");
+
+            userRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(userExample, result);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidException))]
+        public void CheckUsernameInvalid()
+        {
+            userRepositoryMock.Setup(m => m.FindByCondition(user => user.Username.Equals("Maria"))).Returns(new List<User>() { });
+
+            var result = userLogic.CheckUsername("Maria");
+
+            userRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void CheckTokenOk()
+        {
+            userMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+
+            var result = userLogic.CheckToken("Token");
+
+            userRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(userExample, result);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NotAuthenticatedException))]
+        public void CheckTokenInvalid()
+        {
+            userMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns((User)null);
+
+            var result = userLogic.CheckToken("Token");
+
+            userRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void FollowUserOk()
+        {
+            userExample.FollowedUsers = new List<User>();
+            userRepositoryMock.Setup(m => m.FindByCondition(user => user.Username.Equals("Maria"))).Returns(new List<User>() { userExample });
+            userMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+
+            var result = userLogic.FollowUser("Token", "Maria");
+
+            userRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(userExample, result);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidException))]
+        public void FollowUserInvalid()
+        {
+            userExample.FollowedUsers = new List<User>() { userExample };
+            userRepositoryMock.Setup(m => m.FindByCondition(user => user.Username.Equals("Maria"))).Returns(new List<User>() { userExample });
+            userMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+
+            var result = userLogic.FollowUser("Token", "Maria");
+
+            userRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void UnfollowUserOk()
+        {
+            userExample.FollowedUsers = new List<User>() { userExample };
+            userRepositoryMock.Setup(m => m.FindByCondition(user => user.Username.Equals("Maria"))).Returns(new List<User>() { userExample });
+            userMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+
+            var result = userLogic.UnfollowUser("Token", "Maria");
+
+            userRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(userExample, result);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidException))]
+        public void UnfollowUserInvalid()
+        {
+            userExample.FollowedUsers = new List<User>() { };
+            userRepositoryMock.Setup(m => m.FindByCondition(user => user.Username.Equals("Maria"))).Returns(new List<User>() { userExample });
+            userMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+
+            var result = userLogic.UnfollowUser("Token", "Maria");
+
+            userRepositoryMock.VerifyAll();
+        }
     }
 }

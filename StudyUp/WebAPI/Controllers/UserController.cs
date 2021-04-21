@@ -68,5 +68,17 @@ namespace WebAPI.Controllers
         {
             return Ok(logic.GetUsers(queryFilter));
         }
+
+        [HttpPost]
+        public IActionResult FollowUser([FromHeader] string token, [FromQuery] string username)
+        {
+            return Ok(logic.FollowUser(token, username));
+        }
+
+        [HttpDelete]
+        public IActionResult UnfollowUser([FromHeader] string token, [FromQuery] string username)
+        {
+            return Ok(logic.UnfollowUser(token, username));
+        }
     }
 }

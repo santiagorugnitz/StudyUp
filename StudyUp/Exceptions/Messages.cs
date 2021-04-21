@@ -15,6 +15,8 @@ namespace Exceptions
         public const string WRONG_EMAIL_OR_PASSWORD = "Wrong email or password.";
         public const string WRONG_USERNAME_OR_PASSWORD = "Wrong username or password.";
         public const string INVALID_EMAIL = "Invalid mail address.";
+        public const string ALREADY_FOLLOWS = "You already follow this user.";
+        public const string NOT_FOLLOWS = "You cannot unfollow an unfollowed user.";
     }
 
     public static class DeckMessage

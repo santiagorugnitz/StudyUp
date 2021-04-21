@@ -39,6 +39,58 @@ namespace BusinessLogic
 
         }
 
+        public User FollowUser(string token, string username)
+        {
+            User authenticatedUser = CheckToken(token);
+            User userToFollow = CheckUsername(username);
+
+            if (authenticatedUser.FollowedUsers.Contains(userToFollow))
+            {
+                throw new InvalidException(UserMessage.ALREADY_FOLLOWS);
+            }
+            
+            authenticatedUser.FollowedUsers.Add(userToFollow);
+
+            repository.Update(authenticatedUser);
+            return authenticatedUser;
+        }
+
+        public User UnfollowUser(string token, string username)
+        {
+            User authenticatedUser = CheckToken(token);
+            User userToUnfollow = CheckUsername(username);
+
+            if (!authenticatedUser.FollowedUsers.Contains(userToUnfollow))
+            {
+                throw new InvalidException(UserMessage.NOT_FOLLOWS);
+            }
+
+            authenticatedUser.FollowedUsers.Remove(userToUnfollow);
+
+            repository.Update(authenticatedUser);
+            return authenticatedUser;
+        }
+
+        public User CheckToken(string token)
+        {
+            User user = userRepository.GetUserByToken(token);
+            if (user == null)
+            {
+                throw new NotAuthenticatedException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
+            }
+            return user;
+        }
+
+        public User CheckUsername(string username)
+        {
+            IEnumerable<User> usernamedUsers = repository.FindByCondition(user => user.Username.Equals(username));
+            if (usernamedUsers.Count() < 1)
+            {
+                throw new InvalidException(UserMessage.USER_NOT_FOUND);
+            }
+            return usernamedUsers.First();
+        }
+
         public IEnumerable<User> GetUsers(string queryFilter)
         {
             if(queryFilter.Length == 0)
