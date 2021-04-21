@@ -91,7 +91,7 @@ namespace StudyUp
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Tourism API");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "StudyUp");
             });
 
             app.UseAuthorization();

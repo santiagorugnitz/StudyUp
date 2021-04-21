@@ -35,8 +35,9 @@ namespace DataAccess
 
             modelBuilder.Entity<User>()
                 .HasMany(u => u.FollowedUsers)
-                .WithOne(u => u)
-                .OnDelete(DeleteBehavior.Cascade);
+                .WithOne(u => u.Follower)
+                .HasForeignKey(id => id.FollowerId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Deck>()
                 .HasMany(f => f.Flashcards)

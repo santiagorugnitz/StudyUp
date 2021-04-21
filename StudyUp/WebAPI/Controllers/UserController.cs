@@ -63,22 +63,23 @@ namespace WebAPI.Controllers
             return Ok(responseUserModel);
         }
 
-        [HttpGet]
-        public IActionResult GetUsers([FromQuery] string queryFilter = "")
-        {
-            return Ok(logic.GetUsers(queryFilter));
-        }
-
-        [HttpPost]
+        [HttpPost("/api/users/follow")]
         public IActionResult FollowUser([FromHeader] string token, [FromQuery] string username)
         {
             return Ok(logic.FollowUser(token, username));
         }
 
-        [HttpDelete]
+        [HttpDelete("/api/users/unfollow")]
         public IActionResult UnfollowUser([FromHeader] string token, [FromQuery] string username)
         {
             return Ok(logic.UnfollowUser(token, username));
         }
+
+        [HttpGet]
+        public IActionResult GetUsers([FromQuery] string username = "")
+        {
+            return Ok(logic.GetUsers(username));
+        }
+
     }
 }
