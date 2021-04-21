@@ -87,6 +87,7 @@ class SearchFragment : BaseFragment(), UserSearchResultRenderer.Callback, GroupS
     }
 
     private fun onSearch(query: String) {
+        hideKeyboard()
         viewModel.search(query).observe(viewLifecycleOwner, Observer {
             adapter.setItems(it)
         })
