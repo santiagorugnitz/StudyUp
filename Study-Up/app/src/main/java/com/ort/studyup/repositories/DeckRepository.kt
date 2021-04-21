@@ -35,5 +35,9 @@ class DeckRepository(
         return deckService.getDeck(id).check()
     }
 
+    suspend fun getFollowingDecks(): List<Deck>{
+        return deckService.getFollowingDecks().check()
+    }
+
 
 }
