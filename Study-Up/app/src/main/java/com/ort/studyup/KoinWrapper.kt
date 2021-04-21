@@ -60,7 +60,7 @@ object KoinWrapper {
         factory { NewFlashcardViewModel(get(), get()) }
         factory { NewGroupViewModel(get(),get()) }
         factory { ProfileViewModel(get()) }
-        factory { SearchViewModel() }
+        factory { SearchViewModel(get(),get()) }
     }
 
     private fun repositories() = module {

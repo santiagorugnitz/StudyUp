@@ -6,6 +6,7 @@ import com.ort.studyup.R
 import com.ort.studyup.common.INTERNAL_ERROR_CODE
 import com.ort.studyup.common.models.DeckData
 import com.ort.studyup.common.models.User
+import com.ort.studyup.common.renderers.GroupSearchResultRenderer
 import com.ort.studyup.common.renderers.UserSearchResultRenderer
 import com.ort.studyup.common.ui.BaseViewModel
 import com.ort.studyup.common.ui.ResourceWrapper
@@ -25,7 +26,27 @@ class SearchViewModel(
         val result = MutableLiveData<List<Any>>()
         executeService {
             items.clear()
-            items.addAll(if (searchUsers) userRepository.searchUser(query) else groupRepository.searchGroup(query))
+            items.addAll(
+                if (searchUsers) {
+                    val results = userRepository.searchUser(query)
+                    results.map {
+                        UserSearchResultRenderer.Item(
+                            it.username,
+                            it.following
+                        )
+                    }
+                } else {
+                    val results = groupRepository.searchGroup(query)
+                    results.map {
+                        GroupSearchResultRenderer.Item(
+                            it.id,
+                            it.name,
+                            it.teacherName,
+                            it.subscribed
+                        )
+                    }
+                }
+            )
             result.postValue(items)
         }
         return result
@@ -41,6 +62,23 @@ class SearchViewModel(
                 } else {
                     userRepository.follow(it.username)
                     it.following = true
+                }
+                result.postValue(true)
+            }
+        }
+        return result
+    }
+
+    fun onSubChange(position: Int): LiveData<Boolean> {
+        val result = MutableLiveData<Boolean>()
+        executeService {
+            (items[position] as GroupSearchResultRenderer.Item).let {
+                if (it.subscribed) {
+                    groupRepository.unsubscribe(it.id)
+                    it.subscribed = false
+                } else {
+                    groupRepository.subscribe(it.id)
+                    it.subscribed = true
                 }
                 result.postValue(true)
             }

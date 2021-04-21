@@ -11,12 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ort.studyup.R
 import com.ort.studyup.common.QR_EXTRA
 import com.ort.studyup.common.SCAN_ACTIVITY_REQUEST_CODE
+import com.ort.studyup.common.renderers.GroupSearchResultRenderer
 import com.ort.studyup.common.renderers.UserSearchResultRenderer
 import com.ort.studyup.common.ui.BaseFragment
 import com.thinkup.easylist.RendererAdapter
 import kotlinx.android.synthetic.main.fragment_search.*
 
-class SearchFragment : BaseFragment(), UserSearchResultRenderer.Callback {
+class SearchFragment : BaseFragment(), UserSearchResultRenderer.Callback, GroupSearchResultRenderer.Callback {
 
     private val viewModel: SearchViewModel by injectViewModel(SearchViewModel::class)
     private val adapter = RendererAdapter()
@@ -34,6 +35,7 @@ class SearchFragment : BaseFragment(), UserSearchResultRenderer.Callback {
 
     private fun prepareList() {
         adapter.addRenderer(UserSearchResultRenderer(this))
+        adapter.addRenderer(GroupSearchResultRenderer(this))
         searchResultsList.layoutManager = LinearLayoutManager(requireContext())
         searchResultsList.adapter = adapter
     }
@@ -92,6 +94,14 @@ class SearchFragment : BaseFragment(), UserSearchResultRenderer.Callback {
 
     override fun onFollowChange(position: Int) {
         viewModel.onFollowChange(position).observe(viewLifecycleOwner, Observer {
+            if (it) {
+                adapter.notifyDataSetChanged()
+            }
+        })
+    }
+
+    override fun onSubChange(position: Int) {
+        viewModel.onSubChange(position).observe(viewLifecycleOwner, Observer {
             if (it) {
                 adapter.notifyDataSetChanged()
             }

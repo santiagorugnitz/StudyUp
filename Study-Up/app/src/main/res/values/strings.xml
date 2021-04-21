@@ -41,6 +41,8 @@
     <string name="users">Users</string>
     <string name="follow">Follow</string>
     <string name="unfollow">Unfollow</string>
+    <string name="unsub">unsubscribe</string>
+    <string name="sub">Subscribe</string>
 
 
     <string-array name="difficulties">
