@@ -38,6 +38,11 @@
     <string name="new_group">New group</string>
     <string name="profile">Profile</string>
     <string name="search">Search</string>
+    <string name="users">Users</string>
+    <string name="follow">Follow</string>
+    <string name="unfollow">Unfollow</string>
+    <string name="unsub">unsubscribe</string>
+    <string name="sub">Subscribe</string>
 
 
     <string-array name="difficulties">
