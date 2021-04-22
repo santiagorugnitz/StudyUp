@@ -76,9 +76,27 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetUsers([FromQuery] string username = "")
+        public IActionResult GetUsers([FromHeader] string token, [FromQuery] string username = "")
         {
-            return Ok(logic.GetUsers(username));
+            var userList = logic.GetUsers(token, username);
+            List<ResponseFollowedUserModel> responseList = new List<ResponseFollowedUserModel>();
+            
+            foreach (var tuple in userList)
+            {
+                ResponseFollowedUserModel responseUserModel = new ResponseFollowedUserModel()
+                {
+                    Id = tuple.Item1.Id,
+                    Email = tuple.Item1.Email,
+                    IsStudent = tuple.Item1.IsStudent,
+                    Username = tuple.Item1.Username,
+                    Token = tuple.Item1.Token,
+                    Following = tuple.Item2
+                };
+
+                responseList.Add(responseUserModel);
+            }    
+
+            return Ok(responseList);
         }
 
     }

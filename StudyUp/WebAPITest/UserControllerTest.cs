@@ -104,11 +104,11 @@ namespace WebAPITest
         [TestMethod]
         public void GetUsersOkWithParam()
         {
-            logicMock.Setup(x => x.GetUsers(It.IsAny<string>())).Returns(new List<User>());
+            logicMock.Setup(x => x.GetUsers(It.IsAny<string>(), It.IsAny<string>())).Returns(new List<Tuple<User, bool>>());
 
-            var result = controller.GetUsers("Name");
+            var result = controller.GetUsers("Token", "Name");
             var okResult = result as OkObjectResult;
-            var value = okResult.Value as IEnumerable<User>;
+            var value = okResult.Value as IEnumerable<ResponseFollowedUserModel>;
 
             logicMock.VerifyAll();
         }
@@ -116,11 +116,11 @@ namespace WebAPITest
         [TestMethod]
         public void GetUsersOkWithoutParam()
         {
-            logicMock.Setup(x => x.GetUsers(It.IsAny<string>())).Returns(new List<User>());
+            logicMock.Setup(x => x.GetUsers(It.IsAny<string>(), It.IsAny<string>())).Returns(new List<Tuple<User, bool>>());
 
-            var result = controller.GetUsers();
+            var result = controller.GetUsers("Token");
             var okResult = result as OkObjectResult;
-            var value = okResult.Value as IEnumerable<User>;
+            var value = okResult.Value as IEnumerable<ResponseFollowedUserModel>;
 
             logicMock.VerifyAll();
         }

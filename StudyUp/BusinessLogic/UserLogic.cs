@@ -91,15 +91,37 @@ namespace BusinessLogic
             return usernamedUsers.First();
         }
 
-        public IEnumerable<User> GetUsers(string queryFilter)
+        public IEnumerable<Tuple<User, bool>> GetUsers(string token, string queryFilter)
         {
-            if(queryFilter.Length == 0)
+            User authenticatedUser = CheckToken(token);
+
+            if (queryFilter.Length == 0)
             {
-                return repository.GetAll().OrderBy(user => user.Username.Length);
+                return GetListWithFollowingFilter(authenticatedUser, repository.GetAll().OrderBy(user => user.Username.Length));
             } 
 
-            return repository.FindByCondition(user => user.IsStudent && user.Username.Contains(queryFilter))
+            var filteredList = repository.FindByCondition(user => user.IsStudent && user.Username.Contains(queryFilter))
                 .OrderBy(user => user.Username.Length);
+            return GetListWithFollowingFilter(authenticatedUser, filteredList);
+        }
+
+        private IEnumerable<Tuple<User, bool>> GetListWithFollowingFilter(User user, IEnumerable<User> convertingList)
+        {
+            List<Tuple<User, bool>> convertedList = new List<Tuple<User, bool>>();
+            
+            foreach (var listedUser in convertingList)
+            {
+                if(user.FollowedUsers.Contains(listedUser))
+                {
+                    convertedList.Add(new Tuple<User, bool>(listedUser, true));
+                } 
+                else
+                {
+                    convertedList.Add(new Tuple<User, bool>(listedUser, false));
+                }
+            }
+
+            return convertedList;
         }
 
         public User Login(string email, string password)
