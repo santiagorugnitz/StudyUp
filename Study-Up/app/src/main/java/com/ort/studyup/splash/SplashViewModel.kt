@@ -7,14 +7,13 @@ import com.ort.studyup.common.ui.BaseViewModel
 import com.ort.studyup.repositories.UserRepository
 
 class SplashViewModel(
-    //val userRepository: UserRepository
+    private val userRepository: UserRepository
 ) : BaseViewModel() {
 
     fun getUser(): LiveData<User> {
         val result = MutableLiveData<User>()
         executeService {
-            //result.postValue(userRepository.getUser())
-            result.postValue(null)
+            result.postValue(userRepository.getUser())
         }
         return result
     }

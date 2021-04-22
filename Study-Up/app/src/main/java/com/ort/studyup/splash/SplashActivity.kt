@@ -4,9 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import androidx.lifecycle.Observer
 import com.ort.studyup.R
-import com.ort.studyup.common.STUDENT_EXTRA
 import com.ort.studyup.common.ui.BaseActivity
 import com.ort.studyup.home.StudentHomeActivity
 import com.ort.studyup.home.TeacherHomeActivity
@@ -51,7 +49,7 @@ class SplashActivity : BaseActivity() {
                 startActivity(intent)
                 this.finish()
             } ?: run {
-                val intent = Intent(this, TeacherHomeActivity::class.java)
+                val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 this.finish()
             }

@@ -57,6 +57,26 @@ namespace BusinessLogic
             return flashcard;
         }
 
+        public bool DeleteFlashcard(int id, string token)
+        {
+            Flashcard flashcard = flashcardRepository.GetById(id);
+
+            if (flashcard is null)
+                throw new NotFoundException(FlashcardMessage.FLASHCARD_NOT_FOUND);
+
+            User user = this.userRepository.GetById(flashcard.Deck.Author.Id);
+
+            if (!user.Token.Equals(token))
+                throw new InvalidException(FlashcardMessage.NOT_AUTHORIZED_TO_DELETE);
+            
+            Deck deck = flashcard.Deck;
+            deck.Flashcards.Remove(flashcard);
+            deckRepository.Update(deck);
+            userRepository.Update(deck.Author);
+            //flashcardRepository.Delete(flashcard);
+            return true;
+        }
+
         public Flashcard EditFlashcard(string token, int flashcardId, string newQuestion, string newAnswer)
         {
             Flashcard flashcard = flashcardRepository.GetById(flashcardId);

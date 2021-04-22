@@ -1,11 +1,11 @@
 package com.ort.studyup.repositories
 
-import androidx.lifecycle.LiveData
 import com.ort.studyup.common.TOKEN_KEY
+import com.ort.studyup.common.models.FollowRequest
+import com.ort.studyup.common.models.LoginRequest
+import com.ort.studyup.common.models.RegisterRequest
 import com.ort.studyup.common.models.User
 import com.ort.studyup.common.utils.EncryptedPreferencesHelper
-import com.ort.studyup.services.LoginRequest
-import com.ort.studyup.services.RegisterRequest
 import com.ort.studyup.services.UserService
 import com.ort.studyup.services.check
 import com.ort.studyup.storage.dao.UserDao
@@ -17,7 +17,12 @@ class UserRepository(
 ) {
 
     suspend fun login(username: String, password: String): User {
-        val result = userService.login(LoginRequest(username, password)).check()
+
+        val result = if (username.contains('@')) {
+            userService.login(LoginRequest(null, username, password)).check()
+        } else {
+            userService.login(LoginRequest(username, null, password)).check()
+        }
         val user = User(
             result.id,
             result.username,
@@ -31,7 +36,7 @@ class UserRepository(
 
     suspend fun getUser() = userDao.getUser()
 
-    suspend fun register(username: String, mail: String, password: String,isStudent:Boolean):User{
+    suspend fun register(username: String, mail: String, password: String, isStudent: Boolean): User {
         val result = userService.register(RegisterRequest(username, mail, password, isStudent)).check()
         val user = User(
             result.id,
@@ -44,5 +49,15 @@ class UserRepository(
         return user
     }
 
+    suspend fun searchUser(name: String) = userService.searchUser(name).check()
 
+    suspend fun follow(username: String) {
+        userService.follow(FollowRequest(username)).check()
     }
+
+    suspend fun unfollow(username: String) {
+        userService.unfollow(username).check()
+    }
+
+
+}

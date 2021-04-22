@@ -7,14 +7,14 @@ import com.ort.studyup.common.INTERNAL_ERROR_CODE
 import com.ort.studyup.common.models.DeckData
 import com.ort.studyup.common.ui.BaseViewModel
 import com.ort.studyup.common.ui.ResourceWrapper
+import com.ort.studyup.repositories.DeckRepository
 import com.ort.studyup.services.ServiceError
 
 class NewDeckViewModel(
-    private val resourceWrapper: ResourceWrapper
-//    val deckRepository: DeckRepository
+        private val resourceWrapper: ResourceWrapper,
+        private val deckRepository: DeckRepository
 ) : BaseViewModel() {
 
-    //TODO uncomment when ready
     var deckId = -1
 
     fun sendData(data: DeckData): LiveData<Int> {
@@ -22,9 +22,9 @@ class NewDeckViewModel(
         executeService {
             if (validate(data)) {
                 if (deckId != -1) {
-                    //deckRepository.updateDeck(deckId,data)
+                    deckRepository.updateDeck(deckId, data)
                 } else {
-                    //deckId = deckRepository.createDeck(data).id
+                    deckId = deckRepository.createDeck(data).id
                 }
                 result.postValue(deckId)
             } else {
@@ -39,10 +39,10 @@ class NewDeckViewModel(
         return data.name.isNotEmpty() && data.subject.isNotEmpty()
     }
 
-    fun deleteDeck():LiveData<Boolean>{
+    fun deleteDeck(): LiveData<Boolean> {
         val result = MutableLiveData<Boolean>()
         executeService {
-            //deckRepository.delete(deckId)
+            deckRepository.deleteDeck(deckId)
             result.postValue(true)
         }
         return result

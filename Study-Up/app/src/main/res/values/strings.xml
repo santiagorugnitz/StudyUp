@@ -36,6 +36,17 @@
     <string name="edit_flashcard">Edit Flashcard</string>
     <string name="groups">Groups</string>
     <string name="new_group">New group</string>
+    <string name="profile">Profile</string>
+    <string name="search">Search</string>
+    <string name="users">Users</string>
+    <string name="follow">Follow</string>
+    <string name="unfollow">Unfollow</string>
+    <string name="unsub">unsubscribe</string>
+    <string name="sub">Subscribe</string>
+    <string name="author">Author</string>
+    <string name="following">Following</string>
+    <string name="everyone">Everyone</string>
+    <string name="decks_from_friends">Decks from friends</string>
 
 
     <string-array name="difficulties">

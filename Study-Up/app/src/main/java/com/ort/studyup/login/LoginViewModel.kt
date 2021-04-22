@@ -11,7 +11,7 @@ import com.ort.studyup.repositories.UserRepository
 import com.ort.studyup.services.ServiceError
 
 class LoginViewModel(
-    //private val userRepository: UserRepository,
+    private val userRepository: UserRepository,
     private val resourceWrapper: ResourceWrapper
 ) : BaseViewModel() {
 
@@ -20,9 +20,7 @@ class LoginViewModel(
         val result = MutableLiveData<User>()
         if (validateUser(user) && validatePassword(password)) {
             executeService {
-                //TODO: uncomment when service is ready
-                //userRepository.login(user, password)
-                result.postValue(User(1,"",true))
+                result.postValue( userRepository.login(user, password))
             }
         } else {
             result.postValue(null)

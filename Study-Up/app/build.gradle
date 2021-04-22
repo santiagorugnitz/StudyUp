@@ -16,7 +16,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.studyup"
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -67,16 +67,20 @@ dependencies {
     //Room
     implementation "androidx.room:room-runtime:2.2.6"
     implementation "androidx.room:room-ktx:2.2.6"
-    kapt  "androidx.room:room-compiler:2.2.6"
+    kapt "androidx.room:room-compiler:2.2.6"
 
     //Koin
     implementation "org.koin:koin-android:2.0.1"
     implementation "org.koin:koin-android-viewmodel:2.0.1"
 
     //Security
-    implementation "androidx.security:security-crypto:1.1.0-alpha03"
+    implementation "androidx.security:security-crypto:1.1.0-alpha02"
 
     //Easy List
     implementation 'com.github.nicolasCastro.easy-list:easylist:0.1.5'
+
+    //QR
+    implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
+    implementation('eu.livotov.labs.android:CAMView:2.0.1@aar') { transitive = true }
 
 }

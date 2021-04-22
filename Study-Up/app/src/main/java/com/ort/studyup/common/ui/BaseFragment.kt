@@ -1,6 +1,8 @@
 package com.ort.studyup.common.ui
 
+import android.app.Activity
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -48,6 +50,25 @@ open class BaseFragment : Fragment() {
             input.spinner.adapter = it
         }
         input.spinnerTitle.text = title
+    }
+
+    protected fun initBigSpinner(input: View, array: Array<String>, title: String) {
+        ArrayAdapter(requireActivity(), R.layout.big_spinner_item, array).also {
+            it.setDropDownViewResource(R.layout.big_spinner_dropdown_item)
+            input.spinner.adapter = it
+        }
+        input.spinnerTitle.text = title
+    }
+
+    protected fun hideKeyboard() {
+        activity?.let {
+            val imm = it.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            var view = it.currentFocus
+            if (view == null) {
+                view = View(it)
+            }
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 
 }

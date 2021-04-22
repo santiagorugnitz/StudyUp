@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import com.ort.studyup.R
 import com.ort.studyup.common.ui.BaseFragment
 import kotlinx.android.synthetic.main.fragment_new_group.*
@@ -24,9 +25,9 @@ class NewGroupFragment : BaseFragment() {
 
     private fun initUI() {
         saveButton.setOnClickListener {
-            viewModel.createGroup(nameInput.text.toString()).observe(viewLifecycleOwner) {
-                //TODO:
-            }
+            viewModel.createGroup(nameInput.text.toString()).observe(viewLifecycleOwner, Observer {
+                //TODO: navigate to GroupsFrag
+            })
         }
     }
 }

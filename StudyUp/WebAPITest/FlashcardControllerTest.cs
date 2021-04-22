@@ -80,7 +80,18 @@ namespace WebAPITest
             var value = okResult.Value as Flashcard;
 
             logicMock.VerifyAll();
+        }
 
+        [TestMethod]
+        public void DeleteFlashcardOkTest()
+        {
+            logicMock.Setup(x => x.DeleteFlashcard(It.IsAny<int>(), It.IsAny<string>())).Returns(true);
+
+            var result = controller.Delete(flashcardModelExample.ToEntity().Id, userModelExample.Token);
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as bool?;
+
+            logicMock.VerifyAll();
         }
     }
 }
