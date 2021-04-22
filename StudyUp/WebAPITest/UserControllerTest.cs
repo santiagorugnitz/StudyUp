@@ -148,5 +148,17 @@ namespace WebAPITest
 
             logicMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void GetDecksOk()
+        {
+            logicMock.Setup(x => x.GetDecksFromFollowing(It.IsAny<string>())).Returns(new List<Deck>());
+
+            var result = controller.GetDecks("token");
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as IEnumerable<ResponseDeckModel>;
+
+            logicMock.VerifyAll();
+        }
     }
 }

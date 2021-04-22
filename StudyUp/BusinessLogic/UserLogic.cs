@@ -144,5 +144,21 @@ namespace BusinessLogic
             repository.Update(user);
             return user;
         }
+
+        public IEnumerable<Deck> GetDecksFromFollowing(string token)
+        {
+            User authenticatedUser = CheckToken(token);
+            List<Deck> deckFromFollowing = new List<Deck>();
+
+            foreach (var user in authenticatedUser.FollowedUsers)
+            {
+                foreach (var deck in user.Decks)
+                {
+                    if(!deck.IsHidden) deckFromFollowing.Add(deck);
+                } 
+            }
+
+            return deckFromFollowing;
+        }
     }
 }

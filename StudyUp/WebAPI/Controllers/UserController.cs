@@ -99,5 +99,29 @@ namespace WebAPI.Controllers
             return Ok(responseList);
         }
 
+        [HttpGet("/api/decks/following")]
+        public IActionResult GetDecks([FromHeader] string token)
+        {
+            var deckList = logic.GetDecksFromFollowing(token);
+            List<ResponseDeckModel> responseList = new List<ResponseDeckModel>();
+
+            foreach (var deck in deckList)
+            {
+                ResponseDeckModel responseDeck = new ResponseDeckModel()
+                {
+                    Id = deck.Id,
+                    AuthorId = deck.Author.Id,
+                    Name = deck.Name,
+                    Subject = deck.Subject,
+                    Difficulty = deck.Difficulty,
+                    IsHidden = deck.IsHidden
+                };
+
+                responseList.Add(responseDeck);
+            }
+
+            return Ok(responseList);
+        }
+
     }
 }

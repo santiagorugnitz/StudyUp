@@ -292,5 +292,19 @@ namespace BusinessLogicTest
 
             userRepositoryMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void GetDecksFromFollowing()
+        {
+            userListed.Decks = new List<Deck>() { new Deck() { Name = "Deck1", IsHidden = true }, new Deck() { Name = "Deck2", IsHidden = false } };
+            userExample.FollowedUsers = new List<User>() { userListed };
+            userMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+
+            var result = userLogic.GetDecksFromFollowing("Token");
+
+            Assert.AreEqual(1, result.Count());
+            Assert.AreEqual("Deck2", result.ElementAt(0).Name);
+            userMock.VerifyAll();
+        }
     }
 }
