@@ -71,7 +71,7 @@ class NewDeckFragment : BaseFragment(), ConfirmationDialog.Callback {
             viewModel.sendData(
                 DeckData(
                     name = nameInput.text.toString(),
-                    creator = "",
+                    author = "",
                     subject = subjectInput.text.toString(),
                     difficulty = difficultyInput.spinner.selectedItemPosition,
                     isHidden = visibilityInput.spinner.selectedItemPosition == 1

@@ -110,7 +110,7 @@ namespace WebAPI.Controllers
                 ResponseDeckModel responseDeck = new ResponseDeckModel()
                 {
                     Id = deck.Id,
-                    AuthorId = deck.Author.Id,
+                    Author = deck.Author.Username,
                     Name = deck.Name,
                     Subject = deck.Subject,
                     Difficulty = deck.Difficulty,

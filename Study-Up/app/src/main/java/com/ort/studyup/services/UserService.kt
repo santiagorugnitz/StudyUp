@@ -15,12 +15,12 @@ interface UserService {
     suspend fun register(@Body request: RegisterRequest): Response<UserResponse>
 
     @GET("api/users")
-    suspend fun searchUser(@Query("name") query: String): Response<List<UserSearchResponse>>
+    suspend fun searchUser(@Query("username") query: String): Response<List<UserSearchResponse>>
 
     @DELETE("api/users/unfollow")
     suspend fun unfollow(@Query("username") username: String): Response<*>
 
     @POST("api/users/follow")
-    suspend fun follow(@Body followRequest: FollowRequest): Response<*>
+    suspend fun follow(@Query("username") username:String): Response<*>
 
 }

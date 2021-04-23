@@ -52,7 +52,7 @@ class UserRepository(
     suspend fun searchUser(name: String) = userService.searchUser(name).check()
 
     suspend fun follow(username: String) {
-        userService.follow(FollowRequest(username)).check()
+        userService.follow(username).check()
     }
 
     suspend fun unfollow(username: String) {

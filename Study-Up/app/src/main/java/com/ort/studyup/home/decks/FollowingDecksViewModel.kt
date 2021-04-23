@@ -16,15 +16,15 @@ class FollowingDecksViewModel(
 ) : BaseViewModel() {
 
     private val items = mutableListOf<Any>()
-    private var decks = mutableListOf<Deck>()
+    private var decks = listOf<Deck>()
     var authors = arrayOf<String>()
 
     fun loadDecks(): LiveData<List<Any>> {
         val result = MutableLiveData<List<Any>>()
         executeService {
-            decks = deckRepository.getFollowingDecks().sortedWith { a, b -> a.subject.compareTo(b.subject) } as MutableList<Deck>
+            decks = deckRepository.getFollowingDecks().sortedWith { a, b -> a.subject.compareTo(b.subject) }
             val authorList = mutableListOf(resourceWrapper.getString(R.string.everyone))
-            authorList.addAll(decks.map { it.creator }.distinct())
+            authorList.addAll(decks.map { it.author }.distinct())
             authors = authorList.toTypedArray()
             result.postValue(items)
         }
@@ -54,7 +54,9 @@ class FollowingDecksViewModel(
         val result = MutableLiveData<List<Any>>()
         executeService {
             author?.let {
-                prepareDisplayList(decks.filter { it.creator == author })
+                prepareDisplayList(decks.filter {
+                    it.author == author
+                })
             } ?: run {
                 prepareDisplayList(decks)
             }

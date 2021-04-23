@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/searchHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/colorPrimary"
         android:elevation="@dimen/elevation"
-        android:background="@color/colorPrimary">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <EditText
             android:id="@+id/searchInput"
@@ -21,92 +21,64 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="8dp"
             android:layout_marginStart="16dp"
-            app:layout_constraintTop_toTopOf="@id/qrScan"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/qrScan"
-            app:layout_constraintBottom_toBottomOf="@id/qrScan"
             android:background="@drawable/item_background"
-            android:padding="8dp"
             android:drawablePadding="4dp"
             android:gravity="center_vertical"
-            android:textSize="22sp"
-            android:inputType="text"
-            android:imeOptions="actionSearch"
             android:hint="@string/search"
-            />
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:padding="8dp"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toBottomOf="@id/qrScan"
+            app:layout_constraintEnd_toStartOf="@id/qrScan"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/qrScan" />
 
         <ImageView
             android:id="@+id/qrScan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:src="@drawable/ic_qr_code"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:background="@color/white"
             android:padding="3dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_qr_code"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/searchInput"
-            />
-
-
-<!--        <ImageView-->
-<!--            android:id="@+id/userSearch"-->
-<!--            android:background="@color/colorAccent"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:src="@drawable/ic_profile"-->
-<!--            android:layout_marginTop="24dp"-->
-<!--            android:paddingVertical="4dp"-->
-<!--            android:paddingHorizontal="8dp"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/searchInput"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toStartOf="@id/groupSearch"-->
-<!--            app:tint="@color/colorPrimaryDark" />-->
-<!--        <ImageView-->
-<!--            android:background="@color/colorPrimary"-->
-<!--            android:layout_marginTop="24dp"-->
-<!--            android:paddingVertical="4dp"-->
-<!--            android:paddingHorizontal="8dp"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            android:id="@+id/groupSearch"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:src="@drawable/ic_group"-->
-<!--            app:tint="@color/colorPrimaryDark"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/searchInput"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toEndOf="@id/userSearch"-->
-<!--            />-->
-
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/searchBar"
-        android:paddingTop="24dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
+        android:paddingTop="24dp"
         app:itemIconTint="@color/search_bar_color"
         app:itemTextColor="@color/search_bar_color"
-        app:layout_constraintTop_toBottomOf="@id/searchHeader"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchHeader"
         app:menu="@menu/search_menu" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/searchResultsList"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
+        android:id="@+id/swipeRefresh"
         android:layout_height="0dp"
-        android:background="@color/background"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchBar"
         app:layout_constraintBottom_toBottomOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchBar">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchResultsList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/background"
+            android:clipToPadding="false" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,5 +15,5 @@ class GroupSearchResponse(
         @SerializedName("id") val id: Int,
         @SerializedName("name") val name: String,
         @SerializedName("subscribed") val subscribed: Boolean,
-        @SerializedName("teacherName") val teacherName: String,
+        @SerializedName("teachersName") val teacherName: String,
 )

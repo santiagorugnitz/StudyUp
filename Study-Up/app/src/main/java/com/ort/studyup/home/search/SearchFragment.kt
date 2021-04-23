@@ -31,6 +31,7 @@ class SearchFragment : BaseFragment(), UserSearchResultRenderer.Callback, GroupS
         super.onActivityCreated(savedInstanceState)
         prepareList()
         initUI()
+        initRefresh()
     }
 
     private fun prepareList() {
@@ -40,10 +41,16 @@ class SearchFragment : BaseFragment(), UserSearchResultRenderer.Callback, GroupS
         searchResultsList.adapter = adapter
     }
 
+    private fun initRefresh() {
+        swipeRefresh.setOnRefreshListener {
+            swipeRefresh.isRefreshing = false
+            onSearch(searchInput.text.toString())
+        }
+    }
 
     private fun initUI() {
         initSearchBar()
-
+        onSearch("")
         qrScan.setOnClickListener {
             val intent = Intent(context, ScanActivity::class.java)
             startActivityForResult(intent, SCAN_ACTIVITY_REQUEST_CODE)

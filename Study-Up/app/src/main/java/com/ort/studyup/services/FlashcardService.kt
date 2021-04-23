@@ -13,6 +13,6 @@ interface FlashcardService {
     suspend fun updateFlashcard(@Path("id") id: Int, @Body data: EditFlashCardRequest): Response<*>
 
     @DELETE("api/flashcards/{id}")
-    suspend fun deleteFlashcard(@Path("id") id: Int): Response<*>
+    suspend fun deleteFlashcard(@Path("id") id: Int): Response<Unit>
 
 }

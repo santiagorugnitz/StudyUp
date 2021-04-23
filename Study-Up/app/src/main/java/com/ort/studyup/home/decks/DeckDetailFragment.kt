@@ -42,7 +42,7 @@ class DeckDetailFragment : BaseFragment(), FlashcardItemRenderer.Callback {
         subject.text = deck.subject
         difficulty.text = resources.getStringArray(R.array.difficulties)[deck.difficulty]
         visibility.text = resources.getStringArray(R.array.visibilities)[if (deck.isHidden) 1 else 0]
-        creator.text = deck.creator
+        creator.text = deck.author
 
         editLink.setOnClickListener {
             findNavController().navigate(R.id.action_deckDetailFragment_to_newDeckFragment, Bundle().apply { putSerializable(DECK_DATA_KEY, deck as DeckData) })

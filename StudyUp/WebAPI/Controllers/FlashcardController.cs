@@ -41,7 +41,7 @@ namespace WebAPI.Controllers
         public IActionResult Delete([FromRoute] int id, [FromHeader] string token)
         {
             logic.DeleteFlashcard(id, token);
-            return Ok("Successfully deleted.");
+            return Ok();
         }
     }
 }

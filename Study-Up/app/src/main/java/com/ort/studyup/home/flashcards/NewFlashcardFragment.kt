@@ -74,6 +74,7 @@ class NewFlashcardFragment : BaseFragment(), ConfirmationDialog.Callback {
         viewModel.deleteFlashcard().observe(viewLifecycleOwner, Observer {
             if (it) {
                 requireActivity().onBackPressed()
+                requireActivity().onBackPressed()
             }
         })
     }

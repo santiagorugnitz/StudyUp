@@ -53,5 +53,42 @@ namespace WebAPITest
 
             logicMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void SubscribeOkTest()
+        {
+            logicMock.Setup(x => x.Subscribe(It.IsAny<string>(), It.IsAny<int>())).Returns(true);
+
+            var result = controller.Subscribe("token", 1);
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as User;
+
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void UnsubscribeOkTest()
+        {
+            logicMock.Setup(x => x.Unsubscribe(It.IsAny<string>(), It.IsAny<int>())).Returns(true);
+
+            var result = controller.Unsubscribe("token", 1);
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as User;
+
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void GetGroupsOkTest()
+        {
+            logicMock.Setup(x => x.GetAllGroups(It.IsAny<string>())).Returns(new List<Group>() { groupModelExample.ToEntity()});
+
+            var result = controller.Get("token", groupModelExample.Name);
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as List<ResponseGroupModel>;
+
+            logicMock.VerifyAll();
+
+        }
     }
 }

@@ -4,14 +4,16 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20210423013822_UsersGroup")]
+    partial class UsersGroup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -101,9 +103,6 @@ namespace WebAPI.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("FollowerId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsStudent")
                         .HasColumnType("bit");
 
@@ -117,8 +116,6 @@ namespace WebAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FollowerId");
 
                     b.ToTable("Users");
                 });
@@ -168,16 +165,6 @@ namespace WebAPI.Migrations
                     b.Navigation("Creator");
                 });
 
-            modelBuilder.Entity("Domain.User", b =>
-                {
-                    b.HasOne("Domain.User", "Follower")
-                        .WithMany("FollowedUsers")
-                        .HasForeignKey("FollowerId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("Follower");
-                });
-
             modelBuilder.Entity("Domain.UserGroup", b =>
                 {
                     b.HasOne("Domain.Group", "Group")
@@ -210,8 +197,6 @@ namespace WebAPI.Migrations
             modelBuilder.Entity("Domain.User", b =>
                 {
                     b.Navigation("Decks");
-
-                    b.Navigation("FollowedUsers");
 
                     b.Navigation("Groups");
 

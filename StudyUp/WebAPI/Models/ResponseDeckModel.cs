@@ -13,6 +13,6 @@ namespace WebAPI.Models
         public Difficulty Difficulty { get; set; }
         public string Subject { get; set; }
         public bool IsHidden { get; set; }
-        public virtual int AuthorId { get; set; }
+        public virtual string Author { get; set; }
     }
 }

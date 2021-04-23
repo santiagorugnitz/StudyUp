@@ -15,7 +15,7 @@ class Deck(
 
 open class DeckData(
         val id: Int = -1,
-        val creator: String,
+        val author: String,
         val name: String,
         val difficulty: Int,
         val subject: String,
