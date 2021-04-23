@@ -20,6 +20,7 @@ namespace BusinessLogicTest
         Mock<IRepository<Group>> groupRepositoryMock;
         Mock<IUserRepository> userTokenRepositoryMock;
         Mock<IRepository<User>> userRepositoryMock;
+        Mock<IRepository<UserGroup>> userGroupRepositoryMock;
         GroupLogic groupLogic;
 
         [TestInitialize]
@@ -32,6 +33,7 @@ namespace BusinessLogicTest
                 Email = "ana@gmail.com",
                 Password = "ana1234",
                 IsStudent = true,
+                Token = "token",
                 Groups = new List<Group>()
             };
 
@@ -45,7 +47,9 @@ namespace BusinessLogicTest
             groupRepositoryMock = new Mock<IRepository<Group>>(MockBehavior.Strict);
             userRepositoryMock = new Mock<IRepository<User>>(MockBehavior.Strict);
             userTokenRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
-            groupLogic = new GroupLogic(groupRepositoryMock.Object, userTokenRepositoryMock.Object, userRepositoryMock.Object);
+            userGroupRepositoryMock = new Mock<IRepository<UserGroup>>(MockBehavior.Strict);
+            groupLogic = new GroupLogic(groupRepositoryMock.Object, userTokenRepositoryMock.Object,
+                userRepositoryMock.Object, userGroupRepositoryMock.Object);
         }
 
         [TestMethod]
@@ -90,5 +94,17 @@ namespace BusinessLogicTest
             groupRepositoryMock.VerifyAll();
             Assert.AreEqual(groupExample, result);
         }
+
+        //[TestMethod]
+        //public void SubscribeOkTest()
+        //{
+        //    userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+        //    groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
+        //    userGroupRepositoryMock.Setup(a => a.FindByCondition(b => b.GroupId == 1 && b.UserId == 1)).Returns(new List<UserGroup>());
+
+        //    var result = groupLogic.Subscribe(userExample.Token, 1);
+        //    groupRepositoryMock.VerifyAll();
+        //    Assert.IsTrue(result);
+        //}
     }
 }

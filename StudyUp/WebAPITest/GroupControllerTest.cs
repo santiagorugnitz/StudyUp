@@ -53,5 +53,17 @@ namespace WebAPITest
 
             logicMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void SubscribeOkTest()
+        {
+            logicMock.Setup(x => x.Subscribe(It.IsAny<string>(), It.IsAny<int>())).Returns(true);
+
+            var result = controller.Subscribe("token", 1);
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as User;
+
+            logicMock.VerifyAll();
+        }
     }
 }

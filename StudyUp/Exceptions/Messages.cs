@@ -49,5 +49,7 @@ namespace Exceptions
     {
         public const string GROUP_ALREADY_EXISTS = "Name already exists.";
         public const string EMPTY_NAME_MESSAGE = "Name field cannot be empty.";
+        public const string GROUP_NOT_FOUND = "This group does not exist.";
+        public const string ALREADY_SUBSCRIBED = "Already subscribed to this group.";
     }
 }

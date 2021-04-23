@@ -28,5 +28,11 @@ namespace WebAPI.Controllers
         {
             return Ok(logic.AddGroup(groupModel.ToEntity(), token));
         }
+
+        [HttpPost("{id}/subscribe")]
+        public IActionResult Subscribe([FromHeader] string token, [FromRoute] int id)
+        {
+            return Ok(logic.Subscribe(token, id));
+        }
     }
 }

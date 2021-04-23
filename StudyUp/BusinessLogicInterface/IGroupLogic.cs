@@ -8,5 +8,6 @@ namespace BusinessLogicInterface
     public interface IGroupLogic
     {
         Group AddGroup(Group group, string creatorsToken);
+        bool Subscribe(string token, int id);
     }
 }
