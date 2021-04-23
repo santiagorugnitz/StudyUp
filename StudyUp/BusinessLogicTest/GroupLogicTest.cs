@@ -134,5 +134,59 @@ namespace BusinessLogicTest
             groupRepositoryMock.VerifyAll();
             Assert.IsTrue(result);
         }
+
+        [TestMethod]
+        public void UserIsSubscribedTest()
+        {
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            userGroupRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<UserGroup,
+                bool>>>())).Returns(new List<UserGroup>() { userGroupExample });
+
+            var result = groupLogic.UserIsSubscribed(userExample.Token, 1);
+            groupRepositoryMock.VerifyAll();
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void UserIsNotSubscribedTest()
+        {
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            userGroupRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<UserGroup,
+                bool>>>())).Returns(new List<UserGroup>() {  });
+
+            var result = groupLogic.UserIsSubscribed(userExample.Token, 1);
+            groupRepositoryMock.VerifyAll();
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidException))]
+        public void UserIsSubscribedUnauthenticatedTest()
+        {
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Throws(new InvalidException(It.IsAny<string>()));
+
+            var result = groupLogic.UserIsSubscribed("wrongtoken", 1);
+            groupRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void GetAllGroupsTest()
+        {
+            Group group = new Group()
+            {
+                Creator = userExample,
+                Id = 2,
+                Name = "Grupo",
+                UserGroups = new List<UserGroup>()
+            };
+
+            groupRepositoryMock.Setup(b => b.GetAll()).Returns(new List<Group>() { group });
+
+            var result = groupLogic.GetAllGroups().Count();
+
+            groupRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(1, result);
+        }
     }
 }

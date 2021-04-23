@@ -46,6 +46,11 @@ namespace BusinessLogic
             return group;
         }
 
+        public IEnumerable<Group> GetAllGroups()
+        {
+            return groupRepository.GetAll();
+        }
+
         public bool Subscribe(string token, int id)
         {
             User user = userTokenRepository.GetUserByToken(token);
@@ -97,6 +102,22 @@ namespace BusinessLogic
             group.UserGroups.Remove(resultFind.First());
             groupRepository.Update(group);
             return true;
+        }
+
+        public bool UserIsSubscribed(string token, int id)
+        {
+            User user = userTokenRepository.GetUserByToken(token);
+
+            if (user is null)
+                throw new InvalidException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
+
+            var resultFind = userGroupRepository.FindByCondition(t => t.GroupId == id
+                                 && t.UserId == user.Id);
+
+            if (resultFind.Count == 0)
+                return false;
+            else
+                return true;
         }
     }
 }

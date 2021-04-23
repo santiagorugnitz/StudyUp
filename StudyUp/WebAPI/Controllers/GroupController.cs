@@ -23,6 +23,24 @@ namespace WebAPI.Controllers
             this.logic = logic;
         }
 
+        [HttpGet]
+        public IActionResult Get([FromHeader] string token)
+        {
+            return Ok(ConvertGroups(logic.GetAllGroups(), token));
+        }
+
+        private IEnumerable<ResponseGroupModel> ConvertGroups(IEnumerable<Group> groupsList, string token)
+        {
+            return (groupsList.Select(group => new ResponseGroupModel()
+            {
+                Id = group.Id,
+                Name = group.Name,
+                Subscribed = logic.UserIsSubscribed(token, group.Id),
+                TeachersName = group.Creator.Username
+            }));
+
+        }
+
         [HttpPost]
         public IActionResult Post([FromBody] GroupModel groupModel, [FromHeader] string token)
         {
