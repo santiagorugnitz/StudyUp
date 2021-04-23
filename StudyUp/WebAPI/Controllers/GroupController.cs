@@ -34,5 +34,11 @@ namespace WebAPI.Controllers
         {
             return Ok(logic.Subscribe(token, id));
         }
+
+        [HttpDelete("{id}/unsubscribe")]
+        public IActionResult Unsubscribe([FromHeader] string token, [FromRoute] int id)
+        {
+            return Ok(logic.Unsubscribe(token, id));
+        }
     }
 }

@@ -18,6 +18,7 @@ namespace BusinessLogicTest
     {
         User userExample;
         Group groupExample;
+        UserGroup userGroupExample;
         Mock<IRepository<Group>> groupRepositoryMock;
         Mock<IUserRepository> userTokenRepositoryMock;
         Mock<IRepository<User>> userRepositoryMock;
@@ -44,6 +45,14 @@ namespace BusinessLogicTest
                 Name = "Clase 7",
                 Creator = userExample,
                 UserGroups = new List<UserGroup>()
+            };
+
+            userGroupExample = new UserGroup()
+            {
+                Group = groupExample,
+                GroupId = groupExample.Id,
+                User = userExample,
+                UserId = userExample.Id
             };
 
             groupRepositoryMock = new Mock<IRepository<Group>>(MockBehavior.Strict);
@@ -107,6 +116,21 @@ namespace BusinessLogicTest
             groupRepositoryMock.Setup(a => a.Update(It.IsAny<Group>()));
 
             var result = groupLogic.Subscribe(userExample.Token, 1);
+            groupRepositoryMock.VerifyAll();
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void UnsubscribeOkTest()
+        {
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
+            userGroupRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<UserGroup,
+                bool>>>())).Returns(new List<UserGroup>() { userGroupExample });
+            userGroupRepositoryMock.Setup(a => a.Delete(It.IsAny<UserGroup>()));
+            groupRepositoryMock.Setup(b => b.Update(It.IsAny<Group>()));
+
+            var result = groupLogic.Unsubscribe(userExample.Token, 1);
             groupRepositoryMock.VerifyAll();
             Assert.IsTrue(result);
         }

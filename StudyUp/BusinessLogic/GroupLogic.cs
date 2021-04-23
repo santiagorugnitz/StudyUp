@@ -75,5 +75,28 @@ namespace BusinessLogic
             groupRepository.Update(group);
             return true;
         }
+
+        public bool Unsubscribe(string token, int id)
+        {
+            User user = userTokenRepository.GetUserByToken(token);
+            Group group = groupRepository.GetById(id);
+
+            if (user is null)
+                throw new InvalidException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
+
+            if (group is null)
+                throw new NotFoundException(GroupMessage.GROUP_NOT_FOUND);
+
+            var resultFind = userGroupRepository.FindByCondition(t => t.GroupId == id
+                     && t.UserId == user.Id);
+
+            if (resultFind.Count == 0)
+                throw new InvalidException(GroupMessage.NOT_SUBSCRIBED);
+
+            userGroupRepository.Delete(resultFind.First());
+            group.UserGroups.Remove(resultFind.First());
+            groupRepository.Update(group);
+            return true;
+        }
     }
 }

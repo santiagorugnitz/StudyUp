@@ -65,5 +65,17 @@ namespace WebAPITest
 
             logicMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void UnsubscribeOkTest()
+        {
+            logicMock.Setup(x => x.Unsubscribe(It.IsAny<string>(), It.IsAny<int>())).Returns(true);
+
+            var result = controller.Unsubscribe("token", 1);
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as User;
+
+            logicMock.VerifyAll();
+        }
     }
 }

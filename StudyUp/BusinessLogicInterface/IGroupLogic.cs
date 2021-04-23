@@ -9,5 +9,6 @@ namespace BusinessLogicInterface
     {
         Group AddGroup(Group group, string creatorsToken);
         bool Subscribe(string token, int id);
+        bool Unsubscribe(string token, int id);
     }
 }
