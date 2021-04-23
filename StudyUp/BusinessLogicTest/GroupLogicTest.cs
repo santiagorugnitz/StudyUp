@@ -180,9 +180,10 @@ namespace BusinessLogicTest
                 UserGroups = new List<UserGroup>()
             };
 
-            groupRepositoryMock.Setup(b => b.GetAll()).Returns(new List<Group>() { group });
+            groupRepositoryMock.Setup(b => b.FindByCondition(It.IsAny<Expression<Func<Group,
+                bool>>>())).Returns(new List<Group>() { group });
 
-            var result = groupLogic.GetAllGroups().Count();
+            var result = groupLogic.GetAllGroups(group.Name).Count();
 
             groupRepositoryMock.VerifyAll();
 

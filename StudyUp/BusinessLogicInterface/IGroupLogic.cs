@@ -11,6 +11,6 @@ namespace BusinessLogicInterface
         bool Subscribe(string token, int id);
         bool Unsubscribe(string token, int id);
         bool UserIsSubscribed(string token, int id);
-        IEnumerable<Group> GetAllGroups();
+        IEnumerable<Group> GetAllGroups(string keyword);
     }
 }

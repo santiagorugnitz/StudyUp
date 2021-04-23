@@ -46,9 +46,14 @@ namespace BusinessLogic
             return group;
         }
 
-        public IEnumerable<Group> GetAllGroups()
+        public IEnumerable<Group> GetAllGroups(string keyword)
         {
-            return groupRepository.GetAll();
+            IEnumerable<Group> toReturn = groupRepository.FindByCondition(g => g.Name.ToUpper().Contains(keyword.ToUpper()));
+
+            if (toReturn.Count() == 0)
+                throw new NotFoundException(GroupMessage.NO_MATCHES);
+            else
+                return toReturn;
         }
 
         public bool Subscribe(string token, int id)

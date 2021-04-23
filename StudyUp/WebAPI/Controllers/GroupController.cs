@@ -24,9 +24,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get([FromHeader] string token)
+        public IActionResult Get([FromHeader] string token, [FromQuery] string keyword)
         {
-            return Ok(ConvertGroups(logic.GetAllGroups(), token).OrderBy(a=> a.Name.Length));
+            return Ok(ConvertGroups(logic.GetAllGroups(keyword), token).OrderBy(a=> a.Name.Length));
         }
 
         private IEnumerable<ResponseGroupModel> ConvertGroups(IEnumerable<Group> groupsList, string token)
