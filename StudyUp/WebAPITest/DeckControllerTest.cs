@@ -125,11 +125,14 @@ namespace WebAPITest
         [TestMethod]
         public void GetDeckByIdOkTest()
         {
-            logicMock.Setup(x => x.GetDeckById(1)).Returns(It.IsAny<Deck>());
+            var deck = deckModelExample.ToEntity();
+            deck.Flashcards = new List<Flashcard>();
+            deck.Author = new User { Username = "test" };
+            logicMock.Setup(x => x.GetDeckById(1)).Returns(deck);
 
             var result = controller.GetDeckById(1);
             var okResult = result as OkObjectResult;
-            var value = okResult.Value as List<Deck>;
+            var value = okResult.Value as ResponseFullDeckModel;
 
             logicMock.VerifyAll();
         }

@@ -7,11 +7,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Models
 {
-    public class ResponseFlashcardModel
+    public class FlashcardModel
     {
-        public int Id { get; set; }
+        public int DeckId { get; set; }
         public string Question { get; set; }
         public string Answer { get; set; }
 
+        public Flashcard ToEntity() => new Flashcard()
+        {
+           Question = this.Question,
+           Answer = this.Answer
+        };
     }
 }

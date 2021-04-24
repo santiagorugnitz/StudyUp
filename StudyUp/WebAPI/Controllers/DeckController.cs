@@ -28,7 +28,7 @@ namespace WebAPI.Controllers
         {   
             if (userId > 0)
             {
-                return Ok(logic.GetDecksByAuthor(userId));
+                return Ok(ConvertDecks(logic.GetDecksByAuthor(userId)));
             } 
             
             return Ok(ConvertDecks(logic.GetAllDecks()));
@@ -65,7 +65,21 @@ namespace WebAPI.Controllers
         public IActionResult GetDeckById([FromRoute] int id)
         {
             Deck deck = logic.GetDeckById(id);
-            return Ok(deck);
+            return Ok(new ResponseFullDeckModel()
+            {
+                Id = deck.Id,
+                Author = deck.Author.Username,
+                Name = deck.Name,
+                Subject = deck.Subject,
+                Difficulty = deck.Difficulty,
+                IsHidden = deck.IsHidden,
+                Flashcards = deck.Flashcards.Select(flashcard => new ResponseFlashcardModel()
+                {
+                    Id = flashcard.Id,
+                    Question = flashcard.Question,
+                    Answer = flashcard.Answer
+                })
+            });
         }
 
         [HttpDelete("{id}")]

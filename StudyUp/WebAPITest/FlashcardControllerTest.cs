@@ -89,7 +89,6 @@ namespace WebAPITest
 
             var result = controller.Delete(flashcardModelExample.ToEntity().Id, userModelExample.Token);
             var okResult = result as OkObjectResult;
-            var value = okResult.Value as bool?;
 
             logicMock.VerifyAll();
         }
