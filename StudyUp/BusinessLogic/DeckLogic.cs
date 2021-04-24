@@ -113,11 +113,6 @@ namespace BusinessLogic
                 throw new InvalidException(DeckMessage.NOT_AUTHORIZED);
             }
 
-            foreach (Flashcard flashcard in deck.Flashcards)
-            {
-                flashcardRepository.Delete(flashcard);
-            }
-
             User author = deck.Author;
             author.Decks.Remove(deck);
             userRepository.Update(author);

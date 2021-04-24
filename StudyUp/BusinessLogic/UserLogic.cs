@@ -43,13 +43,23 @@ namespace BusinessLogic
         {
             User authenticatedUser = CheckToken(token);
             User userToFollow = CheckUsername(username);
+            
+            UserFollowing follow = new UserFollowing
+            {
+                FollowingUserId = userToFollow.Id,
+                FollowingUser = userToFollow,
+                FollowerUserId = authenticatedUser.Id,
+                FollowerUser = authenticatedUser
+            };
 
-            if (authenticatedUser.FollowedUsers.Contains(userToFollow))
+            if (authenticatedUser.FollowedUsers.Contains(follow))
             {
                 throw new InvalidException(UserMessage.ALREADY_FOLLOWS);
             }
-            
-            authenticatedUser.FollowedUsers.Add(userToFollow);
+
+            userToFollow.FollowingUsers.Add(follow);
+            repository.Update(userToFollow);
+            authenticatedUser.FollowedUsers.Add(follow);
 
             repository.Update(authenticatedUser);
             return authenticatedUser;
@@ -60,12 +70,22 @@ namespace BusinessLogic
             User authenticatedUser = CheckToken(token);
             User userToUnfollow = CheckUsername(username);
 
-            if (!authenticatedUser.FollowedUsers.Contains(userToUnfollow))
+            UserFollowing unfollow = new UserFollowing
+            {
+                FollowingUserId = userToUnfollow.Id,
+                FollowingUser = userToUnfollow,
+                FollowerUserId = authenticatedUser.Id,
+                FollowerUser = authenticatedUser
+            };
+
+            if (!authenticatedUser.FollowedUsers.Contains(unfollow))
             {
                 throw new InvalidException(UserMessage.NOT_FOLLOWS);
             }
 
-            authenticatedUser.FollowedUsers.Remove(userToUnfollow);
+            userToUnfollow.FollowingUsers.Remove(unfollow);
+            repository.Update(userToUnfollow);
+            authenticatedUser.FollowedUsers.Remove(unfollow);
 
             repository.Update(authenticatedUser);
             return authenticatedUser;
@@ -97,12 +117,16 @@ namespace BusinessLogic
 
             if (queryFilter.Length == 0)
             {
-                return GetListWithFollowingFilter(authenticatedUser, repository.GetAll().OrderBy(user => user.Username.Length));
+                var list = repository.FindByCondition(user => user.IsStudent && user.Id != authenticatedUser.Id);
+                var orderedList = list.OrderBy(user => user.Username.Length);
+                return GetListWithFollowingFilter(authenticatedUser, orderedList);
             } 
 
-            var filteredList = repository.FindByCondition(user => user.IsStudent && user.Username.Contains(queryFilter))
-                .OrderBy(user => user.Username.Length);
-            return GetListWithFollowingFilter(authenticatedUser, filteredList);
+            var filteredList = repository.FindByCondition(user => user.IsStudent 
+            && user.Username.Contains(queryFilter) && user.Id != authenticatedUser.Id);
+            var orderedFilteredList = filteredList.OrderBy(user => user.Username.Length);
+
+            return GetListWithFollowingFilter(authenticatedUser, orderedFilteredList);
         }
 
         private IEnumerable<Tuple<User, bool>> GetListWithFollowingFilter(User user, IEnumerable<User> convertingList)
@@ -111,7 +135,7 @@ namespace BusinessLogic
             
             foreach (var listedUser in convertingList)
             {
-                if(user.FollowedUsers.Contains(listedUser))
+                if(user.FollowedUsers.FindAll(user => user.FollowingUserId == listedUser.Id).Count() > 0)
                 {
                     convertedList.Add(new Tuple<User, bool>(listedUser, true));
                 } 
@@ -152,7 +176,7 @@ namespace BusinessLogic
 
             foreach (var user in authenticatedUser.FollowedUsers)
             {
-                foreach (var deck in user.Decks)
+                foreach (var deck in user.FollowingUser.Decks)
                 {
                     if(!deck.IsHidden) deckFromFollowing.Add(deck);
                 } 
