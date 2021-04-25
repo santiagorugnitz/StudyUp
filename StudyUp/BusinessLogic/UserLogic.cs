@@ -117,13 +117,12 @@ namespace BusinessLogic
 
             if (queryFilter.Length == 0)
             {
-                var list = repository.FindByCondition(user => user.IsStudent && user.Id != authenticatedUser.Id);
+                var list = repository.FindByCondition(user => user.Id != authenticatedUser.Id);
                 var orderedList = list.OrderBy(user => user.Username.Length);
                 return GetListWithFollowingFilter(authenticatedUser, orderedList);
             } 
 
-            var filteredList = repository.FindByCondition(user => user.IsStudent 
-            && user.Username.Contains(queryFilter) && user.Id != authenticatedUser.Id);
+            var filteredList = repository.FindByCondition(user => user.Username.Contains(queryFilter) && user.Id != authenticatedUser.Id);
             var orderedFilteredList = filteredList.OrderBy(user => user.Username.Length);
 
             return GetListWithFollowingFilter(authenticatedUser, orderedFilteredList);

@@ -19,6 +19,7 @@ namespace WebAPITest
         DeckController controller;
         DeckModel deckModelExample;
         UserModel userModelExample;
+        Deck deck;
 
         [TestInitialize]
         public void SetUp()
@@ -43,16 +44,24 @@ namespace WebAPITest
                 IsHidden = false,
                 Subject = "French"
             };
+            deck = new Deck
+            {
+                Id = 1,
+                Author = new User { Username=""},
+                Difficulty = Domain.Enumerations.Difficulty.Easy,
+                Name = "",
+                Subject="",
+                IsHidden=true,
+            };
         }
 
         [TestMethod]
         public void PostDeckOkTest()
         {
-            logicMock.Setup(x => x.AddDeck(It.IsAny<Deck>(), It.IsAny<string>())).Returns(new Deck());
+            logicMock.Setup(x => x.AddDeck(It.IsAny<Deck>(), It.IsAny<string>())).Returns(deck);
 
             var result = controller.Post(deckModelExample, userModelExample.Token);
             var okResult = result as OkObjectResult;
-            var value = okResult.Value as User;
 
             logicMock.VerifyAll();
         }
@@ -102,9 +111,9 @@ namespace WebAPITest
         [TestMethod]
         public void UpdateDeckTest()
         {
-            logicMock.Setup(x => x.AddDeck(It.IsAny<Deck>(), userModelExample.Token)).Returns(new Deck());
+            logicMock.Setup(x => x.AddDeck(It.IsAny<Deck>(), userModelExample.Token)).Returns(deck);
             logicMock.Setup(x => x.EditDeck(1, "new name", Domain.Enumerations.Difficulty.Easy,
-                true, "new subject")).Returns(new Deck());
+                true, "new subject")).Returns(deck);
 
             UpdateDeckModel updateDeckModel = new UpdateDeckModel()
             {
@@ -154,7 +163,6 @@ namespace WebAPITest
 
             var result = controller.Delete(1, "token");
             var okResult = result as OkObjectResult;
-            var value = okResult.Value as bool?;
             logicMock.VerifyAll();
         }
     }

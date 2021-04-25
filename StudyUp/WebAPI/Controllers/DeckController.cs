@@ -50,15 +50,32 @@ namespace WebAPI.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] DeckModel deckModel, [FromHeader] string token)
         {
-            Deck newDeck = logic.AddDeck(deckModel.ToEntity(), token);
-            return Ok(newDeck);
+            Deck deck = logic.AddDeck(deckModel.ToEntity(), token);
+            return Ok(new ResponseDeckModel()
+            {
+                Id = deck.Id,
+                Author = deck.Author.Username,
+                Name = deck.Name,
+                Subject = deck.Subject,
+                Difficulty = deck.Difficulty,
+                IsHidden = deck.IsHidden
+            });
         }
 
         [HttpPut("{id}")]
         public IActionResult Update([FromRoute] int id, [FromBody] UpdateDeckModel updateDeckModel)
         {
-            return Ok(logic.EditDeck(id, updateDeckModel.Name,
-                updateDeckModel.Difficulty, updateDeckModel.IsHidden, updateDeckModel.Subject));
+            Deck deck = logic.EditDeck(id, updateDeckModel.Name,
+                updateDeckModel.Difficulty, updateDeckModel.IsHidden, updateDeckModel.Subject);
+            return Ok(new ResponseDeckModel()
+            {
+                Id = deck.Id,
+                Author = deck.Author.Username,
+                Name = deck.Name,
+                Subject = deck.Subject,
+                Difficulty = deck.Difficulty,
+                IsHidden = deck.IsHidden
+            });
         }
 
         [HttpGet("{id}")]
@@ -86,7 +103,7 @@ namespace WebAPI.Controllers
         public IActionResult Delete([FromRoute] int id, [FromHeader] string token)
         {
             logic.DeleteDeck(id, token);
-            return Ok("Successfully deleted.");
+            return Ok();
         }
     }
 }

@@ -91,6 +91,8 @@ class NewDeckFragment : BaseFragment(), ConfirmationDialog.Callback {
         viewModel.deleteDeck().observe(viewLifecycleOwner, {
             if (it) {
                 requireActivity().onBackPressed()
+                requireActivity().onBackPressed()
+                requireActivity().onBackPressed()
             }
         })
     }
