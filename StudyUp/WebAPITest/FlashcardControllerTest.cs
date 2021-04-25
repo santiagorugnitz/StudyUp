@@ -16,6 +16,7 @@ namespace WebAPITest
     {
         Mock<IFlashcardLogic> logicMock;
         FlashcardController controller;
+        Flashcard flashcardExample;
         FlashcardModel flashcardModelExample;
         DeckModel deckModelExample;
         UserModel userModelExample;
@@ -46,6 +47,12 @@ namespace WebAPITest
             flashcardModelExample = new FlashcardModel()
             {
                 DeckId = 1,
+                Question = "who is the president of the united states?",
+                Answer = "Joe Biden"
+            };
+
+            flashcardExample = new Flashcard()
+            {
                 Question = "who is the president of the united states?",
                 Answer = "Joe Biden"
             };
@@ -90,6 +97,31 @@ namespace WebAPITest
             var result = controller.Delete(flashcardModelExample.ToEntity().Id, userModelExample.Token);
             var okResult = result as OkObjectResult;
             var value = okResult.Value as bool?;
+
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void GetRatedFlashcardOkTest()
+        {
+            logicMock.Setup(x => x.GetRatedFlashcards(It.IsAny<int>(), It.IsAny<string>())).Returns(new List<Tuple<Flashcard, int>>() 
+            { new Tuple<Flashcard, int>(flashcardExample, 10) });
+
+            var result = controller.GetRatedFlashcards(flashcardModelExample.ToEntity().Id, userModelExample.Token);
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as List<ResponseFlashcardScoreModel>;
+
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void UpateRateFlashcardOkTest()
+        {
+            logicMock.Setup(x => x.UpdateScore(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>())).Returns(flashcardExample);
+
+            var result = controller.EditScore(flashcardModelExample.ToEntity().Id, 10, userModelExample.Token);
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as Flashcard;
 
             logicMock.VerifyAll();
         }
