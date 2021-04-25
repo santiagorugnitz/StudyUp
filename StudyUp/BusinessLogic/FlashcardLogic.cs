@@ -14,15 +14,17 @@ namespace BusinessLogic
         private IRepository<Flashcard> flashcardRepository;
         private IRepository<User> userRepository;
         private IRepository<Deck> deckRepository;
+        private IRepository<FlashcardScore> flashcardScoreRepository;
         private IUserRepository userTokenRepository;
 
         public FlashcardLogic(IRepository<Flashcard> repository, IRepository<User> userRepository,
-            IUserRepository userTokenRepository, IRepository<Deck> deckRepository)
+            IUserRepository userTokenRepository, IRepository<Deck> deckRepository, IRepository<FlashcardScore> flashcardScoreRepository)
         {
             this.flashcardRepository = repository;
             this.userRepository = userRepository;
             this.userTokenRepository = userTokenRepository;
             this.deckRepository = deckRepository;
+            this.flashcardScoreRepository = flashcardScoreRepository;
         }
 
         public Flashcard AddFlashcard(Flashcard flashcard, int deckId, string token)
@@ -99,6 +101,76 @@ namespace BusinessLogic
             }
             Flashcard updatedFlashcard = flashcardRepository.GetById(flashcardId);
             return updatedFlashcard;
+        }
+
+        public List<Tuple<Flashcard, int>> GetRatedFlashcards(int deckId, string token)
+        {
+            Deck deck = deckRepository.GetById(deckId);
+            if (deck == null)
+                throw new NotFoundException(DeckMessage.DECK_NOT_FOUND);
+
+            User user = userTokenRepository.GetUserByToken(token);
+            if (user == null)
+                throw new InvalidException(FlashcardMessage.NOT_AUTHORIZED);
+
+            List<Tuple<Flashcard, int>> returningList = new List<Tuple<Flashcard, int>>();
+
+            foreach (var flashcard in deck.Flashcards)
+            {
+                var flashcardScore = flashcardScoreRepository.FindByCondition(fs => fs.FlashcardId == flashcard.Id && fs.UserId == user.Id);
+                if (flashcardScore.Count() == 0)
+                {
+                    Tuple<Flashcard, int> assigningTuple = new Tuple<Flashcard, int>(flashcard, 0);
+                    returningList.Add(assigningTuple);
+                }
+                else
+                {
+                    Tuple<Flashcard, int> assigningTuple = new Tuple<Flashcard, int>(flashcard, flashcardScore.First().Score);
+                    returningList.Add(assigningTuple);
+                }
+            }
+
+            return returningList;
+        }
+
+        public Flashcard UpdateScore(int id, int score, string token)
+        {
+            Flashcard flashcard = flashcardRepository.GetById(id);
+
+            if (flashcard is null)
+                throw new NotFoundException(FlashcardMessage.FLASHCARD_NOT_FOUND);
+
+            User user = userTokenRepository.GetUserByToken(token);
+            if (user == null)
+                throw new InvalidException(FlashcardMessage.NOT_AUTHORIZED);
+
+            var flashcardScore = flashcardScoreRepository.FindByCondition(fs => fs.FlashcardId == flashcard.Id && fs.UserId == user.Id);
+            
+            if(flashcardScore.Count() == 0)
+            {
+                var addingFlashcard = new FlashcardScore()
+                { 
+                    FlashcardId = flashcard.Id, Flashcard = flashcard, User = user, UserId = user.Id, Score = score 
+                };
+
+                flashcard.UserScores.Add(addingFlashcard);
+                flashcardRepository.Update(flashcard);
+
+                flashcardScoreRepository.Add(addingFlashcard);
+            } 
+            else
+            {
+                var editingFlashcard = flashcardScore.First();
+                editingFlashcard.Score = score;
+
+                flashcard.UserScores.Find(fs => fs.UserId == user.Id).Score = score;
+                flashcardRepository.Update(flashcard);
+
+                flashcardScoreRepository.Update(editingFlashcard);
+            }
+
+            return flashcard;
+
         }
     }
 }

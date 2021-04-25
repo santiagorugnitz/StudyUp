@@ -6,6 +6,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace BusinessLogicTest
@@ -19,6 +21,7 @@ namespace BusinessLogicTest
         Mock<IRepository<Deck>> deckRepositoryMock;
         Mock<IRepository<User>> userRepositoryMock;
         Mock<IRepository<Flashcard>> flashcardRepositoryMock;
+        Mock<IRepository<FlashcardScore>> flashcardScoreRepositoryMock;
         Mock<IUserRepository> userTokenRepository;
         FlashcardLogic flashcardLogic;
 
@@ -56,10 +59,11 @@ namespace BusinessLogicTest
 
             deckRepositoryMock = new Mock<IRepository<Deck>>(MockBehavior.Loose);
             userRepositoryMock = new Mock<IRepository<User>>(MockBehavior.Strict);
-            flashcardRepositoryMock = new Mock<IRepository<Flashcard>>(MockBehavior.Strict);
+            flashcardRepositoryMock = new Mock<IRepository<Flashcard>>(MockBehavior.Loose);
+            flashcardScoreRepositoryMock = new Mock<IRepository<FlashcardScore>>(MockBehavior.Loose);
             userTokenRepository = new Mock<IUserRepository>(MockBehavior.Strict);
             flashcardLogic = new FlashcardLogic(flashcardRepositoryMock.Object, userRepositoryMock.Object,
-                userTokenRepository.Object, deckRepositoryMock.Object);
+                userTokenRepository.Object, deckRepositoryMock.Object, flashcardScoreRepositoryMock.Object);
         }
 
         [TestMethod]
@@ -267,6 +271,139 @@ namespace BusinessLogicTest
 
             flashcardRepositoryMock.VerifyAll();
             Assert.IsTrue(result);
+        }
+
+        [ExpectedException(typeof(NotFoundException))]
+        [TestMethod]
+        public void GetRatedFlashcardsNullDeckTest()
+        {
+            deckRepositoryMock.Setup(d => d.GetById(It.IsAny<int>())).Returns((Deck)null);
+            userTokenRepository.Setup(b => b.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            flashcardScoreRepositoryMock.Setup(fs => fs.FindByCondition(It.IsAny<Expression<Func<FlashcardScore, bool>>>()))
+                .Returns(new List<FlashcardScore>());
+
+            var result = flashcardLogic.GetRatedFlashcards(1, "Token");
+
+            deckRepositoryMock.VerifyAll();
+        }
+
+        [ExpectedException(typeof(InvalidException))]
+        [TestMethod]
+        public void GetRatedFlashcardsNullUserTest()
+        {
+            deckRepositoryMock.Setup(d => d.GetById(It.IsAny<int>())).Returns(deckExample);
+            userTokenRepository.Setup(b => b.GetUserByToken(It.IsAny<string>())).Returns((User)null);
+            flashcardScoreRepositoryMock.Setup(fs => fs.FindByCondition(It.IsAny<Expression<Func<FlashcardScore, bool>>>()))
+                .Returns(new List<FlashcardScore>());
+
+            var result = flashcardLogic.GetRatedFlashcards(1, "Token");
+
+            deckRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void GetRatedFlashcardsWithoutScoreTest()
+        {
+            deckExample.Flashcards = new List<Flashcard>() { flashcardExample };
+            deckRepositoryMock.Setup(d => d.GetById(It.IsAny<int>())).Returns(deckExample);
+            userTokenRepository.Setup(b => b.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            flashcardScoreRepositoryMock.Setup(fs => fs.FindByCondition(It.IsAny<Expression<Func<FlashcardScore, bool>>>()))
+                .Returns(new List<FlashcardScore>());
+
+            var result = flashcardLogic.GetRatedFlashcards(1, "Token");
+
+            deckRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(1, result.Count());
+            Assert.AreEqual(flashcardExample, result[0].Item1);
+            Assert.AreEqual(0, result[0].Item2);
+        }
+
+        [TestMethod]
+        public void GetRatedFlashcardsWithScoreTest()
+        {
+            deckExample.Flashcards = new List<Flashcard>() { flashcardExample };
+            deckRepositoryMock.Setup(d => d.GetById(It.IsAny<int>())).Returns(deckExample);
+            userTokenRepository.Setup(b => b.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            flashcardScoreRepositoryMock.Setup(fs => fs.FindByCondition(It.IsAny<Expression<Func<FlashcardScore, bool>>>()))
+                .Returns(new List<FlashcardScore>() { new FlashcardScore() { Flashcard = flashcardExample, Score = 10 } });
+
+            var result = flashcardLogic.GetRatedFlashcards(1, "Token");
+
+            deckRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(1, result.Count());
+            Assert.AreEqual(flashcardExample, result[0].Item1);
+            Assert.AreEqual(10, result[0].Item2);
+        }
+
+        [ExpectedException(typeof(NotFoundException))]
+        [TestMethod]
+        public void UpdateFlascardScoreNullFlashcardTest()
+        {
+            flashcardRepositoryMock.Setup(d => d.GetById(It.IsAny<int>())).Returns((Flashcard)null);
+            userTokenRepository.Setup(b => b.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            flashcardScoreRepositoryMock.Setup(fs => fs.FindByCondition(It.IsAny<Expression<Func<FlashcardScore, bool>>>()))
+                .Returns(new List<FlashcardScore>());
+
+            var result = flashcardLogic.UpdateScore(1, 5, "Token");
+
+            flashcardRepositoryMock.VerifyAll();
+        }
+
+        [ExpectedException(typeof(InvalidException))]
+        [TestMethod]
+        public void UpdateFlascardScoreNullUserTest()
+        {
+            flashcardRepositoryMock.Setup(d => d.GetById(It.IsAny<int>())).Returns(flashcardExample);
+            userTokenRepository.Setup(b => b.GetUserByToken(It.IsAny<string>())).Returns((User)null);
+            flashcardScoreRepositoryMock.Setup(fs => fs.FindByCondition(It.IsAny<Expression<Func<FlashcardScore, bool>>>()))
+                .Returns(new List<FlashcardScore>());
+
+            var result = flashcardLogic.UpdateScore(1, 5, "Token");
+
+            flashcardRepositoryMock.VerifyAll();
+            userTokenRepository.VerifyAll();
+        }
+
+        [TestMethod]
+        public void UpdateFlascardScoreNonExistingTest()
+        {
+            flashcardExample.UserScores = new List<FlashcardScore>();
+            flashcardRepositoryMock.Setup(d => d.GetById(It.IsAny<int>())).Returns(flashcardExample);
+            userTokenRepository.Setup(b => b.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            flashcardScoreRepositoryMock.Setup(fs => fs.FindByCondition(It.IsAny<Expression<Func<FlashcardScore, bool>>>()))
+                .Returns(new List<FlashcardScore>());
+
+            var result = flashcardLogic.UpdateScore(1, 5, "Token");
+
+            flashcardRepositoryMock.VerifyAll();
+            userTokenRepository.VerifyAll();
+            flashcardScoreRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(1, result.UserScores.Count());
+            Assert.AreEqual(5, result.UserScores[0].Score);
+        }
+
+        [TestMethod]
+        public void UpdateFlascardScoreExistingTest()
+        {
+            var flashcardScoreExample = new FlashcardScore() { UserId=1,  FlashcardId = flashcardExample.Id, Flashcard = flashcardExample, Score = 10 };
+            flashcardExample.UserScores = new List<FlashcardScore>() { flashcardScoreExample };
+            flashcardRepositoryMock.Setup(d => d.GetById(It.IsAny<int>())).Returns(flashcardExample);
+            deckRepositoryMock.Setup(d => d.GetById(It.IsAny<int>())).Returns(deckExample);
+            userTokenRepository.Setup(b => b.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            flashcardScoreRepositoryMock.Setup(fs => fs.FindByCondition(It.IsAny<Expression<Func<FlashcardScore, bool>>>()))
+                .Returns(new List<FlashcardScore>() {  flashcardScoreExample });
+
+            var result = flashcardLogic.UpdateScore(1, 5, "Token");
+
+            flashcardRepositoryMock.VerifyAll();
+            userTokenRepository.VerifyAll();
+            flashcardScoreRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(1, result.UserScores.Count());
+            Assert.AreEqual(5, result.UserScores[0].Score);
         }
 
     }

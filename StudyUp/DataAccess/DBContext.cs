@@ -57,7 +57,20 @@ namespace DataAccess
                 .WithMany(c => c.UserGroups)
                 .HasForeignKey(bc => bc.GroupId)
                 .OnDelete(DeleteBehavior.NoAction);
-            
+
+            modelBuilder.Entity<FlashcardScore>()
+                .HasKey(b => new { b.FlashcardId, b.UserId });
+            modelBuilder.Entity<FlashcardScore>()
+                .HasOne(bc => bc.User)
+                .WithMany(b => b.FlashcardScores)
+                .HasForeignKey(bc => bc.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<FlashcardScore>()
+                .HasOne(bc => bc.Flashcard)
+                .WithMany(c => c.UserScores)
+                .HasForeignKey(bc => bc.FlashcardId)
+                .OnDelete(DeleteBehavior.NoAction);
+
 
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { optionsBuilder.UseLazyLoadingProxies(); }

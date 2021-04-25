@@ -9,6 +9,7 @@ namespace Domain
         public virtual List<Deck> Decks { get; set; }
         public virtual List<Group> Groups { get; set; }
         public virtual List<UserGroup> UserGroups { get; set; }
+        public virtual List<FlashcardScore> FlashcardScores { get; set; }
         public string Email { get; set; }
         public bool IsStudent { get; set; }
         public string Username { get; set; }
