@@ -113,9 +113,9 @@ namespace BusinessLogic
                 throw new InvalidException(DeckMessage.NOT_AUTHORIZED);
             }
 
-            User author = deck.Author;
-            author.Decks.Remove(deck);
-            userRepository.Update(author);
+            //User author = deck.Author;
+            //author.Decks.Remove(deck);
+            //userRepository.Update(author);
             deckRepository.Delete(deck);
             return true;
         }
