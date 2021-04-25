@@ -28,7 +28,7 @@ namespace WebAPI.Controllers
         {   
             if (userId > 0)
             {
-                return Ok(logic.GetDecksByAuthor(userId));
+                return Ok(ConvertDecks(logic.GetDecksByAuthor(userId)));
             } 
             
             return Ok(ConvertDecks(logic.GetAllDecks()));
@@ -50,29 +50,60 @@ namespace WebAPI.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] DeckModel deckModel, [FromHeader] string token)
         {
-            Deck newDeck = logic.AddDeck(deckModel.ToEntity(), token);
-            return Ok(newDeck);
+            Deck deck = logic.AddDeck(deckModel.ToEntity(), token);
+            return Ok(new ResponseDeckModel()
+            {
+                Id = deck.Id,
+                Author = deck.Author.Username,
+                Name = deck.Name,
+                Subject = deck.Subject,
+                Difficulty = deck.Difficulty,
+                IsHidden = deck.IsHidden
+            });
         }
 
         [HttpPut("{id}")]
         public IActionResult Update([FromRoute] int id, [FromBody] UpdateDeckModel updateDeckModel)
         {
-            return Ok(logic.EditDeck(id, updateDeckModel.Name,
-                updateDeckModel.Difficulty, updateDeckModel.IsHidden, updateDeckModel.Subject));
+            Deck deck = logic.EditDeck(id, updateDeckModel.Name,
+                updateDeckModel.Difficulty, updateDeckModel.IsHidden, updateDeckModel.Subject);
+            return Ok(new ResponseDeckModel()
+            {
+                Id = deck.Id,
+                Author = deck.Author.Username,
+                Name = deck.Name,
+                Subject = deck.Subject,
+                Difficulty = deck.Difficulty,
+                IsHidden = deck.IsHidden
+            });
         }
 
         [HttpGet("{id}")]
         public IActionResult GetDeckById([FromRoute] int id)
         {
             Deck deck = logic.GetDeckById(id);
-            return Ok(deck);
+            return Ok(new ResponseFullDeckModel()
+            {
+                Id = deck.Id,
+                Author = deck.Author.Username,
+                Name = deck.Name,
+                Subject = deck.Subject,
+                Difficulty = deck.Difficulty,
+                IsHidden = deck.IsHidden,
+                Flashcards = deck.Flashcards.Select(flashcard => new ResponseFlashcardModel()
+                {
+                    Id = flashcard.Id,
+                    Question = flashcard.Question,
+                    Answer = flashcard.Answer
+                })
+            });
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete([FromRoute] int id, [FromHeader] string token)
         {
             logic.DeleteDeck(id, token);
-            return Ok("Successfully deleted.");
+            return Ok();
         }
     }
 }

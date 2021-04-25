@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_newDeckFragment_to_deckDetailFragment"
             app:destination="@id/deckDetailFragment" />
+        <action
+            android:id="@+id/action_newDeckFragment_to_decksFragment"
+            app:destination="@id/decksFragment" />
     </fragment>
     <fragment
         android:id="@+id/deckDetailFragment"

@@ -18,7 +18,7 @@ interface DeckService {
     suspend fun updateDeck(@Path("id") id: Int, @Body data: NewDeckRequest): Response<*>
 
     @DELETE("api/decks/{id}")
-    suspend fun deleteDeck(@Path("id") id: Int): Response<*>
+    suspend fun deleteDeck(@Path("id") id: Int): Response<Unit>
 
     @GET("api/decks/{id}")
     suspend fun getDeck(@Path("id") id: Int): Response<Deck>
