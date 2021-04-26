@@ -48,10 +48,16 @@ namespace WebAPI.Controllers
         {
             List<ResponseFlashcardScoreModel> returningList = new List<ResponseFlashcardScoreModel>();
             var gotFlashcards = logic.GetRatedFlashcards(deckId, token);
-            
+
             foreach (var ratedFlashcard in gotFlashcards)
             {
-                returningList.Add(new ResponseFlashcardScoreModel() { Flashcard = ratedFlashcard.Item1, Score = ratedFlashcard.Item2 });
+                returningList.Add(new ResponseFlashcardScoreModel()
+                {
+                    Id = ratedFlashcard.Item1.Id,
+                    Question = ratedFlashcard.Item1.Question,
+                    Answer = ratedFlashcard.Item1.Answer,
+                    Score = ratedFlashcard.Item2
+                });
             }
 
             return Ok(returningList);
