@@ -15,4 +15,6 @@ interface FlashcardService {
     @DELETE("api/flashcards/{id}")
     suspend fun deleteFlashcard(@Path("id") id: Int): Response<Unit>
 
+    @GET("api/flashcards/rated")
+    suspend fun ratedFlashcards(@Query("deckId") deckId: Int): Response<List<RatedFlashcard>>
 }

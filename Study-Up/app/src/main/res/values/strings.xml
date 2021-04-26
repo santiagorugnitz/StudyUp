@@ -47,6 +47,7 @@
     <string name="following">Following</string>
     <string name="everyone">Everyone</string>
     <string name="decks_from_friends">Decks from friends</string>
+    <string name="no_flashcards_error">Deck has no flashcards</string>
 
 
     <string-array name="difficulties">

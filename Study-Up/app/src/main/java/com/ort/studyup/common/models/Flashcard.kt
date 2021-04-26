@@ -19,3 +19,10 @@ class EditFlashCardRequest(
         @SerializedName("question") val question: String,
         @SerializedName("answer") val answer: String,
 )
+
+class RatedFlashcard(
+        val id: Int,
+        val question: String,
+        val answer: String,
+        var score: Int
+)
