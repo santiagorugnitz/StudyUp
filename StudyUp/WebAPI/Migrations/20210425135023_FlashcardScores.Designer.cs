@@ -4,14 +4,16 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20210425135023_FlashcardScores")]
+    partial class FlashcardScores
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -119,6 +121,9 @@ namespace WebAPI.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("FollowerId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsStudent")
                         .HasColumnType("bit");
 
@@ -133,22 +138,9 @@ namespace WebAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("FollowerId");
+
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Domain.UserFollowing", b =>
-                {
-                    b.Property<int>("FollowingUserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FollowerUserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("FollowingUserId", "FollowerUserId");
-
-                    b.HasIndex("FollowerUserId");
-
-                    b.ToTable("UserFollowing");
                 });
 
             modelBuilder.Entity("Domain.UserGroup", b =>
@@ -215,23 +207,14 @@ namespace WebAPI.Migrations
                     b.Navigation("Creator");
                 });
 
-            modelBuilder.Entity("Domain.UserFollowing", b =>
+            modelBuilder.Entity("Domain.User", b =>
                 {
-                    b.HasOne("Domain.User", "FollowerUser")
+                    b.HasOne("Domain.User", "Follower")
                         .WithMany("FollowedUsers")
-                        .HasForeignKey("FollowerUserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .HasForeignKey("FollowerId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("Domain.User", "FollowingUser")
-                        .WithMany("FollowingUsers")
-                        .HasForeignKey("FollowingUserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("FollowerUser");
-
-                    b.Navigation("FollowingUser");
+                    b.Navigation("Follower");
                 });
 
             modelBuilder.Entity("Domain.UserGroup", b =>
@@ -275,8 +258,6 @@ namespace WebAPI.Migrations
                     b.Navigation("FlashcardScores");
 
                     b.Navigation("FollowedUsers");
-
-                    b.Navigation("FollowingUsers");
 
                     b.Navigation("Groups");
 

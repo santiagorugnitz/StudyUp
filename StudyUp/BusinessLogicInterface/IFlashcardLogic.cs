@@ -10,5 +10,7 @@ namespace BusinessLogicInterface
         Flashcard AddFlashcard(Flashcard flashcard, int deckId, string token);
         Flashcard EditFlashcard(string token, int flashcardId, string newQuestion, string newAnswer);
         bool DeleteFlashcard(int id, string token);
+        Flashcard UpdateScore(int id, int score, string token);
+        List<Tuple<Flashcard, int>> GetRatedFlashcards(int deckId, string token);
     }
 }
