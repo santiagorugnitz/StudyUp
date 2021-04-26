@@ -15,11 +15,12 @@ import com.ort.studyup.common.ui.BaseFragment
 import kotlinx.android.synthetic.main.fragment_study.*
 import java.util.*
 
-class StudyFragment : BaseFragment() {
+class StudyFragment : BaseFragment(), TextToSpeech.OnInitListener {
 
     private val viewModel: StudyViewModel by injectViewModel(StudyViewModel::class)
     private var showingQuestion = true
     private lateinit var currentCard: RatedFlashcard
+    private val tts: TextToSpeech = TextToSpeech(requireContext(), this)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreate(savedInstanceState)
@@ -65,7 +66,9 @@ class StudyFragment : BaseFragment() {
     }
 
     private fun onTTS() {
-        //TODO:
+        if (!tts.isSpeaking) {
+            tts.speak(cardContent.text, TextToSpeech.QUEUE_FLUSH, null, null)
+        }
     }
 
 
@@ -106,5 +109,17 @@ class StudyFragment : BaseFragment() {
         }
     }
 
+    override fun onInit(status: Int) {
+        if (status == TextToSpeech.SUCCESS) {
+            val result = tts.setLanguage(Locale.US)
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Toast.makeText(requireContext(), "Language not supported", Toast.LENGTH_SHORT).show();
+            } else {
+                ttsButton.setOnClickListener { onTTS() }
+            }
 
+        } else {
+            Toast.makeText(requireContext(), "Init failed", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
