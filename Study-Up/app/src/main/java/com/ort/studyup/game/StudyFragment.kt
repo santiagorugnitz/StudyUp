@@ -20,7 +20,7 @@ class StudyFragment : BaseFragment(), TextToSpeech.OnInitListener {
     private val viewModel: StudyViewModel by injectViewModel(StudyViewModel::class)
     private var showingQuestion = true
     private lateinit var currentCard: RatedFlashcard
-    private val tts: TextToSpeech = TextToSpeech(requireContext(), this)
+    private lateinit var tts: TextToSpeech
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreate(savedInstanceState)
@@ -30,6 +30,7 @@ class StudyFragment : BaseFragment(), TextToSpeech.OnInitListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val deckId = requireActivity().intent.extras?.getInt(DECK_ID_KEY)
+        tts = TextToSpeech(requireContext(), this)
         deckId?.let {
             initViewModel(deckId)
             initUI()

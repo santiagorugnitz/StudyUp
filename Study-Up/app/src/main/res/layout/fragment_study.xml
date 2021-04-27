@@ -6,14 +6,12 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark">
 
-    <!--    TODO: use better icon-->
     <ImageView
         android:id="@+id/ttsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:background="@color/white"
         android:src="@drawable/ic_audio"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -36,7 +34,7 @@
         android:layout_marginVertical="64dp"
         android:background="@drawable/item_background"
         android:elevation="@dimen/elevation"
-        app:layout_constraintBottom_toTopOf="@id/correctButton"
+        app:layout_constraintBottom_toTopOf="@id/flipButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/commentButton">
@@ -97,11 +95,9 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="64dp"
         android:src="@drawable/ic_flip"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="visible" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

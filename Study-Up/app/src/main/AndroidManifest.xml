@@ -40,6 +40,10 @@
         <activity
             android:name=".home.search.ScanActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".game.StudyActivity"
+            android:theme="@style/AppTheme.DarkStatusBar"
+            android:screenOrientation="portrait" />
     </application>
 
     <queries>
