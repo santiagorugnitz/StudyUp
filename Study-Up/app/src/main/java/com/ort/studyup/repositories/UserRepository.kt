@@ -1,5 +1,6 @@
 package com.ort.studyup.repositories
 
+import com.google.firebase.messaging.FirebaseMessaging
 import com.ort.studyup.common.TOKEN_KEY
 import com.ort.studyup.common.models.FollowRequest
 import com.ort.studyup.common.models.LoginRequest
@@ -9,6 +10,7 @@ import com.ort.studyup.common.utils.EncryptedPreferencesHelper
 import com.ort.studyup.services.UserService
 import com.ort.studyup.services.check
 import com.ort.studyup.storage.dao.UserDao
+import kotlinx.coroutines.tasks.await
 
 class UserRepository(
     private val userService: UserService,
@@ -17,11 +19,12 @@ class UserRepository(
 ) {
 
     suspend fun login(username: String, password: String): User {
+        val token = FirebaseMessaging.getInstance().token.await()
 
         val result = if (username.contains('@')) {
-            userService.login(LoginRequest(null, username, password)).check()
+            userService.login(LoginRequest(null, username, password,token)).check()
         } else {
-            userService.login(LoginRequest(username, null, password)).check()
+            userService.login(LoginRequest(username, null, password,token)).check()
         }
         val user = User(
             result.id,
@@ -37,7 +40,9 @@ class UserRepository(
     suspend fun getUser() = userDao.getUser()
 
     suspend fun register(username: String, mail: String, password: String, isStudent: Boolean): User {
-        val result = userService.register(RegisterRequest(username, mail, password, isStudent)).check()
+        val token = FirebaseMessaging.getInstance().token.await()
+
+        val result = userService.register(RegisterRequest(username, mail, password, isStudent,token)).check()
         val user = User(
             result.id,
             result.username,

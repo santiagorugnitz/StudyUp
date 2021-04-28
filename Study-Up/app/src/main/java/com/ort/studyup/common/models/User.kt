@@ -15,7 +15,8 @@ data class User(
 class LoginRequest(
     @SerializedName("username") val username: String?,
     @SerializedName("email") val email: String?,
-    @SerializedName("password") val password: String
+    @SerializedName("password") val password: String,
+    @SerializedName("firebaseToken") val token: String,
 )
 
 class RegisterRequest(
@@ -23,6 +24,7 @@ class RegisterRequest(
     @SerializedName("email") val mail: String,
     @SerializedName("password") val password: String,
     @SerializedName("isStudent") val isStudent: Boolean,
+    @SerializedName("firebaseToken") val token: String,
 )
 
 class UserResponse(
