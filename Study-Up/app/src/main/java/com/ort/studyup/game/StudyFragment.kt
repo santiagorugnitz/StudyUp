@@ -27,6 +27,11 @@ class StudyFragment : BaseFragment(), TextToSpeech.OnInitListener {
         return inflater.inflate(R.layout.fragment_study, container, false)
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.updateScore()
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val deckId = requireActivity().intent.extras?.getInt(DECK_ID_KEY)
@@ -71,7 +76,6 @@ class StudyFragment : BaseFragment(), TextToSpeech.OnInitListener {
             tts.speak(cardContent.text, TextToSpeech.QUEUE_FLUSH, null, null)
         }
     }
-
 
     private fun onComment() {
         //TODO:

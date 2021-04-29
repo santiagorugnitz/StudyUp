@@ -32,4 +32,8 @@ class FlashcardRepository(
         return flashcardService.ratedFlashcards(deckId).check()
     }
 
+    suspend fun updateScore(flashcards:List<RatedFlashcard>){
+        //flashcardService.updateScore().check()
+    }
+
 }

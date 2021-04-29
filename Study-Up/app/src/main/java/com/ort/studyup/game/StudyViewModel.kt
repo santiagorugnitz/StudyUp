@@ -29,6 +29,7 @@ class StudyViewModel(
             val previousId = flashcards[currentPos].id
             flashcards[currentPos].score--
             flashcards = flashcards.sortedBy { it.score }
+            currentPos = (currentPos + 1) % flashcards.size
             if (flashcards[currentPos].id == previousId) {
                 currentPos = (currentPos + 1) % flashcards.size
             }
@@ -43,11 +44,19 @@ class StudyViewModel(
             val previousId = flashcards[currentPos].id
             flashcards[currentPos].score++
             flashcards = flashcards.sortedBy { it.score }
+            currentPos = (currentPos + 1) % flashcards.size
             if (flashcards[currentPos].id == previousId) {
                 currentPos = (currentPos + 1) % flashcards.size
             }
             result.postValue(flashcards[currentPos])
         }
         return result
+    }
+
+    fun updateScore() {
+        if (flashcards.isEmpty()) return
+        executeService {
+            flashcardRepository.updateScore(flashcards)
+        }
     }
 }

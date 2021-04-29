@@ -61,7 +61,6 @@ class NewDeckFragment : BaseFragment(), ConfirmationDialog.Callback {
                     requireContext(),
                     getString(R.string.delete_deck_confirmation),
                     this,
-                    attrs = null
                 ).show()
             }
         }
