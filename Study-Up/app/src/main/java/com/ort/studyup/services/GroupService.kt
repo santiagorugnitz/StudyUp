@@ -12,7 +12,7 @@ interface GroupService {
     @POST("api/groups")
     suspend fun createGroup(@Body data: NewGroupRequest): Response<*>
 
-    @GET("api/groups")
+    @GET("api/groups/filter")
     suspend fun searchGroup(@Query("name") query: String): Response<List<GroupSearchResponse>>
 
     @DELETE("api/groups/{id}/unsubscribe")
