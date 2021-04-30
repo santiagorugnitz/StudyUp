@@ -15,7 +15,7 @@ class ConfirmationDialog(
     private val callback: Callback,
     @DrawableRes private val icon: Int = R.drawable.ic_warning,
     private val buttonText: String? = null,
-    attrs: AttributeSet?
+    attrs: AttributeSet? = null
 ) : View(context, attrs) {
 
 

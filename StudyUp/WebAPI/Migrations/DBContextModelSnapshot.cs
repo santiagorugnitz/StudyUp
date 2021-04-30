@@ -119,9 +119,6 @@ namespace WebAPI.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("FollowerId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsStudent")
                         .HasColumnType("bit");
 
@@ -136,9 +133,22 @@ namespace WebAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FollowerId");
-
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Domain.UserFollowing", b =>
+                {
+                    b.Property<int>("FollowingUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FollowerUserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("FollowingUserId", "FollowerUserId");
+
+                    b.HasIndex("FollowerUserId");
+
+                    b.ToTable("UserFollowing");
                 });
 
             modelBuilder.Entity("Domain.UserGroup", b =>
@@ -205,14 +215,23 @@ namespace WebAPI.Migrations
                     b.Navigation("Creator");
                 });
 
-            modelBuilder.Entity("Domain.User", b =>
+            modelBuilder.Entity("Domain.UserFollowing", b =>
                 {
-                    b.HasOne("Domain.User", "Follower")
+                    b.HasOne("Domain.User", "FollowerUser")
                         .WithMany("FollowedUsers")
-                        .HasForeignKey("FollowerId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .HasForeignKey("FollowerUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
-                    b.Navigation("Follower");
+                    b.HasOne("Domain.User", "FollowingUser")
+                        .WithMany("FollowingUsers")
+                        .HasForeignKey("FollowingUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("FollowerUser");
+
+                    b.Navigation("FollowingUser");
                 });
 
             modelBuilder.Entity("Domain.UserGroup", b =>
@@ -256,6 +275,8 @@ namespace WebAPI.Migrations
                     b.Navigation("FlashcardScores");
 
                     b.Navigation("FollowedUsers");
+
+                    b.Navigation("FollowingUsers");
 
                     b.Navigation("Groups");
 

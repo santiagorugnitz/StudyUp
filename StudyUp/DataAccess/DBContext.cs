@@ -34,12 +34,6 @@ namespace DataAccess
                 .WithOne(a => a.Author)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.FollowedUsers)
-                .WithOne(u => u.Follower)
-                .HasForeignKey(id => id.FollowerId)
-                .OnDelete(DeleteBehavior.NoAction);
-
             modelBuilder.Entity<Deck>()
                 .HasMany(f => f.Flashcards)
                 .WithOne(d => d.Deck)
@@ -72,6 +66,18 @@ namespace DataAccess
                 .OnDelete(DeleteBehavior.NoAction);
 
 
+            modelBuilder.Entity<UserFollowing>()
+                .HasKey(u => new { u.FollowingUserId, u.FollowerUserId });
+            modelBuilder.Entity<UserFollowing>()
+                .HasOne(bc => bc.FollowingUser)
+                .WithMany(b => b.FollowingUsers)
+                .HasForeignKey(bc => bc.FollowingUserId)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<UserFollowing>()
+                .HasOne(bc => bc.FollowerUser)
+                .WithMany(c => c.FollowedUsers)
+                .HasForeignKey(bc => bc.FollowerUserId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { optionsBuilder.UseLazyLoadingProxies(); }
 

@@ -7,6 +7,7 @@ using Exceptions;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace BusinessLogicTest
 {
@@ -29,18 +30,32 @@ namespace BusinessLogicTest
                 Email = "mariaFer@gmail.com",
                 Password = "Mari1k",
                 IsStudent = false,
-                Token = "New token"
+                Token = "New token",
+                FollowingUsers = new List<UserFollowing>(),
+                FollowedUsers = new List<UserFollowing>()
             };
 
             userExample = new User()
             {
+                Id = 1,
                 Username = "Maria",
                 Email = "maria@gmail.com",
                 Password = "Mari1k",
                 IsStudent = false,
                 Token = "New token",
-                FollowedUsers = new List<User>() { userListed }
+                FollowingUsers = new List<UserFollowing>(),
+                FollowedUsers = new List<UserFollowing>()
             };
+
+            UserFollowing userFollowingListed = new UserFollowing
+            {
+                FollowingUserId = userListed.Id,
+                FollowingUser = userListed,
+                FollowerUserId = userExample.Id,
+                FollowerUser = userExample
+            };
+
+            userExample.FollowedUsers = new List<UserFollowing>() { userFollowingListed };
 
             userList = new List<User>() { userListed, userExample };
             userMock = new Mock<IUserRepository>(MockBehavior.Strict);
@@ -161,7 +176,8 @@ namespace BusinessLogicTest
         public void GetUsersByName()
         {
             userMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
-            userRepositoryMock.Setup(m => m.FindByCondition(user => user.IsStudent && user.Username.Contains("Maria"))).Returns((ICollection<User>)userList);
+            userRepositoryMock.Setup(m => m.FindByCondition(It.IsAny<Expression<Func<User, bool>>>()))
+                .Returns((ICollection<User>)userList);
 
             var result = userLogic.GetUsers("Token", "Maria");
 
@@ -179,7 +195,8 @@ namespace BusinessLogicTest
         public void GetAllUsers()
         {
             userMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
-            userRepositoryMock.Setup(m => m.GetAll()).Returns((ICollection<User>)userList);
+            userRepositoryMock.Setup(m => m.FindByCondition(It.IsAny<Expression<Func<User, bool>>>()))
+                .Returns((ICollection<User>)userList);
 
             var result = userLogic.GetUsers("Token", "");
 
@@ -242,7 +259,7 @@ namespace BusinessLogicTest
         [TestMethod]
         public void FollowUserOk()
         {
-            userExample.FollowedUsers = new List<User>();
+            userExample.FollowedUsers = new List<UserFollowing>();
             userRepositoryMock.Setup(m => m.FindByCondition(user => user.Username.Equals("Maria"))).Returns(new List<User>() { userExample });
             userMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
 
@@ -257,7 +274,16 @@ namespace BusinessLogicTest
         [ExpectedException(typeof(InvalidException))]
         public void FollowUserInvalid()
         {
-            userExample.FollowedUsers = new List<User>() { userExample };
+            UserFollowing userFollowingExample = new UserFollowing
+            {
+                FollowingUserId = userExample.Id,
+                FollowingUser = userExample,
+                FollowerUserId = userExample.Id,
+                FollowerUser = userExample
+            };
+
+            userExample.FollowedUsers = new List<UserFollowing>() { userFollowingExample };
+
             userRepositoryMock.Setup(m => m.FindByCondition(user => user.Username.Equals("Maria"))).Returns(new List<User>() { userExample });
             userMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
 
@@ -269,7 +295,15 @@ namespace BusinessLogicTest
         [TestMethod]
         public void UnfollowUserOk()
         {
-            userExample.FollowedUsers = new List<User>() { userExample };
+            UserFollowing userFollowingExample = new UserFollowing
+            {
+                FollowingUserId = userExample.Id,
+                FollowingUser = userExample,
+                FollowerUserId = userExample.Id,
+                FollowerUser = userExample
+            };
+
+            userExample.FollowedUsers = new List<UserFollowing>() { userFollowingExample };
             userRepositoryMock.Setup(m => m.FindByCondition(user => user.Username.Equals("Maria"))).Returns(new List<User>() { userExample });
             userMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
 
@@ -284,7 +318,7 @@ namespace BusinessLogicTest
         [ExpectedException(typeof(InvalidException))]
         public void UnfollowUserInvalid()
         {
-            userExample.FollowedUsers = new List<User>() { };
+            userExample.FollowedUsers = new List<UserFollowing>() { };
             userRepositoryMock.Setup(m => m.FindByCondition(user => user.Username.Equals("Maria"))).Returns(new List<User>() { userExample });
             userMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
 
@@ -297,7 +331,15 @@ namespace BusinessLogicTest
         public void GetDecksFromFollowing()
         {
             userListed.Decks = new List<Deck>() { new Deck() { Name = "Deck1", IsHidden = true }, new Deck() { Name = "Deck2", IsHidden = false } };
-            userExample.FollowedUsers = new List<User>() { userListed };
+            UserFollowing userFollowingListed = new UserFollowing
+            {
+                FollowingUserId = userListed.Id,
+                FollowingUser = userListed,
+                FollowerUserId = userExample.Id,
+                FollowerUser = userExample
+            };
+
+            userExample.FollowedUsers = new List<UserFollowing>() { userFollowingListed };
             userMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
 
             var result = userLogic.GetDecksFromFollowing("Token");

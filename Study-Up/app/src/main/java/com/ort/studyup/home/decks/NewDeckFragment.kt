@@ -61,7 +61,6 @@ class NewDeckFragment : BaseFragment(), ConfirmationDialog.Callback {
                     requireContext(),
                     getString(R.string.delete_deck_confirmation),
                     this,
-                    attrs = null
                 ).show()
             }
         }
@@ -91,6 +90,7 @@ class NewDeckFragment : BaseFragment(), ConfirmationDialog.Callback {
         viewModel.deleteDeck().observe(viewLifecycleOwner, {
             if (it) {
                 requireActivity().onBackPressed()
+                findNavController().navigate(R.id.action_newDeckFragment_to_decksFragment)
             }
         })
     }

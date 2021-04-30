@@ -53,7 +53,6 @@ class NewFlashcardFragment : BaseFragment(), ConfirmationDialog.Callback {
                         requireContext(),
                         getString(R.string.delete_flashcard_confirmation),
                         this,
-                        attrs = null
                     ).show()
                 }
             }

@@ -29,7 +29,7 @@ open class BaseFragment : Fragment() {
         if (it.show) loader.show(it.visibility) else loader.hide()
     }
 
-    private fun showError(code: Int, message: String) {
+    protected fun showError(code: Int, message: String) {
         val snackBar = Snackbar.make(this.requireView(), message, Snackbar.LENGTH_LONG)
         snackBar.view.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.error))
         snackBar.show()

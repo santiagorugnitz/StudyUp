@@ -78,6 +78,11 @@ namespace WebAPI.Controllers
         [HttpGet]
         public IActionResult GetUsers([FromHeader] string token, [FromQuery] string username = "")
         {
+            if (username == null)
+            {
+                username = "";
+            }
+
             var userList = logic.GetUsers(token, username);
             List<ResponseFollowedUserModel> responseList = new List<ResponseFollowedUserModel>();
             

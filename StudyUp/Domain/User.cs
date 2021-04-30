@@ -15,9 +15,8 @@ namespace Domain
         public string Username { get; set; }
         public string Password { get; set; }
         public string Token { get; set; }
-        public int? FollowerId { get; set; }
-        public virtual User Follower { get; set; }
-        public virtual List<User> FollowedUsers { get; set; }
+        public virtual List<UserFollowing> FollowedUsers { get; set; }
+        public virtual List<UserFollowing> FollowingUsers { get; set; }
 
         public override bool Equals(object o)
         {
