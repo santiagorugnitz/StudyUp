@@ -23,7 +23,7 @@ namespace WebAPI.Controllers
             this.logic = logic;
         }
 
-        [HttpGet]
+        [HttpGet("/filter")]
         public IActionResult Get([FromHeader] string token, [FromQuery] string name)
         {
             return Ok(ConvertGroups(logic.GetAllGroups(name), token).OrderBy(a => a.Name.Length));
@@ -86,7 +86,7 @@ namespace WebAPI.Controllers
             {
                 ResponseTeachersGroupModel toAdd = new ResponseTeachersGroupModel();
                 toAdd.Name = group.Name;
-
+                toAdd.Decks = new List<ResponseDeckIdNameModel>();
                 var fullDeckList = logic.GetGroupDecks(group.Id);
                 foreach (Deck deck in fullDeckList)
                 {
@@ -97,6 +97,7 @@ namespace WebAPI.Controllers
                     };
                     toAdd.Decks.Add(deckIdNameModel);
                 }
+                toReturn.Add(toAdd);
             }
             return toReturn;
         }

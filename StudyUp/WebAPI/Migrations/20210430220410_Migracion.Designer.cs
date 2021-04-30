@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20210430031048_Migracion")]
+    [Migration("20210430220410_Migracion")]
     partial class Migracion
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

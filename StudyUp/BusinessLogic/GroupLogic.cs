@@ -204,11 +204,6 @@ namespace BusinessLogic
 
             var resultFind = deckGroupRepository.FindByCondition(a => a.GroupId == groupId);
 
-            if (resultFind.Count() == 0 )
-            {
-                throw new NotFoundException(GroupMessage.NO_DECKS);
-            }
-
             List<Deck> toReturn = new List<Deck>();
 
             foreach (var deckGroup in resultFind)
