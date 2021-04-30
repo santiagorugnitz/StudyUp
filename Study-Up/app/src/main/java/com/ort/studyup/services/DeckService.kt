@@ -9,7 +9,7 @@ import retrofit2.http.*
 interface DeckService {
 
     @GET("api/decks")
-    suspend fun decksFromUser(@Query("userId") userId: Int): Response<List<Deck>>
+    suspend fun decksFromUser(@Query("userId") userId: Int): Response<List<DeckData>>
 
     @POST("api/decks")
     suspend fun createDeck(@Body data: NewDeckRequest): Response<DeckData>
