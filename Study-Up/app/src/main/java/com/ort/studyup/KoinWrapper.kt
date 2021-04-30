@@ -5,6 +5,7 @@ import android.widget.SearchView
 import androidx.room.Room
 import com.ort.studyup.common.ui.ResourceWrapper
 import com.ort.studyup.common.utils.EncryptedPreferencesHelper
+import com.ort.studyup.game.StudyViewModel
 import com.ort.studyup.home.decks.DeckDetailViewModel
 import com.ort.studyup.home.decks.DecksViewModel
 import com.ort.studyup.home.decks.FollowingDecksViewModel
@@ -63,6 +64,7 @@ object KoinWrapper {
         factory { ProfileViewModel(get()) }
         factory { SearchViewModel(get(),get()) }
         factory { FollowingDecksViewModel(get(),get()) }
+        factory { StudyViewModel(get()) }
     }
 
     private fun repositories() = module {
