@@ -13,6 +13,7 @@ namespace DataAccess
         public DbSet<Deck> Decks { get; set; }
         public DbSet<Flashcard> Flashcards { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<DeckGroup> DeckGroups { get; set; }
         public DbSet<UserGroup> UserGroups { get; set; }
 
         public DBContext(DbContextOptions options) : base(options) { }
@@ -52,6 +53,19 @@ namespace DataAccess
                 .HasForeignKey(bc => bc.GroupId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<DeckGroup>()
+                .HasKey(b => new { b.GroupId, b.DeckId });
+            modelBuilder.Entity<DeckGroup>()
+                .HasOne(bc => bc.Deck)
+                .WithMany(b => b.DeckGroups)
+                .HasForeignKey(bc => bc.DeckId)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<DeckGroup>()
+                .HasOne(bc => bc.Group)
+                .WithMany(c => c.DeckGroups)
+                .HasForeignKey(bc => bc.GroupId)
+                .OnDelete(DeleteBehavior.NoAction);
+
             modelBuilder.Entity<FlashcardScore>()
                 .HasKey(b => new { b.FlashcardId, b.UserId });
             modelBuilder.Entity<FlashcardScore>()
@@ -65,7 +79,6 @@ namespace DataAccess
                 .HasForeignKey(bc => bc.FlashcardId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-
             modelBuilder.Entity<UserFollowing>()
                 .HasKey(u => new { u.FollowingUserId, u.FollowerUserId });
             modelBuilder.Entity<UserFollowing>()
@@ -78,6 +91,7 @@ namespace DataAccess
                 .WithMany(c => c.FollowedUsers)
                 .HasForeignKey(bc => bc.FollowerUserId)
                 .OnDelete(DeleteBehavior.NoAction);
+
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { optionsBuilder.UseLazyLoadingProxies(); }
 

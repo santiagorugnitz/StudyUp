@@ -10,6 +10,7 @@ namespace Domain
         public string Name { get; set; }
         public virtual User Creator { get; set; }
         public virtual List<UserGroup> UserGroups { get; set; }
+        public virtual List<DeckGroup> DeckGroups { get; set; }
 
         public override bool Equals(object o)
         {

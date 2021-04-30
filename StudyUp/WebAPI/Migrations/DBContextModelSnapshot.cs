@@ -48,6 +48,21 @@ namespace WebAPI.Migrations
                     b.ToTable("Decks");
                 });
 
+            modelBuilder.Entity("Domain.DeckGroup", b =>
+                {
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DeckId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GroupId", "DeckId");
+
+                    b.HasIndex("DeckId");
+
+                    b.ToTable("DeckGroups");
+                });
+
             modelBuilder.Entity("Domain.Flashcard", b =>
                 {
                     b.Property<int>("Id")
@@ -176,6 +191,25 @@ namespace WebAPI.Migrations
                     b.Navigation("Author");
                 });
 
+            modelBuilder.Entity("Domain.DeckGroup", b =>
+                {
+                    b.HasOne("Domain.Deck", "Deck")
+                        .WithMany("DeckGroups")
+                        .HasForeignKey("DeckId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Group", "Group")
+                        .WithMany("DeckGroups")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Deck");
+
+                    b.Navigation("Group");
+                });
+
             modelBuilder.Entity("Domain.Flashcard", b =>
                 {
                     b.HasOne("Domain.Deck", "Deck")
@@ -255,6 +289,8 @@ namespace WebAPI.Migrations
 
             modelBuilder.Entity("Domain.Deck", b =>
                 {
+                    b.Navigation("DeckGroups");
+
                     b.Navigation("Flashcards");
                 });
 
@@ -265,6 +301,8 @@ namespace WebAPI.Migrations
 
             modelBuilder.Entity("Domain.Group", b =>
                 {
+                    b.Navigation("DeckGroups");
+
                     b.Navigation("UserGroups");
                 });
 
