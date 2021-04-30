@@ -234,7 +234,7 @@ namespace BusinessLogicTest
 
             var result = groupLogic.Assign(userExample.Token, 1, 1);
             groupRepositoryMock.VerifyAll();
-            Assert.AreEqual(deckExample, result);
+            Assert.AreEqual(groupExample, result);
         }
     }
 }

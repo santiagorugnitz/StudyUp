@@ -126,7 +126,7 @@ namespace BusinessLogic
                 return true;
         }
 
-        public Deck Assign(string token, int groupId, int deckId)
+        public Group Assign(string token, int groupId, int deckId)
         {
             User user = userTokenRepository.GetUserByToken(token);
             Deck deck = deckRepository.GetById(deckId);
@@ -160,7 +160,7 @@ namespace BusinessLogic
 
             group.DeckGroups.Add(deckGroup);
             groupRepository.Update(group);
-            return deck;
+            return group;
         }
     }
 }

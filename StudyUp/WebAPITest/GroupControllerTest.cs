@@ -94,11 +94,11 @@ namespace WebAPITest
         public void AssingOkTest()
         {
             logicMock.Setup(x => x.Assign(It.IsAny<string>(), It.IsAny<int>(),
-                It.IsAny<int>())).Returns(It.IsAny<Deck>());
+                It.IsAny<int>())).Returns(It.IsAny<Group>());
 
             var result = controller.Assign("token", 1, 1);
             var okResult = result as OkObjectResult;
-            var value = okResult.Value as Deck;
+            var value = okResult.Value as Group;
 
             logicMock.VerifyAll();
         }
