@@ -153,10 +153,10 @@ namespace BusinessLogic
                     FlashcardId = flashcard.Id, Flashcard = flashcard, User = user, UserId = user.Id, Score = score 
                 };
 
+                flashcardScoreRepository.Add(addingFlashcard);
+
                 flashcard.UserScores.Add(addingFlashcard);
                 flashcardRepository.Update(flashcard);
-
-                flashcardScoreRepository.Add(addingFlashcard);
             } 
             else
             {
