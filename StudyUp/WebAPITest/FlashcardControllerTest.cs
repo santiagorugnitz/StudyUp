@@ -96,7 +96,6 @@ namespace WebAPITest
 
             var result = controller.Delete(flashcardModelExample.ToEntity().Id, userModelExample.Token);
             var okResult = result as OkObjectResult;
-            var value = okResult.Value as bool?;
 
             logicMock.VerifyAll();
         }
@@ -119,9 +118,9 @@ namespace WebAPITest
         {
             logicMock.Setup(x => x.UpdateScore(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>())).Returns(flashcardExample);
 
-            var result = controller.EditScore(flashcardModelExample.ToEntity().Id, 10, userModelExample.Token);
+            var singleModel = new SingleFlashcardModel { FlashcardId = flashcardModelExample.ToEntity().Id, Score = 10 };
+            var result = controller.EditScore(userModelExample.Token, new List<SingleFlashcardModel> { singleModel });
             var okResult = result as OkObjectResult;
-            var value = okResult.Value as Flashcard;
 
             logicMock.VerifyAll();
         }
