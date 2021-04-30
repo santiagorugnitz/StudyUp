@@ -12,6 +12,7 @@ namespace BusinessLogicInterface
         bool Unsubscribe(string token, int id);
         bool UserIsSubscribed(string token, int id);
         IEnumerable<Group> GetAllGroups(string keyword);
+        IEnumerable<Group> GetTeachersGroups(string keyword);
         Group Assign(string token, int groupId, int deckId);
         Group Unassign(string token, int groupId, int deckId);
     }

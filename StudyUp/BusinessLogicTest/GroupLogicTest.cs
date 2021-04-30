@@ -251,5 +251,29 @@ namespace BusinessLogicTest
             groupRepositoryMock.VerifyAll();
             Assert.AreEqual(result, groupExample);
         }
+
+        [TestMethod]
+        public void GetTeachersGroupsTest()
+        {
+            Group group = new Group()
+            {
+                Creator = userTeacherExample,
+                Id = 3,
+                Name = "Group",
+                UserGroups = new List<UserGroup>(),
+                DeckGroups = new List<DeckGroup>()
+            };
+
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+
+            groupRepositoryMock.Setup(b => b.FindByCondition(It.IsAny<Expression<Func<Group,
+                bool>>>())).Returns(new List<Group>() { group });
+
+            var result = groupLogic.GetTeachersGroups(group.Name).Count();
+
+            groupRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(1, result);
+        }
     }
 }

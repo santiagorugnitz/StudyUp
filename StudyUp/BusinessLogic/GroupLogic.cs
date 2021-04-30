@@ -188,5 +188,11 @@ namespace BusinessLogic
             groupRepository.Update(group);
             return group;
         }
+
+        public IEnumerable<Group> GetTeachersGroups(string token)
+        {
+            User user = userTokenRepository.GetUserByToken(token);
+            return groupRepository.FindByCondition(g => g.Creator.Equals(user));
+        }
     }
 }
