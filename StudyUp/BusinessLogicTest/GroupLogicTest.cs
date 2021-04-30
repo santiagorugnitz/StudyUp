@@ -275,5 +275,28 @@ namespace BusinessLogicTest
 
             Assert.AreEqual(1, result);
         }
+
+        [TestMethod]
+        public void GetGroupDecksTest()
+        {
+            DeckGroup deckGroup = new DeckGroup()
+            {
+                Deck = deckExample,
+                DeckId = deckExample.Id,
+                Group = groupExample,
+                GroupId = groupExample.Id
+            };
+
+            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
+            deckGroupRepositoryMock.Setup(b => b.FindByCondition(It.IsAny<Expression<Func<DeckGroup,
+               bool>>>())).Returns(new List<DeckGroup>() { deckGroup });
+            deckRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(deckExample);
+
+            var result = groupLogic.GetGroupDecks(groupExample.Id).Count();
+
+            groupRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(1, result);
+        }
     }
 }

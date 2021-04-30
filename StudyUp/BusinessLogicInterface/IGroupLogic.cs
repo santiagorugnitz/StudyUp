@@ -15,5 +15,6 @@ namespace BusinessLogicInterface
         IEnumerable<Group> GetTeachersGroups(string keyword);
         Group Assign(string token, int groupId, int deckId);
         Group Unassign(string token, int groupId, int deckId);
+        List<Deck> GetGroupDecks(int groupId);
     }
 }

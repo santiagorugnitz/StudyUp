@@ -194,5 +194,29 @@ namespace BusinessLogic
             User user = userTokenRepository.GetUserByToken(token);
             return groupRepository.FindByCondition(g => g.Creator.Equals(user));
         }
+
+        public List<Deck> GetGroupDecks(int groupId)
+        {
+            Group group = groupRepository.GetById(groupId);
+
+            if (group is null)
+                throw new NotFoundException(GroupMessage.GROUP_NOT_FOUND);
+
+            var resultFind = deckGroupRepository.FindByCondition(a => a.GroupId == groupId);
+
+            if (resultFind.Count() == 0 )
+            {
+                throw new NotFoundException(GroupMessage.NO_DECKS);
+            }
+
+            List<Deck> toReturn = new List<Deck>();
+
+            foreach (var deckGroup in resultFind)
+            {
+                toReturn.Add(this.deckRepository.GetById(deckGroup.DeckId));
+            }
+
+            return toReturn;
+        }
     }
 }

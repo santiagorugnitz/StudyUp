@@ -71,5 +71,34 @@ namespace WebAPI.Controllers
         {
             return Ok(logic.Unassign(token, groupId, deckId));
         }
+
+        [HttpGet]
+        public IActionResult Get([FromHeader] string token)
+        {
+            return Ok(ConvertTeachersGroups(logic.GetTeachersGroups(token)));
+        }
+
+        private IEnumerable<ResponseTeachersGroupModel> ConvertTeachersGroups(IEnumerable<Group> groupsList)
+        {
+            List<ResponseTeachersGroupModel> toReturn = new List<ResponseTeachersGroupModel>();
+
+            foreach (Group group in groupsList)
+            {
+                ResponseTeachersGroupModel toAdd = new ResponseTeachersGroupModel();
+                toAdd.Name = group.Name;
+
+                var fullDeckList = logic.GetGroupDecks(group.Id);
+                foreach (Deck deck in fullDeckList)
+                {
+                    ResponseDeckIdNameModel deckIdNameModel = new ResponseDeckIdNameModel()
+                    {
+                        Id = deck.Id,
+                        Name = deck.Name
+                    };
+                    toAdd.Decks.Add(deckIdNameModel);
+                }
+            }
+            return toReturn;
+        }
     }
 }
