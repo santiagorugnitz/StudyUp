@@ -67,7 +67,7 @@ namespace WebAPITest
         [TestMethod]
         public void LoginOkTest()
         {
-            logicMock.Setup(x => x.Login(It.IsAny<string>(), It.IsAny<string>())).Returns(new User());
+            logicMock.Setup(x => x.Login(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(new User());
 
             var result = controller.Login(loginModelExample);
             var okResult = result as OkObjectResult;
@@ -79,7 +79,7 @@ namespace WebAPITest
         [TestMethod]
         public void LoginWithUsernameTest()
         {
-            logicMock.Setup(x => x.LoginByUsername(It.IsAny<string>(), It.IsAny<string>())).Returns(new User());
+            logicMock.Setup(x => x.LoginByUsername(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(new User());
             loginModelExample.Username = "username";
 
             var result = controller.Login(loginModelExample);
@@ -93,7 +93,7 @@ namespace WebAPITest
         [ExpectedException(typeof(InvalidException))]
         public void LoginCredentialsAreWrongTest()
         {
-            logicMock.Setup(x => x.Login(It.IsAny<string>(), It.IsAny<string>())).Throws(new InvalidException(UserMessage.USER_NOT_FOUND));
+            logicMock.Setup(x => x.Login(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Throws(new InvalidException(UserMessage.USER_NOT_FOUND));
 
             var result = controller.Login(loginModelExample);
             var okResult = result as BadRequestObjectResult;

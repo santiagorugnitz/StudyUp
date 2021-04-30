@@ -147,17 +147,19 @@ namespace BusinessLogic
             return convertedList;
         }
 
-        public User Login(string email, string password)
+        public User Login(string email, string password, string firebaseToken)
         {
             User user = userRepository.GetUserByEmailAndPassword(email, password);
             if (user == null) throw new InvalidException(UserMessage.WRONG_EMAIL_OR_PASSWORD);
+            UpdateFirebaseToken(user, firebaseToken);
             return GenerateToken(user);
         }
 
-        public User LoginByUsername(string username, string password)
+        public User LoginByUsername(string username, string password, string firebaseToken)
         {
             User user = userRepository.GetUserByNameAndPassword(username, password);
             if (user == null) throw new InvalidException(UserMessage.WRONG_USERNAME_OR_PASSWORD);
+            UpdateFirebaseToken(user, firebaseToken);
             return GenerateToken(user);
         }
 
@@ -166,6 +168,12 @@ namespace BusinessLogic
             user.Token = Guid.NewGuid().ToString();
             repository.Update(user);
             return user;
+        }
+
+        private void UpdateFirebaseToken(User user, string firebaseToken)
+        {
+            user.FirebaseToken = firebaseToken;
+            repository.Update(user);
         }
 
         public IEnumerable<Deck> GetDecksFromFollowing(string token)

@@ -133,7 +133,7 @@ namespace BusinessLogicTest
         {
             userMock.Setup(m => m.GetUserByEmailAndPassword(It.IsAny<string>(), It.IsAny<string>())).Returns(userExample);
 
-            var result = userLogic.Login("mail", "password");
+            var result = userLogic.Login("mail", "password", "token");
 
             userMock.VerifyAll();
             Assert.AreEqual(userExample, result);
@@ -145,7 +145,7 @@ namespace BusinessLogicTest
         {
             userMock.Setup(m => m.GetUserByEmailAndPassword(It.IsAny<string>(), It.IsAny<string>())).Returns((User)null);
 
-            var result = userLogic.Login("mail", "password");
+            var result = userLogic.Login("mail", "password", "token");
 
             userMock.VerifyAll();
         }
@@ -155,7 +155,7 @@ namespace BusinessLogicTest
         {
             userMock.Setup(m => m.GetUserByNameAndPassword(It.IsAny<string>(), It.IsAny<string>())).Returns(userExample);
 
-            var result = userLogic.LoginByUsername("username", "password");
+            var result = userLogic.LoginByUsername("username", "password", "token");
 
             userMock.VerifyAll();
             Assert.AreEqual(userExample, result);
@@ -167,7 +167,7 @@ namespace BusinessLogicTest
         {
             userMock.Setup(m => m.GetUserByNameAndPassword(It.IsAny<string>(), It.IsAny<string>())).Returns((User)null);
 
-            var result = userLogic.LoginByUsername("username", "password");
+            var result = userLogic.LoginByUsername("username", "password", "token");
 
             userMock.VerifyAll();
         }
