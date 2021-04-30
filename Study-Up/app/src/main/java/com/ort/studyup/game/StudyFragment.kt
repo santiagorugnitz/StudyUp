@@ -117,14 +117,9 @@ class StudyFragment : BaseFragment(), TextToSpeech.OnInitListener {
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
             val result = tts.setLanguage(Locale.US)
-            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                Toast.makeText(requireContext(), "Language not supported", Toast.LENGTH_SHORT).show();
-            } else {
+            if (!(result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED)) {
                 ttsButton.setOnClickListener { onTTS() }
             }
-
-        } else {
-            Toast.makeText(requireContext(), "Init failed", Toast.LENGTH_SHORT).show();
         }
     }
 }

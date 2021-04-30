@@ -1,9 +1,6 @@
 package com.ort.studyup.repositories
 
-import com.ort.studyup.common.models.EditFlashCardRequest
-import com.ort.studyup.common.models.Flashcard
-import com.ort.studyup.common.models.NewFlashCardRequest
-import com.ort.studyup.common.models.RatedFlashcard
+import com.ort.studyup.common.models.*
 import com.ort.studyup.services.FlashcardService
 import com.ort.studyup.services.check
 
@@ -33,7 +30,14 @@ class FlashcardRepository(
     }
 
     suspend fun updateScore(flashcards:List<RatedFlashcard>){
-        //flashcardService.updateScore().check()
+        flashcardService.updateScore(
+            flashcards.map{
+                RateFlashCardRequest(
+                    it.id,
+                    it.score
+                )
+            }
+        ).check()
     }
 
 }
