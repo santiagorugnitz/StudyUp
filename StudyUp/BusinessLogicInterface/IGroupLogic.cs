@@ -13,5 +13,6 @@ namespace BusinessLogicInterface
         bool UserIsSubscribed(string token, int id);
         IEnumerable<Group> GetAllGroups(string keyword);
         Group Assign(string token, int groupId, int deckId);
+        Group Unassign(string token, int groupId, int deckId);
     }
 }

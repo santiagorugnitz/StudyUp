@@ -162,5 +162,31 @@ namespace BusinessLogic
             groupRepository.Update(group);
             return group;
         }
+
+        public Group Unassign(string token, int groupId, int deckId)
+        {
+            User user = userTokenRepository.GetUserByToken(token);
+            Group group = groupRepository.GetById(groupId);
+
+            if (user is null)
+                throw new InvalidException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
+
+            if (group is null)
+                throw new NotFoundException(GroupMessage.GROUP_NOT_FOUND);
+
+            if (!group.Creator.Equals(user))
+                throw new InvalidException(GroupMessage.NOT_AUTHORIZED);
+
+            var resultFind = deckGroupRepository.FindByCondition(t => t.GroupId == groupId
+                    && t.DeckId == deckId);
+
+            if (resultFind.Count == 0)
+                throw new NotFoundException(GroupMessage.NOT_ASSIGNED);
+
+            deckGroupRepository.Delete(resultFind.First());
+            group.DeckGroups.Remove(resultFind.First());
+            groupRepository.Update(group);
+            return group;
+        }
     }
 }
