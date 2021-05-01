@@ -82,7 +82,6 @@ class NewDeckFragment : BaseFragment(), ConfirmationDialog.Callback {
                         Bundle().apply { putInt(DECK_ID_KEY, it) })
                 }
             })
-
         }
     }
 

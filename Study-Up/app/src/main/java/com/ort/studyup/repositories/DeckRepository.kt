@@ -10,7 +10,7 @@ class DeckRepository(
     private val deckService: DeckService,
 ) {
 
-    suspend fun decksFromUser(id: Int): List<Deck> {
+    suspend fun decksFromUser(id: Int): List<DeckData> {
         return deckService.decksFromUser(id).check()
     }
 

@@ -1,6 +1,8 @@
 package com.ort.studyup.repositories
 
+import com.ort.studyup.common.models.DeckItem
 import com.ort.studyup.common.models.FollowRequest
+import com.ort.studyup.common.models.Group
 import com.ort.studyup.common.models.NewGroupRequest
 import com.ort.studyup.services.GroupService
 import com.ort.studyup.services.check
@@ -23,6 +25,33 @@ class GroupRepository(
 
     suspend fun unsubscribe(id: Int) {
         groupService.unsubscribe(id).check()
+    }
+
+    suspend fun assignDeck(groupId:Int,deckId:Int){
+        groupService.assign(groupId, deckId)
+    }
+
+    suspend fun unassignDeck(groupId:Int,deckId:Int){
+        groupService.unassign(groupId, deckId)
+    }
+
+
+    suspend fun groups():List<Group>{
+
+        return listOf(
+            Group(
+                48,
+                "ISP",
+                listOf(
+                    DeckItem(
+                        23,
+                        "Test"
+                    )
+                )
+            )
+        )
+
+        return groupService.groups().check()
     }
 
 
