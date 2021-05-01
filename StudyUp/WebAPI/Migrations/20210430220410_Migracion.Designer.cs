@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20210424153812_FollowingUsers")]
-    partial class FollowingUsers
+    [Migration("20210430220410_Migracion")]
+    partial class Migracion
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,6 +50,21 @@ namespace WebAPI.Migrations
                     b.ToTable("Decks");
                 });
 
+            modelBuilder.Entity("Domain.DeckGroup", b =>
+                {
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DeckId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GroupId", "DeckId");
+
+                    b.HasIndex("DeckId");
+
+                    b.ToTable("DeckGroups");
+                });
+
             modelBuilder.Entity("Domain.Flashcard", b =>
                 {
                     b.Property<int>("Id")
@@ -71,6 +86,24 @@ namespace WebAPI.Migrations
                     b.HasIndex("DeckId");
 
                     b.ToTable("Flashcards");
+                });
+
+            modelBuilder.Entity("Domain.FlashcardScore", b =>
+                {
+                    b.Property<int>("FlashcardId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("int");
+
+                    b.HasKey("FlashcardId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("FlashcardScore");
                 });
 
             modelBuilder.Entity("Domain.Group", b =>
@@ -160,6 +193,25 @@ namespace WebAPI.Migrations
                     b.Navigation("Author");
                 });
 
+            modelBuilder.Entity("Domain.DeckGroup", b =>
+                {
+                    b.HasOne("Domain.Deck", "Deck")
+                        .WithMany("DeckGroups")
+                        .HasForeignKey("DeckId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Group", "Group")
+                        .WithMany("DeckGroups")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Deck");
+
+                    b.Navigation("Group");
+                });
+
             modelBuilder.Entity("Domain.Flashcard", b =>
                 {
                     b.HasOne("Domain.Deck", "Deck")
@@ -168,6 +220,25 @@ namespace WebAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Deck");
+                });
+
+            modelBuilder.Entity("Domain.FlashcardScore", b =>
+                {
+                    b.HasOne("Domain.Flashcard", "Flashcard")
+                        .WithMany("UserScores")
+                        .HasForeignKey("FlashcardId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.User", "User")
+                        .WithMany("FlashcardScores")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Flashcard");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Group", b =>
@@ -220,17 +291,28 @@ namespace WebAPI.Migrations
 
             modelBuilder.Entity("Domain.Deck", b =>
                 {
+                    b.Navigation("DeckGroups");
+
                     b.Navigation("Flashcards");
+                });
+
+            modelBuilder.Entity("Domain.Flashcard", b =>
+                {
+                    b.Navigation("UserScores");
                 });
 
             modelBuilder.Entity("Domain.Group", b =>
                 {
+                    b.Navigation("DeckGroups");
+
                     b.Navigation("UserGroups");
                 });
 
             modelBuilder.Entity("Domain.User", b =>
                 {
                     b.Navigation("Decks");
+
+                    b.Navigation("FlashcardScores");
 
                     b.Navigation("FollowedUsers");
 

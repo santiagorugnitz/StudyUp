@@ -13,16 +13,21 @@ namespace BusinessLogic
     {
         private IRepository<Group> groupRepository;
         private IRepository<User> userRepository;
+        private IRepository<Deck> deckRepository;
         private IRepository<UserGroup> userGroupRepository;
+        private IRepository<DeckGroup> deckGroupRepository;
         private IUserRepository userTokenRepository;
 
         public GroupLogic(IRepository<Group> repository, IUserRepository userTokenRepository,
-            IRepository<User> userRepository, IRepository<UserGroup> userGroupRepository)
+            IRepository<User> userRepository, IRepository<UserGroup> userGroupRepository,
+           IRepository<Deck> deckRepository, IRepository<DeckGroup> deckGroupRepository)
         {
             this.groupRepository = repository;
             this.userRepository = userRepository;
+            this.deckRepository = deckRepository;
             this.userTokenRepository = userTokenRepository;
             this.userGroupRepository = userGroupRepository;
+            this.deckGroupRepository = deckGroupRepository;
         }
 
         public Group AddGroup(Group group, string creatorsToken)
@@ -119,6 +124,94 @@ namespace BusinessLogic
                 return false;
             else
                 return true;
+        }
+
+        public Group Assign(string token, int groupId, int deckId)
+        {
+            User user = userTokenRepository.GetUserByToken(token);
+            Deck deck = deckRepository.GetById(deckId);
+            Group group = groupRepository.GetById(groupId);
+
+            if (user is null)
+                throw new InvalidException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
+
+            if (group is null)
+                throw new NotFoundException(GroupMessage.GROUP_NOT_FOUND);
+
+            if (deck is null)
+                throw new NotFoundException(DeckMessage.DECK_NOT_FOUND);
+
+            if (!group.Creator.Equals(user))
+                throw new InvalidException(GroupMessage.NOT_AUTHORIZED);
+
+            var resultFind = deckGroupRepository.FindByCondition(t => t.GroupId == groupId
+                    && t.DeckId == deckId);
+
+            if (resultFind.Count > 0)
+                throw new AlreadyExistsException(GroupMessage.ALREADY_ASSIGNED);
+
+            DeckGroup deckGroup = new DeckGroup()
+            {
+                Deck = deck,
+                DeckId = deckId,
+                Group = group,
+                GroupId = groupId
+            };
+
+            group.DeckGroups.Add(deckGroup);
+            groupRepository.Update(group);
+            return group;
+        }
+
+        public Group Unassign(string token, int groupId, int deckId)
+        {
+            User user = userTokenRepository.GetUserByToken(token);
+            Group group = groupRepository.GetById(groupId);
+
+            if (user is null)
+                throw new InvalidException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
+
+            if (group is null)
+                throw new NotFoundException(GroupMessage.GROUP_NOT_FOUND);
+
+            if (!group.Creator.Equals(user))
+                throw new InvalidException(GroupMessage.NOT_AUTHORIZED);
+
+            var resultFind = deckGroupRepository.FindByCondition(t => t.GroupId == groupId
+                    && t.DeckId == deckId);
+
+            if (resultFind.Count == 0)
+                throw new NotFoundException(GroupMessage.NOT_ASSIGNED);
+
+            deckGroupRepository.Delete(resultFind.First());
+            group.DeckGroups.Remove(resultFind.First());
+            groupRepository.Update(group);
+            return group;
+        }
+
+        public IEnumerable<Group> GetTeachersGroups(string token)
+        {
+            User user = userTokenRepository.GetUserByToken(token);
+            return groupRepository.FindByCondition(g => g.Creator.Equals(user));
+        }
+
+        public List<Deck> GetGroupDecks(int groupId)
+        {
+            Group group = groupRepository.GetById(groupId);
+
+            if (group is null)
+                throw new NotFoundException(GroupMessage.GROUP_NOT_FOUND);
+
+            var resultFind = deckGroupRepository.FindByCondition(a => a.GroupId == groupId);
+
+            List<Deck> toReturn = new List<Deck>();
+
+            foreach (var deckGroup in resultFind)
+            {
+                toReturn.Add(this.deckRepository.GetById(deckGroup.DeckId));
+            }
+
+            return toReturn;
         }
     }
 }

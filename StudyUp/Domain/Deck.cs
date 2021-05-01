@@ -12,7 +12,7 @@ namespace Domain
         public Difficulty Difficulty { get; set; }
         public string Subject { get; set; }
         public virtual List<Flashcard> Flashcards { get; set; }
-
+        public virtual List<DeckGroup> DeckGroups { get; set; }
         public bool IsHidden { get; set; }
         public virtual User Author { get; set; }
 

@@ -54,5 +54,10 @@ namespace Exceptions
         public const string GROUP_NOT_FOUND = "This group does not exist.";
         public const string ALREADY_SUBSCRIBED = "Already subscribed to this group.";
         public const string NOT_SUBSCRIBED = "This subscription does not exist.";
+        public const string NOT_AUTHORIZED = "Only this groups teacher can assign decks to study.";
+        public const string ALREADY_ASSIGNED = "Already assigned this deck to this group.";
+        public const string NOT_ASSIGNED = "This deck is not assigned to this group.";
+        public const string NO_DECKS = "There are no decks assigned to this group.";
+
     }
 }
