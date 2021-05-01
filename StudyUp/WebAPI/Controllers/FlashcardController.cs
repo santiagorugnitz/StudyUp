@@ -37,10 +37,15 @@ namespace WebAPI.Controllers
                 editFlashcardModel.Answer));
         }
 
-        [HttpPost("{id}/study")]
-        public IActionResult EditScore([FromRoute] int id, [FromQuery] int score, [FromHeader] string token)
+        [HttpPost("study")]
+        public IActionResult EditScore([FromHeader] string token, [FromBody] List<SingleFlashcardModel> scoredFlashcards)
         {
-            return Ok(logic.UpdateScore(id, score, token));
+            foreach (var scoredFlashcard in scoredFlashcards)
+            {
+                logic.UpdateScore(scoredFlashcard.FlashcardId, scoredFlashcard.Score, token);
+            }
+
+            return Ok();
         }
 
         [HttpGet("rated")]
