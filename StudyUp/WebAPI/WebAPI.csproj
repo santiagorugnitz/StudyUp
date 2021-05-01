@@ -33,9 +33,5 @@
     <ProjectReference Include="..\Exceptions\Exceptions.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 
 </Project>

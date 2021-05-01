@@ -37,20 +37,6 @@ class GroupRepository(
 
 
     suspend fun groups():List<Group>{
-
-        return listOf(
-            Group(
-                48,
-                "ISP",
-                listOf(
-                    DeckItem(
-                        23,
-                        "Test"
-                    )
-                )
-            )
-        )
-
         return groupService.groups().check()
     }
 
