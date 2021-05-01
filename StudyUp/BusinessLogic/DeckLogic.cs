@@ -3,9 +3,14 @@ using DataAccessInterface;
 using Domain;
 using Domain.Enumerations;
 using Exceptions;
+using FirebaseAdmin;
+using FirebaseAdmin.Messaging;
+using Google.Apis.Auth.OAuth2;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 
 namespace BusinessLogic
@@ -43,7 +48,7 @@ namespace BusinessLogic
             {
                 throw new NotAuthenticatedException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
             }
-              
+
             deck.Author = user;
             deckRepository.Add(deck);
 
@@ -78,7 +83,7 @@ namespace BusinessLogic
                 throw new InvalidException(DeckMessage.INVALID_DIFFICULTY);
             if (subject is null || subject.Trim().Length == 0)
                 throw new InvalidException(DeckMessage.EMPTY_SUBJECT_MESSAGE);
-            
+
             if (deck != null)
             {
                 deck.Name = newName;
