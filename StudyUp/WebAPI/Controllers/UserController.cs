@@ -45,11 +45,11 @@ namespace WebAPI.Controllers
             
             if (loginModel.Username != null && loginModel.Username.Trim().Length > 0)
             {
-                loguedUser = logic.LoginByUsername(loginModel.Username, loginModel.Password);
+                loguedUser = logic.LoginByUsername(loginModel.Username, loginModel.Password, loginModel.FirebaseToken);
             } 
             else
             {
-                loguedUser = logic.Login(loginModel.Email, loginModel.Password);
+                loguedUser = logic.Login(loginModel.Email, loginModel.Password, loginModel.FirebaseToken);
             }
 
             ResponseUserModel responseUserModel = new ResponseUserModel()
