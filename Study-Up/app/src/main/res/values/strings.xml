@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">Study Up</string>
+    <string name="log_in">Log in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="username_or_mail">Username or email</string>
+    <string name="password">Password</string>
+    <string name="password_error">Password must have at least 6 characters</string>
+    <string name="user_empty">User must not be empty</string>
+    <string name="generic_error">Something happened</string>
+    <string name="decks">Decks</string>
+    <string name="email">Email</string>
+    <string name="name">Name</string>
+    <string name="subject">Subject</string>
+    <string name="new_deck">New deck</string>
+    <string name="difficulty">Difficulty</string>
+    <string name="edit_deck">Edit deck</string>
+    <string name="visibility">Visibility</string>
+    <string name="save">Save</string>
+    <string name="save_changes">Save changes</string>
+    <string name="error_empty_fields">There are empty fields</string>
+    <string name="confirm_password_error">Passwords don\'t match</string>
+    <string name="mail_invalid">Invalid email</string>
+    <string name="register">Register</string>
+    <string name="username">Username</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="role">Role</string>
+    <string name="confirm">Confirm</string>
+    <string name="invalid_password">Password must contain at least one number digit, one uppercase letter and one lowercase letter</string>
+    <string name="delete">Delete</string>
+    <string name="delete_deck_confirmation">Are you sure you want to delete this deck? This can not be undone</string>
+    <string name="delete_flashcard_confirmation">Are you sure you want to delete this flashcard? This can not be undone</string>
+    <string name="edit">Edit</string>
+    <string name="new_flashcard">New Flashcard</string>
+    <string name="question">Question</string>
+    <string name="answer">Answer</string>
+    <string name="edit_flashcard">Edit Flashcard</string>
+    <string name="groups">Groups</string>
+    <string name="new_group">New group</string>
+    <string name="profile">Profile</string>
+    <string name="search">Search</string>
+    <string name="users">Users</string>
+    <string name="follow">Follow</string>
+    <string name="unfollow">Unfollow</string>
+    <string name="unsub">unsubscribe</string>
+    <string name="sub">Subscribe</string>
+    <string name="author">Author</string>
+    <string name="following">Following</string>
+    <string name="everyone">Everyone</string>
+    <string name="decks_from_friends">Decks from friends</string>
+    <string name="no_flashcards_error">Deck has no flashcards</string>
+    <string name="end_study">Stop studying and save progress?</string>
+    <string name="assign_deck">Assign deck</string>
+
+
+    <string-array name="difficulties">
+        <item>Easy</item>
+        <item>Medium</item>
+        <item>Hard</item>
+    </string-array>
+
+    <string-array name="visibilities">
+        <item>Visible</item>
+        <item>Hidden</item>
+    </string-array>
+
+    <string-array name="roles">
+        <item>Student</item>
+        <item>Teacher</item>
+    </string-array>
+</resources>
+
+

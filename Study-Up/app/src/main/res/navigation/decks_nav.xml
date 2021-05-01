@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/decks_nav"
+    app:startDestination="@id/decksFragment">
+
+    <fragment
+        android:id="@+id/decksFragment"
+        android:name="com.ort.studyup.home.decks.DecksFragment"
+        android:label="DecksFragment" >
+        <action
+            android:id="@+id/action_decksFragment_to_newDeckFragment"
+            app:destination="@id/newDeckFragment" />
+        <action
+            android:id="@+id/action_decksFragment_to_deckDetailFragment"
+            app:destination="@id/deckDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newDeckFragment"
+        android:name="com.ort.studyup.home.decks.NewDeckFragment"
+        android:label="NewDeckFragment" >
+        <action
+            android:id="@+id/action_newDeckFragment_to_deckDetailFragment"
+            app:destination="@id/deckDetailFragment" />
+        <action
+            android:id="@+id/action_newDeckFragment_to_decksFragment"
+            app:destination="@id/decksFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/deckDetailFragment"
+        android:name="com.ort.studyup.home.decks.DeckDetailFragment"
+        android:label="DeckDetailFragment" >
+        <action
+            android:id="@+id/action_deckDetailFragment_to_newDeckFragment"
+            app:destination="@id/newDeckFragment" />
+        <action
+            android:id="@+id/action_deckDetailFragment_to_newFlashcardFragment"
+            app:destination="@id/newFlashcardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newFlashcardFragment"
+        android:name="com.ort.studyup.home.flashcards.NewFlashcardFragment"
+        android:label="NewFlashcardFragment" />
+</navigation>

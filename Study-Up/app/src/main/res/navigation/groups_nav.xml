@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/groups_nav"
+    app:startDestination="@id/groupsFragment">
+    <fragment
+        android:id="@+id/newGroupFragment"
+        android:name="com.ort.studyup.home.groups.NewGroupFragment"
+        android:label="NewGroupFragment" >
+        <action
+            android:id="@+id/action_newGroupFragment_to_groupsFragment"
+            app:destination="@id/groupsFragment"
+            app:popUpTo="@+id/groupsFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/groupsFragment"
+        android:name="com.ort.studyup.home.groups.GroupsFragment"
+        android:label="GroupsFragment" >
+        <action
+            android:id="@+id/action_groupsFragment_to_newGroupFragment"
+            app:destination="@id/newGroupFragment" />
+    </fragment>
+</navigation>

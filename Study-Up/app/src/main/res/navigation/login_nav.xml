@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/login_nav"
+    app:startDestination="@id/loginFragment">
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.ort.studyup.login.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_teacherHomeActivity"
+            app:destination="@id/teacherHomeActivity" />
+        <action
+            android:id="@+id/action_loginFragment_to_studentHomeActivity"
+            app:destination="@id/studentHomeActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.ort.studyup.login.RegisterFragment"
+        android:label="RegisterFragment" >
+        <action
+            android:id="@+id/action_registerFragment_to_studentHomeActivity"
+            app:destination="@id/studentHomeActivity" />
+        <action
+            android:id="@+id/action_registerFragment_to_teacherHomeActivity"
+            app:destination="@id/teacherHomeActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/studentHomeActivity"
+        android:name="com.ort.studyup.home.StudentHomeActivity"
+        android:label="StudentHomeActivity" />
+    <activity
+        android:id="@+id/teacherHomeActivity"
+        android:name="com.ort.studyup.home.TeacherHomeActivity"
+        android:label="TeacherHomeActivity" />
+</navigation>
