@@ -16,23 +16,31 @@ class AssignDeckItemRenderer(private val callback: Callback) : ViewRenderer<Assi
 
     override fun bind(view: View, model: Item, position: Int) {
         view.name.text = model.name
-        val spinner = Spinner(view.context, Spinner.MODE_DIALOG)
-        view.assignButton.setOnClickListener {
-            spinner.performClick()
+        if (model.decks.isEmpty()) {
+            view.spinner.visibility = View.GONE
+            return
         }
-        ArrayAdapter(view.context, android.R.layout.simple_spinner_item, model.decks.map { it.name }.toTypedArray()).also {
+        view.spinner.visibility = View.VISIBLE
+        ArrayAdapter(
+            view.context,
+            android.R.layout.simple_spinner_item,
+            mutableListOf(view.context.getString(R.string.assign_deck)).apply { addAll(model.decks.map { it.name }) }.toTypedArray()
+        ).also {
             it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spinner.adapter = it
+            view.spinner.adapter = it
         }
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        view.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                callback.onAssignDeck(model.id, model.decks[position].id)
+                if (position != 0)
+                    callback.onAssignDeck(model.id, model.decks[position - 1].id)
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
 
         }
+
+
     }
 
     class Item(

@@ -49,6 +49,7 @@
     <string name="decks_from_friends">Decks from friends</string>
     <string name="no_flashcards_error">Deck has no flashcards</string>
     <string name="end_study">Stop studying and save progress?</string>
+    <string name="assign_deck">Assign deck</string>
 
 
     <string-array name="difficulties">

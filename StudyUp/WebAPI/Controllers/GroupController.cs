@@ -86,6 +86,7 @@ namespace WebAPI.Controllers
             {
                 ResponseTeachersGroupModel toAdd = new ResponseTeachersGroupModel();
                 toAdd.Name = group.Name;
+                toAdd.Id = group.Id;
                 toAdd.Decks = new List<ResponseDeckIdNameModel>();
                 var fullDeckList = logic.GetGroupDecks(group.Id);
                 foreach (Deck deck in fullDeckList)

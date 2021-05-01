@@ -39,7 +39,10 @@ class GroupsFragment : BaseFragment(), DeletableDeckItemRenderer.Callback, Assig
         adapter.addRenderer(AssignDeckItemRenderer(this))
         groupList.layoutManager = LinearLayoutManager(requireContext())
         groupList.adapter = adapter
+        loadItems()
+    }
 
+    private fun loadItems(){
         viewModel.loadGroups().observe(viewLifecycleOwner, Observer {
             adapter.setItems(it)
         })
@@ -47,13 +50,13 @@ class GroupsFragment : BaseFragment(), DeletableDeckItemRenderer.Callback, Assig
 
     override fun onDeleteDeck(groupId: Int, deckId: Int) {
         viewModel.unassignDeck(groupId, deckId).observe(viewLifecycleOwner, Observer {
-            adapter.notifyDataSetChanged()
+            loadItems()
         })
     }
 
     override fun onAssignDeck(groupId: Int, deckId: Int) {
-        viewModel.unassignDeck(groupId, deckId).observe(viewLifecycleOwner, Observer {
-            adapter.notifyDataSetChanged()
+        viewModel.assignDeck(groupId, deckId).observe(viewLifecycleOwner, Observer {
+            loadItems()
         })
     }
 }

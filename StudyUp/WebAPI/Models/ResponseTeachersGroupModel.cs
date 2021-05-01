@@ -8,6 +8,7 @@ namespace WebAPI.Models
 {
     public class ResponseTeachersGroupModel
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public List<ResponseDeckIdNameModel> Decks { get; set; }
     }
