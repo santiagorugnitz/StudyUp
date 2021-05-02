@@ -13,6 +13,8 @@ namespace DataAccess
         public DbSet<Deck> Decks { get; set; }
         public DbSet<Flashcard> Flashcards { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<Exam> Exams { get; set; }
+
         public DbSet<DeckGroup> DeckGroups { get; set; }
         public DbSet<UserGroup> UserGroups { get; set; }
 
@@ -24,6 +26,7 @@ namespace DataAccess
             modelBuilder.Entity<Deck>().HasKey(d => d.Id);
             modelBuilder.Entity<Flashcard>().HasKey(f => f.Id);
             modelBuilder.Entity<Group>().HasKey(f => f.Id);
+            modelBuilder.Entity<Exam>().HasKey(f => f.Id);
 
             modelBuilder.Entity<User>()
                 .HasMany(g => g.Groups)
@@ -35,9 +38,19 @@ namespace DataAccess
                 .WithOne(a => a.Author)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<User>()
+                .HasMany(d => d.Exams)
+                .WithOne(a => a.Author)
+                .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<Deck>()
                 .HasMany(f => f.Flashcards)
                 .WithOne(d => d.Deck)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Exam>()
+                .HasMany(f => f.ExamCards)
+                .WithOne(d => d.Exam)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<UserGroup>()

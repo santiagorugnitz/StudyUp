@@ -22,13 +22,20 @@ namespace Exceptions
     public static class DeckMessage
     {
         public const string DECK_ALREADY_EXISTS = "Name already exists.";
-        public const string EMPTY_NAME_MESSAGE = "Name field cannot be empty.";
+        public const string EMPTY_NAME = "Name field cannot be empty.";
         public const string INVALID_DIFFICULTY = "Choose a valid difficulty.";
         public const string DECK_NOT_FOUND = "This deck does not exist.";
-        public const string INVALID_DIFFICULTY_MESSAGE = "Invalid difficulty";
-        public const string EMPTY_SUBJECT_MESSAGE = "Subject field cannot be empty.";
+        public const string EMPTY_SUBJECT = "Subject field cannot be empty.";
         public const string NOT_AUTHORIZED = "Only this decks author can delete it.";
+    }
 
+    public static class ExamMessage
+    {
+        public const string EXAM_ALREADY_EXISTS = "Name already exists.";
+        public const string EMPTY_NAME_MESSAGE = "Exams name field cannot be empty.";
+        public const string INVALID_DIFFICULTY = "Choose a valid difficulty for this exam.";
+        public const string EMPTY_SUBJECT_MESSAGE = "Subject field cannot be empty.";
+        public const string NOT_A_TEACHER = "Only teachers can create exams.";
     }
 
     public static class UnauthenticatedMessage
