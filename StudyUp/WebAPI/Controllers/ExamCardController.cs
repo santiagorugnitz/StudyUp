@@ -34,5 +34,12 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
+        [HttpPut("{id}")]
+        public IActionResult EditExamCard([FromRoute] int id, [FromHeader] string token,
+           [FromBody] EditExamCardModel editExamCardModel)
+        {
+            return Ok(logic.EditExamCard(token, id, editExamCardModel.Question,
+                editExamCardModel.Answer));
+        }
     }
 }

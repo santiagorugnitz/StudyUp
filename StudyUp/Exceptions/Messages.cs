@@ -47,6 +47,7 @@ namespace Exceptions
         public const string EXAMCARD_ALREADY_EXISTS = "Question already exists.";
         public const string EXAMCARD_NOT_FOUND = "This examcard does not exist.";
         public const string NOT_AUTHORIZED_TO_DELETE = "Only the author can delete it.";
+        public const string NOT_AUTHORIZED_TO_EDIT = "Only the author can edit it.";
     }
 
     public static class UnauthenticatedMessage

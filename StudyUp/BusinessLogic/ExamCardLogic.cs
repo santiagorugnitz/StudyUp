@@ -43,7 +43,7 @@ namespace BusinessLogic
             if (!exam.Author.Equals(user))
                 throw new InvalidException(ExamCardMessage.INVALID_AUTHOR);
 
-            IEnumerable<ExamCard> sameQuestion = examCardRepository.GetAll().Where(a => a.Exam.Id == examId && 
+            IEnumerable<ExamCard> sameQuestion = examCardRepository.GetAll().Where(a => a.Exam.Id == examId &&
             a.Question.ToUpper().Equals(examCard.Question.ToUpper()));
 
             if (sameQuestion != null && (sameQuestion.Count() > 0))
@@ -75,6 +75,31 @@ namespace BusinessLogic
             examRepository.Update(exam);
             userRepository.Update(exam.Author);
             return true;
+        }
+
+        public ExamCard EditExamCard(string token, int examCardId, string newQuestion, bool newAnswer)
+        {
+            ExamCard examcard = examCardRepository.GetById(examCardId);
+            User user = userTokenRepository.GetUserByToken(token);
+
+            if (user is null)
+                throw new NotFoundException(UserMessage.USER_NOT_FOUND);
+
+            else if (examcard is null)
+                throw new NotFoundException(ExamCardMessage.EXAMCARD_NOT_FOUND);
+
+            else if (user.Id != examcard.Exam.Author.Id)
+                throw new InvalidException(ExamCardMessage.NOT_AUTHORIZED_TO_EDIT);
+
+            else if (examcard != null && user != null)
+            {
+                examcard.Question = newQuestion;
+                examcard.Answer = newAnswer;
+                examCardRepository.Update(examcard);
+            }
+
+            ExamCard updatedExamcard = examCardRepository.GetById(examCardId);
+            return updatedExamcard;
         }
     }
 }

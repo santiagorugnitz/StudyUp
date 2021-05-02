@@ -74,5 +74,24 @@ namespace WebAPITest
 
             logicMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void EditExamCardOkTest()
+        {
+            EditExamCardModel editExamCardModel = new EditExamCardModel()
+            {
+                Answer = false,
+                Question = "new question"
+            };
+
+            logicMock.Setup(x => x.EditExamCard(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
+                It.IsAny<bool>())).Returns(new ExamCardModel().ToEntity());
+
+            var result = controller.EditExamCard(1, "token", editExamCardModel);
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as ExamCard;
+
+            logicMock.VerifyAll();
+        }
     }
 }

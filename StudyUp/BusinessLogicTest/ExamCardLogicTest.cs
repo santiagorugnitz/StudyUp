@@ -90,5 +90,36 @@ namespace BusinessLogicTest
             examCardRepositoryMock.VerifyAll();
             Assert.IsTrue(result);
         }
+
+        [TestMethod]
+        public void EditExamCardOkTest()
+        {
+            ExamCard examCardAfterEdit = new ExamCard()
+            {
+                Id = examCardExample.Id,
+                Answer = true,
+                Question = "new question",
+                Exam = examExample
+            };
+
+            examRepositoryMock.Setup(m => m.GetAll()).Returns(new List<Exam>());
+            userRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(userExample);
+
+            examCardRepositoryMock.Setup(m => m.GetById(1)).Returns(examCardAfterEdit);
+            examCardRepositoryMock.Setup(f => f.Update(It.IsAny<ExamCard>()));
+
+
+            userRepositoryMock.Setup(m => m.GetAll()).Returns(new List<User>() { userExample });
+            userRepositoryMock.Setup(a => a.Update(It.IsAny<User>()));
+
+            userTokenRepository.Setup(u => u.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+
+            userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
+
+            var result = examCardLogic.EditExamCard("token", 1, "new question", false);
+
+            examCardRepositoryMock.VerifyAll();
+            Assert.AreEqual(examCardAfterEdit, result);
+        }
     }
 }
