@@ -61,6 +61,7 @@ namespace StudyUp
             services.AddScoped<IFlashcardLogic, FlashcardLogic>();
             services.AddScoped<IGroupLogic, GroupLogic>();
             services.AddScoped<IExamLogic, ExamLogic>();
+            services.AddScoped<IExamCardLogic, ExamCardLogic>();
 
             services.AddScoped<ExceptionFilter>();
 

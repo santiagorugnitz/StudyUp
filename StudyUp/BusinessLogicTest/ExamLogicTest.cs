@@ -61,6 +61,8 @@ namespace BusinessLogicTest
             examRepositoryMock.Setup(m => m.Add(It.IsAny<Exam>()));
             examRepositoryMock.Setup(m => m.GetAll()).Returns(new List<Exam>());
             userRepositoryMock.Setup(m => m.GetById(1)).Returns(userExample);
+            userRepositoryMock.Setup(m => m.GetById(1)).Returns(userExample);
+
             userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
             userRepositoryMock.Setup(a => a.Update(It.IsAny<User>()));
 

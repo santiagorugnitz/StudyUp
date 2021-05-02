@@ -35,8 +35,15 @@ namespace Exceptions
         public const string EMPTY_NAME_MESSAGE = "Exams name field cannot be empty.";
         public const string INVALID_DIFFICULTY = "Choose a valid difficulty for this exam.";
         public const string EMPTY_SUBJECT_MESSAGE = "Subject field cannot be empty.";
-        public const string NOT_A_TEACHER = "Only teachers can create exams.";
+        public const string NOT_A_TEACHER = "Only teachers can create and/or edit exams.";
         public const string CANNOT_GET_EXAMS = "This user is not a teacher.";
+        public const string EXAM_NOT_FOUND = "This exam does not exist.";
+    }
+   
+    public static class ExamCardMessage
+    {
+        public const string INVALID_AUTHOR = "User is not this exams author.";
+        public const string EXAMCARD_ALREADY_EXISTS = "Question already exists.";
     }
 
     public static class UnauthenticatedMessage
