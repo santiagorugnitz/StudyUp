@@ -56,9 +56,18 @@ namespace BusinessLogic
             return exam;
         }
 
-        public Exam GetExamById(int id)
+        public Exam GetExamById(int id, string token)
         {
+            User user = userTokenRepository.GetUserByToken(token);
+
+            if (user is null)
+                throw new NotFoundException(UserMessage.USER_NOT_FOUND);
+
             Exam exam = this.examRepository.GetById(id);
+
+            if (exam !=null && !exam.Author.Equals(user))
+                throw new InvalidException(ExamMessage.INVALID_USER);
+
             if (exam != null)
                 return exam;
             else

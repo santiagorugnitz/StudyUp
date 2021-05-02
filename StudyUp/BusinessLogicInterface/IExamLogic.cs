@@ -10,6 +10,6 @@ namespace BusinessLogicInterface
     {
         Exam AddExam(Exam exam, string userToken);
         IEnumerable<Exam> GetTeachersExams(string token);
-        Exam GetExamById(int id);
+        Exam GetExamById(int id, string token);
     }
 }

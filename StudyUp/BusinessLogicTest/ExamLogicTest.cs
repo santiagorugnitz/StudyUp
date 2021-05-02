@@ -102,8 +102,9 @@ namespace BusinessLogicTest
         public void GetExamByIdTest()
         {
             examRepositoryMock.Setup(b => b.GetById(examExample.Id)).Returns(examExample);
+            userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
 
-            var result = examLogic.GetExamById(examExample.Id);
+            var result = examLogic.GetExamById(examExample.Id, userExample.Token);
 
             examRepositoryMock.VerifyAll();
 

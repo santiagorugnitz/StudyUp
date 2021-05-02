@@ -38,6 +38,7 @@ namespace Exceptions
         public const string NOT_A_TEACHER = "Only teachers can create and/or edit exams.";
         public const string CANNOT_GET_EXAMS = "This user is not a teacher.";
         public const string EXAM_NOT_FOUND = "This exam does not exist.";
+        public const string INVALID_USER = "Logged user and exam author are different.";
     }
    
     public static class ExamCardMessage
