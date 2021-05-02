@@ -55,5 +55,17 @@ namespace BusinessLogic
 
             return exam;
         }
+
+        public IEnumerable<Exam> GetTeachersExams(string token)
+        {
+            ICollection<Exam> toReturn = new List<Exam>();
+            User user = userTokenRepository.GetUserByToken(token);
+
+            if (user is null)
+                throw new NotFoundException(UserMessage.USER_NOT_FOUND);
+
+            var teachersExams = examRepository.FindByCondition(t => t.Author.Equals(user));
+            return teachersExams;
+        }
     }
 }

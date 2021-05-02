@@ -9,6 +9,6 @@ namespace BusinessLogicInterface
     public interface IExamLogic
     {
         Exam AddExam(Exam exam, string userToken);
-
+        IEnumerable<Exam> GetTeachersExams(string token);
     }
 }

@@ -8,6 +8,7 @@ using Exceptions;
 using Domain;
 using WebAPI.Models;
 using WebAPI.Filters;
+using WebAPI.Models.ResponseModels;
 
 namespace WebAPI.Controllers
 {
@@ -34,6 +35,28 @@ namespace WebAPI.Controllers
                 Name = exam.Name,
                 Subject = exam.Subject
             });
+        }
+
+        [HttpGet]
+        public IActionResult GetTeachersExams([FromHeader] string token)
+        {
+            return Ok(ConvertExams(logic.GetTeachersExams(token)));
+        }
+
+        private IEnumerable<ResponseExamGroupModel> ConvertExams(IEnumerable<Exam> examsList)
+        {
+            List<ResponseExamGroupModel> toReturn = new List<ResponseExamGroupModel>();
+            foreach (Exam exam in examsList)
+            {
+                ResponseExamGroupModel toAdd = new ResponseExamGroupModel();
+                toAdd.Id = exam.Id;
+                if (exam.Group is null)
+                    toAdd.groupsName = " ";
+                else
+                    toAdd.groupsName = exam.Group.Name;
+                toReturn.Add(toAdd);
+            }
+            return toReturn;
         }
     }
 }

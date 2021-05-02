@@ -66,5 +66,16 @@ namespace WebAPITest
             logicMock.VerifyAll();
         }
 
+        [TestMethod]
+        public void GetExamsOkTest()
+        {
+            logicMock.Setup(x => x.GetTeachersExams(userModelExample.Token)).Returns(new List<Exam>());
+
+            var result = controller.GetTeachersExams(userModelExample.Token);
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as List<Deck>;
+
+            logicMock.VerifyAll();
+        }
     }
 }

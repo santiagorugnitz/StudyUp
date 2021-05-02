@@ -5,6 +5,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace BusinessLogicTest
@@ -68,6 +70,30 @@ namespace BusinessLogicTest
 
             examRepositoryMock.VerifyAll();
             Assert.AreEqual(examExample, result);
+        }
+
+        [TestMethod]
+        public void GetTeachersExamsTest()
+        {
+            Exam exam = new Exam
+            {
+                Id = 1,
+                Name = "German Exam",
+                Author = userExample,
+                Difficulty = Domain.Enumerations.Difficulty.Hard,
+                Subject = "German",
+                ExamCards = new List<ExamCard>(),
+            };
+
+            examRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<Exam,
+                bool>>>())).Returns(new List<Exam>() { exam });
+            userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+
+            var result = examLogic.GetTeachersExams(userExample.Token).Count();
+
+            examRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(1, result);
         }
     }
 }
