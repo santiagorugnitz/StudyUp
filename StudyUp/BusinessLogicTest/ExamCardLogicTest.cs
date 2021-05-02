@@ -51,7 +51,8 @@ namespace BusinessLogicTest
             {
                 Id = 1,
                 Question = "This is a question",
-                Answer = false
+                Answer = false,
+                Exam = examExample
             };
 
             examRepositoryMock = new Mock<IRepository<Exam>>(MockBehavior.Strict);
@@ -75,6 +76,19 @@ namespace BusinessLogicTest
 
             examRepositoryMock.VerifyAll();
             Assert.AreEqual(examCardExample, result);
+        }
+
+        [TestMethod]
+        public void DeleteExamCardOkTest()
+        {
+            examCardRepositoryMock.Setup(b => b.GetById(examCardExample.Id)).Returns(examCardExample);
+            userRepositoryMock.Setup(b => b.GetById(userExample.Id)).Returns(userExample);
+            examRepositoryMock.Setup(d => d.Update(examExample));
+
+            var result = examCardLogic.DeleteExamCard(examCardExample.Id, userExample.Token);
+
+            examCardRepositoryMock.VerifyAll();
+            Assert.IsTrue(result);
         }
     }
 }

@@ -26,5 +26,13 @@ namespace WebAPI.Controllers
         {
             return Ok(logic.AddExamCard(examCardModel.ExamId, examCardModel.ToEntity(), token));
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete([FromRoute] int id, [FromHeader] string token)
+        {
+            logic.DeleteExamCard(id, token);
+            return Ok();
+        }
+
     }
 }

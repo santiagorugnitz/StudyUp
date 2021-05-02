@@ -57,5 +57,24 @@ namespace BusinessLogic
 
             return examCard;
         }
+
+        public bool DeleteExamCard(int id, string token)
+        {
+            ExamCard examCard = examCardRepository.GetById(id);
+
+            if (examCard is null)
+                throw new NotFoundException(ExamCardMessage.EXAMCARD_NOT_FOUND);
+
+            User user = this.userRepository.GetById(examCard.Exam.Author.Id);
+
+            if (!user.Token.Equals(token))
+                throw new InvalidException(ExamCardMessage.NOT_AUTHORIZED_TO_DELETE);
+
+            Exam exam = examCard.Exam;
+            exam.ExamCards.Remove(examCard);
+            examRepository.Update(exam);
+            userRepository.Update(exam.Author);
+            return true;
+        }
     }
 }

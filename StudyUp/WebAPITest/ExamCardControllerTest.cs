@@ -63,5 +63,16 @@ namespace WebAPITest
 
             logicMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void DeleteExamCardOkTest()
+        {
+            logicMock.Setup(x => x.DeleteExamCard(It.IsAny<int>(), It.IsAny<string>())).Returns(true);
+
+            var result = controller.Delete(examCard.Id, userModelExample.Token);
+            var okResult = result as OkObjectResult;
+
+            logicMock.VerifyAll();
+        }
     }
 }
