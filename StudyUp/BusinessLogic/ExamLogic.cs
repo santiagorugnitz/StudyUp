@@ -56,6 +56,15 @@ namespace BusinessLogic
             return exam;
         }
 
+        public Exam GetExamById(int id)
+        {
+            Exam exam = this.examRepository.GetById(id);
+            if (exam != null)
+                return exam;
+            else
+                throw new NotFoundException(ExamMessage.EXAM_NOT_FOUND);
+        }
+
         public IEnumerable<Exam> GetTeachersExams(string token)
         {
             ICollection<Exam> toReturn = new List<Exam>();

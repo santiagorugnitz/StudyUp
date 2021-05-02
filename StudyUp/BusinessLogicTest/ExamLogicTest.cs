@@ -97,5 +97,17 @@ namespace BusinessLogicTest
 
             Assert.AreEqual(1, result);
         }
+
+        [TestMethod]
+        public void GetExamByIdTest()
+        {
+            examRepositoryMock.Setup(b => b.GetById(examExample.Id)).Returns(examExample);
+
+            var result = examLogic.GetExamById(examExample.Id);
+
+            examRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(examExample, result);
+        }
     }
 }
