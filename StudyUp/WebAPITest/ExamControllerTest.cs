@@ -77,5 +77,20 @@ namespace WebAPITest
 
             logicMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void GetExamByIdOkTest()
+        {
+            var exam = examModelExample.ToEntity();
+            exam.ExamCards = new List<ExamCard>();
+            exam.Author = new User { Username = "test" };
+            logicMock.Setup(x => x.GetExamById(1, "token")).Returns(exam);
+
+            var result = controller.GetExamById(1, "token");
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as ResponseFullDeckModel;
+
+            logicMock.VerifyAll();
+        }
     }
 }

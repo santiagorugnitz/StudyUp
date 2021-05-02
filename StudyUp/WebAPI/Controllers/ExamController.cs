@@ -58,5 +58,32 @@ namespace WebAPI.Controllers
             }
             return toReturn;
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetExamById([FromRoute] int id, [FromHeader] string token)
+        {
+            Exam exam = logic.GetExamById(id, token);
+
+            string groupName;
+            if (exam.Group is null)
+                groupName = " ";
+            else
+                groupName = exam.Group.Name;
+
+            return Ok(new ResponseFullExamModel()
+            {
+                Id = exam.Id,
+                Name = exam.Name,
+                Subject = exam.Subject,
+                Difficulty = exam.Difficulty,
+                GroupName = groupName,
+                Examcards = exam.ExamCards.Select(examcard => new ResponseExamCardModel()
+                {
+                    Id = examcard.Id,
+                    Question = examcard.Question,
+                    Answer = examcard.Answer
+                })
+            });
+        }
     }
 }

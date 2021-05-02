@@ -4,18 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebAPI.Models
+namespace WebAPI.Models.ResponseModels
 {
-    public class ResponseFullDeckModel
+    public class ResponseFullExamModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public Difficulty Difficulty { get; set; }
         public string Subject { get; set; }
-        public bool IsHidden { get; set; }
-        public virtual string Author { get; set; }
-        public IEnumerable<ResponseFlashcardModel> Flashcards { get; set; }
-        public string groupName;
-
+        public string GroupName { get; set; }
+        public IEnumerable<ResponseExamCardModel> Examcards { get; set; }
     }
 }
