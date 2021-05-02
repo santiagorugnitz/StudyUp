@@ -64,6 +64,9 @@ namespace BusinessLogic
             if (user is null)
                 throw new NotFoundException(UserMessage.USER_NOT_FOUND);
 
+            if (user.IsStudent is true)
+                throw new InvalidException(ExamMessage.CANNOT_GET_EXAMS);
+
             var teachersExams = examRepository.FindByCondition(t => t.Author.Equals(user));
             return teachersExams;
         }

@@ -36,12 +36,12 @@ namespace Exceptions
         public const string INVALID_DIFFICULTY = "Choose a valid difficulty for this exam.";
         public const string EMPTY_SUBJECT_MESSAGE = "Subject field cannot be empty.";
         public const string NOT_A_TEACHER = "Only teachers can create exams.";
+        public const string CANNOT_GET_EXAMS = "This user is not a teacher.";
     }
 
     public static class UnauthenticatedMessage
     {
         public const string UNAUTHENTICATED_USER = "The user is not authenticated.";
-
     }
 
     public static class FlashcardMessage
