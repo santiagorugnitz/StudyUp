@@ -50,6 +50,10 @@
     <string name="no_flashcards_error">Deck has no flashcards</string>
     <string name="end_study">Stop studying and save progress?</string>
     <string name="assign_deck">Assign deck</string>
+    <string name="exams">Exams</string>
+    <string name="unassigned">Unassigned</string>
+    <string name="assigned">Assigned</string>
+    <string name="new_exam">New exam</string>
 
 
     <string-array name="difficulties">
