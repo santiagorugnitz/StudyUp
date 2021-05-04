@@ -17,7 +17,11 @@
     <fragment
         android:id="@+id/examDetailFragment"
         android:name="com.ort.studyup.home.exams.ExamDetailFragment"
-        android:label="ExamDetailFragment" />
+        android:label="ExamDetailFragment" >
+        <action
+            android:id="@+id/action_examDetailFragment_to_newExamCardFragment"
+            app:destination="@id/newExamCardFragment" />
+    </fragment>
     <fragment
         android:id="@+id/newExamFragment"
         android:name="com.ort.studyup.home.exams.NewExamFragment"
@@ -33,4 +37,8 @@
             app:popUpTo="@+id/examDetailFragment"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/newExamCardFragment"
+        android:name="com.ort.studyup.home.exams.examcards.NewExamCardFragment"
+        android:label="NewExamCardFragment" />
 </navigation>

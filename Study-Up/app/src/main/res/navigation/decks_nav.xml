@@ -42,6 +42,6 @@
     </fragment>
     <fragment
         android:id="@+id/newFlashcardFragment"
-        android:name="com.ort.studyup.home.flashcards.NewFlashcardFragment"
+        android:name="com.ort.studyup.home.decks.flashcards.NewFlashcardFragment"
         android:label="NewFlashcardFragment" />
 </navigation>

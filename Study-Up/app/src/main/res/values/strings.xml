@@ -29,6 +29,7 @@
     <string name="delete">Delete</string>
     <string name="delete_deck_confirmation">Are you sure you want to delete this deck? This can not be undone</string>
     <string name="delete_flashcard_confirmation">Are you sure you want to delete this flashcard? This can not be undone</string>
+    <string name="delete_exam_card_confirmation">Are you sure you want to delete this exam card? This can not be undone</string>
     <string name="edit">Edit</string>
     <string name="new_flashcard">New Flashcard</string>
     <string name="question">Question</string>
@@ -57,7 +58,7 @@
     <string name="none">None</string>
     <string name="true_string">True</string>
     <string name="false_string">False</string>
-
+    <string name="edit_examcard">Edit exam card</string>
 
 
     <string-array name="difficulties">

@@ -7,7 +7,7 @@ import retrofit2.http.*
 interface ExamCardService {
 
     @POST("api/examcards")
-    suspend fun createExam(@Body data: NewExamCardRequest): Response<*>
+    suspend fun createExam(@Body data: NewExamCardRequest): Response<ExamCard>
 
     @DELETE("api/examcards/{id}")
     suspend fun deleteExamCard(@Path("id") id: Int): Response<*>

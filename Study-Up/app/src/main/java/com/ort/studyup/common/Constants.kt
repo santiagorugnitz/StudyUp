@@ -12,6 +12,7 @@ const val EXAM_ID_KEY = "deck_id_key"
 const val FLASHCARD_ID_KEY = "flashcard_id_key"
 const val QUESTION_KEY = "question_key"
 const val ANSWER_KEY = "answer_key"
+const val EXAM_CARD_ID_KEY = "exam_card_id_key"
 
 
 const val API_URL = "https://192.168.1.11:45455/"

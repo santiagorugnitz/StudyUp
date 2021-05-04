@@ -1,4 +1,4 @@
-package com.ort.studyup.home.flashcards
+package com.ort.studyup.home.decks.flashcards
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -33,6 +33,7 @@
             android:maxLines="3"
             />
 
+<!--        TODO: change to a spinner-->
         <EditText
             android:id="@+id/answerInput"
             android:layout_width="match_parent"

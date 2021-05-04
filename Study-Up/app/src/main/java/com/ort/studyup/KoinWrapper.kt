@@ -13,7 +13,8 @@ import com.ort.studyup.home.decks.NewDeckViewModel
 import com.ort.studyup.home.exams.ExamDetailViewModel
 import com.ort.studyup.home.exams.ExamsViewModel
 import com.ort.studyup.home.exams.NewExamViewModel
-import com.ort.studyup.home.flashcards.NewFlashcardViewModel
+import com.ort.studyup.home.decks.flashcards.NewFlashcardViewModel
+import com.ort.studyup.home.exams.examcards.NewExamCardViewModel
 import com.ort.studyup.home.groups.GroupsViewModel
 import com.ort.studyup.home.groups.NewGroupViewModel
 import com.ort.studyup.home.profile.ProfileViewModel
@@ -67,9 +68,10 @@ object KoinWrapper {
         factory { FollowingDecksViewModel(get(), get()) }
         factory { StudyViewModel(get()) }
         factory { GroupsViewModel(get(), get(), get()) }
-        factory { ExamsViewModel(get(), get()) }
+        factory { ExamsViewModel(get(), get(), get()) }
         factory { ExamDetailViewModel(get()) }
         factory { NewExamViewModel(get(), get()) }
+        factory { NewExamCardViewModel(get(), get()) }
 
     }
 
@@ -79,6 +81,7 @@ object KoinWrapper {
         factory { FlashcardRepository(get()) }
         factory { GroupRepository(get()) }
         factory { ExamRepository(get()) }
+        factory { ExamCardRepository(get()) }
 
     }
 

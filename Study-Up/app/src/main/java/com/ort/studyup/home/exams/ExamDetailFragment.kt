@@ -36,18 +36,19 @@ class ExamDetailFragment : BaseFragment(), ExamCardItemRenderer.Callback {
         initViewModel(examId)
     }
 
-    private fun initUI(deck: Exam) {
-        title.text = deck.name
+    private fun initUI(exam: Exam) {
+        title.text = exam.name
         //TODO: change UI if exam is in progress (dont allow to change list)
         addButton.setOnClickListener {
             //TODO
-            //findNavController().navigate(R.id.action_deckDetailFragment_to_newFlashcardFragment, Bundle().apply { putInt(DECK_ID_KEY, deck.id) })
+            findNavController().navigate(R.id.action_examDetailFragment_to_newExamCardFragment, Bundle().apply { putInt(EXAM_ID_KEY, exam.id) })
         }
     }
 
     private fun initViewModel(id: Int) {
         viewModel.loadDetails(id).observe(viewLifecycleOwner, { exam ->
             adapter.setItems(exam.examcards.map {
+                //TODO
 //                FlashcardItemRenderer.Item(
 //                    it.id,
 //                    it.question,
