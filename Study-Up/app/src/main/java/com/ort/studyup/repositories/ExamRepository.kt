@@ -9,7 +9,7 @@ class ExamRepository(
     private val examService: ExamService,
 ) {
 
-    suspend fun getExamList(): List<ExamItem> {
+    suspend fun exams(): List<ExamItem> {
         return examService.exams().check()
     }
 

@@ -33,3 +33,16 @@ class DeckItem(
         }
     }
 }
+
+class GroupItem(
+    val id: Int,
+    val name: String
+) {
+    override fun equals(other: Any?): Boolean {
+        return if (other is DeckItem) {
+            other.id == id
+        } else {
+            false
+        }
+    }
+}

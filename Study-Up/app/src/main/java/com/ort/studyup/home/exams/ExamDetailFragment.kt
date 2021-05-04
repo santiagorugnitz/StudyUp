@@ -38,7 +38,7 @@ class ExamDetailFragment : BaseFragment(), ExamCardItemRenderer.Callback {
 
     private fun initUI(deck: Exam) {
         title.text = deck.name
-
+        //TODO: change UI if exam is in progress (dont allow to change list)
         addButton.setOnClickListener {
             //TODO
             //findNavController().navigate(R.id.action_deckDetailFragment_to_newFlashcardFragment, Bundle().apply { putInt(DECK_ID_KEY, deck.id) })

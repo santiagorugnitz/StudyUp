@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -42,13 +43,19 @@ class ExamsFragment : BaseFragment(), ExamItemRenderer.Callback {
     }
 
     private fun initViewModel() {
-        viewModel.loadExams().observe(viewLifecycleOwner) {
+        viewModel.loadExams().observe(viewLifecycleOwner, Observer {
             adapter.setItems(it)
-        }
+        })
     }
 
     override fun onExamClicked(examId: Int) {
         findNavController().navigate(R.id.action_examsFragment_to_examDetailFragment, Bundle().apply { putInt(EXAM_ID_KEY, examId) })
+    }
+
+    override fun onAssignExam(examId: Int, groupId: Int) {
+        viewModel.onAssignExam(examId, groupId).observe(viewLifecycleOwner, Observer {
+            initViewModel()
+        })
     }
 
 }

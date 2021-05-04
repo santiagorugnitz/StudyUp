@@ -54,6 +54,10 @@
     <string name="unassigned">Unassigned</string>
     <string name="assigned">Assigned</string>
     <string name="new_exam">New exam</string>
+    <string name="none">None</string>
+    <string name="true_string">True</string>
+    <string name="false_string">False</string>
+
 
 
     <string-array name="difficulties">

@@ -12,7 +12,7 @@ class ExamCardItemRenderer(private val callback: Callback) : ViewRenderer<ExamCa
 
     override fun bind(view: View, model: Item, position: Int) {
         view.question.text = model.question
-        //TODO:
+        view.answer.text = if (model.answer) view.context.getString(R.string.true_string) else view.context.getString(R.string.false_string)
         view.editButton.setOnClickListener {
             callback.onEditExamCard(model.id, model.question, model.answer)
         }
