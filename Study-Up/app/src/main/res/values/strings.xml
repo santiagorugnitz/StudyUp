@@ -59,6 +59,7 @@
     <string name="true_string">True</string>
     <string name="false_string">False</string>
     <string name="edit_examcard">Edit exam card</string>
+    <string name="new_exam_card">New exam card</string>
 
 
     <string-array name="difficulties">
@@ -75,6 +76,11 @@
     <string-array name="roles">
         <item>Student</item>
         <item>Teacher</item>
+    </string-array>
+
+    <string-array name="exam_answer">
+        <item>True</item>
+        <item>False</item>
     </string-array>
 </resources>
 

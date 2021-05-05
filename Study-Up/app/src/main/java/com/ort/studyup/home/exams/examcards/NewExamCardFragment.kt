@@ -10,6 +10,7 @@ import com.ort.studyup.common.*
 import com.ort.studyup.common.ui.BaseFragment
 import com.ort.studyup.common.ui.ConfirmationDialog
 import kotlinx.android.synthetic.main.fragment_new_flashcard.*
+import kotlinx.android.synthetic.main.item_spinner.view.*
 
 class NewExamCardFragment : BaseFragment(), ConfirmationDialog.Callback {
 
@@ -21,7 +22,7 @@ class NewExamCardFragment : BaseFragment(), ConfirmationDialog.Callback {
         savedInstanceState: Bundle?
     ): View? {
         super.onCreate(savedInstanceState)
-        return inflater.inflate(R.layout.fragment_new_flashcard, container, false)
+        return inflater.inflate(R.layout.fragment_new_exam_card, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -31,15 +32,15 @@ class NewExamCardFragment : BaseFragment(), ConfirmationDialog.Callback {
 
     private fun initUI() {
         val examId = arguments?.getInt(EXAM_ID_KEY)
-
-        arguments?.getInt(EXAM_CARD_ID_KEY)?.let {
-            if (it != 0) {
-                viewModel.examCardId = it
+        initSpinner(answerInput, resources.getStringArray(R.array.exam_answer), getString(R.string.answer))
+        arguments?.getInt(EXAM_CARD_ID_KEY)?.let { id ->
+            if (id != 0) {
+                viewModel.examCardId = id
                 arguments?.getString(QUESTION_KEY)?.let {
                     questionInput.setText(it)
                 }
-                arguments?.getString(ANSWER_KEY)?.let {
-                    //TODO: set selected in spinner
+                arguments?.getBoolean(ANSWER_KEY)?.let {
+                    answerInput.spinner.setSelection(if (it) 0 else 1)
                 }
 
                 saveButton.text = getString(R.string.save_changes)
@@ -59,7 +60,7 @@ class NewExamCardFragment : BaseFragment(), ConfirmationDialog.Callback {
             viewModel.sendData(
                 examId ?: 0,
                 questionInput.text.toString(),
-                //TODO: get selected from spinner
+                answerInput.spinner.selectedItemPosition == 0
             ).observe(viewLifecycleOwner, Observer {
                 if (it > 0)
                     requireActivity().onBackPressed()

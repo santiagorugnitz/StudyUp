@@ -2,8 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:paddingBottom="64dp"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingBottom="64dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +20,8 @@
             style="@style/Header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/new_flashcard" />
+            android:layout_marginStart="8dp"
+            android:text="@string/new_exam_card" />
 
         <EditText
             android:id="@+id/questionInput"
@@ -29,20 +30,15 @@
             android:layout_marginTop="64dp"
             android:hint="@string/question"
             android:inputType="text"
-            android:minLines="3"
             android:maxLines="3"
-            />
+            android:minLines="3" />
 
-        <EditText
+        <include
             android:id="@+id/answerInput"
-            android:layout_width="match_parent"
+            layout="@layout/item_spinner"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:hint="@string/answer"
-            android:inputType="text"
-            android:minLines="3"
-            android:maxLines="3"/>
-
+            android:layout_marginTop="32dp" />
     </LinearLayout>
 
 
@@ -51,24 +47,24 @@
         style="@style/BottomButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/button_background"
         android:text="@string/save"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@id/deleteButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:visibility="gone"
-        android:layout_marginBottom="8dp"
         android:id="@+id/deleteButton"
         style="@style/BottomButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/button_background"
         android:backgroundTint="@color/error"
         android:text="@string/delete"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
