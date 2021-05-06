@@ -6,18 +6,7 @@ using System.Threading.Tasks;
 
 namespace Exceptions
 {
-    public static class UserMessage
-    {
-        public const string INVALID_PASSWORD = "Password must be 6 characters long and contain at least" +
-            " one number, an uppercase letter and a lowercase letter.";
-        public const string USER_NOT_FOUND = "User does not exist.";
-        public const string EMAIL_ALREADY_EXISTS = "This email address already belongs to a registered user.";
-        public const string WRONG_EMAIL_OR_PASSWORD = "Wrong email or password.";
-        public const string WRONG_USERNAME_OR_PASSWORD = "Wrong username or password.";
-        public const string INVALID_EMAIL = "Invalid mail address.";
-        public const string ALREADY_FOLLOWS = "You already follow this user.";
-        public const string NOT_FOLLOWS = "You cannot unfollow an unfollowed user.";
-    }
+
 
     public static class DeckMessage
     {
@@ -27,6 +16,15 @@ namespace Exceptions
         public const string DECK_NOT_FOUND = "This deck does not exist.";
         public const string EMPTY_SUBJECT = "Subject field cannot be empty.";
         public const string NOT_AUTHORIZED = "Only this decks author can delete it.";
+    }
+
+    public static class ExamCardMessage
+    {
+        public const string INVALID_AUTHOR = "User is not this exams author.";
+        public const string EXAMCARD_ALREADY_EXISTS = "Question already exists.";
+        public const string EXAMCARD_NOT_FOUND = "This examcard does not exist.";
+        public const string NOT_AUTHORIZED_TO_DELETE = "Only the author can delete it.";
+        public const string NOT_AUTHORIZED_TO_EDIT = "Only the author can edit it.";
     }
 
     public static class ExamMessage
@@ -41,20 +39,6 @@ namespace Exceptions
         public const string INVALID_USER = "Logged user and exam author are different.";
         public const string ALREADY_ASSIGNED = "Already assigned this exam to a group.";
         public const string NOT_AUTHORIZED = "Only this groups teacher can assign .";
-    }
-
-    public static class ExamCardMessage
-    {
-        public const string INVALID_AUTHOR = "User is not this exams author.";
-        public const string EXAMCARD_ALREADY_EXISTS = "Question already exists.";
-        public const string EXAMCARD_NOT_FOUND = "This examcard does not exist.";
-        public const string NOT_AUTHORIZED_TO_DELETE = "Only the author can delete it.";
-        public const string NOT_AUTHORIZED_TO_EDIT = "Only the author can edit it.";
-    }
-
-    public static class UnauthenticatedMessage
-    {
-        public const string UNAUTHENTICATED_USER = "The user is not authenticated.";
     }
 
     public static class FlashcardMessage
@@ -78,6 +62,23 @@ namespace Exceptions
         public const string ALREADY_ASSIGNED = "Already assigned this deck to this group.";
         public const string NOT_ASSIGNED = "This deck is not assigned to this group.";
         public const string NO_DECKS = "There are no decks assigned to this group.";
+    }
 
+    public static class UserMessage
+    {
+        public const string INVALID_PASSWORD = "Password must be 6 characters long and contain at least" +
+            " one number, an uppercase letter and a lowercase letter.";
+        public const string USER_NOT_FOUND = "User does not exist.";
+        public const string EMAIL_ALREADY_EXISTS = "This email address already belongs to a registered user.";
+        public const string WRONG_EMAIL_OR_PASSWORD = "Wrong email or password.";
+        public const string WRONG_USERNAME_OR_PASSWORD = "Wrong username or password.";
+        public const string INVALID_EMAIL = "Invalid mail address.";
+        public const string ALREADY_FOLLOWS = "You already follow this user.";
+        public const string NOT_FOLLOWS = "You cannot unfollow an unfollowed user.";
+    }
+
+    public static class UnauthenticatedMessage
+    {
+        public const string UNAUTHENTICATED_USER = "The user is not authenticated.";
     }
 }
