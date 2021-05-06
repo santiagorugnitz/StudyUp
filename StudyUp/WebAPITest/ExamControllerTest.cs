@@ -92,5 +92,18 @@ namespace WebAPITest
 
             logicMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void AssingOkTest()
+        {
+            logicMock.Setup(x => x.AssignExam(It.IsAny<string>(), It.IsAny<int>(),
+                It.IsAny<int>())).Returns(It.IsAny<Exam>());
+
+            var result = controller.Assign("token", 1, 1);
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as Exam;
+
+            logicMock.VerifyAll();
+        }
     }
 }

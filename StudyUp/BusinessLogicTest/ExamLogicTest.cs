@@ -16,10 +16,12 @@ namespace BusinessLogicTest
     {
         User userExample;
         Exam examExample;
+        Group groupExample;
         Mock<IRepository<Exam>> examRepositoryMock;
         Mock<IRepository<User>> userRepositoryMock;
+        Mock<IRepository<Group>> groupRepositoryMock;
         Mock<IRepository<ExamCard>> examCardRepositoryMock;
-        Mock<IUserRepository> userTokenRepository;
+        Mock<IUserRepository> userTokenRepositoryMock;
         ExamLogic examLogic;
 
         [TestInitialize]
@@ -47,12 +49,22 @@ namespace BusinessLogicTest
                 ExamCards = new List<ExamCard>()
             };
 
+            groupExample = new Group()
+            {
+                Id = 1,
+                Name = "NewGroup",
+                Creator = userExample,
+                UserGroups = new List<UserGroup>(),
+                DeckGroups = new List<DeckGroup>()
+            };
+
             examRepositoryMock = new Mock<IRepository<Exam>>(MockBehavior.Strict);
             userRepositoryMock = new Mock<IRepository<User>>(MockBehavior.Loose);
             examCardRepositoryMock = new Mock<IRepository<ExamCard>>(MockBehavior.Strict);
-            userTokenRepository = new Mock<IUserRepository>(MockBehavior.Strict);
+            groupRepositoryMock = new Mock<IRepository<Group>>(MockBehavior.Strict);
+            userTokenRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
             examLogic = new ExamLogic(examRepositoryMock.Object, userRepositoryMock.Object,
-                 userTokenRepository.Object, examCardRepositoryMock.Object);
+                 userTokenRepositoryMock.Object, examCardRepositoryMock.Object, groupRepositoryMock.Object);
         }
 
         [TestMethod]
@@ -63,7 +75,7 @@ namespace BusinessLogicTest
             userRepositoryMock.Setup(m => m.GetById(1)).Returns(userExample);
             userRepositoryMock.Setup(m => m.GetById(1)).Returns(userExample);
 
-            userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
             userRepositoryMock.Setup(a => a.Update(It.IsAny<User>()));
 
             userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
@@ -89,7 +101,7 @@ namespace BusinessLogicTest
 
             examRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<Exam,
                 bool>>>())).Returns(new List<Exam>() { exam });
-            userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
 
             var result = examLogic.GetTeachersExams(userExample.Token).Count();
 
@@ -102,12 +114,25 @@ namespace BusinessLogicTest
         public void GetExamByIdTest()
         {
             examRepositoryMock.Setup(b => b.GetById(examExample.Id)).Returns(examExample);
-            userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
 
             var result = examLogic.GetExamById(examExample.Id, userExample.Token);
 
             examRepositoryMock.VerifyAll();
 
+            Assert.AreEqual(examExample, result);
+        }
+
+        [TestMethod]
+        public void AssignOkTest()
+        {
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
+            examRepositoryMock.Setup(e => e.GetById(It.IsAny<int>())).Returns(examExample);
+            examRepositoryMock.Setup(e => e.Update(examExample));
+
+            var result = examLogic.AssignExam(userExample.Token, 1, 1);
+            groupRepositoryMock.VerifyAll();
             Assert.AreEqual(examExample, result);
         }
     }

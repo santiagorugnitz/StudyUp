@@ -14,11 +14,14 @@ namespace BusinessLogic
         private IRepository<Exam> examRepository;
         private IRepository<User> userRepository;
         private IRepository<ExamCard> examCardRepository;
+        private IRepository<Group> groupRepository;
         private IUserRepository userTokenRepository;
 
         public ExamLogic(IRepository<Exam> repository, IRepository<User> userRepository,
-            IUserRepository userTokenRepository, IRepository<ExamCard> examCardRepository)
+            IUserRepository userTokenRepository, IRepository<ExamCard> examCardRepository,
+            IRepository<Group> groupRepository)
         {
+            this.groupRepository = groupRepository;
             this.examRepository = repository;
             this.userRepository = userRepository;
             this.userTokenRepository = userTokenRepository;
@@ -56,6 +59,34 @@ namespace BusinessLogic
             return exam;
         }
 
+        public Exam AssignExam(string token, int groupId, int examId)
+        {
+            User user = userTokenRepository.GetUserByToken(token);
+            Exam exam = examRepository.GetById(examId);
+            Group group = groupRepository.GetById(groupId);
+
+            if (user is null)
+                throw new InvalidException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
+
+            if (group is null)
+                throw new NotFoundException(GroupMessage.GROUP_NOT_FOUND);
+
+            if (exam is null)
+                throw new NotFoundException(ExamMessage.EXAM_NOT_FOUND);
+
+            if (!(exam.Group is null))
+                throw new AlreadyExistsException(ExamMessage.ALREADY_ASSIGNED);
+
+            if (!group.Creator.Equals(user))
+                throw new InvalidException(ExamMessage.NOT_AUTHORIZED);
+
+            ////TO DO: notify students
+
+            exam.Group = group;
+            examRepository.Update(exam);
+            return exam;
+        }
+
         public Exam GetExamById(int id, string token)
         {
             User user = userTokenRepository.GetUserByToken(token);
@@ -65,7 +96,7 @@ namespace BusinessLogic
 
             Exam exam = this.examRepository.GetById(id);
 
-            if (exam !=null && !exam.Author.Equals(user))
+            if (exam != null && !exam.Author.Equals(user))
                 throw new InvalidException(ExamMessage.INVALID_USER);
 
             if (exam != null)

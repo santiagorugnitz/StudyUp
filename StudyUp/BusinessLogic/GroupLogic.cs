@@ -160,14 +160,14 @@ namespace BusinessLogic
                 GroupId = groupId
             };
 
-            bool sent = NotifiyStudentsAsync(group).Result;
+            bool sent = NotifiyStudentsAsync(group, deck).Result;
 
             group.DeckGroups.Add(deckGroup);
             groupRepository.Update(group);
             return group;
         }
 
-        private async System.Threading.Tasks.Task<bool> NotifiyStudentsAsync(Group group)
+        private async System.Threading.Tasks.Task<bool> NotifiyStudentsAsync(Group group, Deck deck)
         {
             string apiRoute = "https://fcm.googleapis.com/fcm/send";
             string serverKey = "AAAA-GAOZ3Q:APA91bG8C_EClvZ-jcIp1YhACOwT345pZ0QUAa1lr-0_l8e64jGWmcKWAgduNit0ymFq_btFbwRrrlPcUwK3RqjeXRDFk-yfbPsl4rNyBxb1LKJT33H_qaapXkyji6UlG8HI44Ka_MP7";
@@ -180,7 +180,7 @@ namespace BusinessLogic
                 idNumber++;
             }
 
-            var data = new { group_id = group.Id,  group = group.Name };
+            var data = new { group_id = group.Id,  group = group.Name, deck_id = deck.Id};
             var notification = new { title = "Deck assigned", text = "A teacher has assigned your group a study deck" };
 
             var message = new MessageStructure()

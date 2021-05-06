@@ -39,8 +39,10 @@ namespace Exceptions
         public const string CANNOT_GET_EXAMS = "This user is not a teacher.";
         public const string EXAM_NOT_FOUND = "This exam does not exist.";
         public const string INVALID_USER = "Logged user and exam author are different.";
+        public const string ALREADY_ASSIGNED = "Already assigned this exam to a group.";
+        public const string NOT_AUTHORIZED = "Only this groups teacher can assign .";
     }
-   
+
     public static class ExamCardMessage
     {
         public const string INVALID_AUTHOR = "User is not this exams author.";
