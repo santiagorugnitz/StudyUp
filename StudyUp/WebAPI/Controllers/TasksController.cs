@@ -26,7 +26,7 @@ namespace WebAPI
         public IActionResult GetTasks([FromHeader] string token)
         {
             var tasks = this.logic.GetTasks(token);
-            var response = new ResponseTasksModel();
+            var response = new ResponseTasksModel() { Decks = new List<ResponseTaskDeckModel>(), Exams = new List<ResponseTaskExamModel>() };
 
             foreach (Deck deck in tasks.Item1)
             {
