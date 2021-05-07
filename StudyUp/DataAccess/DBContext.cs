@@ -123,6 +123,8 @@ namespace DataAccess
                 .HasForeignKey(bc => bc.FollowerUserId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<UserExam>()
+                .HasKey(b => new { b.UserId, b.ExamId });
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { optionsBuilder.UseLazyLoadingProxies(); }
 

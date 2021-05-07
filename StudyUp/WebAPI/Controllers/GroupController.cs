@@ -23,7 +23,7 @@ namespace WebAPI.Controllers
             this.logic = logic;
         }
 
-        [HttpGet("/filter")]
+        [HttpGet("filter")]
         public IActionResult Get([FromHeader] string token, [FromQuery] string name)
         {
             return Ok(ConvertGroups(logic.GetAllGroups(name), token).OrderBy(a => a.Name.Length));
