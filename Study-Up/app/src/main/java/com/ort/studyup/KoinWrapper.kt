@@ -10,17 +10,18 @@ import com.ort.studyup.home.decks.DeckDetailViewModel
 import com.ort.studyup.home.decks.DecksViewModel
 import com.ort.studyup.home.decks.FollowingDecksViewModel
 import com.ort.studyup.home.decks.NewDeckViewModel
-import com.ort.studyup.home.flashcards.NewFlashcardViewModel
+import com.ort.studyup.home.exams.ExamDetailViewModel
+import com.ort.studyup.home.exams.ExamsViewModel
+import com.ort.studyup.home.exams.NewExamViewModel
+import com.ort.studyup.home.decks.flashcards.NewFlashcardViewModel
+import com.ort.studyup.home.exams.examcards.NewExamCardViewModel
 import com.ort.studyup.home.groups.GroupsViewModel
 import com.ort.studyup.home.groups.NewGroupViewModel
 import com.ort.studyup.home.profile.ProfileViewModel
 import com.ort.studyup.home.search.SearchViewModel
 import com.ort.studyup.login.LoginViewModel
 import com.ort.studyup.login.RegisterViewModel
-import com.ort.studyup.repositories.DeckRepository
-import com.ort.studyup.repositories.FlashcardRepository
-import com.ort.studyup.repositories.GroupRepository
-import com.ort.studyup.repositories.UserRepository
+import com.ort.studyup.repositories.*
 import com.ort.studyup.services.*
 import com.ort.studyup.splash.SplashViewModel
 import com.ort.studyup.storage.dao.AppDatabase
@@ -67,6 +68,11 @@ object KoinWrapper {
         factory { FollowingDecksViewModel(get(), get()) }
         factory { StudyViewModel(get()) }
         factory { GroupsViewModel(get(), get(), get()) }
+        factory { ExamsViewModel(get(), get(), get()) }
+        factory { ExamDetailViewModel(get()) }
+        factory { NewExamViewModel(get(), get()) }
+        factory { NewExamCardViewModel(get(), get()) }
+
     }
 
     private fun repositories() = module {
@@ -74,6 +80,8 @@ object KoinWrapper {
         factory { DeckRepository(get()) }
         factory { FlashcardRepository(get()) }
         factory { GroupRepository(get()) }
+        factory { ExamRepository(get()) }
+        factory { ExamCardRepository(get()) }
 
     }
 
@@ -82,6 +90,9 @@ object KoinWrapper {
         factory { ServiceFactory(get()).createInstance(DeckService::class.java) }
         factory { ServiceFactory(get()).createInstance(FlashcardService::class.java) }
         factory { ServiceFactory(get()).createInstance(GroupService::class.java) }
+        factory { ServiceFactory(get()).createInstance(ExamService::class.java) }
+        factory { ServiceFactory(get()).createInstance(ExamCardService::class.java) }
+
     }
 
     private fun database() = module {

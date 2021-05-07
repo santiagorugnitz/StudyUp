@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/exams_nav"
+    app:startDestination="@id/examsFragment">
+    <fragment
+        android:id="@+id/examsFragment"
+        android:name="com.ort.studyup.home.exams.ExamsFragment"
+        android:label="ExamsFragment">
+        <action
+            android:id="@+id/action_examsFragment_to_examDetailFragment"
+            app:destination="@id/examDetailFragment" />
+        <action
+            android:id="@+id/action_examsFragment_to_newExamFragment"
+            app:destination="@id/newExamFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/examDetailFragment"
+        android:name="com.ort.studyup.home.exams.ExamDetailFragment"
+        android:label="ExamDetailFragment" >
+        <action
+            android:id="@+id/action_examDetailFragment_to_newExamCardFragment"
+            app:destination="@id/newExamCardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newExamFragment"
+        android:name="com.ort.studyup.home.exams.NewExamFragment"
+        android:label="NewExamFragment">
+        <action
+            android:id="@+id/action_newExamFragment_to_examsFragment"
+            app:destination="@id/examsFragment"
+            app:popUpTo="@+id/examsFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_newExamFragment_to_examDetailFragment"
+            app:destination="@id/examDetailFragment"
+            app:popUpTo="@+id/examDetailFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/newExamCardFragment"
+        android:name="com.ort.studyup.home.exams.examcards.NewExamCardFragment"
+        android:label="NewExamCardFragment" />
+</navigation>

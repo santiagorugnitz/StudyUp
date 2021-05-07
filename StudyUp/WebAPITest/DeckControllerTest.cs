@@ -78,7 +78,7 @@ namespace WebAPITest
                 IsHidden = false,
                 Subject = "Latin"
             };
-            logicMock.Setup(x => x.AddDeck(anotherDeckModelExample.ToEntity(), userModelExample.Token)).Throws(new InvalidException(DeckMessage.EMPTY_NAME_MESSAGE));
+            logicMock.Setup(x => x.AddDeck(anotherDeckModelExample.ToEntity(), userModelExample.Token)).Throws(new InvalidException(DeckMessage.EMPTY_NAME));
 
             var result = controller.Post(anotherDeckModelExample, userModelExample.Token);
             var okResult = result as BadRequestObjectResult;

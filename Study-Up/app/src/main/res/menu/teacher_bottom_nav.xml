@@ -10,4 +10,9 @@
         android:enabled="true"
         android:icon="@drawable/ic_group"
         android:title="@string/groups"/>
+    <item
+        android:id="@+id/exams_nav"
+        android:enabled="true"
+        android:icon="@drawable/ic_exam"
+        android:title="@string/exams"/>
 </menu>

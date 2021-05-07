@@ -13,7 +13,9 @@ namespace DataAccess
         public DbSet<Deck> Decks { get; set; }
         public DbSet<Flashcard> Flashcards { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<Exam> Exams { get; set; }
         public DbSet<DeckGroup> DeckGroups { get; set; }
+        //public DbSet<ExamGroup> ExamGroups { get; set; }
         public DbSet<UserGroup> UserGroups { get; set; }
 
         public DBContext(DbContextOptions options) : base(options) { }
@@ -24,6 +26,7 @@ namespace DataAccess
             modelBuilder.Entity<Deck>().HasKey(d => d.Id);
             modelBuilder.Entity<Flashcard>().HasKey(f => f.Id);
             modelBuilder.Entity<Group>().HasKey(f => f.Id);
+            modelBuilder.Entity<Exam>().HasKey(f => f.Id);
 
             modelBuilder.Entity<User>()
                 .HasMany(g => g.Groups)
@@ -35,9 +38,19 @@ namespace DataAccess
                 .WithOne(a => a.Author)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<User>()
+                .HasMany(d => d.Exams)
+                .WithOne(a => a.Author)
+                .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<Deck>()
                 .HasMany(f => f.Flashcards)
                 .WithOne(d => d.Deck)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Exam>()
+                .HasMany(f => f.ExamCards)
+                .WithOne(d => d.Exam)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<UserGroup>()
@@ -65,6 +78,19 @@ namespace DataAccess
                 .WithMany(c => c.DeckGroups)
                 .HasForeignKey(bc => bc.GroupId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            //modelBuilder.Entity<ExamGroup>()
+            //    .HasKey(b => new { b.GroupId, b.ExamId });
+            //modelBuilder.Entity<ExamGroup>()
+            //    .HasOne(bc => bc.Exam)
+            //    .WithMany(b => b.ExamGroups)
+            //    .HasForeignKey(bc => bc.ExamId)
+            //    .OnDelete(DeleteBehavior.NoAction);
+            //modelBuilder.Entity<ExamGroup>()
+            //    .HasOne(bc => bc.Group)
+            //    .WithMany(c => c.ExamGroups)
+            //    .HasForeignKey(bc => bc.GroupId)
+            //    .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<FlashcardScore>()
                 .HasKey(b => new { b.FlashcardId, b.UserId });

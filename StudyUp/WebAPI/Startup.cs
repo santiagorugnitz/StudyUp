@@ -60,6 +60,10 @@ namespace StudyUp
             services.AddScoped<IDeckLogic, DeckLogic>();
             services.AddScoped<IFlashcardLogic, FlashcardLogic>();
             services.AddScoped<IGroupLogic, GroupLogic>();
+            services.AddScoped<IExamLogic, ExamLogic>();
+            services.AddScoped<IExamCardLogic, ExamCardLogic>();
+            services.AddScoped<INotifications, FirebaseNotificationsImplementation>();
+
             services.AddScoped<ExceptionFilter>();
 
             services.AddSwaggerGen(options =>

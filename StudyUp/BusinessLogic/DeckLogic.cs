@@ -37,11 +37,11 @@ namespace BusinessLogic
             if (sameName != null && (sameName.Count() > 0))
                 throw new AlreadyExistsException(DeckMessage.DECK_ALREADY_EXISTS);
             else if (deck.Name is null)
-                throw new InvalidException(DeckMessage.EMPTY_NAME_MESSAGE);
+                throw new InvalidException(DeckMessage.EMPTY_NAME);
             else if ((int)deck.Difficulty < 0 || (int)deck.Difficulty > 2)
-                throw new InvalidException(DeckMessage.INVALID_DIFFICULTY_MESSAGE);
+                throw new InvalidException(DeckMessage.INVALID_DIFFICULTY);
             else if (deck.Subject is null)
-                throw new InvalidException(DeckMessage.EMPTY_SUBJECT_MESSAGE);
+                throw new InvalidException(DeckMessage.EMPTY_SUBJECT);
 
             User user = userTokenRepository.GetUserByToken(userToken);
             if (user == null)
@@ -82,7 +82,7 @@ namespace BusinessLogic
             if ((int)newDifficulty > 2 || (int)newDifficulty < 0)
                 throw new InvalidException(DeckMessage.INVALID_DIFFICULTY);
             if (subject is null || subject.Trim().Length == 0)
-                throw new InvalidException(DeckMessage.EMPTY_SUBJECT_MESSAGE);
+                throw new InvalidException(DeckMessage.EMPTY_SUBJECT);
 
             if (deck != null)
             {

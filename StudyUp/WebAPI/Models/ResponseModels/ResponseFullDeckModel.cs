@@ -15,5 +15,7 @@ namespace WebAPI.Models
         public bool IsHidden { get; set; }
         public virtual string Author { get; set; }
         public IEnumerable<ResponseFlashcardModel> Flashcards { get; set; }
+        public string groupName;
+
     }
 }
