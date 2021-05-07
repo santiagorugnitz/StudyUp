@@ -207,7 +207,7 @@ namespace BusinessLogic
 
                 foreach (Exam exam in group.AssignedExams)
                 {
-                    if (MadeExam(authenticatedUser, exam))
+                    if (!MadeExam(authenticatedUser, exam))
                     {
                         exams.Add(exam);
                     }
@@ -219,7 +219,16 @@ namespace BusinessLogic
 
         private bool MadeExam(User user, Exam exam)
         {
-            var obtainedExam = user.SolvedExams.Find(solved => solved.ExamId == exam.Id && solved.UserId == user.Id); 
+            UserExam obtainedExam;
+            try
+            {
+                obtainedExam = user.SolvedExams.Find(solved => solved.ExamId == exam.Id && solved.UserId == user.Id);
+            } 
+            catch (NullReferenceException)
+            {
+                return false;
+            }
+            
             if (obtainedExam != null && obtainedExam.Score != null)
             {
                 return true;
