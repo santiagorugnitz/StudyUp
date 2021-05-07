@@ -48,12 +48,11 @@ class ExamDetailFragment : BaseFragment(), ExamCardItemRenderer.Callback {
     private fun initViewModel(id: Int) {
         viewModel.loadDetails(id).observe(viewLifecycleOwner, { exam ->
             adapter.setItems(exam.examcards.map {
-                //TODO
-//                FlashcardItemRenderer.Item(
-//                    it.id,
-//                    it.question,
-//                    it.answer
-//                )
+                ExamCardItemRenderer.Item(
+                    it.id,
+                    it.question,
+                    it.answer
+                )
             })
             initUI(exam)
         }
@@ -61,10 +60,10 @@ class ExamDetailFragment : BaseFragment(), ExamCardItemRenderer.Callback {
     }
 
     override fun onEditExamCard(id: Int, question: String, answer: Boolean) {
-        findNavController().navigate(R.id.action_deckDetailFragment_to_newFlashcardFragment,
+        findNavController().navigate(R.id.action_examDetailFragment_to_newExamCardFragment,
             Bundle().apply {
                 putInt(EXAM_ID_KEY, examId)
-                putInt(FLASHCARD_ID_KEY, id)
+                putInt(EXAM_CARD_ID_KEY, id)
                 putString(QUESTION_KEY, question)
                 putBoolean(ANSWER_KEY, answer)
             })

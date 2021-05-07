@@ -13,9 +13,9 @@ class Exam(
 )
 
 class ExamItem(
-    val id: Int,
-    val name: String,
-    val groupName: String?,
+    @SerializedName("id") val id: Int,
+    @SerializedName("name") val name: String,
+    @SerializedName("groupsName") val groupName: String?,
 )
 
 class NewExamRequest(

@@ -56,9 +56,10 @@ namespace WebAPI.Controllers
             foreach (Exam exam in examsList)
             {
                 ResponseExamGroupModel toAdd = new ResponseExamGroupModel();
+                toAdd.Id = exam.Id;
                 toAdd.Name = exam.Name;
                 if (exam.Group is null)
-                    toAdd.groupsName = " ";
+                    toAdd.groupsName = "";
                 else
                     toAdd.groupsName = exam.Group.Name;
                 toReturn.Add(toAdd);
@@ -73,7 +74,7 @@ namespace WebAPI.Controllers
 
             string groupName;
             if (exam.Group is null)
-                groupName = " ";
+                groupName = "";
             else
                 groupName = exam.Group.Name;
 

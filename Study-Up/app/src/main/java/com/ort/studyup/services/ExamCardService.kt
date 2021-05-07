@@ -10,7 +10,7 @@ interface ExamCardService {
     suspend fun createExam(@Body data: NewExamCardRequest): Response<ExamCard>
 
     @DELETE("api/examcards/{id}")
-    suspend fun deleteExamCard(@Path("id") id: Int): Response<*>
+    suspend fun deleteExamCard(@Path("id") id: Int): Response<Unit>
 
     @PUT("api/examcards/{id}")
     suspend fun editExamCard(@Path("id") id: Int,@Body data:EditExamCardRequest):Response<*>

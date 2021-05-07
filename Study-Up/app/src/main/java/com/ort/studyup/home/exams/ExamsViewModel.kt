@@ -3,6 +3,7 @@ package com.ort.studyup.home.exams
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ort.studyup.R
+import com.ort.studyup.common.models.ExamItem
 import com.ort.studyup.common.models.GroupItem
 import com.ort.studyup.common.renderers.ExamItemRenderer
 import com.ort.studyup.common.renderers.SubtitleRenderer
@@ -23,23 +24,34 @@ class ExamsViewModel(
         val result = MutableLiveData<List<Any>>()
         executeService {
             items.clear()
-            var exams = examsRepository.exams()
+            val exams = examsRepository.exams()
             val groups = groupRepository.groups()
-            exams = exams.sortedWith { a, b -> if (a.groupName.isNullOrEmpty()) -1 else 1 }
+
+            val assigned = mutableListOf<ExamItem>()
+            val unassigned = mutableListOf<ExamItem>()
+            exams.forEach {
+                if (it.groupName.isNullOrEmpty()) {
+                    unassigned.add(it)
+                } else {
+                    assigned.add(it)
+                }
+            }
+
+            val groupItems = groups.map { GroupItem(it.id, it.name) }
 
             items.add(
                 SubtitleRenderer.Item(resourceWrapper.getString(R.string.unassigned))
             )
-            var assigned = false
-            exams.forEach { examItem ->
-                if (!assigned && !examItem.groupName.isNullOrEmpty()) {
-                    SubtitleRenderer.Item(resourceWrapper.getString(R.string.assigned))
-                    assigned = true
-                }
-                items.add(
-                    ExamItemRenderer.Item(examItem.id, examItem.name, examItem.groupName, groups.map { GroupItem(it.id, it.name) })
-                )
-            }
+            items.addAll(
+                unassigned.map { ExamItemRenderer.Item(it.id, it.name, it.groupName, groupItems) }
+            )
+            items.add(
+                SubtitleRenderer.Item(resourceWrapper.getString(R.string.assigned))
+            )
+            items.addAll(
+                assigned.map { ExamItemRenderer.Item(it.id, it.name, it.groupName, groupItems) }
+            )
+
             result.postValue(items)
         }
         return result

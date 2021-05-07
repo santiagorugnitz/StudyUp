@@ -9,7 +9,7 @@ import com.ort.studyup.R
 import com.ort.studyup.common.*
 import com.ort.studyup.common.ui.BaseFragment
 import com.ort.studyup.common.ui.ConfirmationDialog
-import kotlinx.android.synthetic.main.fragment_new_flashcard.*
+import kotlinx.android.synthetic.main.fragment_new_exam_card.*
 import kotlinx.android.synthetic.main.item_spinner.view.*
 
 class NewExamCardFragment : BaseFragment(), ConfirmationDialog.Callback {
