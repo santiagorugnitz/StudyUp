@@ -60,6 +60,7 @@
     <string name="false_string">False</string>
     <string name="edit_examcard">Edit exam card</string>
     <string name="new_exam_card">New exam card</string>
+    <string name="default_notification_channel_id">notification_channel</string>
 
 
     <string-array name="difficulties">
