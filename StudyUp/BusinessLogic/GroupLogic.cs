@@ -19,10 +19,12 @@ namespace BusinessLogic
         private IRepository<UserGroup> userGroupRepository;
         private IRepository<DeckGroup> deckGroupRepository;
         private IUserRepository userTokenRepository;
+        private INotifications notificationsInterface;
 
         public GroupLogic(IRepository<Group> repository, IUserRepository userTokenRepository,
             IRepository<User> userRepository, IRepository<UserGroup> userGroupRepository,
-           IRepository<Deck> deckRepository, IRepository<DeckGroup> deckGroupRepository)
+           IRepository<Deck> deckRepository, IRepository<DeckGroup> deckGroupRepository,
+           INotifications notificationsInterface)
         {
             this.groupRepository = repository;
             this.userRepository = userRepository;
@@ -30,6 +32,7 @@ namespace BusinessLogic
             this.userTokenRepository = userTokenRepository;
             this.userGroupRepository = userGroupRepository;
             this.deckGroupRepository = deckGroupRepository;
+            this.notificationsInterface = notificationsInterface;
         }
 
         public Group AddGroup(Group group, string creatorsToken)
@@ -160,50 +163,10 @@ namespace BusinessLogic
                 GroupId = groupId
             };
 
-            bool sent = NotifiyStudentsAsync(group, deck).Result;
-
+            this.notificationsInterface.NotifyMaterial(deckId, group);
             group.DeckGroups.Add(deckGroup);
             groupRepository.Update(group);
             return group;
-        }
-
-        private async System.Threading.Tasks.Task<bool> NotifiyStudentsAsync(Group group, Deck deck)
-        {
-            string apiRoute = "https://fcm.googleapis.com/fcm/send";
-            string serverKey = "AAAA-GAOZ3Q:APA91bG8C_EClvZ-jcIp1YhACOwT345pZ0QUAa1lr-0_l8e64jGWmcKWAgduNit0ymFq_btFbwRrrlPcUwK3RqjeXRDFk-yfbPsl4rNyBxb1LKJT33H_qaapXkyji6UlG8HI44Ka_MP7";
-            
-            string[] sendingTokens = new string[group.UserGroups.Count()];
-            int idNumber = 0;
-            foreach (var userGroup in group.UserGroups)
-            {
-                sendingTokens[idNumber] = userGroup.User.FirebaseToken;
-                idNumber++;
-            }
-
-            var data = new { group_id = group.Id,  group = group.Name, deck_id = deck.Id};
-            var notification = new { title = "Deck assigned", text = "A teacher has assigned your group a study deck" };
-
-            var message = new MessageStructure()
-            {
-                registration_ids = sendingTokens,
-                data = data,
-                notification = notification
-            };
-
-            string jsonMessage = JsonConvert.SerializeObject(message);
-
-            var request = new HttpRequestMessage(HttpMethod.Post, apiRoute);
-            request.Headers.TryAddWithoutValidation("Authorization", "key=" + serverKey);
-            request.Content = new StringContent(jsonMessage, Encoding.UTF8);
-
-            bool sent;
-            using (var client = new HttpClient())
-            {
-                var result = await client.SendAsync(request);
-                sent = result.IsSuccessStatusCode;
-            }
-
-            return sent;
         }
 
         public Group Unassign(string token, int groupId, int deckId)
