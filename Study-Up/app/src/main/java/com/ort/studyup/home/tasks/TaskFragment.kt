@@ -46,8 +46,8 @@ class TaskFragment : BaseFragment(), DeckItemRenderer.Callback, ExamItemRenderer
     private fun initUI() {
         viewModel.loadItems().observe(viewLifecycleOwner, Observer {
             it?.let {
-                deckAdapter.setItems(it.decks)
-                examAdapter.setItems(it.exams)
+                examAdapter.setItems(it.first)
+                deckAdapter.setItems(it.second)
             }
         })
     }

@@ -7,6 +7,8 @@ import com.ort.studyup.common.INTERNAL_ERROR_CODE
 import com.ort.studyup.common.models.DeckData
 import com.ort.studyup.common.models.TaskResponse
 import com.ort.studyup.common.models.User
+import com.ort.studyup.common.renderers.DeckItemRenderer
+import com.ort.studyup.common.renderers.ExamItemRenderer
 import com.ort.studyup.common.renderers.GroupSearchResultRenderer
 import com.ort.studyup.common.renderers.UserSearchResultRenderer
 import com.ort.studyup.common.ui.BaseViewModel
@@ -21,10 +23,16 @@ class TaskViewModel(
 ) : BaseViewModel() {
 
 
-    fun loadItems(): LiveData<TaskResponse> {
-        val result = MutableLiveData<TaskResponse>()
+    fun loadItems(): LiveData<Pair<List<Any>, List<Any>>> {
+        val result = MutableLiveData<Pair<List<Any>, List<Any>>>()
         executeService {
-            result.postValue(taskRepository.tasks())
+            val response = taskRepository.tasks()
+            result.postValue(
+                Pair(
+                    response.exams.map { ExamItemRenderer.Item(it.id, it.name, it.groupName) },
+                    response.decks.map { DeckItemRenderer.Item(it.id, it.name) },
+                )
+            )
         }
         return result
     }
