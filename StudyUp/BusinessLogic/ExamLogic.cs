@@ -16,16 +16,18 @@ namespace BusinessLogic
         private IRepository<ExamCard> examCardRepository;
         private IRepository<Group> groupRepository;
         private IUserRepository userTokenRepository;
+        private INotifications notificationsInterface;
 
         public ExamLogic(IRepository<Exam> repository, IRepository<User> userRepository,
             IUserRepository userTokenRepository, IRepository<ExamCard> examCardRepository,
-            IRepository<Group> groupRepository)
+            IRepository<Group> groupRepository, INotifications notificationsInterface)
         {
             this.groupRepository = groupRepository;
             this.examRepository = repository;
             this.userRepository = userRepository;
             this.userTokenRepository = userTokenRepository;
             this.examCardRepository = examCardRepository;
+            this.notificationsInterface = notificationsInterface;
         }
 
         public Exam AddExam(Exam exam, string userToken)
@@ -80,7 +82,7 @@ namespace BusinessLogic
             if (!group.Creator.Equals(user))
                 throw new InvalidException(ExamMessage.NOT_AUTHORIZED);
 
-            ////TO DO: notify students
+            this.notificationsInterface.NotifyExams(examId, group);
 
             exam.Group = group;
             examRepository.Update(exam);

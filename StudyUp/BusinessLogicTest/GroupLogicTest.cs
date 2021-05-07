@@ -1,4 +1,5 @@
 ﻿using BusinessLogic;
+using BusinessLogicInterface;
 using DataAccessInterface;
 using Domain;
 using Domain.Enumerations;
@@ -28,6 +29,7 @@ namespace BusinessLogicTest
         Mock<IRepository<DeckGroup>> deckGroupRepositoryMock;
         Mock<IRepository<UserGroup>> userGroupRepositoryMock;
         GroupLogic groupLogic;
+        Mock<INotifications> notificationsInterfaceMock;
 
         [TestInitialize]
         public void SetUp()
@@ -90,9 +92,10 @@ namespace BusinessLogicTest
             userGroupRepositoryMock = new Mock<IRepository<UserGroup>>(MockBehavior.Strict);
             deckGroupRepositoryMock = new Mock<IRepository<DeckGroup>>(MockBehavior.Strict);
             deckRepositoryMock = new Mock<IRepository<Deck>>(MockBehavior.Strict);
+            notificationsInterfaceMock = new Mock<INotifications>(MockBehavior.Strict);
             groupLogic = new GroupLogic(groupRepositoryMock.Object, userTokenRepositoryMock.Object,
                 userRepositoryMock.Object, userGroupRepositoryMock.Object, deckRepositoryMock.Object,
-                deckGroupRepositoryMock.Object);
+                deckGroupRepositoryMock.Object, notificationsInterfaceMock.Object);
         }
 
         [TestMethod]
@@ -231,6 +234,7 @@ namespace BusinessLogicTest
             groupRepositoryMock.Setup(a => a.Update(It.IsAny<Group>()));
             deckGroupRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<DeckGroup,
                bool>>>())).Returns(new List<DeckGroup>() { });
+            notificationsInterfaceMock.Setup(a => a.NotifyMaterial(It.IsAny<int>(), It.IsAny<Group>()));
 
             var result = groupLogic.Assign(userExample.Token, 1, 1);
             groupRepositoryMock.VerifyAll();

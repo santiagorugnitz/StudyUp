@@ -62,6 +62,7 @@ namespace StudyUp
             services.AddScoped<IGroupLogic, GroupLogic>();
             services.AddScoped<IExamLogic, ExamLogic>();
             services.AddScoped<IExamCardLogic, ExamCardLogic>();
+            services.AddScoped<INotifications, FirebaseNotificationsImplementation>();
 
             services.AddScoped<ExceptionFilter>();
 
