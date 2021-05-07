@@ -13,6 +13,7 @@ namespace Domain
         public string Subject { get; set; }
         public virtual List<ExamCard> ExamCards { get; set; }
         public virtual Group Group { get; set; }
+        public virtual List<UserExam> AlreadyPerformed { get; set; }
 
         public override bool Equals(object o)
         {

@@ -191,5 +191,41 @@ namespace BusinessLogic
 
             return deckFromFollowing;
         }
+
+        public Tuple<List<Deck>, List<Exam>> GetTasks(string token)
+        {
+            User authenticatedUser = CheckToken(token);
+            List<Deck> decks = new List<Deck>();
+            List<Exam> exams = new List<Exam>();
+
+            foreach (Group group in authenticatedUser.Groups)
+            {
+                foreach (DeckGroup deckGroup in group.DeckGroups)
+                {
+                    decks.Add(deckGroup.Deck);
+                }
+
+                foreach (Exam exam in group.AssignedExams)
+                {
+                    if (MadeExam(authenticatedUser, exam))
+                    {
+                        exams.Add(exam);
+                    }
+                }
+            }
+
+            return new Tuple<List<Deck>, List<Exam>>(decks, exams);
+        }
+
+        private bool MadeExam(User user, Exam exam)
+        {
+            var obtainedExam = user.SolvedExams.Find(solved => solved.ExamId == exam.Id && solved.UserId == user.Id); 
+            if (obtainedExam != null && obtainedExam.Score != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

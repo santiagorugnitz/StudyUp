@@ -348,5 +348,11 @@ namespace BusinessLogicTest
             Assert.AreEqual("Deck2", result.ElementAt(0).Name);
             userMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void GetTasksMadeExams()
+        {
+            
+        }
     }
 }

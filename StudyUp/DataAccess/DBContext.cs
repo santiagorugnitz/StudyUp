@@ -48,6 +48,11 @@ namespace DataAccess
                 .WithOne(d => d.Deck)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<Group>()
+                .HasMany(e => e.AssignedExams)
+                .WithOne(g => g.Group)
+                .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<Exam>()
                 .HasMany(f => f.ExamCards)
                 .WithOne(d => d.Exam)

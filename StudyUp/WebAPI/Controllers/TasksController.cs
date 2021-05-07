@@ -1,10 +1,12 @@
 ﻿using BusinessLogicInterface;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebAPI.Filters;
+using WebAPI.Models.ResponseModels;
 
 namespace WebAPI
 {
@@ -23,16 +25,20 @@ namespace WebAPI
         [HttpGet]
         public IActionResult GetTasks([FromHeader] string token)
         {
-            User newUser = logic.AddUser(userModel.ToEntity());
-            ResponseUserModel responseUserModel = new ResponseUserModel()
+            var tasks = this.logic.GetTasks(token);
+            var response = new ResponseTasksModel();
+
+            foreach (Deck deck in tasks.Item1)
             {
-                Id = newUser.Id,
-                Email = newUser.Email,
-                IsStudent = newUser.IsStudent,
-                Username = newUser.Username,
-                Token = newUser.Token
-            };
-            return Ok(responseUserModel);
+                response.Decks.Add(new ResponseTaskDeckModel() { Id = deck.Id, Name = deck.Name });
+            }
+
+            foreach (Exam exam in tasks.Item2)
+            {
+                response.Exams.Add(new ResponseTaskExamModel() { Id = exam.Id, Name = exam.Name, GroupsName = exam.Group.Name });
+            }
+
+            return Ok(response);
         }
     }
 }

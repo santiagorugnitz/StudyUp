@@ -86,6 +86,9 @@ namespace BusinessLogic
 
             exam.Group = group;
             examRepository.Update(exam);
+
+            group.AssignedExams.Add(exam);
+            groupRepository.Update(group);
             return exam;
         }
 

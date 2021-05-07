@@ -130,8 +130,11 @@ namespace BusinessLogicTest
         [TestMethod]
         public void AssignOkTest()
         {
+            groupExample.AssignedExams = new List<Exam>();
+
             userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
             groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
+            groupRepositoryMock.Setup(m => m.Update(It.IsAny<Group>()));
             examRepositoryMock.Setup(e => e.GetById(It.IsAny<int>())).Returns(examExample);
             examRepositoryMock.Setup(e => e.Update(examExample));
             notificationsInterfaceMock.Setup(e => e.NotifyExams(It.IsAny<int>(), It.IsAny<Group>()));
