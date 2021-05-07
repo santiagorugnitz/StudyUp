@@ -164,6 +164,7 @@ namespace BusinessLogic
             };
 
             this.notificationsInterface.NotifyMaterial(deckId, group);
+
             group.DeckGroups.Add(deckGroup);
             groupRepository.Update(group);
             return group;

@@ -1,4 +1,5 @@
 ﻿using BusinessLogic;
+using BusinessLogicInterface;
 using DataAccessInterface;
 using Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -23,6 +24,7 @@ namespace BusinessLogicTest
         Mock<IRepository<ExamCard>> examCardRepositoryMock;
         Mock<IUserRepository> userTokenRepositoryMock;
         ExamLogic examLogic;
+        Mock<INotifications> notificationsInterfaceMock;
 
         [TestInitialize]
         public void SetUp()
@@ -63,8 +65,10 @@ namespace BusinessLogicTest
             examCardRepositoryMock = new Mock<IRepository<ExamCard>>(MockBehavior.Strict);
             groupRepositoryMock = new Mock<IRepository<Group>>(MockBehavior.Strict);
             userTokenRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
+            notificationsInterfaceMock = new Mock<INotifications>(MockBehavior.Strict);
             examLogic = new ExamLogic(examRepositoryMock.Object, userRepositoryMock.Object,
-                 userTokenRepositoryMock.Object, examCardRepositoryMock.Object, groupRepositoryMock.Object);
+                 userTokenRepositoryMock.Object, examCardRepositoryMock.Object, groupRepositoryMock.Object,
+                 notificationsInterfaceMock.Object);
         }
 
         [TestMethod]
@@ -130,6 +134,7 @@ namespace BusinessLogicTest
             groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
             examRepositoryMock.Setup(e => e.GetById(It.IsAny<int>())).Returns(examExample);
             examRepositoryMock.Setup(e => e.Update(examExample));
+            notificationsInterfaceMock.Setup(e => e.NotifyExams(It.IsAny<int>(), It.IsAny<Group>()));
 
             var result = examLogic.AssignExam(userExample.Token, 1, 1);
             groupRepositoryMock.VerifyAll();
