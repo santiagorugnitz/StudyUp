@@ -48,6 +48,11 @@ namespace DataAccess
                 .WithOne(d => d.Deck)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<Group>()
+                .HasMany(e => e.AssignedExams)
+                .WithOne(g => g.Group)
+                .OnDelete(DeleteBehavior.NoAction);
+
             modelBuilder.Entity<Exam>()
                 .HasMany(f => f.ExamCards)
                 .WithOne(d => d.Exam)
@@ -118,6 +123,18 @@ namespace DataAccess
                 .HasForeignKey(bc => bc.FollowerUserId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<UserExam>()
+                .HasKey(b => new { b.UserId, b.ExamId });
+            modelBuilder.Entity<UserExam>()
+                .HasOne(bc => bc.Exam)
+                .WithMany(b => b.AlreadyPerformed)
+                .HasForeignKey(bc => bc.ExamId)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<UserExam>()
+                .HasOne(bc => bc.User)
+                .WithMany(c => c.SolvedExams)
+                .HasForeignKey(bc => bc.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { optionsBuilder.UseLazyLoadingProxies(); }
 

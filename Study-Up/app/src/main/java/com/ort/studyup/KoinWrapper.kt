@@ -19,6 +19,7 @@ import com.ort.studyup.home.groups.GroupsViewModel
 import com.ort.studyup.home.groups.NewGroupViewModel
 import com.ort.studyup.home.profile.ProfileViewModel
 import com.ort.studyup.home.search.SearchViewModel
+import com.ort.studyup.home.tasks.TaskViewModel
 import com.ort.studyup.login.LoginViewModel
 import com.ort.studyup.login.RegisterViewModel
 import com.ort.studyup.repositories.*
@@ -72,6 +73,7 @@ object KoinWrapper {
         factory { ExamDetailViewModel(get()) }
         factory { NewExamViewModel(get(), get()) }
         factory { NewExamCardViewModel(get(), get()) }
+        factory { TaskViewModel(get()) }
 
     }
 
@@ -82,6 +84,7 @@ object KoinWrapper {
         factory { GroupRepository(get()) }
         factory { ExamRepository(get()) }
         factory { ExamCardRepository(get()) }
+        factory { TaskRepository(get()) }
 
     }
 
@@ -92,7 +95,7 @@ object KoinWrapper {
         factory { ServiceFactory(get()).createInstance(GroupService::class.java) }
         factory { ServiceFactory(get()).createInstance(ExamService::class.java) }
         factory { ServiceFactory(get()).createInstance(ExamCardService::class.java) }
-
+        factory { ServiceFactory(get()).createInstance(TaskService::class.java) }
     }
 
     private fun database() = module {

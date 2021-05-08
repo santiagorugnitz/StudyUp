@@ -43,7 +43,7 @@ namespace BusinessLogic
         {
             User authenticatedUser = CheckToken(token);
             User userToFollow = CheckUsername(username);
-            
+
             UserFollowing follow = new UserFollowing
             {
                 FollowingUserId = userToFollow.Id,
@@ -120,7 +120,7 @@ namespace BusinessLogic
                 var list = repository.FindByCondition(user => user.Id != authenticatedUser.Id);
                 var orderedList = list.OrderBy(user => user.Username.Length);
                 return GetListWithFollowingFilter(authenticatedUser, orderedList);
-            } 
+            }
 
             var filteredList = repository.FindByCondition(user => user.Username.Contains(queryFilter) && user.Id != authenticatedUser.Id);
             var orderedFilteredList = filteredList.OrderBy(user => user.Username.Length);
@@ -131,13 +131,13 @@ namespace BusinessLogic
         private IEnumerable<Tuple<User, bool>> GetListWithFollowingFilter(User user, IEnumerable<User> convertingList)
         {
             List<Tuple<User, bool>> convertedList = new List<Tuple<User, bool>>();
-            
+
             foreach (var listedUser in convertingList)
             {
-                if(user.FollowedUsers.FindAll(user => user.FollowingUserId == listedUser.Id).Count() > 0)
+                if (user.FollowedUsers.FindAll(user => user.FollowingUserId == listedUser.Id).Count() > 0)
                 {
                     convertedList.Add(new Tuple<User, bool>(listedUser, true));
-                } 
+                }
                 else
                 {
                     convertedList.Add(new Tuple<User, bool>(listedUser, false));
@@ -185,11 +185,57 @@ namespace BusinessLogic
             {
                 foreach (var deck in user.FollowingUser.Decks)
                 {
-                    if(!deck.IsHidden) deckFromFollowing.Add(deck);
-                } 
+                    if (!deck.IsHidden) deckFromFollowing.Add(deck);
+                }
             }
 
             return deckFromFollowing;
+        }
+
+        public Tuple<List<Deck>, List<Exam>> GetTasks(string token)
+        {
+            User authenticatedUser = CheckToken(token);
+            List<Deck> decks = new List<Deck>();
+            List<Exam> exams = new List<Exam>();
+
+            foreach (var iter in authenticatedUser.UserGroups)
+            {
+                Group group = iter.Group;
+                foreach (DeckGroup deckGroup in group.DeckGroups)
+                {
+                    decks.Add(deckGroup.Deck);
+                }
+
+                foreach (Exam exam in group.AssignedExams)
+                {
+                    if (!MadeExam(authenticatedUser, exam))
+                    {
+                        exams.Add(exam);
+                    }
+                }
+            }
+
+            return new Tuple<List<Deck>, List<Exam>>(decks, exams);
+        }
+
+        private bool MadeExam(User user, Exam exam)
+        {
+            UserExam obtainedExam;
+            try
+            {
+                obtainedExam = user.SolvedExams.Find(solved => solved.ExamId == exam.Id && solved.UserId == user.Id);
+            }
+            catch (NullReferenceException)
+            {
+                return false;
+            }
+
+            if (obtainedExam != null && obtainedExam.Score != null)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

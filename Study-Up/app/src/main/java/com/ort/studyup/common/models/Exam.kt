@@ -9,7 +9,7 @@ class Exam(
     val difficulty: Int,
     val subject: String,
     val examcards: List<ExamCard>,
-    val groupName: String
+    val groupsName: String
 )
 
 class ExamItem(

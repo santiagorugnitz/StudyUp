@@ -348,5 +348,191 @@ namespace BusinessLogicTest
             Assert.AreEqual("Deck2", result.ElementAt(0).Name);
             userMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void GetTasksDeck()
+        {
+            var deckExample = new Deck()
+            {
+                Id = 1,
+                Name = "Clase 7",
+                Author = userExample,
+                Difficulty = Domain.Enumerations.Difficulty.Medium,
+                IsHidden = false,
+                Subject = "English",
+                Flashcards = new List<Flashcard>()
+            };
+
+            var group = new Group()
+            {
+                Id = 1,
+                Name = "Clase 7",
+                Creator = userExample,
+                UserGroups = new List<UserGroup>(),
+                DeckGroups = new List<DeckGroup>(),
+                AssignedExams = new List<Exam>()
+            };
+
+            var deckGroups = new List<DeckGroup>() { new DeckGroup() { Group = group, Deck = deckExample, DeckId = deckExample.Id, GroupId = group.Id } };
+            group.DeckGroups = deckGroups;
+            userExample.Groups = new List<Group>() { group };
+
+            userMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+
+            var result = userLogic.GetTasks("token");
+
+            Assert.AreEqual(1, result.Item1.Count());
+            Assert.AreEqual(deckExample, result.Item1.ElementAt(0));
+            Assert.AreEqual(0, result.Item2.Count());
+            userMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void GetTasksExam()
+        {
+            var examExample = new Exam()
+            {
+                Id = 1,
+                Name = "Exam1",
+                Author = userExample,
+                Difficulty = Domain.Enumerations.Difficulty.Medium,
+                Subject = "English",
+                ExamCards = new List<ExamCard>()
+            };
+
+            var group = new Group()
+            {
+                Id = 1,
+                Name = "Clase 7",
+                Creator = userExample,
+                UserGroups = new List<UserGroup>(),
+                DeckGroups = new List<DeckGroup>(),
+                AssignedExams = new List<Exam>() { examExample }
+            };
+
+            userExample.Groups = new List<Group>() { group };
+
+            userMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+
+            var result = userLogic.GetTasks("token");
+
+            Assert.AreEqual(0, result.Item1.Count());
+            Assert.AreEqual(1, result.Item2.Count());
+            Assert.AreEqual(examExample, result.Item2.ElementAt(0));
+
+            userMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void GetTasksOneExam()
+        {
+            var examExample = new Exam()
+            {
+                Id = 1,
+                Name = "Exam1",
+                Author = userExample,
+                Difficulty = Domain.Enumerations.Difficulty.Medium,
+                Subject = "English",
+                ExamCards = new List<ExamCard>()
+            };
+
+            var group = new Group()
+            {
+                Id = 1,
+                Name = "Clase 7",
+                Creator = userExample,
+                UserGroups = new List<UserGroup>(),
+                DeckGroups = new List<DeckGroup>(),
+                AssignedExams = new List<Exam>() { examExample }
+            };
+
+            userExample.Groups = new List<Group>() { group };
+            userExample.SolvedExams = new List<UserExam>() { new UserExam() { Exam = examExample, User = userExample,
+                ExamId = examExample.Id, UserId = userExample.Id, Score = null} };
+
+            userMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+
+            var result = userLogic.GetTasks("token");
+
+            Assert.AreEqual(0, result.Item1.Count());
+            Assert.AreEqual(1, result.Item2.Count());
+            Assert.AreEqual(examExample, result.Item2.ElementAt(0));
+
+            userMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void GetTasksNotMadeExam()
+        {
+            var examExample = new Exam()
+            {
+                Id = 1,
+                Name = "Exam1",
+                Author = userExample,
+                Difficulty = Domain.Enumerations.Difficulty.Medium,
+                Subject = "English",
+                ExamCards = new List<ExamCard>()
+            };
+
+            var group = new Group()
+            {
+                Id = 1,
+                Name = "Clase 7",
+                Creator = userExample,
+                UserGroups = new List<UserGroup>(),
+                DeckGroups = new List<DeckGroup>(),
+                AssignedExams = new List<Exam>() { examExample }
+            };
+
+            userExample.Groups = new List<Group>() { group };
+            userExample.SolvedExams = new List<UserExam>() { new UserExam() { Exam = examExample, User = userExample,
+                ExamId = examExample.Id, UserId = userExample.Id, Score = null} };
+
+            userMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+
+            var result = userLogic.GetTasks("token");
+
+            Assert.AreEqual(0, result.Item1.Count());
+            Assert.AreEqual(1, result.Item2.Count());
+            Assert.AreEqual(examExample, result.Item2.ElementAt(0));
+
+            userMock.VerifyAll();
+        }
+        [TestMethod]
+        public void GetTasksAlreadyMadeExam()
+        {
+            var examExample = new Exam()
+            {
+                Id = 1,
+                Name = "Exam1",
+                Author = userExample,
+                Difficulty = Domain.Enumerations.Difficulty.Medium,
+                Subject = "English",
+                ExamCards = new List<ExamCard>()
+            };
+
+            var group = new Group()
+            {
+                Id = 1,
+                Name = "Clase 7",
+                Creator = userExample,
+                UserGroups = new List<UserGroup>(),
+                DeckGroups = new List<DeckGroup>(),
+                AssignedExams = new List<Exam>() { examExample }
+            };
+
+            userExample.Groups = new List<Group>() { group };
+            userExample.SolvedExams = new List<UserExam>() { new UserExam() { Exam = examExample, User = userExample,
+                ExamId = examExample.Id, UserId = userExample.Id, Score = 5} };
+
+            userMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+
+            var result = userLogic.GetTasks("token");
+
+            Assert.AreEqual(0, result.Item1.Count());
+            Assert.AreEqual(0, result.Item2.Count());
+            
+            userMock.VerifyAll();
+        }
     }
 }

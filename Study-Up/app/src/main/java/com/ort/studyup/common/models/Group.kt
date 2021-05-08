@@ -46,3 +46,8 @@ class GroupItem(
         }
     }
 }
+
+class TaskResponse(
+    val decks: List<DeckItem>,
+    val exams: List<ExamItem>
+)

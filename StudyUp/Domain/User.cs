@@ -19,6 +19,7 @@ namespace Domain
         public string FirebaseToken { get; set; }
         public virtual List<UserFollowing> FollowedUsers { get; set; }
         public virtual List<UserFollowing> FollowingUsers { get; set; }
+        public virtual List<UserExam> SolvedExams { get; set; }
 
         public override bool Equals(object o)
         {

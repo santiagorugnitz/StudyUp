@@ -55,7 +55,7 @@ class ExamItemRenderer(private val callback: Callback) : ViewRenderer<ExamItemRe
         val id: Int,
         val name: String,
         val groupName: String?,
-        val groups: List<GroupItem>
+        val groups: List<GroupItem> = listOf()
     )
 
     interface Callback {
