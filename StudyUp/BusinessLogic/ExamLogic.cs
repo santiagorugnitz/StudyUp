@@ -137,7 +137,8 @@ namespace BusinessLogic
         private double CalculateScore(int time, int correctAnswers, int totalQuestions)
         {
             if (totalQuestions == 0) return 0;
-            return ((double)(correctAnswers / totalQuestions)) / Math.Floor((double)time/60);
+            var answersPercentage = (double)correctAnswers / totalQuestions;
+            return answersPercentage / ((double)time/60);
         }
 
         public Exam GetExamById(int id, string token)
