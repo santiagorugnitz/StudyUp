@@ -128,7 +128,6 @@ namespace BusinessLogic
             } 
             else
             {
-                //var modifyngExam = exam.AlreadyPerformed.Find(ue => ue.Equals(userExam));
                 userExam.Score = score;
             }
 
