@@ -92,6 +92,55 @@ namespace BusinessLogic
             return exam;
         }
 
+        public void AssignResults(int examId, string token, int time, int correctAnswers)
+        {
+            User user = userTokenRepository.GetUserByToken(token);
+
+            if (user is null)
+                throw new NotFoundException(UserMessage.USER_NOT_FOUND);
+
+            Exam exam = this.examRepository.GetById(examId);
+
+            if (exam == null)
+                throw new NotFoundException(ExamMessage.EXAM_NOT_FOUND);
+
+            UserExam userExam = null;
+
+            try
+            {
+                userExam = exam.AlreadyPerformed.Find(ue => ue.UserId == user.Id && ue.ExamId == exam.Id);
+            }
+            catch (NullReferenceException) { }
+
+            if (userExam != null && userExam.Score != null)
+                throw new InvalidException(ExamMessage.ALREADY_COMPLEATED);
+
+            double score = CalculateScore(time, correctAnswers, exam.ExamCards.Count());
+
+            AddExamPerformance(userExam, exam, user, score);
+        }
+
+        private void AddExamPerformance(UserExam userExam, Exam exam, User user, double score)
+        {
+            if (userExam == null)
+            {
+                exam.AlreadyPerformed.Add(new UserExam() { User = user, UserId = user.Id, Exam = exam, ExamId = exam.Id, Score = score });
+            } 
+            else
+            {
+                //var modifyngExam = exam.AlreadyPerformed.Find(ue => ue.Equals(userExam));
+                userExam.Score = score;
+            }
+
+            examRepository.Update(exam);
+        }
+
+        private double CalculateScore(int time, int correctAnswers, int totalQuestions)
+        {
+            if (totalQuestions == 0) return 0;
+            return (correctAnswers / totalQuestions) / time;
+        }
+
         public Exam GetExamById(int id, string token)
         {
             User user = userTokenRepository.GetUserByToken(token);
@@ -108,6 +157,32 @@ namespace BusinessLogic
                 return exam;
             else
                 throw new NotFoundException(ExamMessage.EXAM_NOT_FOUND);
+        }
+
+        public List<Tuple<string, double>> GetResults(int examId, string token)
+        {
+            User user = userTokenRepository.GetUserByToken(token);
+
+            if (user is null)
+                throw new NotFoundException(UserMessage.USER_NOT_FOUND);
+
+            Exam exam = this.examRepository.GetById(examId);
+
+            if (exam == null)
+                throw new NotFoundException(ExamMessage.EXAM_NOT_FOUND);
+
+            if (!exam.Author.Equals(user))
+                throw new InvalidException(ExamMessage.INVALID_USER);
+
+            var result = new List<Tuple<string, double>>();
+
+            foreach (var perform in exam.AlreadyPerformed)
+            {
+                if (perform.Score != null) 
+                    result.Add(new Tuple<string, double>(perform.User.Username, (double)perform.Score));
+            }
+
+            return result;
         }
 
         public IEnumerable<Exam> GetTeachersExams(string token)

@@ -9,6 +9,7 @@ using Domain;
 using WebAPI.Models;
 using WebAPI.Filters;
 using WebAPI.Models.ResponseModels;
+using WebAPI.Models.RequestModels;
 
 namespace WebAPI.Controllers
 {
@@ -42,6 +43,19 @@ namespace WebAPI.Controllers
                 Name = exam.Name,
                 Subject = exam.Subject
             });
+        }
+
+        [HttpPost("{examId}/results")]
+        public IActionResult AssignResults([FromRoute] int examId, [FromHeader] string token, [FromBody] ScoreModel score)
+        {
+            logic.AssignResults(examId, token, score.Time, score.CorrectAnswers);
+            return Ok();
+        }
+
+        [HttpGet("{examId}/results")]
+        public IActionResult GetResults([FromRoute] int examId, [FromHeader] string token)
+        {
+            return Ok(logic.GetResults(examId, token));
         }
 
         [HttpGet]

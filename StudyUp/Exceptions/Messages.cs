@@ -39,6 +39,7 @@ namespace Exceptions
         public const string INVALID_USER = "Logged user and exam author are different.";
         public const string ALREADY_ASSIGNED = "Already assigned this exam to a group.";
         public const string NOT_AUTHORIZED = "Only this groups teacher can assign .";
+        public const string ALREADY_COMPLEATED = "This exam has been already compleated";
     }
 
     public static class FlashcardMessage
