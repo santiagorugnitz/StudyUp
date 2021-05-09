@@ -32,6 +32,10 @@ namespace BusinessLogic
             if (sameEmail != null && (sameEmail.Count() > 0))
                 throw new AlreadyExistsException(UserMessage.EMAIL_ALREADY_EXISTS);
 
+            IEnumerable<User> sameUsername = repository.GetAll().Where(x => x.Username.ToUpper().Equals(user.Username.ToUpper()));
+            if (sameUsername != null && (sameUsername.Count() > 0))
+                throw new AlreadyExistsException(UserMessage.USERNAME_ALREADY_EXISTS);
+
             if (!validationService.PasswordValidation(user.Password))
                 throw new InvalidException(UserMessage.INVALID_PASSWORD);
 

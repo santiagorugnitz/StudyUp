@@ -71,6 +71,7 @@ namespace Exceptions
             " one number, an uppercase letter and a lowercase letter.";
         public const string USER_NOT_FOUND = "User does not exist.";
         public const string EMAIL_ALREADY_EXISTS = "This email address already belongs to a registered user.";
+        public const string USERNAME_ALREADY_EXISTS = "This username already belongs to a registered user.";
         public const string WRONG_EMAIL_OR_PASSWORD = "Wrong email or password.";
         public const string WRONG_USERNAME_OR_PASSWORD = "Wrong username or password.";
         public const string INVALID_EMAIL = "Invalid mail address.";
