@@ -44,7 +44,7 @@ class ExamDetailViewModel(
             items.addAll(
                     response.mapIndexed { pos, it ->
                         ResultItemRenderer.Item(
-                                pos,
+                                pos + 1,
                                 it.username,
                                 it.score
                         )

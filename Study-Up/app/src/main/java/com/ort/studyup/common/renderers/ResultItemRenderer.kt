@@ -1,5 +1,6 @@
 package com.ort.studyup.common.renderers
 
+import android.graphics.Typeface
 import android.view.View
 import android.view.ViewGroup
 import com.ort.studyup.R
@@ -15,11 +16,17 @@ class ResultItemRenderer() : ViewRenderer<ResultItemRenderer.Item, View>(Item::c
         view.username.text = model.username
         view.position.text = model.position.toString()
         view.score.text = ((model.score * 10).roundToInt() / 10.0).toString()
+        if (model.bold) {
+            view.username.setTypeface(view.username.typeface, Typeface.BOLD)
+        } else {
+            view.username.setTypeface(view.username.typeface, Typeface.NORMAL)
+        }
     }
 
     class Item(
             val position: Int,
             val username: String,
-            val score: Double
+            val score: Double,
+            val bold: Boolean = false
     )
 }

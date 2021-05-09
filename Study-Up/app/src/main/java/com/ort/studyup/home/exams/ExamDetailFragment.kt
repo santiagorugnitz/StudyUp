@@ -9,14 +9,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ort.studyup.R
 import com.ort.studyup.common.*
-import com.ort.studyup.common.models.Exam
+import com.ort.studyup.common.renderers.EmptyViewRenderer
 import com.ort.studyup.common.renderers.ExamCardItemRenderer
 import com.ort.studyup.common.renderers.ResultItemRenderer
 import com.ort.studyup.common.ui.BaseFragment
 import com.thinkup.easylist.RendererAdapter
 import kotlinx.android.synthetic.main.fragment_exam_detail.*
 import kotlinx.android.synthetic.main.fragment_exam_detail.swipeRefresh
-import kotlinx.android.synthetic.main.fragment_search.*
 
 class ExamDetailFragment : BaseFragment(), ExamCardItemRenderer.Callback {
 
@@ -55,6 +54,7 @@ class ExamDetailFragment : BaseFragment(), ExamCardItemRenderer.Callback {
         } else {
             addButton.visibility = View.GONE
             group.text = groupName
+            adapter.setEmptyItem(EmptyViewRenderer.Item(getString(R.string.no_results_yet)),EmptyViewRenderer())
         }
     }
 
@@ -78,7 +78,6 @@ class ExamDetailFragment : BaseFragment(), ExamCardItemRenderer.Callback {
         } else {
             viewModel.loadResults(examId).observe(viewLifecycleOwner, {
                 adapter.setItems(it)
-                //TODO:emptyView
             })
         }
     }

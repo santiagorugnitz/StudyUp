@@ -85,7 +85,7 @@ dependencies {
     implementation "androidx.security:security-crypto:1.1.0-alpha02"
 
     //Easy List
-    implementation 'com.github.nicolasCastro.easy-list:easylist:0.1.5'
+    implementation 'com.github.santiagorugnitz.easy-list:easylist:0.1.6'
 
     //QR
     implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
