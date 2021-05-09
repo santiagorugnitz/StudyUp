@@ -8,6 +8,7 @@ using WebAPI.Models;
 using Domain;
 using Exceptions;
 using WebAPI.Filters;
+using WebAPI.Models.ResponseModels;
 
 namespace WebAPI.Controllers
 {
@@ -42,11 +43,11 @@ namespace WebAPI.Controllers
         public IActionResult Login([FromBody] LoginModel loginModel)
         {
             User loguedUser = new User();
-            
+
             if (loginModel.Username != null && loginModel.Username.Trim().Length > 0)
             {
                 loguedUser = logic.LoginByUsername(loginModel.Username, loginModel.Password, loginModel.FirebaseToken);
-            } 
+            }
             else
             {
                 loguedUser = logic.Login(loginModel.Email, loginModel.Password, loginModel.FirebaseToken);
@@ -85,7 +86,7 @@ namespace WebAPI.Controllers
 
             var userList = logic.GetUsers(token, username);
             List<ResponseFollowedUserModel> responseList = new List<ResponseFollowedUserModel>();
-            
+
             foreach (var tuple in userList)
             {
                 ResponseFollowedUserModel responseUserModel = new ResponseFollowedUserModel()
@@ -99,7 +100,7 @@ namespace WebAPI.Controllers
                 };
 
                 responseList.Add(responseUserModel);
-            }    
+            }
 
             return Ok(responseList);
         }
@@ -124,9 +125,27 @@ namespace WebAPI.Controllers
 
                 responseList.Add(responseDeck);
             }
-
             return Ok(responseList);
         }
 
+        [HttpDelete("ranking")]
+        public IActionResult Ranking([FromHeader] string token)
+        {
+            List<User> followedUsers = logic.GetUsersForRanking(token);
+            List<ResponseRankingModel> toReturn = new List<ResponseRankingModel>();
+            if (!(followedUsers is null))
+            {
+                foreach (User user in followedUsers)
+                {
+                    ResponseRankingModel toAdd = new ResponseRankingModel()
+                    {
+                        Username = user.Username,
+                        Score = logic.GetScore(user.Username)
+                    };
+                    toReturn.Add(toAdd);
+                }
+            }
+            return Ok(toReturn.OrderBy(a => a.Score));
+        }
     }
 }

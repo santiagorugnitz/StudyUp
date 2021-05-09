@@ -12,12 +12,17 @@ namespace BusinessLogic
     {
         private IRepository<User> repository;
         private IUserRepository userRepository;
+        private IRepository<UserFollowing> userFollowingRepository;
+        private IRepository<UserExam> userExamRepository;
         private ValidationService validationService;
 
-        public UserLogic(IRepository<User> repository, IUserRepository userRepository)
+        public UserLogic(IRepository<User> repository, IUserRepository userRepository,
+            IRepository<UserExam> userExamRepository, IRepository<UserFollowing> userFollowingRepository)
         {
             this.repository = repository;
             this.userRepository = userRepository;
+            this.userExamRepository = userExamRepository;
+            this.userFollowingRepository = userFollowingRepository;
             validationService = new ValidationService();
         }
 
@@ -236,6 +241,44 @@ namespace BusinessLogic
             }
 
             return false;
+        }
+
+        public List<User> GetUsersForRanking(string token)
+        {
+            User authenticatedUser = CheckToken(token);
+            ICollection<UserFollowing> following =
+                userFollowingRepository.FindByCondition(a => a.FollowerUserId == authenticatedUser.Id);
+
+            List<User> toReturn = new List<User>();
+
+            if (!(following is null))
+            {
+                foreach (UserFollowing userFollowing in following)
+                {
+                    User user = repository.GetById(userFollowing.FollowingUserId);
+                    if (user.IsStudent)
+                        toReturn.Add(user);
+                }
+            }
+            toReturn.Add(authenticatedUser);
+
+            return toReturn;
+        }
+
+        public double GetScore(string username)
+        {
+            User user = repository.FindByCondition(a => a.Username.Equals(username)).FirstOrDefault();
+
+            if (user is null)
+                throw new InvalidException(UserMessage.USER_NOT_FOUND);
+
+            ICollection<UserExam> usersExams = userExamRepository.FindByCondition(f => f.UserId == user.Id);
+
+            double score = 0;
+            foreach (UserExam userExam in usersExams)
+                score += (int)userExam.Score;
+
+            return score;
         }
     }
 }
