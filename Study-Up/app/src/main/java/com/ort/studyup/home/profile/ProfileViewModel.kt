@@ -24,4 +24,10 @@ class ProfileViewModel(
         return result
     }
 
+    fun logout(){
+        executeService {
+            userRepository.logout()
+        }
+    }
+
 }

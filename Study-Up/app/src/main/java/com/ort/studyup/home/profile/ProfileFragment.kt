@@ -1,5 +1,6 @@
 package com.ort.studyup.home.profile
 
+import android.content.Intent
 import android.graphics.Point
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,13 +14,18 @@ import androidx.lifecycle.Observer
 import com.google.zxing.WriterException
 import com.ort.studyup.R
 import com.ort.studyup.common.ui.BaseFragment
+import com.ort.studyup.login.LoginActivity
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 class ProfileFragment : BaseFragment() {
 
     private val viewModel: ProfileViewModel by injectViewModel(ProfileViewModel::class)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         super.onCreate(savedInstanceState)
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
@@ -36,6 +42,12 @@ class ProfileFragment : BaseFragment() {
                 loadQR(it.username)
             }
         })
+        logout.setOnClickListener {
+            viewModel.logout()
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            startActivity(intent)
+            requireActivity().finish()
+        }
     }
 
     private fun loadQR(username: String) {
