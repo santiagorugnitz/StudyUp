@@ -31,5 +31,9 @@ class ExamRepository(
         return examService.results(id).check()
     }
 
+    suspend fun sendResults(id: Int, time: Int, correctAnswers: Int) {
+        examService.sendResults(id, NewResultRequest(time, correctAnswers)).check()
+    }
+
 
 }

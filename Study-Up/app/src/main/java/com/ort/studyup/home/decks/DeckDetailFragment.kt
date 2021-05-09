@@ -14,7 +14,7 @@ import com.ort.studyup.common.models.Deck
 import com.ort.studyup.common.models.DeckData
 import com.ort.studyup.common.renderers.FlashcardItemRenderer
 import com.ort.studyup.common.ui.BaseFragment
-import com.ort.studyup.game.StudyActivity
+import com.ort.studyup.study.StudyActivity
 import com.thinkup.easylist.RendererAdapter
 import kotlinx.android.synthetic.main.fragment_deck_detail.*
 

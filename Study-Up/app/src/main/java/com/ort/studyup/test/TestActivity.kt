@@ -1,27 +1,26 @@
-package com.ort.studyup.game
+package com.ort.studyup.test
 
 import android.os.Bundle
-import android.widget.FrameLayout
 import com.ort.studyup.R
 import com.ort.studyup.common.ui.BaseActivity
 import com.ort.studyup.common.ui.ConfirmationDialog
 
-class StudyActivity : BaseActivity(), ConfirmationDialog.Callback {
+class TestActivity : BaseActivity(), ConfirmationDialog.Callback {
 
-    private lateinit var dialog : ConfirmationDialog
+    private lateinit var dialog: ConfirmationDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_study)
         dialog = ConfirmationDialog(
-            this,
-            getString(R.string.end_study),
-            this)
+                this,
+                getString(R.string.end_test),
+                this
+        )
     }
 
     override fun onBackPressed() {
-
-            dialog.show()
+        dialog.show()
     }
 
     override fun onButtonClick() {

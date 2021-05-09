@@ -22,5 +22,5 @@ interface ExamService {
     suspend fun results(@Path("id") id: Int): Response<List<ExamResult>>
 
     @POST("api/exams/{id}/results")
-    suspend fun sendResult(@Path("id") id: Int): Response<Unit>
+    suspend fun sendResults(@Path("id") id: Int,data:NewResultRequest): Response<Unit>
 }

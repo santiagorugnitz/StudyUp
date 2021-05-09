@@ -1,11 +1,10 @@
 package com.ort.studyup
 
 import android.app.Application
-import android.widget.SearchView
 import androidx.room.Room
 import com.ort.studyup.common.ui.ResourceWrapper
 import com.ort.studyup.common.utils.EncryptedPreferencesHelper
-import com.ort.studyup.game.StudyViewModel
+import com.ort.studyup.study.StudyViewModel
 import com.ort.studyup.home.decks.DeckDetailViewModel
 import com.ort.studyup.home.decks.DecksViewModel
 import com.ort.studyup.home.decks.FollowingDecksViewModel
@@ -26,6 +25,7 @@ import com.ort.studyup.repositories.*
 import com.ort.studyup.services.*
 import com.ort.studyup.splash.SplashViewModel
 import com.ort.studyup.storage.dao.AppDatabase
+import com.ort.studyup.test.TestViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -74,6 +74,7 @@ object KoinWrapper {
         factory { NewExamViewModel(get(), get()) }
         factory { NewExamCardViewModel(get(), get()) }
         factory { TaskViewModel(get()) }
+        factory { TestViewModel(get()) }
 
     }
 
