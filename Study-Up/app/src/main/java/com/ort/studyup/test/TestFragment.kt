@@ -13,7 +13,7 @@ import com.ort.studyup.common.ui.BaseFragment
 import kotlinx.android.synthetic.main.fragment_test.*
 import kotlinx.android.synthetic.main.fragment_test.view.*
 
-class TestFragment : BaseFragment(){
+class TestFragment : BaseFragment() {
 
     private val viewModel: TestViewModel by injectViewModel(TestViewModel::class)
     private lateinit var currentCard: ExamCard
@@ -30,7 +30,9 @@ class TestFragment : BaseFragment(){
 
     override fun onPause() {
         super.onPause()
-        viewModel.sendAnswers()
+        val time = timer.text.toString().split(":")
+        val seconds = (time[1].toIntOrNull() ?: 0) + (time[0].toIntOrNull() ?: 0) * 60
+        viewModel.sendAnswers(seconds)
         //TODO: navigate to result screen or something
     }
 
