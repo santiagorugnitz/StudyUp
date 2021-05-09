@@ -11,15 +11,20 @@ import com.ort.studyup.R
 import com.ort.studyup.common.*
 import com.ort.studyup.common.models.Exam
 import com.ort.studyup.common.renderers.ExamCardItemRenderer
+import com.ort.studyup.common.renderers.ResultItemRenderer
 import com.ort.studyup.common.ui.BaseFragment
 import com.thinkup.easylist.RendererAdapter
 import kotlinx.android.synthetic.main.fragment_exam_detail.*
+import kotlinx.android.synthetic.main.fragment_exam_detail.swipeRefresh
+import kotlinx.android.synthetic.main.fragment_search.*
 
 class ExamDetailFragment : BaseFragment(), ExamCardItemRenderer.Callback {
 
     private val adapter = RendererAdapter()
     private val viewModel: ExamDetailViewModel by injectViewModel(ExamDetailViewModel::class)
     private var examId: Int = 0
+    private var groupName = ""
+    private var examName = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreate(savedInstanceState)
@@ -28,45 +33,64 @@ class ExamDetailFragment : BaseFragment(), ExamCardItemRenderer.Callback {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        examId = arguments?.getInt(DECK_ID_KEY) ?: 0
-
+        examId = arguments?.getInt(EXAM_ID_KEY) ?: 0
+        groupName = arguments?.getString(GROUP_NAME_KEY) ?: ""
+        groupName = arguments?.getString(EXAM_NAME_KEY) ?: ""
         adapter.addRenderer(ExamCardItemRenderer(this))
+        adapter.addRenderer(ResultItemRenderer())
         examCardList.layoutManager = LinearLayoutManager(requireContext())
         examCardList.adapter = adapter
-        initViewModel(examId)
+        initViewModel()
+        initUI()
+        initRefresh()
     }
 
-    private fun initUI(exam: Exam) {
-        title.text = exam.name
-        //TODO: change UI if exam is in progress (dont allow to change list)
-        addButton.setOnClickListener {
-            //TODO
-            findNavController().navigate(R.id.action_examDetailFragment_to_newExamCardFragment, Bundle().apply { putInt(EXAM_ID_KEY, exam.id) })
+    private fun initUI() {
+        title.text = examName
+        if (groupName.isEmpty()) {
+            addButton.setOnClickListener {
+                findNavController().navigate(R.id.action_examDetailFragment_to_newExamCardFragment, Bundle().apply { putInt(EXAM_ID_KEY, examId) })
+            }
+            group.text = getString(R.string.unassigned)
+        } else {
+            addButton.visibility = View.GONE
+            group.text = groupName
         }
     }
 
-    private fun initViewModel(id: Int) {
-        viewModel.loadDetails(id).observe(viewLifecycleOwner, { exam ->
-            adapter.setItems(exam.examcards.map {
-                ExamCardItemRenderer.Item(
-                    it.id,
-                    it.question,
-                    it.answer
-                )
+    private fun initRefresh() {
+        if (groupName.isEmpty()) {
+            swipeRefresh.isEnabled = false
+        } else {
+            swipeRefresh.isEnabled = true
+            swipeRefresh.setOnRefreshListener {
+                swipeRefresh.isRefreshing = false
+                initViewModel()
+            }
+        }
+    }
+
+    private fun initViewModel() {
+        if (groupName.isEmpty()) {
+            viewModel.loadCards(examId).observe(viewLifecycleOwner, {
+                adapter.setItems(it)
             })
-            initUI(exam)
+        } else {
+            viewModel.loadResults(examId).observe(viewLifecycleOwner, {
+                adapter.setItems(it)
+                //TODO:emptyView
+            })
         }
-        )
     }
 
     override fun onEditExamCard(id: Int, question: String, answer: Boolean) {
         findNavController().navigate(R.id.action_examDetailFragment_to_newExamCardFragment,
-            Bundle().apply {
-                putInt(EXAM_ID_KEY, examId)
-                putInt(EXAM_CARD_ID_KEY, id)
-                putString(QUESTION_KEY, question)
-                putBoolean(ANSWER_KEY, answer)
-            })
+                Bundle().apply {
+                    putInt(EXAM_ID_KEY, examId)
+                    putInt(EXAM_CARD_ID_KEY, id)
+                    putString(QUESTION_KEY, question)
+                    putBoolean(ANSWER_KEY, answer)
+                })
     }
 
 }
