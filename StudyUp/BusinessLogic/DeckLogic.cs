@@ -152,7 +152,7 @@ namespace BusinessLogic
                     && t.DeckId == deckId);
 
             if (resultFind.Count > 0)
-                throw new AlreadyExistsException(GroupMessage.ALREADY_ASSIGNED);
+                throw new AlreadyExistsException(DeckMessage.ALREADY_ASSIGNED);
 
             DeckGroup deckGroup = new DeckGroup()
             {
@@ -187,7 +187,7 @@ namespace BusinessLogic
                     && t.DeckId == deckId);
 
             if (resultFind.Count == 0)
-                throw new NotFoundException(GroupMessage.NOT_ASSIGNED);
+                throw new NotFoundException(DeckMessage.NOT_ASSIGNED);
 
             deckGroupRepository.Delete(resultFind.First());
             group.DeckGroups.Remove(resultFind.First());
