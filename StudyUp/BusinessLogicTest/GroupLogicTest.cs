@@ -226,37 +226,6 @@ namespace BusinessLogicTest
         }
 
         [TestMethod]
-        public void AssignOkTest()
-        {
-            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
-            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
-            deckRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(deckExample);
-            groupRepositoryMock.Setup(a => a.Update(It.IsAny<Group>()));
-            deckGroupRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<DeckGroup,
-               bool>>>())).Returns(new List<DeckGroup>() { });
-            notificationsInterfaceMock.Setup(a => a.NotifyMaterial(It.IsAny<int>(), It.IsAny<Group>()));
-
-            var result = groupLogic.Assign(userExample.Token, 1, 1);
-            groupRepositoryMock.VerifyAll();
-            Assert.AreEqual(groupExample, result);
-        }
-
-        [TestMethod]
-        public void UnassignOkTest()
-        {
-            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
-            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
-            deckGroupRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<DeckGroup,
-                bool>>>())).Returns(new List<DeckGroup>() { It.IsAny<DeckGroup>() });
-            deckGroupRepositoryMock.Setup(a => a.Delete(It.IsAny<DeckGroup>()));
-            groupRepositoryMock.Setup(b => b.Update(It.IsAny<Group>()));
-
-            var result = groupLogic.Unassign(userExample.Token, 1, 1);
-            groupRepositoryMock.VerifyAll();
-            Assert.AreEqual(result, groupExample);
-        }
-
-        [TestMethod]
         public void GetTeachersGroupsTest()
         {
             Group group = new Group()

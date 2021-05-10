@@ -1,4 +1,5 @@
 ﻿using BusinessLogic;
+using BusinessLogicInterface;
 using DataAccessInterface;
 using Domain;
 using Domain.Enumerations;
@@ -8,6 +9,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace BusinessLogicTest
@@ -17,11 +19,15 @@ namespace BusinessLogicTest
     {
         User userExample;
         Deck deckExample;
+        Group groupExample;
         Mock<IRepository<Deck>> deckRepositoryMock;
         Mock<IRepository<User>> userRepositoryMock;
+        Mock<IRepository<Group>> groupRepositoryMock;
+        Mock<IRepository<DeckGroup>> deckGroupRepositoryMock;
         Mock<IRepository<Flashcard>> flashcardRepositoryMock;
         Mock<IUserRepository> userTokenRepository;
         DeckLogic deckLogic;
+        Mock<INotifications> notificationsInterfaceMock;
 
         [TestInitialize]
         public void SetUp()
@@ -48,12 +54,26 @@ namespace BusinessLogicTest
                 Flashcards = new List<Flashcard>()
             };
 
+            groupExample = new Group()
+            {
+                Id = 1,
+                Name = "GroupExample",
+                Creator = userExample,
+                UserGroups = new List<UserGroup>(),
+                DeckGroups = new List<DeckGroup>()
+            };
+
             deckRepositoryMock = new Mock<IRepository<Deck>>(MockBehavior.Strict);
             userRepositoryMock = new Mock<IRepository<User>>(MockBehavior.Loose);
             flashcardRepositoryMock = new Mock<IRepository<Flashcard>>(MockBehavior.Strict);
             userTokenRepository = new Mock<IUserRepository>(MockBehavior.Strict);
+            groupRepositoryMock = new Mock<IRepository<Group>>(MockBehavior.Strict);
+            deckGroupRepositoryMock = new Mock<IRepository<DeckGroup>>(MockBehavior.Strict);
+            notificationsInterfaceMock = new Mock<INotifications>(MockBehavior.Strict);
             deckLogic = new DeckLogic(deckRepositoryMock.Object, userRepositoryMock.Object,
-                 userTokenRepository.Object, flashcardRepositoryMock.Object);
+                 userTokenRepository.Object, flashcardRepositoryMock.Object,
+                 deckGroupRepositoryMock.Object, groupRepositoryMock.Object,
+                 notificationsInterfaceMock.Object);
         }
 
         [TestMethod]
@@ -271,7 +291,7 @@ namespace BusinessLogicTest
             deckRepositoryMock.Setup(m => m.Update(It.IsAny<Deck>()));
             deckRepositoryMock.Setup(m => m.GetById(1)).Returns(deckExample);
             deckRepositoryMock.Setup(m => m.Add(deckExample));
-            
+
             deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == "Name" && a.Id != 1)).Returns(new List<Deck>());
 
             var result = deckLogic.EditDeck(1, "Name", newDifficulty, newVisibility, "");
@@ -339,6 +359,37 @@ namespace BusinessLogicTest
             deckRepositoryMock.VerifyAll();
 
             Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void AssignOkTest()
+        {
+            userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
+            deckRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(deckExample);
+            groupRepositoryMock.Setup(a => a.Update(It.IsAny<Group>()));
+            deckGroupRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<DeckGroup,
+               bool>>>())).Returns(new List<DeckGroup>() { });
+            notificationsInterfaceMock.Setup(a => a.NotifyMaterial(It.IsAny<int>(), It.IsAny<Group>()));
+
+            var result = deckLogic.Assign(userExample.Token, 1, 1);
+            deckRepositoryMock.VerifyAll();
+            Assert.AreEqual(groupExample, result);
+        }
+
+        [TestMethod]
+        public void UnassignOkTest()
+        {
+            userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
+            deckGroupRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<DeckGroup,
+                bool>>>())).Returns(new List<DeckGroup>() { It.IsAny<DeckGroup>() });
+            deckGroupRepositoryMock.Setup(a => a.Delete(It.IsAny<DeckGroup>()));
+            groupRepositoryMock.Setup(b => b.Update(It.IsAny<Group>()));
+
+            var result = deckLogic.Unassign(userExample.Token, 1, 1);
+            deckRepositoryMock.VerifyAll();
+            Assert.AreEqual(result, groupExample);
         }
     }
 }

@@ -58,20 +58,6 @@ namespace WebAPI.Controllers
             return Ok(logic.Unsubscribe(token, id));
         }
 
-        [HttpPost("{groupId}/assign")]
-        public IActionResult Assign([FromHeader] string token, [FromRoute] int groupId,
-            [FromQuery] int deckId)
-        {
-            return Ok(logic.Assign(token, groupId, deckId));
-        }
-
-        [HttpDelete("{groupId}/unassign")]
-        public IActionResult Unassign([FromHeader] string token, [FromRoute] int groupId,
-            [FromQuery] int deckId)
-        {
-            return Ok(logic.Unassign(token, groupId, deckId));
-        }
-
         [HttpGet]
         public IActionResult Get([FromHeader] string token)
         {
