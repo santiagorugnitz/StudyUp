@@ -2,10 +2,7 @@ package com.ort.studyup.repositories
 
 import com.google.firebase.messaging.FirebaseMessaging
 import com.ort.studyup.common.TOKEN_KEY
-import com.ort.studyup.common.models.FollowRequest
-import com.ort.studyup.common.models.LoginRequest
-import com.ort.studyup.common.models.RegisterRequest
-import com.ort.studyup.common.models.User
+import com.ort.studyup.common.models.*
 import com.ort.studyup.common.utils.EncryptedPreferencesHelper
 import com.ort.studyup.services.UserService
 import com.ort.studyup.services.check
@@ -67,6 +64,10 @@ class UserRepository(
 
     suspend fun unfollow(username: String) {
         userService.unfollow(username).check()
+    }
+
+    suspend fun ranking(): List<RankingResponse> {
+        return userService.ranking().check()
     }
 
 

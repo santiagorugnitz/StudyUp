@@ -66,6 +66,7 @@
     <string name="no_questions_error">Exam has no questions</string>
     <string name="no_results_yet">No results yet. \n Try again later</string>
     <string name="qr_description">Scan this qr to search your username automatically</string>
+    <string name="ranking">Ranking</string>
 
 
     <string-array name="difficulties">

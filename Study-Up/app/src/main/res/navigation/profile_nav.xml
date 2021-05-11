@@ -5,5 +5,13 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.ort.studyup.home.profile.ProfileFragment"
-        android:label="ProfileFragment" />
+        android:label="ProfileFragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_rankingFragment"
+            app:destination="@id/rankingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/rankingFragment"
+        android:name="com.ort.studyup.home.profile.RankingFragment"
+        android:label="RankingFragment" />
 </navigation>

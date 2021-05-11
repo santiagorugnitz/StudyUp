@@ -4,15 +4,20 @@
         android:id="@+id/decks_nav"
         android:enabled="true"
         android:icon="@drawable/ic_deck"
-        android:title="@string/decks"/>
+        android:title="@string/decks" />
     <item
         android:id="@+id/groups_nav"
         android:enabled="true"
         android:icon="@drawable/ic_group"
-        android:title="@string/groups"/>
+        android:title="@string/groups" />
     <item
         android:id="@+id/exams_nav"
         android:enabled="true"
         android:icon="@drawable/ic_exam"
-        android:title="@string/exams"/>
+        android:title="@string/exams" />
+    <item
+        android:id="@+id/profile_nav"
+        android:enabled="true"
+        android:icon="@drawable/ic_profile"
+        android:title="@string/profile" />
 </menu>

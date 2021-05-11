@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidmads.library.qrgenearator.QRGContents
 import androidmads.library.qrgenearator.QRGEncoder
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.google.zxing.WriterException
 import com.ort.studyup.R
 import com.ort.studyup.common.ui.BaseFragment
@@ -40,6 +41,14 @@ class ProfileFragment : BaseFragment() {
             it?.let {
                 username.text = it.username
                 loadQR(it.username)
+                if (it.isStudent) {
+                    rankingButton.visibility = View.VISIBLE
+                    rankingButton.setOnClickListener {
+                        findNavController().navigate(R.id.action_profileFragment_to_rankingFragment)
+                    }
+                } else {
+                    rankingButton.visibility = View.GONE
+                }
             }
         })
         logout.setOnClickListener {

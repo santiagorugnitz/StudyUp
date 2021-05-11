@@ -17,6 +17,7 @@ import com.ort.studyup.home.exams.examcards.NewExamCardViewModel
 import com.ort.studyup.home.groups.GroupsViewModel
 import com.ort.studyup.home.groups.NewGroupViewModel
 import com.ort.studyup.home.profile.ProfileViewModel
+import com.ort.studyup.home.profile.RankingViewModel
 import com.ort.studyup.home.search.SearchViewModel
 import com.ort.studyup.home.tasks.TaskViewModel
 import com.ort.studyup.login.LoginViewModel
@@ -75,7 +76,7 @@ object KoinWrapper {
         factory { NewExamCardViewModel(get(), get()) }
         factory { TaskViewModel(get()) }
         factory { TestViewModel(get()) }
-
+        factory { RankingViewModel(get()) }
     }
 
     private fun repositories() = module {
