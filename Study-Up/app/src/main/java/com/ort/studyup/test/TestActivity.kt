@@ -11,7 +11,7 @@ class TestActivity : BaseActivity(), ConfirmationDialog.Callback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_study)
+        setContentView(R.layout.activity_test)
         dialog = ConfirmationDialog(
                 this,
                 getString(R.string.end_test),

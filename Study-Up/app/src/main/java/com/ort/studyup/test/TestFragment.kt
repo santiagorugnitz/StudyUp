@@ -33,7 +33,6 @@ class TestFragment : BaseFragment() {
         val time = timer.text.toString().split(":")
         val seconds = (time[1].toIntOrNull() ?: 0) + (time[0].toIntOrNull() ?: 0) * 60
         viewModel.sendAnswers(seconds)
-        //TODO: navigate to result screen or something
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -71,9 +70,14 @@ class TestFragment : BaseFragment() {
         }
     }
 
-    private fun onNewCard(card: ExamCard) {
-        currentCard = card
-        cardContent.text = currentCard.question
+    private fun onNewCard(card: ExamCard?) {
+        card?.let{
+            currentCard = card
+            cardContent.text = currentCard.question
+        }?:run{
+            //TODO: navigate to result screen or something
+            requireActivity().finish()
+        }
     }
 
 }
