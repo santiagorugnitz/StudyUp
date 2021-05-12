@@ -14,5 +14,7 @@ namespace BusinessLogicInterface
         Deck EditDeck(int deckId, string newName, Difficulty newDifficulty, bool newVisibility, string subject);
         Deck GetDeckById(int deckId);
         bool DeleteDeck(int deckId, string token);
+        Group Assign(string token, int groupId, int deckId);
+        Group Unassign(string token, int groupId, int deckId);
     }
 }

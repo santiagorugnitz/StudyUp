@@ -216,8 +216,8 @@ namespace WebAPI.Migrations
                     b.Property<int>("ExamId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Score")
-                        .HasColumnType("int");
+                    b.Property<double?>("Score")
+                        .HasColumnType("float");
 
                     b.HasKey("UserId", "ExamId");
 

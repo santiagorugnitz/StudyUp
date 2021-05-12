@@ -16,5 +16,7 @@ namespace BusinessLogicInterface
         User FollowUser(string token, string username);
         User UnfollowUser(string token, string username);
         Tuple<List<Deck>, List<Exam>> GetTasks(string token);
+        List<User> GetUsersForRanking(string token);
+        Double GetScore(string username);
     }
 }

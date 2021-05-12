@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using WebAPI.Controllers;
 using WebAPI.Models;
+using WebAPI.Models.ResponseModels;
 
 namespace WebAPITest
 {
@@ -169,6 +170,18 @@ namespace WebAPITest
             var result = controller.GetDecks("token");
             var okResult = result as OkObjectResult;
             var value = okResult.Value as IEnumerable<ResponseDeckModel>;
+
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void RankingOk()
+        {
+            logicMock.Setup(x => x.GetUsersForRanking(It.IsAny<string>())).Returns(It.IsAny<List<User>>());
+
+            var result = controller.Ranking("token");
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as IEnumerable<ResponseRankingModel>;
 
             logicMock.VerifyAll();
         }

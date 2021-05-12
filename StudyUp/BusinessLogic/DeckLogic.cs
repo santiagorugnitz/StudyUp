@@ -19,16 +19,24 @@ namespace BusinessLogic
     {
         private IRepository<Deck> deckRepository;
         private IRepository<User> userRepository;
+        private IRepository<Group> groupRepository;
         private IRepository<Flashcard> flashcardRepository;
+        private IRepository<DeckGroup> deckGroupRepository;
         private IUserRepository userTokenRepository;
+        private INotifications notificationsInterface;
 
         public DeckLogic(IRepository<Deck> repository, IRepository<User> userRepository,
-            IUserRepository userTokenRepository, IRepository<Flashcard> flashcardRepository)
+            IUserRepository userTokenRepository, IRepository<Flashcard> flashcardRepository,
+            IRepository<DeckGroup> deckGroupRepository, IRepository<Group> groupRepository,
+            INotifications notificationsInterface)
         {
             this.deckRepository = repository;
             this.userRepository = userRepository;
             this.userTokenRepository = userTokenRepository;
             this.flashcardRepository = flashcardRepository;
+            this.deckGroupRepository = deckGroupRepository;
+            this.groupRepository = groupRepository;
+            this.notificationsInterface = notificationsInterface;
         }
 
         public Deck AddDeck(Deck deck, string userToken)
@@ -120,6 +128,71 @@ namespace BusinessLogic
 
             deckRepository.Delete(deck);
             return true;
+        }
+
+        public Group Assign(string token, int groupId, int deckId)
+        {
+            User user = userTokenRepository.GetUserByToken(token);
+            Deck deck = deckRepository.GetById(deckId);
+            Group group = groupRepository.GetById(groupId);
+
+            if (user is null)
+                throw new InvalidException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
+
+            if (group is null)
+                throw new NotFoundException(GroupMessage.GROUP_NOT_FOUND);
+
+            if (deck is null)
+                throw new NotFoundException(DeckMessage.DECK_NOT_FOUND);
+
+            if (!group.Creator.Equals(user))
+                throw new InvalidException(GroupMessage.NOT_AUTHORIZED);
+
+            var resultFind = deckGroupRepository.FindByCondition(t => t.GroupId == groupId
+                    && t.DeckId == deckId);
+
+            if (resultFind.Count > 0)
+                throw new AlreadyExistsException(DeckMessage.ALREADY_ASSIGNED);
+
+            DeckGroup deckGroup = new DeckGroup()
+            {
+                Deck = deck,
+                DeckId = deckId,
+                Group = group,
+                GroupId = groupId
+            };
+
+            this.notificationsInterface.NotifyMaterial(deckId, group);
+
+            group.DeckGroups.Add(deckGroup);
+            groupRepository.Update(group);
+            return group;
+        }
+
+        public Group Unassign(string token, int groupId, int deckId)
+        {
+            User user = userTokenRepository.GetUserByToken(token);
+            Group group = groupRepository.GetById(groupId);
+
+            if (user is null)
+                throw new InvalidException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
+
+            if (group is null)
+                throw new NotFoundException(GroupMessage.GROUP_NOT_FOUND);
+
+            if (!group.Creator.Equals(user))
+                throw new InvalidException(GroupMessage.NOT_AUTHORIZED);
+
+            var resultFind = deckGroupRepository.FindByCondition(t => t.GroupId == groupId
+                    && t.DeckId == deckId);
+
+            if (resultFind.Count == 0)
+                throw new NotFoundException(DeckMessage.NOT_ASSIGNED);
+
+            deckGroupRepository.Delete(resultFind.First());
+            group.DeckGroups.Remove(resultFind.First());
+            groupRepository.Update(group);
+            return group;
         }
     }
 }

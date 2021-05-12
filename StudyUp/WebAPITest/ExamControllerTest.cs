@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Text;
 using WebAPI.Controllers;
 using WebAPI.Models;
+using WebAPI.Models.RequestModels;
 
 namespace WebAPITest
 {
@@ -102,6 +103,29 @@ namespace WebAPITest
             var result = controller.Assign("token", 1, 1);
             var okResult = result as OkObjectResult;
             var value = okResult.Value as Exam;
+
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void GetResultsOkTest()
+        {
+            logicMock.Setup(x => x.GetResults(It.IsAny<int>(), It.IsAny<string>())).Returns(new List<Tuple<string, double>>());
+
+            var result = controller.GetResults(1, "token");
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as List<Tuple<string, double>>;
+
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void AssignResultsOkTest()
+        {
+            logicMock.Setup(x => x.AssignResults(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()));
+
+            var result = controller.AssignResults(1, "token", new ScoreModel() { Time = 60, CorrectAnswers = 5 });
+            var okResult = result as OkObjectResult;
 
             logicMock.VerifyAll();
         }

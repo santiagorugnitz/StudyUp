@@ -51,7 +51,11 @@
             android:name=".home.search.ScanActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".game.StudyActivity"
+            android:name=".study.StudyActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DarkStatusBar" />
+        <activity
+            android:name=".test.TestActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DarkStatusBar" />
 

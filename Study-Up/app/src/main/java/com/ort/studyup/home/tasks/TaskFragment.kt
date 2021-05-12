@@ -10,10 +10,13 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ort.studyup.R
 import com.ort.studyup.common.DECK_ID_KEY
+import com.ort.studyup.common.EXAM_ID_KEY
+import com.ort.studyup.common.models.ExamItem
 import com.ort.studyup.common.renderers.DeckItemRenderer
 import com.ort.studyup.common.renderers.ExamItemRenderer
 import com.ort.studyup.common.ui.BaseFragment
-import com.ort.studyup.game.StudyActivity
+import com.ort.studyup.study.StudyActivity
+import com.ort.studyup.test.TestActivity
 import com.thinkup.easylist.RendererAdapter
 import kotlinx.android.synthetic.main.fragment_tasks.*
 
@@ -58,11 +61,12 @@ class TaskFragment : BaseFragment(), DeckItemRenderer.Callback, ExamItemRenderer
         startActivity(intent)
     }
 
-    override fun onExamClicked(examId: Int) {
-        Toast.makeText(requireContext(), "TODO", Toast.LENGTH_LONG).show()
+    override fun onExamClicked(exam: ExamItem) {
+        val intent = Intent(requireActivity(), TestActivity::class.java)
+        intent.putExtra(EXAM_ID_KEY, exam.id)
+        startActivity(intent)
     }
 
-    override fun onAssignExam(examId: Int, groupId: Int) {
-    }
+    override fun onAssignExam(examId: Int, groupId: Int) {}
 
 }

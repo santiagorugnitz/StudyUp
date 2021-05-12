@@ -18,8 +18,18 @@ class ExamItem(
     @SerializedName("groupsName") val groupName: String?,
 )
 
+class ExamResult(
+        @SerializedName("username") val username: String,
+        @SerializedName("score") val score: Double,
+)
+
 class NewExamRequest(
     val name: String,
     val subject: String,
     val difficulty: Int
+)
+
+class NewResultRequest(
+    @SerializedName("time") val time:Int,
+    @SerializedName("correctAnswers") val correctAnswers:Int
 )

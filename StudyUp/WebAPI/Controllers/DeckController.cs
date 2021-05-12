@@ -105,5 +105,19 @@ namespace WebAPI.Controllers
             logic.DeleteDeck(id, token);
             return Ok();
         }
+
+        [HttpPost("{deckId}/assign")]
+        public IActionResult Assign([FromHeader] string token, [FromRoute] int deckId,
+            [FromQuery] int groupId)
+        {
+            return Ok(logic.Assign(token, groupId, deckId));
+        }
+
+        [HttpDelete("{deckId}/unassign")]
+        public IActionResult Unassign([FromHeader] string token, [FromRoute] int deckId,
+            [FromQuery] int groupId)
+        {
+            return Ok(logic.Unassign(token, groupId, deckId));
+        }
     }
 }

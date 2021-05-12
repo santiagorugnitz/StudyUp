@@ -12,6 +12,6 @@
     </fragment>
     <activity
         android:id="@+id/studyActivity"
-        android:name="com.ort.studyup.game.StudyActivity"
+        android:name="com.ort.studyup.study.StudyActivity"
         android:label="StudyActivity" />
 </navigation>

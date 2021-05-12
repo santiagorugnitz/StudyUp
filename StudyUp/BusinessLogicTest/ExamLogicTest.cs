@@ -2,6 +2,7 @@
 using BusinessLogicInterface;
 using DataAccessInterface;
 using Domain;
+using Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -128,6 +129,126 @@ namespace BusinessLogicTest
         }
 
         [TestMethod]
+        [ExpectedException(typeof(NotFoundException))]
+        public void GetExamByIdNullUserTest()
+        {
+            examRepositoryMock.Setup(b => b.GetById(examExample.Id)).Returns(examExample);
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns((User)null);
+
+            var result = examLogic.GetExamById(examExample.Id, userExample.Token);
+
+            examRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(examExample, result);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NotFoundException))]
+        public void GetExamByIdNullExamTest()
+        {
+            examRepositoryMock.Setup(b => b.GetById(examExample.Id)).Returns((Exam)null);
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+
+            var result = examLogic.GetExamById(examExample.Id, userExample.Token);
+
+            examRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(examExample, result);
+        }
+
+        [TestMethod]
+        public void GetExamResultsNullResultTest()
+        {
+            examExample.AlreadyPerformed = new List<UserExam>()
+            { new UserExam() { User = userExample, UserId = userExample.Id, Exam = examExample, ExamId = examExample.Id, Score = null } };
+
+            examRepositoryMock.Setup(b => b.GetById(examExample.Id)).Returns(examExample);
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+
+            var result = examLogic.GetResults(examExample.Id, userExample.Token);
+
+            examRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(0, result.Count());
+        }
+
+        [TestMethod]
+        public void GetExamResultsNoResultTest()
+        {
+            examExample.AlreadyPerformed = new List<UserExam>() { };
+
+            examRepositoryMock.Setup(b => b.GetById(examExample.Id)).Returns(examExample);
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+
+            var result = examLogic.GetResults(examExample.Id, userExample.Token);
+
+            examRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(0, result.Count());
+        }
+
+        [TestMethod]
+        public void GetExamResultTest()
+        {
+            examExample.AlreadyPerformed = new List<UserExam>()
+            { new UserExam() { User = userExample, UserId = userExample.Id, Exam = examExample, ExamId = examExample.Id, Score = 5 } };
+
+            examRepositoryMock.Setup(b => b.GetById(examExample.Id)).Returns(examExample);
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+
+            var result = examLogic.GetResults(examExample.Id, userExample.Token);
+
+            examRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(1, result.Count());
+            Assert.AreEqual(userExample.Username, result.ElementAt(0).Item1);
+            Assert.AreEqual(5, result.ElementAt(0).Item2);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NotFoundException))]
+        public void GetExamResultsNullUserTest()
+        {
+            examRepositoryMock.Setup(b => b.GetById(examExample.Id)).Returns(examExample);
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns((User)null);
+
+            var result = examLogic.GetResults(examExample.Id, userExample.Token);
+
+            examRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(examExample, result);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NotFoundException))]
+        public void GetExamResultsNullExamTest()
+        {
+            examRepositoryMock.Setup(b => b.GetById(examExample.Id)).Returns((Exam)null);
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+
+            var result = examLogic.GetResults(examExample.Id, userExample.Token);
+
+            examRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(examExample, result);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidException))]
+        public void GetExamResultsIncorrectAuthorExamTest()
+        {
+            examExample.Author = new User() { Email = "new email" };
+            examRepositoryMock.Setup(b => b.GetById(examExample.Id)).Returns(examExample);
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+
+            var result = examLogic.GetResults(examExample.Id, userExample.Token);
+
+            examRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(examExample, result);
+        }
+
+        [TestMethod]
         public void AssignOkTest()
         {
             groupExample.AssignedExams = new List<Exam>();
@@ -142,6 +263,84 @@ namespace BusinessLogicTest
             var result = examLogic.AssignExam(userExample.Token, 1, 1);
             groupRepositoryMock.VerifyAll();
             Assert.AreEqual(examExample, result);
+        }
+
+        [TestMethod]
+        public void AssignExamResultsNullResultTest()
+        {
+            examExample.AlreadyPerformed = new List<UserExam> { new UserExam()
+            { User = userExample, UserId = userExample.Id, Exam = examExample, ExamId = examExample.Id, Score = null} };
+            examRepositoryMock.Setup(b => b.Update(It.IsAny<Exam>()));
+            examRepositoryMock.Setup(b => b.GetById(examExample.Id)).Returns(examExample);
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            examLogic.AssignResults(examExample.Id, userExample.Token, 60, 10);
+
+            examRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void AssignExamResultsNoResultTest()
+        {
+            examExample.AlreadyPerformed = new List<UserExam> { };
+            examExample.ExamCards = new List<ExamCard>();
+            examRepositoryMock.Setup(b => b.Update(It.IsAny<Exam>()));
+            examRepositoryMock.Setup(b => b.GetById(examExample.Id)).Returns(examExample);
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            examLogic.AssignResults(examExample.Id, userExample.Token, 60, 10);
+
+            examRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void AssignExamResultZeroQuestionsTest()
+        {
+            examExample.AlreadyPerformed = new List<UserExam> { new UserExam()
+            { User = userExample, UserId = userExample.Id, Exam = examExample, ExamId = examExample.Id, Score = null} };
+            examExample.ExamCards = new List<ExamCard>();
+            examRepositoryMock.Setup(b => b.Update(It.IsAny<Exam>()));
+            examRepositoryMock.Setup(b => b.GetById(examExample.Id)).Returns(examExample);
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            examLogic.AssignResults(examExample.Id, userExample.Token, 60, 10);
+
+            examRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidException))]
+        public void AssignExamResultsAlreadyDoneTest()
+        {
+            examExample.AlreadyPerformed = new List<UserExam> { new UserExam() 
+            { User = userExample, UserId = userExample.Id, Exam = examExample, ExamId = examExample.Id, Score = 5} };
+            examRepositoryMock.Setup(b => b.Update(It.IsAny<Exam>()));
+            examRepositoryMock.Setup(b => b.GetById(examExample.Id)).Returns(examExample);
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            examLogic.AssignResults(examExample.Id, userExample.Token, 60, 10);
+
+            examRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NotFoundException))]
+        public void AssignExamResultsNullExamTest()
+        {
+            examRepositoryMock.Setup(b => b.Update(It.IsAny<Exam>()));
+            examRepositoryMock.Setup(b => b.GetById(examExample.Id)).Returns((Exam) null);
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            examLogic.AssignResults(examExample.Id, userExample.Token, 60, 10);
+
+            examRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NotFoundException))]
+        public void AssignExamResultsNullUserTest()
+        {
+            examRepositoryMock.Setup(b => b.Update(It.IsAny<Exam>()));
+            examRepositoryMock.Setup(b => b.GetById(examExample.Id)).Returns(examExample);
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns((User)null);
+            examLogic.AssignResults(examExample.Id, userExample.Token, 60, 10);
+
+            examRepositoryMock.VerifyAll();
         }
     }
 }

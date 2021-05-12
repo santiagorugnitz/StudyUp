@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ort.studyup.R
 import com.ort.studyup.common.EXAM_ID_KEY
+import com.ort.studyup.common.EXAM_NAME_KEY
+import com.ort.studyup.common.GROUP_NAME_KEY
+import com.ort.studyup.common.models.ExamItem
 import com.ort.studyup.common.renderers.ExamItemRenderer
 import com.ort.studyup.common.renderers.SubtitleRenderer
 import com.ort.studyup.common.ui.BaseFragment
@@ -48,8 +50,12 @@ class ExamsFragment : BaseFragment(), ExamItemRenderer.Callback {
         })
     }
 
-    override fun onExamClicked(examId: Int) {
-        findNavController().navigate(R.id.action_examsFragment_to_examDetailFragment, Bundle().apply { putInt(EXAM_ID_KEY, examId) })
+    override fun onExamClicked(exam: ExamItem) {
+        findNavController().navigate(R.id.action_examsFragment_to_examDetailFragment, Bundle().apply {
+            putInt(EXAM_ID_KEY, exam.id)
+            putString(GROUP_NAME_KEY, exam.groupName)
+            putString(EXAM_NAME_KEY, exam.name)
+        })
     }
 
     override fun onAssignExam(examId: Int, groupId: Int) {

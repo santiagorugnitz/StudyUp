@@ -14,7 +14,7 @@ import com.ort.studyup.common.DECK_ID_KEY
 import com.ort.studyup.common.renderers.DeckItemRenderer
 import com.ort.studyup.common.renderers.SubtitleRenderer
 import com.ort.studyup.common.ui.BaseFragment
-import com.ort.studyup.game.StudyActivity
+import com.ort.studyup.study.StudyActivity
 import com.thinkup.easylist.RendererAdapter
 import kotlinx.android.synthetic.main.fragment_following_decks.*
 import kotlinx.android.synthetic.main.item_spinner.view.*

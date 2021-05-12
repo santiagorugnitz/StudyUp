@@ -10,6 +10,6 @@ namespace Domain
         public virtual User User { get; set; }
         public int ExamId { get; set; }
         public virtual Exam Exam { get; set; }
-        public int? Score { get; set; }
+        public double? Score { get; set; }
     }
 }

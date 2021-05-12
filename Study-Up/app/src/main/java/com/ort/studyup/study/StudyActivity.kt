@@ -1,7 +1,6 @@
-package com.ort.studyup.game
+package com.ort.studyup.study
 
 import android.os.Bundle
-import android.widget.FrameLayout
 import com.ort.studyup.R
 import com.ort.studyup.common.ui.BaseActivity
 import com.ort.studyup.common.ui.ConfirmationDialog
