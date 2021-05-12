@@ -128,7 +128,7 @@ namespace WebAPI.Controllers
             return Ok(responseList);
         }
 
-        [HttpDelete("ranking")]
+        [HttpGet("ranking")]
         public IActionResult Ranking([FromHeader] string token)
         {
             List<User> followedUsers = logic.GetUsersForRanking(token);

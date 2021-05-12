@@ -22,9 +22,10 @@ class RankingViewModel(
         executeService {
             val user = userRepository.getUser()
             val ranking = userRepository.ranking()
-            result.postValue(ranking.mapIndexed { pos, it ->
+
+            result.postValue(ranking.sortedByDescending { it.score }.mapIndexed { pos, it ->
                 ResultItemRenderer.Item(
-                    pos,
+                    pos+1,
                     it.username,
                     it.score,
                     it.username == user?.username

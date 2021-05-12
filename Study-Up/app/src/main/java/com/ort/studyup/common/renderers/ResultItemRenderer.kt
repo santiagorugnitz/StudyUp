@@ -17,9 +17,10 @@ class ResultItemRenderer() : ViewRenderer<ResultItemRenderer.Item, View>(Item::c
         view.position.text = model.position.toString()
         view.score.text = ((model.score * 10).roundToInt() / 10.0).toString()
         if (model.bold) {
-            view.username.setTypeface(view.username.typeface, Typeface.BOLD)
+            //TODO: make more visible
+            view.position.setTypeface(view.username.typeface, Typeface.BOLD)
         } else {
-            view.username.setTypeface(view.username.typeface, Typeface.NORMAL)
+            view.position.setTypeface(view.username.typeface, Typeface.NORMAL)
         }
     }
 

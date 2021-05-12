@@ -30,6 +30,6 @@ class NewExamRequest(
 )
 
 class NewResultRequest(
-    val time:Int,
-    val correctAnswers:Int
+    @SerializedName("time") val time:Int,
+    @SerializedName("correctAnswers") val correctAnswers:Int
 )

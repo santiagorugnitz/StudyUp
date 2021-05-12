@@ -150,8 +150,9 @@ namespace BusinessLogic
 
             Exam exam = this.examRepository.GetById(id);
 
-            if (exam != null && !exam.Author.Equals(user))
-                throw new InvalidException(ExamMessage.INVALID_USER);
+            //TODO: change validation, owners and members of the assigned group can see the exam
+            //if (exam != null && !exam.Author.Equals(user))
+            //    throw new InvalidException(ExamMessage.INVALID_USER);
 
             if (exam != null)
                 return exam;
