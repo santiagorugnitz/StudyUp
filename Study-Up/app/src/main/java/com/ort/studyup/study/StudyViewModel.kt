@@ -1,4 +1,4 @@
-package com.ort.studyup.game
+package com.ort.studyup.study
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

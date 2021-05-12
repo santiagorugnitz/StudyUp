@@ -43,3 +43,8 @@ class FollowRequest(
     @SerializedName("username") val username: String,
 )
 
+class RankingResponse(
+    @SerializedName("username") val username: String,
+    @SerializedName("score") val score: Double,
+)
+

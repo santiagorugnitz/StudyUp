@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/study_fragment"
-        android:name="com.ort.studyup.study.StudyFragment"
+        android:name="com.ort.studyup.test.TestFragment"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

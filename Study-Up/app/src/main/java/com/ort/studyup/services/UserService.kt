@@ -23,4 +23,6 @@ interface UserService {
     @POST("api/users/follow")
     suspend fun follow(@Query("username") username:String): Response<*>
 
+    @GET("api/users/ranking")
+    suspend fun ranking(): Response<List<RankingResponse>>
 }

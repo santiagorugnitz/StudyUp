@@ -1,11 +1,10 @@
 package com.ort.studyup
 
 import android.app.Application
-import android.widget.SearchView
 import androidx.room.Room
 import com.ort.studyup.common.ui.ResourceWrapper
 import com.ort.studyup.common.utils.EncryptedPreferencesHelper
-import com.ort.studyup.game.StudyViewModel
+import com.ort.studyup.study.StudyViewModel
 import com.ort.studyup.home.decks.DeckDetailViewModel
 import com.ort.studyup.home.decks.DecksViewModel
 import com.ort.studyup.home.decks.FollowingDecksViewModel
@@ -18,6 +17,7 @@ import com.ort.studyup.home.exams.examcards.NewExamCardViewModel
 import com.ort.studyup.home.groups.GroupsViewModel
 import com.ort.studyup.home.groups.NewGroupViewModel
 import com.ort.studyup.home.profile.ProfileViewModel
+import com.ort.studyup.home.profile.RankingViewModel
 import com.ort.studyup.home.search.SearchViewModel
 import com.ort.studyup.home.tasks.TaskViewModel
 import com.ort.studyup.login.LoginViewModel
@@ -26,6 +26,7 @@ import com.ort.studyup.repositories.*
 import com.ort.studyup.services.*
 import com.ort.studyup.splash.SplashViewModel
 import com.ort.studyup.storage.dao.AppDatabase
+import com.ort.studyup.test.TestViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -74,7 +75,8 @@ object KoinWrapper {
         factory { NewExamViewModel(get(), get()) }
         factory { NewExamCardViewModel(get(), get()) }
         factory { TaskViewModel(get()) }
-
+        factory { TestViewModel(get()) }
+        factory { RankingViewModel(get()) }
     }
 
     private fun repositories() = module {

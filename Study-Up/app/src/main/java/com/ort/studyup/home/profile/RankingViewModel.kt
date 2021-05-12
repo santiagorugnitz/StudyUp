@@ -6,28 +6,32 @@ import com.ort.studyup.R
 import com.ort.studyup.common.INTERNAL_ERROR_CODE
 import com.ort.studyup.common.models.DeckData
 import com.ort.studyup.common.models.User
+import com.ort.studyup.common.renderers.ResultItemRenderer
 import com.ort.studyup.common.ui.BaseViewModel
 import com.ort.studyup.common.ui.ResourceWrapper
 import com.ort.studyup.repositories.GroupRepository
 import com.ort.studyup.repositories.UserRepository
 import com.ort.studyup.services.ServiceError
 
-class ProfileViewModel(
+class RankingViewModel(
     private val userRepository: UserRepository
 ) : BaseViewModel() {
 
-    fun currentUser(): LiveData<User> {
-        val result = MutableLiveData<User>()
+    fun loadRanking(): LiveData<List<Any>> {
+        val result = MutableLiveData<List<Any>>()
         executeService {
-            result.postValue(userRepository.getUser())
+            val user = userRepository.getUser()
+            val ranking = userRepository.ranking()
+            result.postValue(ranking.mapIndexed { pos, it ->
+                ResultItemRenderer.Item(
+                    pos,
+                    it.username,
+                    it.score,
+                    it.username == user?.username
+                )
+            })
         }
         return result
-    }
-
-    fun logout(){
-        executeService {
-            userRepository.logout()
-        }
     }
 
 }
