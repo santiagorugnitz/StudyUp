@@ -11,8 +11,4 @@ namespace WebAPI.Models.ResponseModels
         public double Score { get; set; }
     }
 
-    public class ResponseResultsModel
-    {
-        public List<ResponseResultModel> List { get; set; }
-    }
 }

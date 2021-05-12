@@ -34,7 +34,7 @@ class ExamDetailFragment : BaseFragment(), ExamCardItemRenderer.Callback {
         super.onActivityCreated(savedInstanceState)
         examId = arguments?.getInt(EXAM_ID_KEY) ?: 0
         groupName = arguments?.getString(GROUP_NAME_KEY) ?: ""
-        groupName = arguments?.getString(EXAM_NAME_KEY) ?: ""
+        examName = arguments?.getString(EXAM_NAME_KEY) ?: ""
         adapter.addRenderer(ExamCardItemRenderer(this))
         adapter.addRenderer(ResultItemRenderer())
         examCardList.layoutManager = LinearLayoutManager(requireContext())

@@ -56,11 +56,10 @@ namespace WebAPI.Controllers
         public IActionResult GetResults([FromRoute] int examId, [FromHeader] string token)
         {
             var list = logic.GetResults(examId, token);
-            ResponseResultsModel response = new ResponseResultsModel();
-            
+            var response = new List<ResponseResultModel>();
             foreach (var item in list)
             {
-                response.List.Add(new ResponseResultModel() { Username = item.Item1, Score = item.Item2 });
+                response.Add(new ResponseResultModel() { Username = item.Item1, Score = item.Item2 });
             }
             return Ok(response);
         }
