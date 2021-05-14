@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
+import android.widget.Toast
 import com.ort.studyup.R
 import com.ort.studyup.common.ui.BaseActivity
 import com.ort.studyup.home.StudentHomeActivity
@@ -19,6 +21,10 @@ class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+        if(intent.hasExtra("group_id")){
+            Toast.makeText(this,"Una locura",Toast.LENGTH_LONG).show()
+            Log.d("XD","XD")
+        }
         initAnimation()
     }
 
