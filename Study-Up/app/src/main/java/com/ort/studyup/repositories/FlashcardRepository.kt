@@ -29,15 +29,19 @@ class FlashcardRepository(
         return flashcardService.ratedFlashcards(deckId).check()
     }
 
-    suspend fun updateScore(flashcards:List<RatedFlashcard>){
+    suspend fun updateScore(flashcards: List<RatedFlashcard>) {
         flashcardService.updateScore(
-            flashcards.map{
+            flashcards.map {
                 RateFlashCardRequest(
                     it.id,
                     it.score
                 )
             }
         ).check()
+    }
+
+    suspend fun comment(id: Int, comment: String) {
+        flashcardService.comment(id, CommentRequest(comment)).check()
     }
 
 }

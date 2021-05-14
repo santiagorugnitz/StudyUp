@@ -57,6 +57,7 @@ class DeckDetailFragment : BaseFragment(), FlashcardItemRenderer.Callback {
         playButton.setOnClickListener {
             val intent = Intent(requireActivity(), StudyActivity::class.java)
             intent.putExtra(DECK_ID_KEY, deckId)
+            intent.putExtra(IS_OWNER_EXTRA, viewModel.isOwner)
             startActivity(intent)
         }
     }

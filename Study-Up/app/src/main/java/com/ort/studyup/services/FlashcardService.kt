@@ -20,4 +20,7 @@ interface FlashcardService {
 
     @POST("api/flashcards/study")
     suspend fun updateScore(@Body flashcards: List<RateFlashCardRequest>): Response<Unit>
+
+    @POST("api/flashcards/{id}/comments")
+    suspend fun comment(@Path("id") id: Int, @Body comment: CommentRequest): Response<Unit>
 }
