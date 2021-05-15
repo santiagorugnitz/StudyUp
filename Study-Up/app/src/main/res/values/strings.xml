@@ -70,6 +70,8 @@
     <string name="send">Send</string>
     <string name="comment">Comment</string>
     <string name="comment_description">Leave a comment to the author</string>
+    <string name="comments">Comments</string>
+    <string name="swipe_to_delete">Swipe the comments to remove them from the list</string>
     <string name="no_exams_assigned">There are no exams assigned yet</string>
     <string name="no_decks">There are no decks to study yet</string>
 
