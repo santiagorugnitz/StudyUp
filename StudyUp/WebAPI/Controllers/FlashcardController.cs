@@ -74,5 +74,13 @@ namespace WebAPI.Controllers
             logic.DeleteFlashcard(id, token);
             return Ok();
         }
+
+        [HttpPost("{id}/comment")]
+        public IActionResult CommentFlashcard([FromRoute] int id,[FromHeader] string token, [FromBody] string comment)
+        {
+            logic.CommentFlashcard(id, token, comment);
+           
+            return Ok();
+        }
     }
 }

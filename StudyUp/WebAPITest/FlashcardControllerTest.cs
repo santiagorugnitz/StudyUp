@@ -124,5 +124,16 @@ namespace WebAPITest
 
             logicMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void PostCommentOkTest()
+        {
+            logicMock.Setup(x => x.CommentFlashcard(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>()));
+
+            var result = controller.CommentFlashcard(1, userModelExample.Token, "New comment");
+            var okResult = result as OkObjectResult;
+
+            logicMock.VerifyAll();
+        }
     }
 }
