@@ -72,7 +72,7 @@
     <string name="comment_description">Leave a comment to the author</string>
     <string name="no_exams_assigned">There are no exams assigned yet</string>
     <string name="no_decks">There are no decks to study yet</string>
-    
+
     <string-array name="difficulties">
         <item>Easy</item>
         <item>Medium</item>
