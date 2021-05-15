@@ -17,10 +17,11 @@ namespace BusinessLogic
         private IRepository<FlashcardScore> flashcardScoreRepository;
         private IRepository<FlashcardComment> flashcardCommentRepository;
         private IUserRepository userTokenRepository;
+        private INotifications notificationsInterface;
 
         public FlashcardLogic(IRepository<Flashcard> repository, IRepository<User> userRepository,
             IUserRepository userTokenRepository, IRepository<Deck> deckRepository, IRepository<FlashcardScore> flashcardScoreRepository,
-            IRepository<FlashcardComment> flashcardCommentRepository)
+            IRepository<FlashcardComment> flashcardCommentRepository, INotifications notificationsInterface)
         {
             this.flashcardRepository = repository;
             this.userRepository = userRepository;
@@ -28,6 +29,7 @@ namespace BusinessLogic
             this.deckRepository = deckRepository;
             this.flashcardScoreRepository = flashcardScoreRepository;
             this.flashcardCommentRepository = flashcardCommentRepository;
+            this.notificationsInterface = notificationsInterface;
         }
 
         public Flashcard AddFlashcard(Flashcard flashcard, int deckId, string token)
@@ -89,6 +91,8 @@ namespace BusinessLogic
             };
             
             flashcardCommentRepository.Add(commentModel);
+
+            this.notificationsInterface.NotifyComments(commentModel.Id, flashcard.Deck.Author);
 
             flashcard.Comments.Add(commentModel);
             flashcardRepository.Update(flashcard);

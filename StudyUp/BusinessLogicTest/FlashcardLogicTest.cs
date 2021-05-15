@@ -1,4 +1,5 @@
 ﻿using BusinessLogic;
+using BusinessLogicInterface;
 using DataAccessInterface;
 using Domain;
 using Exceptions;
@@ -24,6 +25,7 @@ namespace BusinessLogicTest
         Mock<IRepository<FlashcardScore>> flashcardScoreRepositoryMock;
         Mock<IRepository<FlashcardComment>> flashcardCommentRepositoryMock;
         Mock<IUserRepository> userTokenRepository;
+        Mock<INotifications> notificationsInterface;
         FlashcardLogic flashcardLogic;
 
         [TestInitialize]
@@ -64,10 +66,11 @@ namespace BusinessLogicTest
             flashcardRepositoryMock = new Mock<IRepository<Flashcard>>(MockBehavior.Loose);
             flashcardScoreRepositoryMock = new Mock<IRepository<FlashcardScore>>(MockBehavior.Loose);
             userTokenRepository = new Mock<IUserRepository>(MockBehavior.Strict);
+            notificationsInterface = new Mock<INotifications>(MockBehavior.Loose);
             flashcardCommentRepositoryMock = new Mock<IRepository<FlashcardComment>>(MockBehavior.Strict);
             flashcardLogic = new FlashcardLogic(flashcardRepositoryMock.Object, userRepositoryMock.Object,
                 userTokenRepository.Object, deckRepositoryMock.Object, flashcardScoreRepositoryMock.Object,
-                flashcardCommentRepositoryMock.Object);
+                flashcardCommentRepositoryMock.Object, notificationsInterface.Object);
         }
 
         [TestMethod]
