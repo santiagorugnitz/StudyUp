@@ -9,5 +9,6 @@ namespace BusinessLogicInterface
     {
         void NotifyMaterial(int deckId, Group group);
         void NotifyExams(int examId, Group group);
+        void NotifyComments(int commentId, User receiver);
     }
 }
