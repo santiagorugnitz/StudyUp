@@ -52,6 +52,8 @@ namespace Exceptions
         public const string FLASHCARD_NOT_FOUND = "This flashcard does not exist.";
         public const string NOT_AUTHORIZED_EDIT = "Only this flashcards author can edit it.";
         public const string NOT_AUTHORIZED_TO_DELETE = "Only this flashcards author can delete it.";
+        public const string FLASHCARDS_AUTHOR_CANNOT_COMMENT_HIS_FLASHCARD = "The author of the flashcards cannot comment it";
+        public const string LARGE_COMMENT = "The comment is larger than 180 characters";
     }
 
     public static class GroupMessage

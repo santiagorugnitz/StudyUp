@@ -22,6 +22,7 @@ namespace BusinessLogicTest
         Mock<IRepository<User>> userRepositoryMock;
         Mock<IRepository<Flashcard>> flashcardRepositoryMock;
         Mock<IRepository<FlashcardScore>> flashcardScoreRepositoryMock;
+        Mock<IRepository<FlashcardComment>> flashcardCommentRepositoryMock;
         Mock<IUserRepository> userTokenRepository;
         FlashcardLogic flashcardLogic;
 
@@ -54,7 +55,8 @@ namespace BusinessLogicTest
                 Id = 1,
                 Question = "What is the powerhouse of the cell called?",
                 Answer = "Mitochondria",
-                Deck = deckExample
+                Deck = deckExample,
+                Comments = new List<FlashcardComment>()
             };
 
             deckRepositoryMock = new Mock<IRepository<Deck>>(MockBehavior.Loose);
@@ -62,8 +64,10 @@ namespace BusinessLogicTest
             flashcardRepositoryMock = new Mock<IRepository<Flashcard>>(MockBehavior.Loose);
             flashcardScoreRepositoryMock = new Mock<IRepository<FlashcardScore>>(MockBehavior.Loose);
             userTokenRepository = new Mock<IUserRepository>(MockBehavior.Strict);
+            flashcardCommentRepositoryMock = new Mock<IRepository<FlashcardComment>>(MockBehavior.Strict);
             flashcardLogic = new FlashcardLogic(flashcardRepositoryMock.Object, userRepositoryMock.Object,
-                userTokenRepository.Object, deckRepositoryMock.Object, flashcardScoreRepositoryMock.Object);
+                userTokenRepository.Object, deckRepositoryMock.Object, flashcardScoreRepositoryMock.Object,
+                flashcardCommentRepositoryMock.Object);
         }
 
         [TestMethod]
@@ -179,6 +183,77 @@ namespace BusinessLogicTest
             userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
 
             var result = flashcardLogic.AddFlashcard(toAdd, 1, userExample.Token);
+        }
+
+        [TestMethod]
+        public void AddCommentOkTest()
+        {
+            deckExample.Author = new User();
+            flashcardCommentRepositoryMock.Setup(m => m.Add(It.IsAny<FlashcardComment>()));
+            flashcardRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(flashcardExample);
+            flashcardRepositoryMock.Setup(m => m.Update(It.IsAny<Flashcard>()));
+            userTokenRepository.Setup(t => t.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+
+            userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
+
+            flashcardLogic.CommentFlashcard(1, userExample.Token, "comment");
+        }
+
+        [ExpectedException(typeof(InvalidException))]
+        [TestMethod]
+        public void AddCommentLargeText()
+        {
+            deckExample.Author = new User();
+            flashcardCommentRepositoryMock.Setup(m => m.Add(It.IsAny<FlashcardComment>()));
+            flashcardRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(flashcardExample);
+            flashcardRepositoryMock.Setup(m => m.Update(It.IsAny<Flashcard>()));
+            userTokenRepository.Setup(t => t.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+
+            userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
+
+            flashcardLogic.CommentFlashcard(1, userExample.Token, "commentcommentcommentcommentcommentcommentcommentcommentcommentcommentcommentcommentcommentcommentcommentcommentcommentcommentcommentcommentcommentcommentcommentcommentcommentcommentcommentcommentcommentcomment");
+        }
+
+        [ExpectedException(typeof(NotFoundException))]
+        [TestMethod]
+        public void AddCommentNoFlashcardTest()
+        {
+            flashcardCommentRepositoryMock.Setup(m => m.Add(It.IsAny<FlashcardComment>()));
+            flashcardRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns((Flashcard) null);
+            flashcardRepositoryMock.Setup(m => m.Update(It.IsAny<Flashcard>()));
+            userTokenRepository.Setup(t => t.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+
+            userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
+
+            flashcardLogic.CommentFlashcard(1, userExample.Token, "comment");
+        }
+
+        [ExpectedException(typeof(InvalidException))]
+        [TestMethod]
+        public void AddCommentSameAuthorTest()
+        {
+            flashcardCommentRepositoryMock.Setup(m => m.Add(It.IsAny<FlashcardComment>()));
+            flashcardRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(flashcardExample);
+            flashcardRepositoryMock.Setup(m => m.Update(It.IsAny<Flashcard>()));
+            userTokenRepository.Setup(t => t.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+
+            userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
+
+            flashcardLogic.CommentFlashcard(1, userExample.Token, "comment");
+        }
+
+        [ExpectedException(typeof(NotFoundException))]
+        [TestMethod]
+        public void AddCommentInvalidTokenTest()
+        {
+            flashcardCommentRepositoryMock.Setup(m => m.Add(It.IsAny<FlashcardComment>()));
+            flashcardRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(flashcardExample);
+            flashcardRepositoryMock.Setup(m => m.Update(It.IsAny<Flashcard>()));
+            userTokenRepository.Setup(t => t.GetUserByToken(It.IsAny<string>())).Returns((User)null);
+
+            userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
+
+            flashcardLogic.CommentFlashcard(1, userExample.Token, "comment");
         }
 
         [TestMethod]

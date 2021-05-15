@@ -15,16 +15,19 @@ namespace BusinessLogic
         private IRepository<User> userRepository;
         private IRepository<Deck> deckRepository;
         private IRepository<FlashcardScore> flashcardScoreRepository;
+        private IRepository<FlashcardComment> flashcardCommentRepository;
         private IUserRepository userTokenRepository;
 
         public FlashcardLogic(IRepository<Flashcard> repository, IRepository<User> userRepository,
-            IUserRepository userTokenRepository, IRepository<Deck> deckRepository, IRepository<FlashcardScore> flashcardScoreRepository)
+            IUserRepository userTokenRepository, IRepository<Deck> deckRepository, IRepository<FlashcardScore> flashcardScoreRepository,
+            IRepository<FlashcardComment> flashcardCommentRepository)
         {
             this.flashcardRepository = repository;
             this.userRepository = userRepository;
             this.userTokenRepository = userTokenRepository;
             this.deckRepository = deckRepository;
             this.flashcardScoreRepository = flashcardScoreRepository;
+            this.flashcardCommentRepository = flashcardCommentRepository;
         }
 
         public Flashcard AddFlashcard(Flashcard flashcard, int deckId, string token)
@@ -57,6 +60,38 @@ namespace BusinessLogic
             deck.Flashcards.Add(flashcard);
             deckRepository.Update(deck);
             return flashcard;
+        }
+
+        public void CommentFlashcard(int flashcardId, string token, string comment)
+        {
+            Flashcard flashcard = flashcardRepository.GetById(flashcardId);
+
+            if (flashcard is null)
+                throw new NotFoundException(FlashcardMessage.FLASHCARD_NOT_FOUND);
+
+            User user = userTokenRepository.GetUserByToken(token);
+
+            if (user is null)
+                throw new NotFoundException(UserMessage.USER_NOT_FOUND);
+
+            if (flashcard.Deck != null && flashcard.Deck.Author == user)
+                throw new InvalidException(FlashcardMessage.FLASHCARDS_AUTHOR_CANNOT_COMMENT_HIS_FLASHCARD);
+
+            if (comment.Length > 180)
+                throw new InvalidException(FlashcardMessage.LARGE_COMMENT);
+
+            var commentModel = new FlashcardComment()
+            {
+                Comment = comment,
+                Flashcard = flashcard,
+                CreatedAt = DateTime.Now,
+                CreatorUsername = user.Username
+            };
+            
+            flashcardCommentRepository.Add(commentModel);
+
+            flashcard.Comments.Add(commentModel);
+            flashcardRepository.Update(flashcard);
         }
 
         public bool DeleteFlashcard(int id, string token)

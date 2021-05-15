@@ -12,5 +12,6 @@ namespace BusinessLogicInterface
         bool DeleteFlashcard(int id, string token);
         Flashcard UpdateScore(int id, int score, string token);
         List<Tuple<Flashcard, int>> GetRatedFlashcards(int deckId, string token);
+        void CommentFlashcard(int id, string token, string comment);
     }
 }
