@@ -16,4 +16,5 @@
     <color name="error">#C40C1B</color>
     <color name="inputBorder">#B2B4CD</color>
     <color name="dialogBackground">#80505d68</color>
+    <color name="notification">#F84F31</color>
 </resources>

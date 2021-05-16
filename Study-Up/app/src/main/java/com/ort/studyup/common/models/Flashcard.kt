@@ -8,6 +8,7 @@ class Flashcard(
     val id: Int,
     val question: String,
     val answer: String,
+    val comments: List<Comment> = listOf()
 )
 
 class NewFlashCardRequest(

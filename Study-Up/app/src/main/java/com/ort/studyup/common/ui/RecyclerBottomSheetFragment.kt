@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.recycler_bottom_sheet.view.*
 import java.text.SimpleDateFormat
 
 class RecyclerBottomSheetFragment : BottomSheetDialogFragment(), SwipeCallback.Callback {
-    private var items = listOf<Comment>()
+    private var items = mutableListOf<Comment>()
     private val adapter = RendererAdapter()
     private var callback: Callback? = null
 
@@ -95,7 +95,7 @@ class RecyclerBottomSheetFragment : BottomSheetDialogFragment(), SwipeCallback.C
         this.callback = callback
     }
 
-    fun setItems(items: List<Comment>) {
+    fun setItems(items: MutableList<Comment>) {
         this.items = items
     }
 
@@ -105,6 +105,7 @@ class RecyclerBottomSheetFragment : BottomSheetDialogFragment(), SwipeCallback.C
     }
 
     override fun onSwipe(adapterPos: Int) {
+        items.removeAt(adapterPos)
         callback?.onDelete((adapter.getItems()[adapterPos] as CommentRenderer.Item).id)
         if (adapter.itemCount == 1) {
             dismiss()
