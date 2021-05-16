@@ -27,3 +27,8 @@ const val PERMISSION_REQUEST_CODE = 200
 
 const val QR_EXTRA = "qr_extra"
 
+const val NOTIFICATION_TITLE_EXTRA = "title"
+const val NOTIFICATION_BODY_EXTRA = "body"
+const val NOTIFICATION_TYPE_EXTRA = "type"
+const val NOTIFICATION_ENTITY_ID_EXTRA = "entity_id"
+
