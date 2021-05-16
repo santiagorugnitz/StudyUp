@@ -11,7 +11,7 @@ import com.ort.studyup.common.models.User
         User::class,
         Notification::class
     ],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 

@@ -16,10 +16,14 @@ class NotificationItemRenderer(private val callback: Callback) : ViewRenderer<No
         view.title.text = model.notification.title
         view.body.text = model.notification.body
         view.deleteButton.setOnClickListener {
-            callback.onDeleteNotification(model.notification.id)
+            model.notification.id?.let {
+                callback.onDeleteNotification(model.notification.id)
+            }
         }
         view.setOnClickListener {
-            callback.onNavigate(model.notification.id, model.notification.type, model.notification.entityId)
+            model.notification.id?.let {
+                callback.onNavigate(model.notification.id, model.notification.type, model.notification.entityId)
+            }
         }
     }
 

@@ -49,7 +49,7 @@ class NotificationFragment : BaseFragment(), NotificationItemRenderer.Callback {
         })
         deleteAll.setOnClickListener {
             viewModel.clearNotifications().observe(viewLifecycleOwner, Observer {
-                if (it) adapter.clear()
+                if (it) adapter.setItems(listOf())
             })
         }
     }

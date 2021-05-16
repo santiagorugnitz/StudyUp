@@ -19,6 +19,7 @@ import com.ort.studyup.home.groups.NewGroupViewModel
 import com.ort.studyup.home.profile.ProfileViewModel
 import com.ort.studyup.home.profile.RankingViewModel
 import com.ort.studyup.home.search.SearchViewModel
+import com.ort.studyup.home.tasks.NotificationViewModel
 import com.ort.studyup.home.tasks.TaskViewModel
 import com.ort.studyup.login.LoginViewModel
 import com.ort.studyup.login.RegisterViewModel
@@ -59,7 +60,7 @@ object KoinWrapper {
     private fun viewModels() = module {
         factory { LoginViewModel(get(), get()) }
         factory { RegisterViewModel(get(), get()) }
-        factory { SplashViewModel(get()) }
+        factory { SplashViewModel(get(),get()) }
         factory { DecksViewModel(get(), get()) }
         factory { DeckDetailViewModel(get()) }
         factory { NewDeckViewModel(get(), get()) }
@@ -77,6 +78,8 @@ object KoinWrapper {
         factory { TaskViewModel(get()) }
         factory { TestViewModel(get()) }
         factory { RankingViewModel(get()) }
+        factory { NotificationViewModel(get()) }
+
     }
 
     private fun repositories() = module {
@@ -87,7 +90,7 @@ object KoinWrapper {
         factory { ExamRepository(get()) }
         factory { ExamCardRepository(get()) }
         factory { TaskRepository(get()) }
-
+        factory { NotificationRepository(get()) }
     }
 
     private fun services() = module {
@@ -110,6 +113,8 @@ object KoinWrapper {
                 .build()
         }
         factory { get<AppDatabase>().userDao() }
+        factory { get<AppDatabase>().notificationDao() }
+
     }
 
 }
