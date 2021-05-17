@@ -5,6 +5,7 @@ import android.view.MenuItem
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import com.ort.studyup.R
+import com.ort.studyup.common.NOTIFICATION_TYPE_EXTRA
 import com.ort.studyup.common.setupWithNavController
 import com.ort.studyup.common.ui.BaseActivity
 import kotlinx.android.synthetic.main.activity_student_home.*
@@ -17,7 +18,6 @@ class StudentHomeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_student_home)
         if (savedInstanceState == null) setUpBottomNavigationBar()
-
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {

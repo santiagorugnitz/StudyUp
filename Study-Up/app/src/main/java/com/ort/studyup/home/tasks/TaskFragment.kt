@@ -33,6 +33,12 @@ class TaskFragment : BaseFragment(), DeckItemRenderer.Callback, ExamItemRenderer
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        requireActivity().intent?.getIntExtra(DECK_ID_KEY, -1)?.let {
+            if (it >= 0) {
+                requireActivity().intent?.removeExtra(DECK_ID_KEY)
+                findNavController().navigate(R.id.action_taskFragment_to_deckDetailFragment2, Bundle().apply { putInt(DECK_ID_KEY, it) })
+            }
+        }
         prepareList()
         initUI()
     }
