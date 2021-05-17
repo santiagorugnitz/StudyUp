@@ -25,4 +25,8 @@ class NotificationRepository(
     suspend fun insert(notification: Notification) {
         notificationDao.insert(notification)
     }
+
+    suspend fun deleteAll() {
+        notificationDao.deleteAll()
+    }
 }

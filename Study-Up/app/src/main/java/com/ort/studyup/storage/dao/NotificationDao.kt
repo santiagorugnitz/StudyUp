@@ -12,4 +12,7 @@ interface NotificationDao : IDao<Notification> {
 
     @Query("DELETE FROM notification WHERE id=:id")
     suspend fun delete(id: Int)
+
+    @Query("DELETE FROM notification")
+    suspend fun deleteAll()
 }

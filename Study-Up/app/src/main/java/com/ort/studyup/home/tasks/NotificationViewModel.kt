@@ -7,10 +7,7 @@ import com.ort.studyup.common.INTERNAL_ERROR_CODE
 import com.ort.studyup.common.models.DeckData
 import com.ort.studyup.common.models.TaskResponse
 import com.ort.studyup.common.models.User
-import com.ort.studyup.common.renderers.DeckItemRenderer
-import com.ort.studyup.common.renderers.ExamItemRenderer
-import com.ort.studyup.common.renderers.GroupSearchResultRenderer
-import com.ort.studyup.common.renderers.UserSearchResultRenderer
+import com.ort.studyup.common.renderers.*
 import com.ort.studyup.common.ui.BaseViewModel
 import com.ort.studyup.common.ui.ResourceWrapper
 import com.ort.studyup.repositories.GroupRepository
@@ -28,7 +25,7 @@ class NotificationViewModel(
         val result = MutableLiveData<List<Any>>()
         executeService {
             result.postValue(
-                notificationRepository.notifications()
+                notificationRepository.notifications().map { NotificationItemRenderer.Item(it) }
             )
         }
         return result
@@ -37,6 +34,7 @@ class NotificationViewModel(
     fun clearNotifications(): LiveData<Boolean> {
         val result = MutableLiveData<Boolean>()
         executeService {
+            notificationRepository.deleteAll()
             result.postValue(true)
         }
         return result
@@ -47,7 +45,7 @@ class NotificationViewModel(
         executeService {
             notificationRepository.delete(id)
             result.postValue(
-                notificationRepository.notifications()
+                notificationRepository.notifications().map { NotificationItemRenderer.Item(it) }
             )
         }
         return result

@@ -22,12 +22,14 @@ class SplashViewModel(
         return result
     }
 
-    fun saveNotification(title: String?, body: String?, typeOrdinal: Int, entityId: Int) {
+    fun saveNotification(title: String?, body: String?, typeOrdinal: Int?, entityId: Int?) {
         executeService {
             title?.let {
                 body?.let {
-                    if (typeOrdinal >= 0 && entityId >= 0) {
-                        notificationRepository.insert(Notification(null, title, body, Converters().toNotificationTypeEnum(typeOrdinal), entityId))
+                    typeOrdinal?.let {
+                        entityId?.let {
+                            notificationRepository.insert(Notification(null, title, body, Converters().toNotificationTypeEnum(typeOrdinal), entityId))
+                        }
                     }
                 }
             }
