@@ -59,7 +59,6 @@ class NotificationFragment : BaseFragment(), NotificationItemRenderer.Callback {
     }
 
     override fun onNavigate(id: Int, type: NotificationType, entityId: Int) {
-        viewModel.delete(id).observe(viewLifecycleOwner, Observer { adapter.setItems(it) })
         when (type) {
             NotificationType.DECK -> {
                 val intent = Intent(requireActivity(), StudyActivity::class.java)

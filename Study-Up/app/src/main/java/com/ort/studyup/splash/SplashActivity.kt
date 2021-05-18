@@ -40,11 +40,21 @@ class SplashActivity : BaseActivity() {
         super.onResume()
         Handler(Looper.getMainLooper()).postDelayed({
             if (startedFromNotification()) {
+                saveNotification()
                 customDestination()
             } else {
                 defaultDestination()
             }
         }, 900)
+    }
+
+    private fun saveNotification() {
+        viewModel.saveNotification(
+            intent.getStringExtra(NOTIFICATION_TITLE_EXTRA),
+            intent.getStringExtra(NOTIFICATION_BODY_EXTRA),
+            intent.getIntExtra(NOTIFICATION_TYPE_EXTRA, -1),
+            intent.getIntExtra(NOTIFICATION_ENTITY_ID_EXTRA, -1),
+        )
     }
 
     private fun defaultDestination() {
@@ -61,7 +71,6 @@ class SplashActivity : BaseActivity() {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 this.finish()
-
             }
         })
     }
