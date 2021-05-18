@@ -1,5 +1,6 @@
 ﻿using BusinessLogicInterface;
 using Domain;
+using Domain.Enumerations;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -23,14 +24,14 @@ namespace BusinessLogic
 
         private async System.Threading.Tasks.Task<bool> NotifiyDeckAsync(Group group, int deckId)
         {
-            var data = new { group_id = group.Id, group = group.Name, deck_id = deckId };
+            var data = new { title = "Deck assigned", body = "A teacher has assigned your group a study deck",  entityId = group.Id, type = NotificationType.DECK };
             var notification = new { title = "Deck assigned", text = "A teacher has assigned your group a study deck" };
 
             return await Notifiy(data, notification, group);
         }
         private async System.Threading.Tasks.Task<bool> NotifiyExamAsync(Group group, int examId)
         {
-            var data = new { group_id = group.Id, group = group.Name, exam_id = examId };
+            var data = new { title = "Exam assigned", body = "A teacher has assigned your group a study deck", entityId = examId, type = NotificationType.EXAM };
             var notification = new { title = "Exam assigned", text = "A teacher has assigned your group a study deck" };
 
             return await Notifiy(data, notification, group);
