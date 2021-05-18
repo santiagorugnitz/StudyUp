@@ -45,7 +45,10 @@ namespace BusinessLogic
             int idNumber = 0;
             foreach (var userGroup in group.UserGroups)
             {
-                sendingTokens[idNumber] = userGroup.User.FirebaseToken;
+                if (userGroup.User.FirebaseToken != null)
+                {
+                    sendingTokens[idNumber] = userGroup.User.FirebaseToken;
+                }
                 idNumber++;
             }
 
