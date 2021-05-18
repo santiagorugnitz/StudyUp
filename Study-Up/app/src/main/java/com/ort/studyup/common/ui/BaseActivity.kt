@@ -16,7 +16,7 @@ open class BaseActivity : AppCompatActivity() {
     override fun onBackPressed() {
         try {
             val root = findViewById<FrameLayout>(android.R.id.content)
-            val view = root?.findViewById<FrameLayout>(R.id.confirmationDialogContainer)
+            val view = root?.findViewById<FrameLayout>(R.id.dialogContainer)
             if (view == null) super.onBackPressed()
             else
                 root.removeView(view)

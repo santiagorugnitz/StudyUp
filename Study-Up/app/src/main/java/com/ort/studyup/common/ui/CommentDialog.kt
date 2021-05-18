@@ -4,31 +4,30 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
-import androidx.annotation.DrawableRes
+import androidx.core.widget.doOnTextChanged
 import com.ort.studyup.R
 import com.ort.studyup.common.getActivity
+import kotlinx.android.synthetic.main.comment_dialog.view.*
 import kotlinx.android.synthetic.main.confirmation_dialog.view.*
+import kotlinx.android.synthetic.main.confirmation_dialog.view.closeIcon
+import kotlinx.android.synthetic.main.confirmation_dialog.view.dialogButton
 
-class ConfirmationDialog(
+class CommentDialog(
     context: Context,
-    private val message: String,
     private val callback: Callback,
-    @DrawableRes private val icon: Int = R.drawable.ic_warning,
-    private val buttonText: String? = null,
     attrs: AttributeSet? = null
 ) : View(context, attrs) {
 
 
     fun show() {
         val view = inflate()
-        view.dialogMsg.text = message
-        view.dialogIcon.setImageResource(icon)
-        buttonText?.let {
-            view.dialogButton.text = it
+        view.dialogButton.setOnClickListener {
+            callback.onComment(view.commentInput.text.toString())
+            hide()
         }
-
-        view.dialogButton.setOnClickListener { callback.onButtonClick() }
         view.closeIcon.setOnClickListener { hide() }
+        view.dialogButton.isEnabled = false
+        view.commentInput.doOnTextChanged { text, _, _, _ -> view.dialogButton.isEnabled = text?.length ?: 0 > 0 }
     }
 
 
@@ -36,7 +35,7 @@ class ConfirmationDialog(
         val view = getActivity()?.findViewById<View>(R.id.dialogContainer)
         if (view != null) return view
         val root = getActivity()?.findViewById<FrameLayout>(android.R.id.content)
-        return inflate(context, R.layout.confirmation_dialog, root)
+        return inflate(context, R.layout.comment_dialog, root)
     }
 
     fun hide() {
@@ -50,7 +49,7 @@ class ConfirmationDialog(
     }
 
     interface Callback {
-        fun onButtonClick()
+        fun onComment(comment: String)
     }
 
 }
