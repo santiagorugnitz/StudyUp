@@ -36,5 +36,20 @@ namespace WebAPITest
 
             logicMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void GetTasksWithLists()
+        {
+            var deckList = new List<Deck>() { new Deck() { Id = 1, Name = "Name" } };
+            var examList = new List<Exam>() { new Exam() { Id = 1, Name = "Name", Group = new Group() { Name = "Group Name"} } };
+
+            logicMock.Setup(x => x.GetTasks(It.IsAny<string>())).Returns(new Tuple<List<Deck>, List<Exam>>(deckList, examList));
+
+            var result = controller.GetTasks("token");
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as ResponseTasksModel;
+
+            logicMock.VerifyAll();
+        }
     }
 }

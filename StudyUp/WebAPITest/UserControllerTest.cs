@@ -139,6 +139,20 @@ namespace WebAPITest
         }
 
         [TestMethod]
+        public void GetUsersOkWithDataParam()
+        {
+            var list = new List<Tuple<User, bool>>() { new Tuple<User, bool>(new User() {Id = 1, Email = "new email", 
+                IsStudent = true, Username = "username", Token = "token" }, true)};
+            logicMock.Setup(x => x.GetUsers(It.IsAny<string>(), It.IsAny<string>())).Returns(list);
+
+            var result = controller.GetUsers("Token");
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as IEnumerable<ResponseFollowedUserModel>;
+
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
         public void FollowUserOk()
         {
             logicMock.Setup(x => x.FollowUser(It.IsAny<string>(), It.IsAny<string>())).Returns(new User());
@@ -175,9 +189,37 @@ namespace WebAPITest
         }
 
         [TestMethod]
+        public void GetDecksWithDataOk()
+        {
+            var deckList = new List<Deck>() { new Deck() { Id = 1, Author = new User() { Username = "username" }, 
+                Name = "name", Subject = "subject", Difficulty = Domain.Enumerations.Difficulty.Easy, IsHidden = true } };
+            logicMock.Setup(x => x.GetDecksFromFollowing(It.IsAny<string>())).Returns(deckList);
+
+            var result = controller.GetDecks("token");
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as IEnumerable<ResponseDeckModel>;
+
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
         public void RankingOk()
         {
             logicMock.Setup(x => x.GetUsersForRanking(It.IsAny<string>())).Returns(It.IsAny<List<User>>());
+
+            var result = controller.Ranking("token");
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as IEnumerable<ResponseRankingModel>;
+
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void RankingWithDataOk()
+        {
+            var userList = new List<User>() { new User() { Username = "User" } };
+            logicMock.Setup(x => x.GetUsersForRanking(It.IsAny<string>())).Returns(userList);
+            logicMock.Setup(x => x.GetScore(It.IsAny<string>())).Returns(10);
 
             var result = controller.Ranking("token");
             var okResult = result as OkObjectResult;
