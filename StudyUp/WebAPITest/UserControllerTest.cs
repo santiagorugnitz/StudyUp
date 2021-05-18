@@ -185,5 +185,16 @@ namespace WebAPITest
 
             logicMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void LogoutOk()
+        {
+            logicMock.Setup(x => x.Logout(It.IsAny<string>()));
+
+            var result = controller.Logout("token");
+            var okResult = result as OkObjectResult;
+            
+            logicMock.VerifyAll();
+        }
     }
 }

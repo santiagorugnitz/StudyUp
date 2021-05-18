@@ -9,17 +9,21 @@ import androidx.lifecycle.Observer
 import com.ort.studyup.R
 import com.ort.studyup.common.DECK_ID_KEY
 import com.ort.studyup.common.INTERNAL_ERROR_CODE
+import com.ort.studyup.common.IS_OWNER_EXTRA
 import com.ort.studyup.common.models.RatedFlashcard
 import com.ort.studyup.common.ui.BaseFragment
+import com.ort.studyup.common.ui.CommentDialog
 import kotlinx.android.synthetic.main.fragment_study.*
 import java.util.*
 
-class StudyFragment : BaseFragment(), TextToSpeech.OnInitListener {
+class StudyFragment : BaseFragment(), TextToSpeech.OnInitListener, CommentDialog.Callback {
 
     private val viewModel: StudyViewModel by injectViewModel(StudyViewModel::class)
     private var showingQuestion = true
     private lateinit var currentCard: RatedFlashcard
     private lateinit var tts: TextToSpeech
+
+    private var isOwner: Boolean = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreate(savedInstanceState)
@@ -34,6 +38,7 @@ class StudyFragment : BaseFragment(), TextToSpeech.OnInitListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val deckId = requireActivity().intent.extras?.getInt(DECK_ID_KEY)
+        isOwner = requireActivity().intent.getBooleanExtra(IS_OWNER_EXTRA,false)
         tts = TextToSpeech(requireContext(), this)
         deckId?.let {
             initViewModel(deckId)
@@ -67,7 +72,9 @@ class StudyFragment : BaseFragment(), TextToSpeech.OnInitListener {
             })
         }
         flipButton.setOnClickListener { onFlip() }
-        commentButton.setOnClickListener { onComment() }
+        if(!isOwner){
+            commentButton.setOnClickListener { onComment() }
+        }
     }
 
     private fun onTTS() {
@@ -77,7 +84,7 @@ class StudyFragment : BaseFragment(), TextToSpeech.OnInitListener {
     }
 
     private fun onComment() {
-        //TODO:
+        CommentDialog(requireContext(), this).show()
     }
 
     private fun onNewCard(flashcard: RatedFlashcard) {
@@ -120,5 +127,9 @@ class StudyFragment : BaseFragment(), TextToSpeech.OnInitListener {
                 ttsButton.setOnClickListener { onTTS() }
             }
         }
+    }
+
+    override fun onComment(comment: String) {
+        viewModel.comment(currentCard.id, comment)
     }
 }
