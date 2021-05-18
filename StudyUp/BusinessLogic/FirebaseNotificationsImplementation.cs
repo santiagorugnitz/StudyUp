@@ -64,7 +64,7 @@ namespace BusinessLogic
 
         private async System.Threading.Tasks.Task<bool> NotifiyCommentsAsync(User receiver, int commentId)
         {
-            var data = new { author_id = receiver.Id, username = receiver.Username, comment_id = commentId };
+            var data = new { title = "Flashcard commented", body = "A user has commented your flashcard", entityId = receiver.Id, type = NotificationType.COMMENT };
             var notification = new { title = "Flashcard commented", text = "A user has commented your flashcard" };
 
             string[] sendingTokens = new string[1];
