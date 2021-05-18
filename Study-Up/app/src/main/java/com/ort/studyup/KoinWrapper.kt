@@ -61,7 +61,7 @@ object KoinWrapper {
         factory { RegisterViewModel(get(), get()) }
         factory { SplashViewModel(get()) }
         factory { DecksViewModel(get(), get()) }
-        factory { DeckDetailViewModel(get(),get()) }
+        factory { DeckDetailViewModel(get(),get(),get()) }
         factory { NewDeckViewModel(get(), get()) }
         factory { NewFlashcardViewModel(get(), get()) }
         factory { NewGroupViewModel(get(), get()) }

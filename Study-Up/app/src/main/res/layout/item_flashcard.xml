@@ -7,7 +7,6 @@
     android:layout_marginTop="8dp"
     android:layout_height="wrap_content"
     android:elevation="@dimen/elevation"
-    android:paddingVertical="8dp"
     android:background="@drawable/item_background">
 
     <TextView
@@ -17,6 +16,7 @@
         tools:text="Which pattern would you use when having a system with multiple"
         app:layout_constraintEnd_toStartOf="@id/editButton"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:textSize="16sp"
         android:textStyle="bold"
         android:ellipsize="end"
@@ -26,6 +26,24 @@
         app:layout_constraintStart_toStartOf="parent"
         />
 
+    <FrameLayout
+        android:id="@+id/commentCountContainer"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/circle"
+        android:backgroundTint="@color/notification"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+        <TextView
+            android:id="@+id/commentCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="9+"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:gravity="center"
+            />
+    </FrameLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -41,6 +59,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/question"
         app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="8dp"
+
         />
 
     <TextView
@@ -56,6 +76,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/question"
         app:layout_constraintStart_toEndOf="@id/answerStart"
+        android:layout_marginBottom="8dp"
         />
     <ImageView
         android:id="@+id/editButton"

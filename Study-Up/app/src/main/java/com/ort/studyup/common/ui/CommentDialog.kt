@@ -1,7 +1,6 @@
 package com.ort.studyup.common.ui
 
 import android.content.Context
-import android.text.InputType
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
@@ -33,7 +32,7 @@ class CommentDialog(
 
 
     private fun inflate(): View {
-        val view = getActivity()?.findViewById<View>(R.id.commentDialogContainer)
+        val view = getActivity()?.findViewById<View>(R.id.dialogContainer)
         if (view != null) return view
         val root = getActivity()?.findViewById<FrameLayout>(android.R.id.content)
         return inflate(context, R.layout.comment_dialog, root)
@@ -42,7 +41,7 @@ class CommentDialog(
     fun hide() {
         try {
             val root = getActivity()?.findViewById<FrameLayout>(android.R.id.content)
-            val view = root?.findViewById<FrameLayout>(R.id.commentDialogContainer)
+            val view = root?.findViewById<FrameLayout>(R.id.dialogContainer)
             root?.removeView(view)
         } catch (e: Exception) {
             e

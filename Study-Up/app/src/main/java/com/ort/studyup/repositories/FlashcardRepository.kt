@@ -3,6 +3,7 @@ package com.ort.studyup.repositories
 import com.ort.studyup.common.models.*
 import com.ort.studyup.services.FlashcardService
 import com.ort.studyup.services.check
+import retrofit2.http.Path
 
 class FlashcardRepository(
     private val flashcardService: FlashcardService,
@@ -42,6 +43,11 @@ class FlashcardRepository(
 
     suspend fun comment(id: Int, comment: String) {
         flashcardService.comment(id, CommentRequest(comment)).check()
+    }
+
+    suspend fun deleteComment(flashcardId: Int,commentId: Int){
+        flashcardService.deleteComment(flashcardId, commentId).check()
+
     }
 
 }

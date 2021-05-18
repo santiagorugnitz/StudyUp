@@ -23,4 +23,7 @@ interface FlashcardService {
 
     @POST("api/flashcards/{id}/comments")
     suspend fun comment(@Path("id") id: Int, @Body comment: CommentRequest): Response<Unit>
+
+    @DELETE("api/flashcards/{flashcardId}/comments/{commentId}")
+    suspend fun deleteComment(@Path("flashcardId") flashcardId: Int, @Path("commentId") commentId: Int): Response<Unit>
 }

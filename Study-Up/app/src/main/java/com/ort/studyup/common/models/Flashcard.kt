@@ -1,12 +1,14 @@
 package com.ort.studyup.common.models
 
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
 
 class Flashcard(
     val id: Int,
     val question: String,
     val answer: String,
+    val comments: List<Comment> = listOf()
 )
 
 class NewFlashCardRequest(
@@ -33,5 +35,12 @@ class RatedFlashcard(
 )
 
 class CommentRequest(
-    comment: String,
+    @SerializedName("comment") val comment: String,
+)
+
+class Comment(
+    @SerializedName("id") val id: Int,
+    @SerializedName("comment") val comment: String,
+    @SerializedName("authorUsername") val username: String,
+    @SerializedName("time") val date: Date
 )

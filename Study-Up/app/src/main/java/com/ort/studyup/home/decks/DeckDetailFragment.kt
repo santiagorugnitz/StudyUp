@@ -11,12 +11,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ort.studyup.R
 import com.ort.studyup.common.*
 import com.ort.studyup.common.models.Deck
+import com.ort.studyup.common.models.Comment
 import com.ort.studyup.common.models.DeckData
 import com.ort.studyup.common.renderers.FlashcardItemRenderer
 import com.ort.studyup.common.ui.BaseFragment
+import com.ort.studyup.common.ui.RecyclerBottomSheetFragment
 import com.ort.studyup.study.StudyActivity
 import com.thinkup.easylist.RendererAdapter
 import kotlinx.android.synthetic.main.fragment_deck_detail.*
+import java.util.*
 
 class DeckDetailFragment : BaseFragment(), FlashcardItemRenderer.Callback {
 
@@ -65,11 +68,25 @@ class DeckDetailFragment : BaseFragment(), FlashcardItemRenderer.Callback {
     private fun initViewModel(id: Int) {
         viewModel.loadDetails(id).observe(viewLifecycleOwner, { deck ->
             adapter.setItems(deck.flashcards.map {
-                FlashcardItemRenderer.Item(
-                    it.id,
-                    it.question,
-                    it.answer
-                )
+                if (it.question == "Back Off") {
+                    FlashcardItemRenderer.Item(
+                        it.id,
+                        it.question,
+                        it.answer,
+                        mutableListOf(
+                            Comment(1, "muy bueno", "Santiago", Date()),
+                            Comment(1, "muy bueno", "Santiago", Date()),
+                            Comment(1, "muy bueno", "Santiago", Date()),
+                        )
+                    )
+                } else {
+                    FlashcardItemRenderer.Item(
+                        it.id,
+                        it.question,
+                        it.answer,
+                        mutableListOf<Comment>().apply { addAll(it.comments ?: listOf()) }
+                    )
+                }
             })
             initUI(deck)
         }
@@ -86,8 +103,21 @@ class DeckDetailFragment : BaseFragment(), FlashcardItemRenderer.Callback {
             })
     }
 
-    override fun onShowAnswerChanged() {
-        adapter.notifyDataSetChanged()
+    override fun onShowComments(flashcardId: Int, comments: MutableList<Comment>) {
+        requireActivity().supportFragmentManager.let {
+            RecyclerBottomSheetFragment.getInstance().apply {
+                setCallback(object : RecyclerBottomSheetFragment.Callback {
+                    override fun onDelete(id: Int) {
+                        viewModel.deleteComment(flashcardId, id).observe(viewLifecycleOwner, {
+                            if (it) adapter.notifyDataSetChanged()
+                        })
+                    }
+
+                })
+                setItems(comments)
+                show(it, null)
+            }
+        }
     }
 
 }

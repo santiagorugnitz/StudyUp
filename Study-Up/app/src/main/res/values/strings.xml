@@ -64,12 +64,14 @@
     <string name="tasks">Tasks</string>
     <string name="end_test">End attempt and send answers? You won\'t be able to continue</string>
     <string name="no_questions_error">Exam has no questions</string>
-    <string name="no_results_yet">No results yet. \n Try again later</string>
+    <string name="no_results_yet">No results yet.\nTry again later</string>
     <string name="qr_description">Scan this qr to search your username automatically</string>
     <string name="ranking">Ranking</string>
     <string name="send">Send</string>
     <string name="comment">Comment</string>
     <string name="comment_description">Leave a comment to the author</string>
+    <string name="comments">Comments</string>
+    <string name="swipe_to_delete">Swipe the comments to remove them from the list</string>
     <string name="no_exams_assigned">There are no exams assigned yet</string>
     <string name="no_decks">There are no decks to study yet</string>
 
