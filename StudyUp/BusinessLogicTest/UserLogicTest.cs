@@ -572,5 +572,16 @@ namespace BusinessLogicTest
             Assert.AreEqual(1, result.Count());
             userFollowingRepositoryMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void MakeLogin()
+        {
+            userMock.Setup(u => u.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+
+            userLogic.Logout("token");
+
+            Assert.AreEqual("", userExample.FirebaseToken);
+            userMock.VerifyAll();
+        }
     }
 }
