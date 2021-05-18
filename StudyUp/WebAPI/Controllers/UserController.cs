@@ -64,6 +64,13 @@ namespace WebAPI.Controllers
             return Ok(responseUserModel);
         }
 
+        [HttpDelete("/logout")]
+        public IActionResult Logout([FromHeader] string token)
+        {
+            logic.Logout(token);
+            return Ok();
+        }
+
         [HttpPost("/api/users/follow")]
         public IActionResult FollowUser([FromHeader] string token, [FromQuery] string username)
         {

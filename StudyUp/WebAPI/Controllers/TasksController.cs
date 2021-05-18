@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using WebAPI.Filters;
 using WebAPI.Models.ResponseModels;
 
-namespace WebAPI
+namespace WebAPI.Controllers
 {
     [ServiceFilter(typeof(ExceptionFilter))]
     [Route("api/tasks")]
