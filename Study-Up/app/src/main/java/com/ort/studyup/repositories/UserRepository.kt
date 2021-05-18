@@ -38,6 +38,7 @@ class UserRepository(
 
     suspend fun logout() {
         userDao.deleteUser()
+        userService.logout()
         preferenceHelper.clear(TOKEN_KEY)
     }
 
