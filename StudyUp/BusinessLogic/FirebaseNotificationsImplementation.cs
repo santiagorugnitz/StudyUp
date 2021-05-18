@@ -41,7 +41,7 @@ namespace BusinessLogic
             string apiRoute = "https://fcm.googleapis.com/fcm/send";
             string serverKey = "AAAA-GAOZ3Q:APA91bG8C_EClvZ-jcIp1YhACOwT345pZ0QUAa1lr-0_l8e64jGWmcKWAgduNit0ymFq_btFbwRrrlPcUwK3RqjeXRDFk-yfbPsl4rNyBxb1LKJT33H_qaapXkyji6UlG8HI44Ka_MP7";
 
-            string[] sendingTokens = new string[group.UserGroups.Count()];
+            string[] sendingTokens = new string[group.UserGroups.FindAll(ug => ug.User.FirebaseToken != null).Count()];
             int idNumber = 0;
             foreach (var userGroup in group.UserGroups)
             {
