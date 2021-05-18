@@ -92,7 +92,7 @@ namespace BusinessLogic
             
             flashcardCommentRepository.Add(commentModel);
 
-            this.notificationsInterface.NotifyComments(commentModel.Id, flashcard.Deck.Author);
+            this.notificationsInterface.NotifyComments(flashcard.Deck.Id, flashcard.Deck.Author);
 
             flashcard.Comments.Add(commentModel);
             flashcardRepository.Update(flashcard);
