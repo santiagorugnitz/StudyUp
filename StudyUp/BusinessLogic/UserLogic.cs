@@ -288,7 +288,7 @@ namespace BusinessLogic
         public void Logout(string token)
         {
             User user = CheckToken(token);
-            user.FirebaseToken = "";
+            user.FirebaseToken = null;
             repository.Update(user);
         }
     }

@@ -574,13 +574,13 @@ namespace BusinessLogicTest
         }
 
         [TestMethod]
-        public void MakeLogin()
+        public void MakeLogout()
         {
             userMock.Setup(u => u.GetUserByToken(It.IsAny<string>())).Returns(userExample);
 
             userLogic.Logout("token");
 
-            Assert.AreEqual("", userExample.FirebaseToken);
+            Assert.AreEqual(null, userExample.FirebaseToken);
             userMock.VerifyAll();
         }
     }
