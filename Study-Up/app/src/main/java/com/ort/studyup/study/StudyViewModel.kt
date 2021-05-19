@@ -59,4 +59,10 @@ class StudyViewModel(
             flashcardRepository.updateScore(flashcards)
         }
     }
+
+    fun comment(id: Int, comment: String) {
+        executeService {
+            flashcardRepository.comment(id,comment)
+        }
+    }
 }

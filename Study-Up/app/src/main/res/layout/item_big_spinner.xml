@@ -17,6 +17,15 @@
         android:text="@string/decks_from_friends"
         />
 
+    <View
+        android:id="@+id/titleLine"
+        android:layout_width="32dp"
+        android:layout_height="3dp"
+        android:background="@color/colorPrimary"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@id/spinnerTitle"
+        app:layout_constraintTop_toBottomOf="@id/spinnerTitle"/>
+
     <FrameLayout
         android:id="@+id/spinnerContainer"
         android:layout_marginStart="16dp"

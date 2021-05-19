@@ -31,13 +31,13 @@ namespace WebAPITest
                 Username = "Jose",
                 IsStudent = false,
                 Email = "jose@hotmail.com",
-                Password = "contraseña123",
+                Password = "contraseï¿½a123",
             };
 
             loginModelExample = new LoginModel()
             {
                 Email = "jose@hotmail.com",
-                Password = "contraseña123"
+                Password = "contraseï¿½a123"
             };
         }
 
@@ -225,6 +225,17 @@ namespace WebAPITest
             var okResult = result as OkObjectResult;
             var value = okResult.Value as IEnumerable<ResponseRankingModel>;
 
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void LogoutOk()
+        {
+            logicMock.Setup(x => x.Logout(It.IsAny<string>()));
+
+            var result = controller.Logout("token");
+            var okResult = result as OkObjectResult;
+            
             logicMock.VerifyAll();
         }
     }
