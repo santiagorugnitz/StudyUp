@@ -82,7 +82,7 @@ namespace BusinessLogic
             if (!group.Creator.Equals(user))
                 throw new InvalidException(ExamMessage.NOT_AUTHORIZED);
 
-            this.notificationsInterface.NotifyExams(examId, group);
+            this.notificationsInterface.NotifyExams(exam, group);
 
             exam.Group = group;
             examRepository.Update(exam);

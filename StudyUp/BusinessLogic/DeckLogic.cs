@@ -159,7 +159,7 @@ namespace BusinessLogic
                 GroupId = groupId
             };
 
-            this.notificationsInterface.NotifyMaterial(deckId, group);
+            this.notificationsInterface.NotifyMaterial(deck, group);
 
             group.DeckGroups.Add(deckGroup);
             groupRepository.Update(group);

@@ -355,7 +355,7 @@ namespace BusinessLogicTest
             groupRepositoryMock.Setup(m => m.Update(It.IsAny<Group>()));
             examRepositoryMock.Setup(e => e.GetById(It.IsAny<int>())).Returns(examExample);
             examRepositoryMock.Setup(e => e.Update(examExample));
-            notificationsInterfaceMock.Setup(e => e.NotifyExams(It.IsAny<int>(), It.IsAny<Group>()));
+            notificationsInterfaceMock.Setup(e => e.NotifyExams(It.IsAny<Exam>(), It.IsAny<Group>()));
 
             var result = examLogic.AssignExam(userExample.Token, 1, 1);
             groupRepositoryMock.VerifyAll();

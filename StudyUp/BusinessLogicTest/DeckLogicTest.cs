@@ -383,7 +383,7 @@ namespace BusinessLogicTest
             groupRepositoryMock.Setup(a => a.Update(It.IsAny<Group>()));
             deckGroupRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<DeckGroup,
                bool>>>())).Returns(new List<DeckGroup>() { });
-            notificationsInterfaceMock.Setup(a => a.NotifyMaterial(It.IsAny<int>(), It.IsAny<Group>()));
+            notificationsInterfaceMock.Setup(a => a.NotifyMaterial(It.IsAny<Deck>(), It.IsAny<Group>()));
 
             var result = deckLogic.Assign(userExample.Token, 1, 1);
             deckRepositoryMock.VerifyAll();
