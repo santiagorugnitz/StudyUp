@@ -16,6 +16,7 @@ const val QUESTION_KEY = "question_key"
 const val ANSWER_KEY = "answer_key"
 const val EXAM_CARD_ID_KEY = "exam_card_id_key"
 const val IS_OWNER_EXTRA = "is_owner_extra"
+const val RESULTS_ID = "results_id"
 
 const val API_URL = "https://192.168.1.11:45455/"
 
@@ -30,5 +31,5 @@ const val QR_EXTRA = "qr_extra"
 const val NOTIFICATION_TITLE_EXTRA = "title"
 const val NOTIFICATION_BODY_EXTRA = "body"
 const val NOTIFICATION_TYPE_EXTRA = "type"
-const val NOTIFICATION_ENTITY_ID_EXTRA = "entity_id"
+const val NOTIFICATION_ENTITY_ID_EXTRA = "entityId"
 

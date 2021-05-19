@@ -41,6 +41,10 @@ class TaskFragment : BaseFragment(), DeckItemRenderer.Callback, ExamItemRenderer
             }
         }
         prepareList()
+    }
+
+    override fun onStart() {
+        super.onStart()
         initUI()
     }
 
@@ -49,7 +53,7 @@ class TaskFragment : BaseFragment(), DeckItemRenderer.Callback, ExamItemRenderer
         examList.layoutManager = LinearLayoutManager(requireContext())
         examList.adapter = examAdapter
         examAdapter.setEmptyItem(
-            EmptyViewRenderer.Item(getString(R.string.no_exams_assigned), R.drawable.ic_correct),
+            EmptyViewRenderer.Item(getString(R.string.no_exams_assigned), R.drawable.ic_ok),
             EmptyViewRenderer()
         )
         deckAdapter.addRenderer(DeckItemRenderer(this))

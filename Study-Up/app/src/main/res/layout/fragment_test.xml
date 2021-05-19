@@ -21,6 +21,19 @@
         android:textColor="@color/white"
         />
 
+    <TextView
+        android:id="@+id/counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        tools:text="4/20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/timer"
+        />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cardContainer"
         android:layout_width="0dp"

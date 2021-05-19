@@ -15,7 +15,7 @@ class TestViewModel(
 
     private var examCards = listOf<ExamCard>()
     private var currentPos = 0
-    private var correctAnswers = 0
+    var correctAnswers = 0
     private var examId = 0
 
     fun loadCards(id: Int): LiveData<ExamCard> {
@@ -27,6 +27,8 @@ class TestViewModel(
         }
         return result
     }
+
+    fun getTotal() = examCards.size
 
     fun onAnswer(answer: Boolean): LiveData<ExamCard> {
         val result = MutableLiveData<ExamCard>()
