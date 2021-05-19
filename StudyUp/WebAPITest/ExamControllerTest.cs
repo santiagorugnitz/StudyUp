@@ -80,9 +80,38 @@ namespace WebAPITest
         }
 
         [TestMethod]
+        public void GetExamsOkWithDataTest()
+        {
+            logicMock.Setup(x => x.GetTeachersExams(userModelExample.Token)).Returns(new List<Exam>() { new Exam() {Id = 1, Name = "name", Group = null },
+            new Exam() {Id = 1, Name = "name", Group = new Group() { Name = "name"} }});
+
+            var result = controller.GetTeachersExams(userModelExample.Token);
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as List<Deck>;
+
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
         public void GetExamByIdOkTest()
         {
             var exam = examModelExample.ToEntity();
+            exam.ExamCards = new List<ExamCard>();
+            exam.Author = new User { Username = "test" };
+            logicMock.Setup(x => x.GetExamById(1, "token")).Returns(exam);
+
+            var result = controller.GetExamById(1, "token");
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as ResponseFullDeckModel;
+
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void GetExamByIdOkNullGroupTest()
+        {
+            var exam = examModelExample.ToEntity();
+            exam.Group = null;
             exam.ExamCards = new List<ExamCard>();
             exam.Author = new User { Username = "test" };
             logicMock.Setup(x => x.GetExamById(1, "token")).Returns(exam);
@@ -111,6 +140,19 @@ namespace WebAPITest
         public void GetResultsOkTest()
         {
             logicMock.Setup(x => x.GetResults(It.IsAny<int>(), It.IsAny<string>())).Returns(new List<Tuple<string, double>>());
+
+            var result = controller.GetResults(1, "token");
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as List<Tuple<string, double>>;
+
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void GetResultsWithDataOkTest()
+        {
+            logicMock.Setup(x => x.GetResults(It.IsAny<int>(), It.IsAny<string>())).Returns(new List<Tuple<string, double>>() 
+            { new Tuple<string, double>("username", 1.0)});
 
             var result = controller.GetResults(1, "token");
             var okResult = result as OkObjectResult;
