@@ -89,5 +89,18 @@ namespace WebAPITest
 
             logicMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void GetGroupsWithoutNameOkTest()
+        {
+            logicMock.Setup(x => x.GetTeachersGroups(It.IsAny<string>())).Returns(new List<Group>() { groupModelExample.ToEntity() });
+            logicMock.Setup(x => x.GetGroupDecks(It.IsAny<int>())).Returns(new List<Deck>() { new Deck() { Id = 1, Name = "name" } });
+
+            var result = controller.Get("token");
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as List<ResponseGroupModel>;
+
+            logicMock.VerifyAll();
+        }
     }
 }

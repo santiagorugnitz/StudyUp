@@ -98,17 +98,9 @@ namespace BusinessLogicTest
         public void AddDeckNullNameTest()
         {
             deckExample.Name = null;
-            deckRepositoryMock.Setup(m => m.Add(It.IsAny<Deck>()));
             deckRepositoryMock.Setup(m => m.GetAll()).Returns(new List<Deck>());
-            userRepositoryMock.Setup(m => m.GetById(1)).Returns(userExample);
-            userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
-            userRepositoryMock.Setup(a => a.Update(It.IsAny<User>()));
-
-            userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
-
+        
             var result = deckLogic.AddDeck(deckExample, userExample.Token);
-
-            deckRepositoryMock.VerifyAll();
         }
 
         [ExpectedException(typeof(AlreadyExistsException))]
@@ -126,18 +118,9 @@ namespace BusinessLogicTest
                 Flashcards = new List<Flashcard>()
             };
 
-            deckRepositoryMock.Setup(m => m.Add(It.IsAny<Deck>()));
             deckRepositoryMock.Setup(m => m.GetAll()).Returns(new List<Deck>() { anotherDeckExample });
-            userRepositoryMock.Setup(m => m.GetById(1)).Returns(userExample);
-            userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
-            userRepositoryMock.Setup(a => a.Update(It.IsAny<User>()));
 
-            userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
-
-            deckLogic.AddDeck(anotherDeckExample, userExample.Token);
             var result = deckLogic.AddDeck(deckExample, userExample.Token);
-
-            deckRepositoryMock.VerifyAll();
         }
 
         [ExpectedException(typeof(InvalidException))]
@@ -145,34 +128,28 @@ namespace BusinessLogicTest
         public void AddDeckNullSubjectTest()
         {
             deckExample.Subject = null;
-            deckRepositoryMock.Setup(m => m.Add(It.IsAny<Deck>()));
             deckRepositoryMock.Setup(m => m.GetAll()).Returns(new List<Deck>());
-            userRepositoryMock.Setup(m => m.GetById(1)).Returns(userExample);
-            userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
-            userRepositoryMock.Setup(a => a.Update(It.IsAny<User>()));
+            
+            var result = deckLogic.AddDeck(deckExample, userExample.Token);
+        }
 
-            userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
+        [ExpectedException(typeof(InvalidException))]
+        [TestMethod]
+        public void AddDeckInvalidDifficultyTest()
+        {
+            deckExample.Difficulty = (Difficulty)3;
+            deckRepositoryMock.Setup(m => m.GetAll()).Returns(new List<Deck>());
 
             var result = deckLogic.AddDeck(deckExample, userExample.Token);
-
-            deckRepositoryMock.VerifyAll();
         }
 
         [ExpectedException(typeof(NotAuthenticatedException))]
         [TestMethod]
         public void AddDeckBadToken()
         {
-            deckRepositoryMock.Setup(m => m.Add(It.IsAny<Deck>()));
             deckRepositoryMock.Setup(m => m.GetAll()).Returns(new List<Deck>());
-            userRepositoryMock.Setup(m => m.GetById(1)).Returns(userExample);
             userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns((User)null);
-            userRepositoryMock.Setup(a => a.Update(It.IsAny<User>()));
-
-            userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
-
             var result = deckLogic.AddDeck(deckExample, userExample.Token);
-
-            deckRepositoryMock.VerifyAll();
         }
 
         [TestMethod]
@@ -216,13 +193,8 @@ namespace BusinessLogicTest
         public void GetDecksByIncorrectAuthorTest()
         {
             userRepositoryMock.Setup(m => m.GetById(1)).Returns((User)null);
-            deckRepositoryMock.Setup(b => b.FindByCondition(d => d.Author.Id == 1)).Returns(new List<Deck>() { deckExample });
-
+            
             var result = deckLogic.GetDecksByAuthor(1).Count();
-
-            deckRepositoryMock.VerifyAll();
-
-            Assert.AreEqual(1, result);
         }
 
         [TestMethod]
@@ -266,19 +238,14 @@ namespace BusinessLogicTest
             Difficulty newDifficulty = Difficulty.Hard;
             bool newVisibility = true;
 
-            deckRepositoryMock.Setup(m => m.Update(It.IsAny<Deck>()));
             deckRepositoryMock.Setup(m => m.GetById(1)).Returns(deckExample);
-            deckRepositoryMock.Setup(m => m.Add(deckExample));
-            deckRepositoryMock.Setup(m => m.Add(anotherDeckExample));
-
+            
             string newSubject = anotherDeckExample.Subject;
             string newName = anotherDeckExample.Name;
             int deckId = deckExample.Id;
             deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == newName && a.Id != deckId)).Returns(new List<Deck>() { anotherDeckExample });
 
             var result = deckLogic.EditDeck(1, anotherDeckExample.Name, newDifficulty, newVisibility, newSubject);
-
-            deckRepositoryMock.VerifyAll();
         }
 
         [ExpectedException(typeof(InvalidException))]
@@ -288,15 +255,49 @@ namespace BusinessLogicTest
             Difficulty newDifficulty = Difficulty.Hard;
             bool newVisibility = true;
 
-            deckRepositoryMock.Setup(m => m.Update(It.IsAny<Deck>()));
             deckRepositoryMock.Setup(m => m.GetById(1)).Returns(deckExample);
-            deckRepositoryMock.Setup(m => m.Add(deckExample));
-
             deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == "Name" && a.Id != 1)).Returns(new List<Deck>());
 
             var result = deckLogic.EditDeck(1, "Name", newDifficulty, newVisibility, "");
+        }
 
-            deckRepositoryMock.VerifyAll();
+
+        [ExpectedException(typeof(InvalidException))]
+        [TestMethod]
+        public void EditDeckNullSubjectTest()
+        {
+            Difficulty newDifficulty = Difficulty.Hard;
+            bool newVisibility = true;
+
+            deckRepositoryMock.Setup(m => m.GetById(1)).Returns(deckExample);
+            deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == "Name" && a.Id != 1)).Returns(new List<Deck>());
+
+            var result = deckLogic.EditDeck(1, "Name", newDifficulty, newVisibility, null);
+        }
+
+        [ExpectedException(typeof(NotFoundException))]
+        [TestMethod]
+        public void EditDeckNotFoundTest()
+        {
+            bool newVisibility = true;
+            Difficulty newDifficulty = Difficulty.Hard;
+
+            deckRepositoryMock.Setup(m => m.GetById(1)).Returns((Deck)null);
+            deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == "Name" && a.Id != 1)).Returns(new List<Deck>());
+
+            var result = deckLogic.EditDeck(1, "Name", newDifficulty, newVisibility, "Subject");
+        }
+
+        [ExpectedException(typeof(InvalidException))]
+        [TestMethod]
+        public void EditDeckWrongDifficultyTest()
+        {
+            bool newVisibility = true;
+
+            deckRepositoryMock.Setup(m => m.GetById(1)).Returns(deckExample);
+            deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == "Name" && a.Id != 1)).Returns(new List<Deck>());
+
+            var result = deckLogic.EditDeck(1, "Name", (Difficulty)3, newVisibility, "Subject");
         }
 
         [TestMethod]
@@ -315,27 +316,8 @@ namespace BusinessLogicTest
         [TestMethod]
         public void GetDeckByIdNotFoundTest()
         {
-            deckRepositoryMock.Setup(b => b.GetById(7)).Throws(new NotFoundException(It.IsAny<string>()));
+            deckRepositoryMock.Setup(b => b.GetById(7)).Returns((Deck)null);
             var result = deckLogic.GetDeckById(7);
-        }
-
-        [ExpectedException(typeof(NotFoundException))]
-        [TestMethod]
-        public void DeleteDeckNotFoundTest()
-        {
-            deckRepositoryMock.Setup(b => b.GetById(1)).Throws(new NotFoundException(It.IsAny<string>()));
-            deckRepositoryMock.Setup(d => d.Delete(deckExample));
-
-            var result = deckLogic.DeleteDeck(1, "token");
-        }
-
-        [ExpectedException(typeof(InvalidException))]
-        [TestMethod]
-        public void DeleteDeckDifferentAuthorTest()
-        {
-            deckRepositoryMock.Setup(b => b.GetById(deckExample.Id)).Throws(new InvalidException(It.IsAny<string>()));
-            deckRepositoryMock.Setup(d => d.Delete(deckExample));
-            var result = deckLogic.DeleteDeck(deckExample.Id, "different token");
         }
 
         [TestMethod]
@@ -347,18 +329,49 @@ namespace BusinessLogicTest
                 Answer = "Choose questions wisely.",
                 Question = "How do you write a good answer?",
             };
-            deckExample.Flashcards.Add(flashcard);
-
+            
             deckRepositoryMock.Setup(b => b.GetById(1)).Returns(deckExample);
             deckRepositoryMock.Setup(b => b.Delete(deckExample));
-            flashcardRepositoryMock.Setup(b => b.Delete(flashcard));
-
-
+            
             var result = deckLogic.DeleteDeck(1, "token");
 
             deckRepositoryMock.VerifyAll();
-
             Assert.IsTrue(result);
+        }
+
+        [ExpectedException(typeof(NotFoundException))]
+        [TestMethod]
+        public void DeleteDeckNullDeckTest()
+        {
+            Flashcard flashcard = new Flashcard()
+            {
+                Id = 1,
+                Answer = "Choose questions wisely.",
+                Question = "How do you write a good answer?",
+            };
+            
+            deckRepositoryMock.Setup(b => b.GetById(1)).Returns((Deck)null);
+            
+            var result = deckLogic.DeleteDeck(1, "token");
+        }
+
+        [ExpectedException(typeof(InvalidException))]
+        [TestMethod]
+        public void DeleteDeckInvalidTokenTest()
+        {
+            Flashcard flashcard = new Flashcard()
+            {
+                Id = 1,
+                Answer = "Choose questions wisely.",
+                Question = "How do you write a good answer?",
+            };
+            
+            deckExample.Author.Token = "new";
+
+            deckRepositoryMock.Setup(b => b.GetById(1)).Returns(deckExample);
+            deckRepositoryMock.Setup(b => b.Delete(deckExample));
+
+            var result = deckLogic.DeleteDeck(1, "token");
         }
 
         [TestMethod]
@@ -377,6 +390,64 @@ namespace BusinessLogicTest
             Assert.AreEqual(groupExample, result);
         }
 
+        [ExpectedException(typeof(InvalidException))]
+        [TestMethod]
+        public void AssignNullUserTest()
+        {
+            userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns((User)null);
+            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
+            deckRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(deckExample);
+            
+            var result = deckLogic.Assign(userExample.Token, 1, 1);
+        }
+
+        [ExpectedException(typeof(InvalidException))]
+        [TestMethod]
+        public void AssignDistinctCreatorUserTest()
+        {
+            groupExample.Creator = new User() { Email = "new" };
+            userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
+            deckRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(deckExample);
+            
+            var result = deckLogic.Assign(userExample.Token, 1, 1);
+        }
+
+        [ExpectedException(typeof(NotFoundException))]
+        [TestMethod]
+        public void AssignNullGroupTest()
+        {
+            userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns((Group)null);
+            deckRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(deckExample);
+            
+            var result = deckLogic.Assign(userExample.Token, 1, 1);
+        }
+
+        [ExpectedException(typeof(NotFoundException))]
+        [TestMethod]
+        public void AssignNullDeckTest()
+        {
+            userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
+            deckRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns((Deck)null);
+            
+            var result = deckLogic.Assign(userExample.Token, 1, 1);
+        }
+
+        [ExpectedException(typeof(AlreadyExistsException))]
+        [TestMethod]
+        public void AssignAlreadyExistsDeckTest()
+        {
+            userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
+            deckRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(deckExample);
+            deckGroupRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<DeckGroup,
+               bool>>>())).Returns(new List<DeckGroup>() { new DeckGroup()});
+            
+            var result = deckLogic.Assign(userExample.Token, 1, 1);
+        }
+
         [TestMethod]
         public void UnassignOkTest()
         {
@@ -390,6 +461,51 @@ namespace BusinessLogicTest
             var result = deckLogic.Unassign(userExample.Token, 1, 1);
             deckRepositoryMock.VerifyAll();
             Assert.AreEqual(result, groupExample);
+        }
+
+        [ExpectedException(typeof(InvalidException))]
+        [TestMethod]
+        public void UnassignNullUserTest()
+        {
+            userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns((User)null);
+            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
+            
+            var result = deckLogic.Unassign(userExample.Token, 1, 1);
+        }
+
+        [ExpectedException(typeof(InvalidException))]
+        [TestMethod]
+        public void UnassignInvalidCreatorTest()
+        {
+            groupExample.Creator = new User() { Email = "new"};
+            userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
+            
+            var result = deckLogic.Unassign(userExample.Token, 1, 1);
+        }
+
+        [ExpectedException(typeof(NotFoundException))]
+        [TestMethod]
+        public void UnassignNoGroupTest()
+        {
+            userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns((Group)null);
+            deckGroupRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<DeckGroup,
+                bool>>>())).Returns(new List<DeckGroup>() { It.IsAny<DeckGroup>() });
+            
+            var result = deckLogic.Unassign(userExample.Token, 1, 1);
+        }
+
+        [ExpectedException(typeof(NotFoundException))]
+        [TestMethod]
+        public void UnassignNotFoundGroupTest()
+        {
+            userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns((Group)null);
+            deckGroupRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<DeckGroup,
+                bool>>>())).Returns(new List<DeckGroup>() { });
+
+            var result = deckLogic.Unassign(userExample.Token, 1, 1);
         }
     }
 }

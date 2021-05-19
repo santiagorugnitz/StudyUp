@@ -46,6 +46,7 @@ namespace WebAPITest
 
             Assert.AreEqual(500, response.StatusCode);
         }
+        
         [TestMethod]
         public void Test400()
         {
@@ -55,6 +56,28 @@ namespace WebAPITest
             ContentResult response = context.Result as ContentResult;
 
             Assert.AreEqual(400, response.StatusCode);
+        }
+
+        [TestMethod]
+        public void Test404()
+        {
+            context.Exception = new NotFoundException("This is a not found exception");
+            filter.OnException(context);
+
+            ContentResult response = context.Result as ContentResult;
+
+            Assert.AreEqual(404, response.StatusCode);
+        }
+
+        [TestMethod]
+        public void Test401()
+        {
+            context.Exception = new NotAuthenticatedException("This is a not authenticated exception");
+            filter.OnException(context);
+
+            ContentResult response = context.Result as ContentResult;
+
+            Assert.AreEqual(401, response.StatusCode);
         }
     }
 }

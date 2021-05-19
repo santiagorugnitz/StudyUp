@@ -82,6 +82,19 @@ namespace BusinessLogicTest
         }
 
         [TestMethod]
+        [ExpectedException(typeof(AlreadyExistsException))]
+        public void AddUserTestRepeatedUsername()
+        {
+            userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
+            userRepositoryMock.Setup(m => m.GetAll()).Returns(new List<User>() { userExample });
+
+            var result = userLogic.AddUser(userExample);
+
+            userRepositoryMock.VerifyAll();
+            Assert.AreEqual(userExample, result);
+        }
+
+        [TestMethod]
         public void AddUserTest()
         {
             userRepositoryMock.Setup(m => m.Add(It.IsAny<User>()));
@@ -552,20 +565,31 @@ namespace BusinessLogicTest
             userRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<User,
                 bool>>>())).Returns(new List<User>() { userExample});
             userExamRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<UserExam,
-               bool>>>())).Returns(new List<UserExam>() { });
+               bool>>>())).Returns(new List<UserExam>() { new UserExam() { Score = 10 } });
 
             var result = userLogic.GetScore(userExample.Username);
 
-            Assert.AreEqual(0, result);
+            Assert.AreEqual(10, result);
             userRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidException))]
+        public void GetScoreNullUserTest()
+        {
+            userRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<User,
+                bool>>>())).Returns(new List<User>() {});
+            
+            var result = userLogic.GetScore(userExample.Username);
         }
 
         [TestMethod]
         public void GetUsersForRankingTest()
         {
             userFollowingRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<UserFollowing,
-                bool>>>())).Returns(new List<UserFollowing>() { });
+                bool>>>())).Returns(new List<UserFollowing>() { new UserFollowing() { FollowerUserId = 1, FollowingUserId = 2} });
             userMock.Setup(u => u.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            userRepositoryMock.Setup(u => u.GetById(It.IsAny<int>())).Returns(userExample);
 
             var result = userLogic.GetUsersForRanking("token");
 
