@@ -14,7 +14,7 @@ namespace BusinessLogic
     {
         public void NotifyExams(int examId, Group group)
         {
-            var response = NotifiyExamAsync(group, examId);
+            var response = NotifyExamAsync(group, examId);
         }
 
         public void NotifyMaterial(int deckId, Group group)
@@ -35,7 +35,7 @@ namespace BusinessLogic
             return await Notify(data, notification, TokensFromGroup(group));
         }
         
-        private async System.Threading.Tasks.Task<bool> NotifiyExamAsync(Group group, int examId)
+        private async System.Threading.Tasks.Task<bool> NotifyExamAsync(Group group, int examId)
         {
             var data = new { title = "Exam assigned", body = "A teacher has assigned your group a study deck", entityId = examId, type = NotificationType.EXAM };
             var notification = new { title = "Exam assigned", body = "A teacher has assigned your group a study deck" };
