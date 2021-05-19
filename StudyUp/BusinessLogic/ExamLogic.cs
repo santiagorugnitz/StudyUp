@@ -45,11 +45,11 @@ namespace BusinessLogic
 
             if (sameName != null && (sameName.Count() > 0))
                 throw new AlreadyExistsException(ExamMessage.EXAM_ALREADY_EXISTS);
-            else if (exam.Name.Trim() is null)
+            else if (exam.Name is null || exam.Name.Trim() is "")
                 throw new InvalidException(ExamMessage.EMPTY_NAME_MESSAGE);
             else if ((int)exam.Difficulty < 0 || (int)exam.Difficulty > 2)
                 throw new InvalidException(ExamMessage.INVALID_DIFFICULTY);
-            else if (exam.Subject is null)
+            else if (exam.Subject is null || exam.Subject.Trim() is "")
                 throw new InvalidException(ExamMessage.EMPTY_SUBJECT_MESSAGE);
 
             exam.Author = user;
