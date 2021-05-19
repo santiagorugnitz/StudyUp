@@ -114,7 +114,6 @@ namespace BusinessLogic
             deck.Flashcards.Remove(flashcard);
             deckRepository.Update(deck);
             userRepository.Update(deck.Author);
-            //flashcardRepository.Delete(flashcard);
             return true;
         }
 
