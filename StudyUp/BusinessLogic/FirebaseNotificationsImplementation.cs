@@ -29,16 +29,16 @@ namespace BusinessLogic
 
         private async System.Threading.Tasks.Task<bool> NotifyDeckAsync(Group group, Deck deck)
         {
-            var data = new { title = "Deck assigned", body = $"{deck.Name} was assigned to {group.Name} as a study deck",  entityId = deck.Id, type = NotificationType.DECK };
-            var notification = new { title = "Deck assigned", body = $"{deck.Name} was assigned to {group.Name} as a study deck" };
+            var data = new { title = "New deck assigned!", body = $"{deck.Name} was assigned to {group.Name} as a study deck",  entityId = deck.Id, type = NotificationType.DECK };
+            var notification = new { title = "New deck assigned!", body = $"{deck.Name} was assigned to {group.Name} as a study deck" };
 
             return await Notify(data, notification, TokensFromGroup(group));
         }
         
         private async System.Threading.Tasks.Task<bool> NotifyExamAsync(Group group, Exam exam)
         {
-            var data = new { title = "Exam assigned", body = $"{group.Creator.Username} has assigned {group.Name} an exam", entityId = exam.Id, type = NotificationType.EXAM };
-            var notification = new { title = "Exam assigned", body = $"{group.Creator.Username} has assigned {group.Name} an exam" };
+            var data = new { title = "New exam assigned!", body = $"{group.Creator.Username} has assigned {group.Name} an exam", entityId = exam.Id, type = NotificationType.EXAM };
+            var notification = new { title = "New exam assigned!", body = $"{group.Creator.Username} has assigned {group.Name} an exam" };
 
             return await Notify(data, notification, TokensFromGroup(group));
         }
@@ -64,8 +64,8 @@ namespace BusinessLogic
 
         private async System.Threading.Tasks.Task<bool> NotifyCommentsAsync(User receiver, FlashcardComment comment)
         {
-            var data = new { title = "Flashcard commented", body = $"{comment.CreatorUsername} has commented on your flashcard", entityId = comment.Id, type = NotificationType.COMMENT };
-            var notification = new { title = "Flashcard commented", body = $"{comment.CreatorUsername} has commented on your flashcard" };
+            var data = new { title = "New comment on your deck", body = $"{comment.CreatorUsername} has commented on one of your decks", entityId = comment.Id, type = NotificationType.COMMENT };
+            var notification = new { title = "New comment on your deck", body = $"{comment.CreatorUsername} has commented on one of your decks" };
 
             string[] sendingTokens = new string[1];
             sendingTokens[0] = receiver.FirebaseToken;
