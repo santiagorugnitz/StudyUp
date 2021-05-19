@@ -67,7 +67,7 @@ namespace BusinessLogic
 
             User user = this.userRepository.GetById(examCard.Exam.Author.Id);
 
-            if (!user.Token.Equals(token))
+            if (user!=null && !user.Token.Equals(token))
                 throw new InvalidException(ExamCardMessage.NOT_AUTHORIZED_TO_DELETE);
 
             Exam exam = examCard.Exam;
