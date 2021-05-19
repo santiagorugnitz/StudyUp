@@ -74,6 +74,10 @@
     <string name="swipe_to_delete">Swipe the comments to remove them from the list</string>
     <string name="no_exams_assigned">There are no exams assigned yet</string>
     <string name="no_decks">There are no decks to study yet</string>
+    <string name="notifications">Notifications</string>
+    <string name="begin">Begin</string>
+    <string name="start_exam_confirmation">Begin attempt? You will not be able to pause or retry later.</string>
+    <string name="exam_finished">Exam finished! \nScore: %1$s points</string>
 
     <string-array name="difficulties">
         <item>Easy</item>

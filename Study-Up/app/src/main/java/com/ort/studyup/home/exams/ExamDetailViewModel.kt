@@ -12,7 +12,7 @@ import com.ort.studyup.repositories.DeckRepository
 import com.ort.studyup.repositories.ExamRepository
 
 class ExamDetailViewModel(
-        private val examRepository: ExamRepository
+    private val examRepository: ExamRepository
 ) : BaseViewModel() {
 
     private val items = mutableListOf<Any>()
@@ -23,13 +23,13 @@ class ExamDetailViewModel(
             items.clear()
             val exam = examRepository.getExam(id)
             items.addAll(
-                    exam.examcards.map {
-                        ExamCardItemRenderer.Item(
-                                it.id,
-                                it.question,
-                                it.answer
-                        )
-                    }
+                exam.examcards.map {
+                    ExamCardItemRenderer.Item(
+                        it.id,
+                        it.question,
+                        it.answer
+                    )
+                }
             )
             result.postValue(items)
         }
@@ -41,14 +41,15 @@ class ExamDetailViewModel(
         executeService {
             items.clear()
             val response = examRepository.results(id)
+            response.sortedByDescending { it.score }
             items.addAll(
-                    response.mapIndexed { pos, it ->
-                        ResultItemRenderer.Item(
-                                pos + 1,
-                                it.username,
-                                it.score
-                        )
-                    }
+                response.mapIndexed { pos, it ->
+                    ResultItemRenderer.Item(
+                        pos + 1,
+                        it.username,
+                        it.score
+                    )
+                }
             )
             result.postValue(items)
         }

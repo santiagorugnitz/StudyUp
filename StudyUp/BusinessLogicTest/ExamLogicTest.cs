@@ -236,15 +236,6 @@ namespace BusinessLogicTest
 
         [TestMethod]
         [ExpectedException(typeof(NotFoundException))]
-        public void GetExamByIdNullUserTest()
-        {
-            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns((User)null);
-
-            var result = examLogic.GetExamById(examExample.Id, userExample.Token);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(NotFoundException))]
         public void GetExamByIdNullExamTest()
         {
             examRepositoryMock.Setup(b => b.GetById(examExample.Id)).Returns((Exam)null);
@@ -304,20 +295,6 @@ namespace BusinessLogicTest
 
         [TestMethod]
         [ExpectedException(typeof(NotFoundException))]
-        public void GetExamResultsNullUserTest()
-        {
-            examRepositoryMock.Setup(b => b.GetById(examExample.Id)).Returns(examExample);
-            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns((User)null);
-
-            var result = examLogic.GetResults(examExample.Id, userExample.Token);
-
-            examRepositoryMock.VerifyAll();
-
-            Assert.AreEqual(examExample, result);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(NotFoundException))]
         public void GetExamResultsNullExamTest()
         {
             examRepositoryMock.Setup(b => b.GetById(examExample.Id)).Returns((Exam)null);
@@ -330,20 +307,6 @@ namespace BusinessLogicTest
             Assert.AreEqual(examExample, result);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidException))]
-        public void GetExamResultsIncorrectAuthorExamTest()
-        {
-            examExample.Author = new User() { Email = "new email" };
-            examRepositoryMock.Setup(b => b.GetById(examExample.Id)).Returns(examExample);
-            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
-
-            var result = examLogic.GetResults(examExample.Id, userExample.Token);
-
-            examRepositoryMock.VerifyAll();
-
-            Assert.AreEqual(examExample, result);
-        }
 
         [TestMethod]
         public void AssignOkTest()
@@ -355,7 +318,7 @@ namespace BusinessLogicTest
             groupRepositoryMock.Setup(m => m.Update(It.IsAny<Group>()));
             examRepositoryMock.Setup(e => e.GetById(It.IsAny<int>())).Returns(examExample);
             examRepositoryMock.Setup(e => e.Update(examExample));
-            notificationsInterfaceMock.Setup(e => e.NotifyExams(It.IsAny<int>(), It.IsAny<Group>()));
+            notificationsInterfaceMock.Setup(e => e.NotifyExams(It.IsAny<Exam>(), It.IsAny<Group>()));
 
             var result = examLogic.AssignExam(userExample.Token, 1, 1);
             groupRepositoryMock.VerifyAll();

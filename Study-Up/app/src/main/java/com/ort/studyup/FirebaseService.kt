@@ -8,50 +8,55 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.room.Room
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.ort.studyup.common.*
+import com.ort.studyup.common.models.Notification
+import com.ort.studyup.common.ui.CustomLoader
+import com.ort.studyup.services.ServiceError
+import com.ort.studyup.services.ServiceException
 import com.ort.studyup.splash.SplashActivity
+import com.ort.studyup.storage.dao.AppDatabase
+import com.ort.studyup.storage.dao.Converters
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import org.koin.android.ext.koin.androidContext
+import java.lang.Exception
 
-class FirebaseService: FirebaseMessagingService() {
+class FirebaseService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
 
-        if(remoteMessage.data.isNotEmpty()){
-            //TODO: save in Room
+        if (remoteMessage.data.isNotEmpty()) {
+            GlobalScope.launch {
+                coroutineScope {
+                    val db = Room.databaseBuilder(
+                        applicationContext,
+                        AppDatabase::class.java, "studyUpDatabase"
+                    )
+                        .fallbackToDestructiveMigration()
+                        .build()
+                    buildNotification(remoteMessage.data)?.let {
+                        db.notificationDao().insert(it)
+                    }
+                }
+            }
         }
-
-        remoteMessage.notification?.body?.let {
-            sendNotification(it)
-        }
-
     }
 
-    private fun sendNotification(messageBody: String) {
-        val intent = Intent(this, SplashActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-            PendingIntent.FLAG_ONE_SHOT)
-
-        val channelId = getString(R.string.default_notification_channel_id)
-
-        val notificationBuilder = NotificationCompat.Builder(this,channelId)
-            .setSmallIcon(R.drawable.logo)
-            .setContentTitle("Test")
-            .setContentText(messageBody)
-            .setAutoCancel(true)
-            .setContentIntent(pendingIntent)
-
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        // Since android Oreo notification channel is needed.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(channelId,
-                "Firebase channel",
-                NotificationManager.IMPORTANCE_DEFAULT)
-            notificationManager.createNotificationChannel(channel)
+    private fun buildNotification(data: Map<String, String>): Notification? {
+        try {
+            val title = data.getValue(NOTIFICATION_TITLE_EXTRA)
+            val body = data.getValue(NOTIFICATION_BODY_EXTRA)
+            val type = data.getValue(NOTIFICATION_TYPE_EXTRA).toInt()
+            val entityId = data.getValue(NOTIFICATION_ENTITY_ID_EXTRA).toInt()
+            return Notification(null, title, body, Converters().toNotificationTypeEnum(type), entityId)
+        } catch (e: Exception) {
+            return null
         }
-
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
     }
+
 
 }

@@ -7,8 +7,8 @@ namespace BusinessLogicInterface
 {
     public interface INotifications
     {
-        void NotifyMaterial(int deckId, Group group);
-        void NotifyExams(int examId, Group group);
-        void NotifyComments(int commentId, User receiver);
+        void NotifyMaterial(Deck deck, Group group);
+        void NotifyExams(Exam exam, Group group);
+        void NotifyComments(FlashcardComment comment, User receiver);
     }
 }

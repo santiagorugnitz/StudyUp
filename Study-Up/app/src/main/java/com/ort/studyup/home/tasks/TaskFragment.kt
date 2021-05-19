@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ort.studyup.R
 import com.ort.studyup.common.DECK_ID_KEY
@@ -34,7 +34,17 @@ class TaskFragment : BaseFragment(), DeckItemRenderer.Callback, ExamItemRenderer
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        requireActivity().intent?.getIntExtra(DECK_ID_KEY, -1)?.let {
+            if (it >= 0) {
+                requireActivity().intent?.removeExtra(DECK_ID_KEY)
+                findNavController().navigate(R.id.action_taskFragment_to_deckDetailFragment2, Bundle().apply { putInt(DECK_ID_KEY, it) })
+            }
+        }
         prepareList()
+    }
+
+    override fun onStart() {
+        super.onStart()
         initUI()
     }
 
@@ -43,7 +53,7 @@ class TaskFragment : BaseFragment(), DeckItemRenderer.Callback, ExamItemRenderer
         examList.layoutManager = LinearLayoutManager(requireContext())
         examList.adapter = examAdapter
         examAdapter.setEmptyItem(
-            EmptyViewRenderer.Item(getString(R.string.no_exams_assigned), R.drawable.ic_correct),
+            EmptyViewRenderer.Item(getString(R.string.no_exams_assigned), R.drawable.ic_ok),
             EmptyViewRenderer()
         )
         deckAdapter.addRenderer(DeckItemRenderer(this))
@@ -62,6 +72,9 @@ class TaskFragment : BaseFragment(), DeckItemRenderer.Callback, ExamItemRenderer
                 deckAdapter.setItems(it.second)
             }
         })
+        notificationIcon.setOnClickListener {
+            findNavController().navigate(R.id.action_taskFragment_to_notificationFragment)
+        }
     }
 
     override fun onDeckClicked(deckId: Int) {

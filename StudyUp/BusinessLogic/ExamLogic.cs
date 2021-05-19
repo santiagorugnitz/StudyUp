@@ -82,7 +82,7 @@ namespace BusinessLogic
             if (!group.Creator.Equals(user))
                 throw new InvalidException(ExamMessage.NOT_AUTHORIZED);
 
-            this.notificationsInterface.NotifyExams(examId, group);
+            this.notificationsInterface.NotifyExams(exam, group);
 
             exam.Group = group;
             examRepository.Update(exam);
@@ -143,11 +143,6 @@ namespace BusinessLogic
 
         public Exam GetExamById(int id, string token)
         {
-            User user = userTokenRepository.GetUserByToken(token);
-
-            if (user is null)
-                throw new NotFoundException(UserMessage.USER_NOT_FOUND);
-
             Exam exam = this.examRepository.GetById(id);
 
             if (exam != null)
@@ -158,18 +153,10 @@ namespace BusinessLogic
 
         public List<Tuple<string, double>> GetResults(int examId, string token)
         {
-            User user = userTokenRepository.GetUserByToken(token);
-
-            if (user is null)
-                throw new NotFoundException(UserMessage.USER_NOT_FOUND);
-
             Exam exam = this.examRepository.GetById(examId);
 
             if (exam == null)
                 throw new NotFoundException(ExamMessage.EXAM_NOT_FOUND);
-
-            if (!exam.Author.Equals(user))
-                throw new InvalidException(ExamMessage.INVALID_USER);
 
             var result = new List<Tuple<string, double>>();
 

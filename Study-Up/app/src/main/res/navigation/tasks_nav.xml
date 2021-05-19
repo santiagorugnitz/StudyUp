@@ -7,11 +7,22 @@
         android:name="com.ort.studyup.home.tasks.TaskFragment"
         android:label="TaskFragment" >
         <action
-            android:id="@+id/action_taskFragment_to_studyActivity"
-            app:destination="@id/studyActivity" />
+            android:id="@+id/action_taskFragment_to_notificationFragment"
+            app:destination="@id/notificationFragment" />
+        <action
+            android:id="@+id/action_taskFragment_to_deckDetailFragment2"
+            app:destination="@id/deckDetailFragment2" />
     </fragment>
-    <activity
-        android:id="@+id/studyActivity"
-        android:name="com.ort.studyup.study.StudyActivity"
-        android:label="StudyActivity" />
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.ort.studyup.home.tasks.NotificationFragment"
+        android:label="NotificationFragment" >
+        <action
+            android:id="@+id/action_notificationFragment_to_deckDetailFragment2"
+            app:destination="@id/deckDetailFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/deckDetailFragment2"
+        android:name="com.ort.studyup.home.decks.DeckDetailFragment"
+        android:label="DeckDetailFragment" />
 </navigation>

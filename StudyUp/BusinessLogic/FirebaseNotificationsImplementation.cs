@@ -1,5 +1,6 @@
 ﻿using BusinessLogicInterface;
 using Domain;
+using Domain.Enumerations;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -11,35 +12,35 @@ namespace BusinessLogic
 {
     public class FirebaseNotificationsImplementation : INotifications
     {
-        public void NotifyExams(int examId, Group group)
+        public void NotifyExams(Exam exam, Group group)
         {
-            var response = NotifiyExamAsync(group, examId);
+            var response = NotifyExamAsync(group, exam);
         }
 
-        public void NotifyMaterial(int deckId, Group group)
+        public void NotifyMaterial(Deck deck, Group group)
         {
-            var respone = NotifiyDeckAsync(group, deckId);
+            var respone = NotifyDeckAsync(group, deck);
         }
 
-        public void NotifyComments(int commentId, User receiver)
+        public void NotifyComments(FlashcardComment comment, User receiver)
         {
-            var respone = NotifiyCommentsAsync(receiver, commentId);
+            var respone = NotifyCommentsAsync(receiver, comment);
         }
 
-        private async System.Threading.Tasks.Task<bool> NotifiyDeckAsync(Group group, int deckId)
+        private async System.Threading.Tasks.Task<bool> NotifyDeckAsync(Group group, Deck deck)
         {
-            var data = new { group_id = group.Id, group = group.Name, deck_id = deckId };
-            var notification = new { title = "Deck assigned", text = "A teacher has assigned your group a study deck" };
+            var data = new { title = "New deck assigned!", body = $"{deck.Name} was assigned to {group.Name} as a study deck",  entityId = deck.Id, type = NotificationType.DECK };
+            var notification = new { title = "New deck assigned!", body = $"{deck.Name} was assigned to {group.Name} as a study deck" };
 
-            return await Notifiy(data, notification, TokensFromGroup(group));
+            return await Notify(data, notification, TokensFromGroup(group));
         }
         
-        private async System.Threading.Tasks.Task<bool> NotifiyExamAsync(Group group, int examId)
+        private async System.Threading.Tasks.Task<bool> NotifyExamAsync(Group group, Exam exam)
         {
-            var data = new { group_id = group.Id, group = group.Name, exam_id = examId };
-            var notification = new { title = "Exam assigned", text = "A teacher has assigned your group a study deck" };
+            var data = new { title = "New exam assigned!", body = $"{group.Creator.Username} has assigned {group.Name} an exam", entityId = exam.Id, type = NotificationType.EXAM };
+            var notification = new { title = "New exam assigned!", body = $"{group.Creator.Username} has assigned {group.Name} an exam" };
 
-            return await Notifiy(data, notification, TokensFromGroup(group));
+            return await Notify(data, notification, TokensFromGroup(group));
         }
 
         private string[] TokensFromGroup(Group group)
@@ -61,18 +62,18 @@ namespace BusinessLogic
             return sendingTokens;
         }
 
-        private async System.Threading.Tasks.Task<bool> NotifiyCommentsAsync(User receiver, int commentId)
+        private async System.Threading.Tasks.Task<bool> NotifyCommentsAsync(User receiver, FlashcardComment comment)
         {
-            var data = new { author_id = receiver.Id, username = receiver.Username, comment_id = commentId };
-            var notification = new { title = "Flashcard commented", text = "A user has commented your flashcard" };
+            var data = new { title = "New comment on your deck", body = $"{comment.CreatorUsername} has commented on one of your decks", entityId = comment.Id, type = NotificationType.COMMENT };
+            var notification = new { title = "New comment on your deck", body = $"{comment.CreatorUsername} has commented on one of your decks" };
 
             string[] sendingTokens = new string[1];
             sendingTokens[0] = receiver.FirebaseToken;
 
-            return await Notifiy(data, notification, sendingTokens);
+            return await Notify(data, notification, sendingTokens);
         }
 
-        private async System.Threading.Tasks.Task<bool> Notifiy(Object data, Object notification, string[] sendingTokens)
+        private async System.Threading.Tasks.Task<bool> Notify(Object data, Object notification, string[] sendingTokens)
         {
             string apiRoute = "https://fcm.googleapis.com/fcm/send";
             string serverKey = "AAAA-GAOZ3Q:APA91bG8C_EClvZ-jcIp1YhACOwT345pZ0QUAa1lr-0_l8e64jGWmcKWAgduNit0ymFq_btFbwRrrlPcUwK3RqjeXRDFk-yfbPsl4rNyBxb1LKJT33H_qaapXkyji6UlG8HI44Ka_MP7";
@@ -81,14 +82,15 @@ namespace BusinessLogic
             {
                 registration_ids = sendingTokens,
                 data = data,
-                notification = notification
+                notification = notification,
+                priority = "high"
             };
 
             string jsonMessage = JsonConvert.SerializeObject(message);
 
             var request = new HttpRequestMessage(HttpMethod.Post, apiRoute);
             request.Headers.TryAddWithoutValidation("Authorization", "key=" + serverKey);
-            request.Content = new StringContent(jsonMessage, Encoding.UTF8);
+            request.Content = new StringContent(jsonMessage, Encoding.UTF8, "application/json");
 
             bool sent;
             using (var client = new HttpClient())
