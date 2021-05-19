@@ -13,6 +13,7 @@ import com.ort.studyup.common.DECK_ID_KEY
 import com.ort.studyup.common.EXAM_ID_KEY
 import com.ort.studyup.common.models.ExamItem
 import com.ort.studyup.common.renderers.DeckItemRenderer
+import com.ort.studyup.common.renderers.EmptyViewRenderer
 import com.ort.studyup.common.renderers.ExamItemRenderer
 import com.ort.studyup.common.ui.BaseFragment
 import com.ort.studyup.study.StudyActivity
@@ -47,9 +48,17 @@ class TaskFragment : BaseFragment(), DeckItemRenderer.Callback, ExamItemRenderer
         examAdapter.addRenderer(ExamItemRenderer(this))
         examList.layoutManager = LinearLayoutManager(requireContext())
         examList.adapter = examAdapter
+        examAdapter.setEmptyItem(
+            EmptyViewRenderer.Item(getString(R.string.no_exams_assigned), R.drawable.ic_correct),
+            EmptyViewRenderer()
+        )
         deckAdapter.addRenderer(DeckItemRenderer(this))
         deckList.layoutManager = LinearLayoutManager(requireContext())
         deckList.adapter = deckAdapter
+        deckAdapter.setEmptyItem(
+            EmptyViewRenderer.Item(getString(R.string.no_decks)),
+            EmptyViewRenderer()
+        )
     }
 
     private fun initUI() {

@@ -8,7 +8,7 @@
     android:layout_marginTop="8dp">
 
     <ImageView
-        android:id="@+id/sadFace"
+        android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_sad_face"
@@ -26,7 +26,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sadFace"
+        app:layout_constraintTop_toBottomOf="@id/icon"
         tools:text="There is nothing here yet" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

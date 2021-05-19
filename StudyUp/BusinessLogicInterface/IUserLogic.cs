@@ -18,5 +18,6 @@ namespace BusinessLogicInterface
         Tuple<List<Deck>, List<Exam>> GetTasks(string token);
         List<User> GetUsersForRanking(string token);
         Double GetScore(string username);
+        void Logout(string token);
     }
 }

@@ -284,5 +284,12 @@ namespace BusinessLogic
 
             return score;
         }
+
+        public void Logout(string token)
+        {
+            User user = CheckToken(token);
+            user.FirebaseToken = null;
+            repository.Update(user);
+        }
     }
 }
