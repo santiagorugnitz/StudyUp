@@ -262,7 +262,7 @@ namespace BusinessLogicTest
         [ExpectedException(typeof(InvalidException))]
         public void UserIsSubscribedUnauthenticatedTest()
         {
-            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Throws(new InvalidException(It.IsAny<string>()));
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns((User)null);
 
             var result = groupLogic.UserIsSubscribed("wrongtoken", 1);
             groupRepositoryMock.VerifyAll();
@@ -283,6 +283,27 @@ namespace BusinessLogicTest
                 bool>>>())).Returns(new List<Group>() { group });
 
             var result = groupLogic.GetAllGroups(group.Name).Count();
+
+            groupRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(1, result);
+        }
+
+        [TestMethod]
+        public void GetAllGroupsNullKeywordTest()
+        {
+            Group group = new Group()
+            {
+                Creator = userExample,
+                Id = 2,
+                Name = "Grupo",
+                UserGroups = new List<UserGroup>()
+            };
+
+            groupRepositoryMock.Setup(b => b.FindByCondition(It.IsAny<Expression<Func<Group,
+                bool>>>())).Returns(new List<Group>() { group });
+
+            var result = groupLogic.GetAllGroups(null).Count();
 
             groupRepositoryMock.VerifyAll();
 

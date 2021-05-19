@@ -495,5 +495,17 @@ namespace BusinessLogicTest
             
             var result = deckLogic.Unassign(userExample.Token, 1, 1);
         }
+
+        [ExpectedException(typeof(NotFoundException))]
+        [TestMethod]
+        public void UnassignNotFoundGroupTest()
+        {
+            userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns((Group)null);
+            deckGroupRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<DeckGroup,
+                bool>>>())).Returns(new List<DeckGroup>() { });
+
+            var result = deckLogic.Unassign(userExample.Token, 1, 1);
+        }
     }
 }

@@ -150,11 +150,12 @@ namespace BusinessLogicTest
                 Answer = "1912"
             };
 
+            deckExample.Author = new User() { Id = 100 };
+
             flashcardRepositoryMock.Setup(m => m.Add(It.IsAny<Flashcard>()));
             deckRepositoryMock.Setup(m => m.GetAll()).Returns(new List<Deck>());
             userRepositoryMock.Setup(m => m.GetById(1)).Returns(userExample);
-            userRepositoryMock.Setup(m => m.GetById(3)).Throws(new NotFoundException(UserMessage.USER_NOT_FOUND));
-            userRepositoryMock.Setup(m => m.GetAll()).Returns(new List<User>());
+            deckRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(deckExample);
             userRepositoryMock.Setup(a => a.Update(It.IsAny<User>()));
             userTokenRepository.Setup(t => t.GetUserByToken(It.IsAny<string>())).Returns(It.IsAny<User>());
 

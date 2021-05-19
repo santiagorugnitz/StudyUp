@@ -108,6 +108,22 @@ namespace WebAPITest
         }
 
         [TestMethod]
+        public void GetExamByIdNoGroupTest()
+        {
+            var exam = examModelExample.ToEntity();
+            exam.Group = null;
+            exam.ExamCards = new List<ExamCard>() { new ExamCard() { Answer = true, Question = "question", Id = 1 } };
+            exam.Author = new User { Username = "test" };
+            logicMock.Setup(x => x.GetExamById(1, "token")).Returns(exam);
+
+            var result = controller.GetExamById(1, "token");
+            var okResult = result as OkObjectResult;
+            var value = okResult.Value as ResponseFullDeckModel;
+
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
         public void GetExamByIdOkNullGroupTest()
         {
             var exam = examModelExample.ToEntity();

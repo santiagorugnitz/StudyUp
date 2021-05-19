@@ -118,9 +118,6 @@ namespace BusinessLogic
         {
             Deck deck = GetDeckById(deckId);
 
-            if (deck is null)
-                throw new NotFoundException(DeckMessage.DECK_NOT_FOUND);
-
             if (deck.Author.Token != token)
             {
                 throw new InvalidException(DeckMessage.NOT_AUTHORIZED);

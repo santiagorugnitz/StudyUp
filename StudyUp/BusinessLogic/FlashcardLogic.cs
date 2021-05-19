@@ -48,13 +48,8 @@ namespace BusinessLogic
             if (deck == null)
                 throw new NotFoundException(DeckMessage.DECK_NOT_FOUND);
 
-            IEnumerable<User> flashcardsAuthor = userRepository.GetAll().Where(x => x.Id == deck.Author.Id);
-
-            if (userLoggedByToken != null && flashcardsAuthor != null && userLoggedByToken.Id != deck.Author.Id)
+            if (userLoggedByToken.Id != deck.Author.Id)
                 throw new InvalidException(FlashcardMessage.NOT_AUTHORIZED);
-
-            if (userLoggedByToken is null || flashcardsAuthor is null)
-                throw new InvalidException(FlashcardMessage.ERROR_ASSOCIATING_USER);
 
             flashcard.Deck = deck;
             flashcardRepository.Add(flashcard);
