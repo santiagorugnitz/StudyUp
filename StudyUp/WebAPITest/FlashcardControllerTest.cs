@@ -135,5 +135,16 @@ namespace WebAPITest
 
             logicMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void DeleteCommentOkTest()
+        {
+            logicMock.Setup(x => x.DeleteComment(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(true);
+
+            var result = controller.DeleteComment(userModelExample.Token, 1, 1);
+            var okResult = result as OkObjectResult;
+
+            logicMock.VerifyAll();
+        }
     }
 }
