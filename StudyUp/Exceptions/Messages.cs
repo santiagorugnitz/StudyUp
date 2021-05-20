@@ -83,6 +83,7 @@ namespace Exceptions
         public const string INVALID_EMAIL = "Invalid mail address.";
         public const string ALREADY_FOLLOWS = "You already follow this user.";
         public const string NOT_FOLLOWS = "You cannot unfollow an unfollowed user.";
+        public const string SAME_USERS = "Cannot follow yourself.";
     }
 
     public static class UnauthenticatedMessage

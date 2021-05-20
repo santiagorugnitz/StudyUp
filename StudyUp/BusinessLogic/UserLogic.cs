@@ -53,6 +53,9 @@ namespace BusinessLogic
             User authenticatedUser = CheckToken(token);
             User userToFollow = CheckUsername(username);
 
+            if (authenticatedUser.Equals(userToFollow))
+                throw new InvalidException(UserMessage.SAME_USERS);
+
             UserFollowing follow = new UserFollowing
             {
                 FollowingUserId = userToFollow.Id,

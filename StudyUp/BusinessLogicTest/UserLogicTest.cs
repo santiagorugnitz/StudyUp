@@ -277,11 +277,23 @@ namespace BusinessLogicTest
         [TestMethod]
         public void FollowUserOk()
         {
+            User userToFollow = new User()
+            {
+                Id = 1,
+                Username = "Ana",
+                Email = "ana@gmail.com",
+                Password = "Anaaaa123",
+                IsStudent = false,
+                Token = "New token",
+                FollowingUsers = new List<UserFollowing>(),
+                FollowedUsers = new List<UserFollowing>()
+            };
+
             userExample.FollowedUsers = new List<UserFollowing>();
-            userRepositoryMock.Setup(m => m.FindByCondition(user => user.Username.Equals("Maria"))).Returns(new List<User>() { userExample });
+            userRepositoryMock.Setup(m => m.FindByCondition(user => user.Username.Equals("Ana"))).Returns(new List<User>() { userToFollow });
             userMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
 
-            var result = userLogic.FollowUser("Token", "Maria");
+            var result = userLogic.FollowUser(userExample.Token, userToFollow.Username);
 
             userRepositoryMock.VerifyAll();
 
