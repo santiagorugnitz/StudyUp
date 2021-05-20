@@ -16,5 +16,6 @@ namespace BusinessLogicInterface
         bool DeleteDeck(int deckId, string token);
         Group Assign(string token, int groupId, int deckId);
         Group Unassign(string token, int groupId, int deckId);
+        IEnumerable<FlashcardComment> GetFlashcardsComments(int flashcardId);
     }
 }

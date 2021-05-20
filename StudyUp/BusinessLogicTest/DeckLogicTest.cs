@@ -25,6 +25,8 @@ namespace BusinessLogicTest
         Mock<IRepository<Group>> groupRepositoryMock;
         Mock<IRepository<DeckGroup>> deckGroupRepositoryMock;
         Mock<IRepository<Flashcard>> flashcardRepositoryMock;
+        Mock<IRepository<FlashcardComment>> flashcardCommentRepositoryMock;
+
         Mock<IUserRepository> userTokenRepository;
         DeckLogic deckLogic;
         Mock<INotifications> notificationsInterfaceMock;
@@ -66,14 +68,16 @@ namespace BusinessLogicTest
             deckRepositoryMock = new Mock<IRepository<Deck>>(MockBehavior.Strict);
             userRepositoryMock = new Mock<IRepository<User>>(MockBehavior.Loose);
             flashcardRepositoryMock = new Mock<IRepository<Flashcard>>(MockBehavior.Strict);
+            flashcardCommentRepositoryMock = new Mock<IRepository<FlashcardComment>>(MockBehavior.Strict);
             userTokenRepository = new Mock<IUserRepository>(MockBehavior.Strict);
             groupRepositoryMock = new Mock<IRepository<Group>>(MockBehavior.Strict);
             deckGroupRepositoryMock = new Mock<IRepository<DeckGroup>>(MockBehavior.Strict);
             notificationsInterfaceMock = new Mock<INotifications>(MockBehavior.Strict);
+
             deckLogic = new DeckLogic(deckRepositoryMock.Object, userRepositoryMock.Object,
                  userTokenRepository.Object, flashcardRepositoryMock.Object,
                  deckGroupRepositoryMock.Object, groupRepositoryMock.Object,
-                 notificationsInterfaceMock.Object);
+                 notificationsInterfaceMock.Object, flashcardCommentRepositoryMock.Object);
         }
 
         [TestMethod]
@@ -99,7 +103,7 @@ namespace BusinessLogicTest
         {
             deckExample.Name = null;
             deckRepositoryMock.Setup(m => m.GetAll()).Returns(new List<Deck>());
-        
+
             var result = deckLogic.AddDeck(deckExample, userExample.Token);
         }
 
@@ -129,7 +133,7 @@ namespace BusinessLogicTest
         {
             deckExample.Subject = null;
             deckRepositoryMock.Setup(m => m.GetAll()).Returns(new List<Deck>());
-            
+
             var result = deckLogic.AddDeck(deckExample, userExample.Token);
         }
 
@@ -193,7 +197,7 @@ namespace BusinessLogicTest
         public void GetDecksByIncorrectAuthorTest()
         {
             userRepositoryMock.Setup(m => m.GetById(1)).Returns((User)null);
-            
+
             var result = deckLogic.GetDecksByAuthor(1).Count();
         }
 
@@ -239,7 +243,7 @@ namespace BusinessLogicTest
             bool newVisibility = true;
 
             deckRepositoryMock.Setup(m => m.GetById(1)).Returns(deckExample);
-            
+
             string newSubject = anotherDeckExample.Subject;
             string newName = anotherDeckExample.Name;
             int deckId = deckExample.Id;
@@ -329,10 +333,10 @@ namespace BusinessLogicTest
                 Answer = "Choose questions wisely.",
                 Question = "How do you write a good answer?",
             };
-            
+
             deckRepositoryMock.Setup(b => b.GetById(1)).Returns(deckExample);
             deckRepositoryMock.Setup(b => b.Delete(deckExample));
-            
+
             var result = deckLogic.DeleteDeck(1, "token");
 
             deckRepositoryMock.VerifyAll();
@@ -349,9 +353,9 @@ namespace BusinessLogicTest
                 Answer = "Choose questions wisely.",
                 Question = "How do you write a good answer?",
             };
-            
+
             deckRepositoryMock.Setup(b => b.GetById(1)).Returns((Deck)null);
-            
+
             var result = deckLogic.DeleteDeck(1, "token");
         }
 
@@ -365,7 +369,7 @@ namespace BusinessLogicTest
                 Answer = "Choose questions wisely.",
                 Question = "How do you write a good answer?",
             };
-            
+
             deckExample.Author.Token = "new";
 
             deckRepositoryMock.Setup(b => b.GetById(1)).Returns(deckExample);
@@ -397,7 +401,7 @@ namespace BusinessLogicTest
             userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns((User)null);
             groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
             deckRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(deckExample);
-            
+
             var result = deckLogic.Assign(userExample.Token, 1, 1);
         }
 
@@ -409,7 +413,7 @@ namespace BusinessLogicTest
             userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
             groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
             deckRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(deckExample);
-            
+
             var result = deckLogic.Assign(userExample.Token, 1, 1);
         }
 
@@ -420,7 +424,7 @@ namespace BusinessLogicTest
             userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
             groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns((Group)null);
             deckRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(deckExample);
-            
+
             var result = deckLogic.Assign(userExample.Token, 1, 1);
         }
 
@@ -431,7 +435,7 @@ namespace BusinessLogicTest
             userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
             groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
             deckRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns((Deck)null);
-            
+
             var result = deckLogic.Assign(userExample.Token, 1, 1);
         }
 
@@ -443,8 +447,8 @@ namespace BusinessLogicTest
             groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
             deckRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(deckExample);
             deckGroupRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<DeckGroup,
-               bool>>>())).Returns(new List<DeckGroup>() { new DeckGroup()});
-            
+               bool>>>())).Returns(new List<DeckGroup>() { new DeckGroup() });
+
             var result = deckLogic.Assign(userExample.Token, 1, 1);
         }
 
@@ -469,7 +473,7 @@ namespace BusinessLogicTest
         {
             userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns((User)null);
             groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
-            
+
             var result = deckLogic.Unassign(userExample.Token, 1, 1);
         }
 
@@ -477,10 +481,10 @@ namespace BusinessLogicTest
         [TestMethod]
         public void UnassignInvalidCreatorTest()
         {
-            groupExample.Creator = new User() { Email = "new"};
+            groupExample.Creator = new User() { Email = "new" };
             userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
             groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
-            
+
             var result = deckLogic.Unassign(userExample.Token, 1, 1);
         }
 
@@ -492,7 +496,7 @@ namespace BusinessLogicTest
             groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns((Group)null);
             deckGroupRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<DeckGroup,
                 bool>>>())).Returns(new List<DeckGroup>() { It.IsAny<DeckGroup>() });
-            
+
             var result = deckLogic.Unassign(userExample.Token, 1, 1);
         }
 
@@ -506,6 +510,38 @@ namespace BusinessLogicTest
                 bool>>>())).Returns(new List<DeckGroup>() { });
 
             var result = deckLogic.Unassign(userExample.Token, 1, 1);
+        }
+
+        [TestMethod]
+        public void GetFlashcardsCommentsOkTest()
+        {
+            FlashcardComment flashcardCommentExample = new FlashcardComment()
+            {
+                Comment = "comment",
+                CreatedOn = DateTime.Today,
+                CreatorUsername = userExample.Username,
+                Id = 1
+            };
+
+            Flashcard flashcardExample = new Flashcard()
+            {
+                Id = 1,
+                Question = "This is a question",
+                Answer = "This is the answer",
+                Comments = new List<FlashcardComment>() { flashcardCommentExample },
+                Deck = deckExample,
+                UserScores = new List<FlashcardScore>()
+            };
+            flashcardCommentExample.Flashcard = flashcardExample;
+
+            flashcardRepositoryMock.Setup(f => f.GetById(It.IsAny<int>())).Returns(flashcardExample);
+            flashcardCommentRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<FlashcardComment,
+                bool>>>())).Returns(new List<FlashcardComment>() { flashcardCommentExample });
+
+            var result = deckLogic.GetFlashcardsComments(1);
+            deckRepositoryMock.VerifyAll();
+
+            Assert.AreEqual(1, result.ToList().Count);
         }
     }
 }

@@ -21,6 +21,7 @@ namespace BusinessLogic
         private IRepository<User> userRepository;
         private IRepository<Group> groupRepository;
         private IRepository<Flashcard> flashcardRepository;
+        private IRepository<FlashcardComment> flashcardCommentRepository;
         private IRepository<DeckGroup> deckGroupRepository;
         private IUserRepository userTokenRepository;
         private INotifications notificationsInterface;
@@ -28,7 +29,7 @@ namespace BusinessLogic
         public DeckLogic(IRepository<Deck> repository, IRepository<User> userRepository,
             IUserRepository userTokenRepository, IRepository<Flashcard> flashcardRepository,
             IRepository<DeckGroup> deckGroupRepository, IRepository<Group> groupRepository,
-            INotifications notificationsInterface)
+            INotifications notificationsInterface, IRepository<FlashcardComment> flashcardCommentRepository)
         {
             this.deckRepository = repository;
             this.userRepository = userRepository;
@@ -37,6 +38,7 @@ namespace BusinessLogic
             this.deckGroupRepository = deckGroupRepository;
             this.groupRepository = groupRepository;
             this.notificationsInterface = notificationsInterface;
+            this.flashcardCommentRepository = flashcardCommentRepository;
         }
 
         public Deck AddDeck(Deck deck, string userToken)
@@ -190,6 +192,20 @@ namespace BusinessLogic
             group.DeckGroups.Remove(resultFind.First());
             groupRepository.Update(group);
             return group;
+        }
+
+        public IEnumerable<FlashcardComment> GetFlashcardsComments(int flashcardId)
+        {
+            Flashcard flashcard = flashcardRepository.GetById(flashcardId);
+
+            if (flashcard is null)
+                throw new NotFoundException(FlashcardMessage.FLASHCARD_NOT_FOUND);
+
+            IEnumerable<FlashcardComment> flashcardsComments = new List<FlashcardComment>();
+            flashcardsComments = this.flashcardCommentRepository.FindByCondition(
+                c => c.Flashcard.Id == flashcardId);
+
+            return flashcardsComments;
         }
     }
 }

@@ -8,6 +8,7 @@ using Exceptions;
 using Domain;
 using WebAPI.Models;
 using WebAPI.Filters;
+using WebAPI.Models.ResponseModels;
 
 namespace WebAPI.Controllers
 {
@@ -25,24 +26,24 @@ namespace WebAPI.Controllers
 
         [HttpGet]
         public IActionResult GetAllDecks([FromQuery] int userId = -1)
-        {   
+        {
             if (userId > 0)
             {
                 return Ok(ConvertDecks(logic.GetDecksByAuthor(userId)));
-            } 
-            
+            }
+
             return Ok(ConvertDecks(logic.GetAllDecks()));
         }
 
         private IEnumerable<ResponseDeckModel> ConvertDecks(IEnumerable<Deck> decksList)
         {
-            return decksList.Select(deck => new ResponseDeckModel() 
-            { 
-                Id = deck.Id, 
-                Author = deck.Author.Username, 
-                Name = deck.Name, 
-                Subject = deck.Subject, 
-                Difficulty = deck.Difficulty, 
+            return decksList.Select(deck => new ResponseDeckModel()
+            {
+                Id = deck.Id,
+                Author = deck.Author.Username,
+                Name = deck.Name,
+                Subject = deck.Subject,
+                Difficulty = deck.Difficulty,
                 IsHidden = deck.IsHidden
             });
         }
@@ -94,9 +95,27 @@ namespace WebAPI.Controllers
                 {
                     Id = flashcard.Id,
                     Question = flashcard.Question,
-                    Answer = flashcard.Answer
+                    Answer = flashcard.Answer,
+                    Comments = ListFlashcardsComments(flashcard.Id)
                 })
             });
+        }
+
+        private IEnumerable<ResponseFlashcardCommentsModel> ListFlashcardsComments(int flashcardsId)
+        {
+            IEnumerable<FlashcardComment> flashcardsComments = logic.GetFlashcardsComments(flashcardsId);
+            List<ResponseFlashcardCommentsModel> toReturn = new List<ResponseFlashcardCommentsModel>();
+
+            foreach (FlashcardComment comment in flashcardsComments)
+            {
+                ResponseFlashcardCommentsModel toAdd = new ResponseFlashcardCommentsModel()
+                {
+                    Comment = comment.Comment,
+                    CommentId = comment.Id
+                };
+                toReturn.Add(toAdd);
+            }
+            return toReturn;
         }
 
         [HttpDelete("{id}")]
