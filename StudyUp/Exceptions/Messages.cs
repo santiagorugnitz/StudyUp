@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Exceptions
 {
-
+    public static class CommentMessage
+    {
+        public const string COMMENT_NOT_FOUND = "This comment does not exist.";
+        public const string NOT_AUTHORIZED = "Only this flashcards author can delete its comments.";
+    }
 
     public static class DeckMessage
     {
