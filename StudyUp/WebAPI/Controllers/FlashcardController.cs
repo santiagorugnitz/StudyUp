@@ -82,5 +82,13 @@ namespace WebAPI.Controllers
            
             return Ok();
         }
+
+        [HttpDelete("{flashcardId}/comments/{commentId}")]
+        public IActionResult DeleteComment([FromHeader] string token, [FromRoute] int flashcardId, [FromRoute] int commentId)
+        {
+            logic.DeleteComment(token, flashcardId, commentId);
+            return Ok();
+        }
+
     }
 }

@@ -81,7 +81,7 @@ namespace BusinessLogic
             {
                 Comment = comment,
                 Flashcard = flashcard,
-                CreatedAt = DateTime.Now,
+                CreatedOn = DateTime.Now,
                 CreatorUsername = user.Username
             };
             
@@ -91,6 +91,29 @@ namespace BusinessLogic
 
             flashcard.Comments.Add(commentModel);
             flashcardRepository.Update(flashcard);
+        }
+
+        public bool DeleteComment(string token, int flashcardId, int commentId)
+        {
+            User user = userTokenRepository.GetUserByToken(token);
+            Flashcard flashcard = flashcardRepository.GetById(flashcardId);
+            FlashcardComment comment = flashcardCommentRepository.GetById(commentId);
+
+            if (user is null)
+                throw new NotFoundException(UserMessage.USER_NOT_FOUND);
+
+            if (flashcard is null)
+                throw new NotFoundException(FlashcardMessage.FLASHCARD_NOT_FOUND);
+
+            if (!flashcard.Deck.Author.Equals(user))
+                throw new InvalidException(CommentMessage.NOT_AUTHORIZED);
+
+            if (comment is null)
+                throw new NotFoundException(CommentMessage.COMMENT_NOT_FOUND);
+
+            flashcard.Comments.Remove(comment);
+            flashcardRepository.Update(flashcard);
+            return true;
         }
 
         public bool DeleteFlashcard(int id, string token)
@@ -201,9 +224,9 @@ namespace BusinessLogic
 
                 flashcardScoreRepository.Update(editingFlashcard);
             }
-
             return flashcard;
-
         }
+
+
     }
 }
