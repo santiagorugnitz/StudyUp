@@ -6,11 +6,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -72,7 +70,7 @@ class RecyclerBottomSheetFragment : BottomSheetDialogFragment(), SwipeCallback.C
 
     private fun loadData() {
         val mappedItems = items.map {
-            CommentRenderer.Item(it.id, it.comment, it.username, SimpleDateFormat.getDateInstance().format(it.date))
+            CommentRenderer.Item(it.id, it.comment, it.username, SimpleDateFormat.getDateInstance().format(it.time))
         }
         adapter.setItems(mappedItems)
     }
@@ -107,12 +105,14 @@ class RecyclerBottomSheetFragment : BottomSheetDialogFragment(), SwipeCallback.C
     override fun onSwipe(adapterPos: Int) {
         items.removeAt(adapterPos)
         callback?.onDelete((adapter.getItems()[adapterPos] as CommentRenderer.Item).id)
-        if (adapter.itemCount == 1) {
-            dismiss()
-        } else {
-            adapter.removeItem(adapterPos)
-        }
+        adapter.removeItem(adapterPos)
 
+    }
+
+    fun checkDismiss() {
+        if (adapter.itemCount == 0) {
+            dismiss()
+        }
     }
 
 }

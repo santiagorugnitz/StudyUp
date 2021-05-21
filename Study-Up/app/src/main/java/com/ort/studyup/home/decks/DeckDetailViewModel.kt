@@ -31,7 +31,7 @@ class DeckDetailViewModel(
     fun deleteComment(flashcardId: Int, commentId: Int): LiveData<Boolean> {
         val result = MutableLiveData<Boolean>()
         executeService {
-            //TODO:
+            flashcardRepository.deleteComment(flashcardId, commentId)
             result.postValue(true)
         }
         return result

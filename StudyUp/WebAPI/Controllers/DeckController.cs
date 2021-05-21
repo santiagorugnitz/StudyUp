@@ -111,7 +111,9 @@ namespace WebAPI.Controllers
                 ResponseFlashcardCommentsModel toAdd = new ResponseFlashcardCommentsModel()
                 {
                     Comment = comment.Comment,
-                    CommentId = comment.Id
+                    Id = comment.Id,
+                    Time = comment.CreatedOn.ToUniversalTime(),
+                    AuthorUsername = comment.CreatorUsername
                 };
                 toReturn.Add(toAdd);
             }

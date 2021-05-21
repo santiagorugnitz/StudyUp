@@ -68,25 +68,12 @@ class DeckDetailFragment : BaseFragment(), FlashcardItemRenderer.Callback {
     private fun initViewModel(id: Int) {
         viewModel.loadDetails(id).observe(viewLifecycleOwner, { deck ->
             adapter.setItems(deck.flashcards.map {
-                if (it.question == "Back Off") {
-                    FlashcardItemRenderer.Item(
-                        it.id,
-                        it.question,
-                        it.answer,
-                        mutableListOf(
-                            Comment(1, "muy bueno", "Santiago", Date()),
-                            Comment(1, "muy bueno", "Santiago", Date()),
-                            Comment(1, "muy bueno", "Santiago", Date()),
-                        )
-                    )
-                } else {
-                    FlashcardItemRenderer.Item(
-                        it.id,
-                        it.question,
-                        it.answer,
-                        mutableListOf<Comment>().apply { addAll(it.comments ?: listOf()) }
-                    )
-                }
+                FlashcardItemRenderer.Item(
+                    it.id,
+                    it.question,
+                    it.answer,
+                    mutableListOf<Comment>().apply { addAll(it.comments ?: listOf()) }
+                )
             })
             initUI(deck)
         }
@@ -105,11 +92,13 @@ class DeckDetailFragment : BaseFragment(), FlashcardItemRenderer.Callback {
 
     override fun onShowComments(flashcardId: Int, comments: MutableList<Comment>) {
         requireActivity().supportFragmentManager.let {
-            RecyclerBottomSheetFragment.getInstance().apply {
+            val frag = RecyclerBottomSheetFragment.getInstance()
+                frag.apply {
                 setCallback(object : RecyclerBottomSheetFragment.Callback {
                     override fun onDelete(id: Int) {
                         viewModel.deleteComment(flashcardId, id).observe(viewLifecycleOwner, {
                             if (it) adapter.notifyDataSetChanged()
+                            frag.checkDismiss()
                         })
                     }
 

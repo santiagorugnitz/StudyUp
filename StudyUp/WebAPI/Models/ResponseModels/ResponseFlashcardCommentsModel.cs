@@ -7,7 +7,9 @@ namespace WebAPI.Models.ResponseModels
 {
     public class ResponseFlashcardCommentsModel
     {
-        public int CommentId { get; set; }
+        public int Id { get; set; }
         public string Comment { get; set; }
+        public DateTime Time { get; set; }
+        public String AuthorUsername { get; set; }
     }
 }
