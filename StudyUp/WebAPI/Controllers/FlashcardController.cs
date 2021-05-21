@@ -7,6 +7,7 @@ using Domain;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Filters;
 using WebAPI.Models;
+using WebAPI.Models.RequestModels;
 
 namespace WebAPI.Controllers
 {
@@ -75,10 +76,10 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-        [HttpPost("{id}/comment")]
-        public IActionResult CommentFlashcard([FromRoute] int id,[FromHeader] string token, [FromBody] string comment)
+        [HttpPost("{id}/comments")]
+        public IActionResult CommentFlashcard([FromRoute] int id,[FromHeader] string token, [FromBody] CommentModel comment)
         {
-            logic.CommentFlashcard(id, token, comment);
+            logic.CommentFlashcard(id, token, comment.Comment);
            
             return Ok();
         }
