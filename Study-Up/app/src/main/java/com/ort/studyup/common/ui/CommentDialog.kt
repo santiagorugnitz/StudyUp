@@ -8,7 +8,6 @@ import androidx.core.widget.doOnTextChanged
 import com.ort.studyup.R
 import com.ort.studyup.common.getActivity
 import kotlinx.android.synthetic.main.comment_dialog.view.*
-import kotlinx.android.synthetic.main.confirmation_dialog.view.*
 import kotlinx.android.synthetic.main.confirmation_dialog.view.closeIcon
 import kotlinx.android.synthetic.main.confirmation_dialog.view.dialogButton
 

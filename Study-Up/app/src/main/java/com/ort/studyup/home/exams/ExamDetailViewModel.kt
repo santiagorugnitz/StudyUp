@@ -2,13 +2,9 @@ package com.ort.studyup.home.exams
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.ort.studyup.common.models.Deck
-import com.ort.studyup.common.models.Exam
-import com.ort.studyup.common.models.Flashcard
 import com.ort.studyup.common.renderers.ExamCardItemRenderer
 import com.ort.studyup.common.renderers.ResultItemRenderer
 import com.ort.studyup.common.ui.BaseViewModel
-import com.ort.studyup.repositories.DeckRepository
 import com.ort.studyup.repositories.ExamRepository
 
 class ExamDetailViewModel(

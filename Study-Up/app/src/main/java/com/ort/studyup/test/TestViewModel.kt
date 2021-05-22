@@ -3,11 +3,8 @@ package com.ort.studyup.test
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ort.studyup.common.models.ExamCard
-import com.ort.studyup.common.models.RatedFlashcard
 import com.ort.studyup.common.ui.BaseViewModel
-import com.ort.studyup.repositories.ExamCardRepository
 import com.ort.studyup.repositories.ExamRepository
-import com.ort.studyup.repositories.FlashcardRepository
 
 class TestViewModel(
         private val examRepository: ExamRepository

@@ -10,8 +10,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ort.studyup.R
 import com.ort.studyup.common.*
-import com.ort.studyup.common.models.Deck
 import com.ort.studyup.common.models.Comment
+import com.ort.studyup.common.models.Deck
 import com.ort.studyup.common.models.DeckData
 import com.ort.studyup.common.renderers.FlashcardItemRenderer
 import com.ort.studyup.common.ui.BaseFragment
@@ -19,7 +19,6 @@ import com.ort.studyup.common.ui.RecyclerBottomSheetFragment
 import com.ort.studyup.study.StudyActivity
 import com.thinkup.easylist.RendererAdapter
 import kotlinx.android.synthetic.main.fragment_deck_detail.*
-import java.util.*
 
 class DeckDetailFragment : BaseFragment(), FlashcardItemRenderer.Callback {
 

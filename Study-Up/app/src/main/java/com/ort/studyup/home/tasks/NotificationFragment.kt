@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ort.studyup.R
@@ -42,20 +41,20 @@ class NotificationFragment : BaseFragment(), NotificationItemRenderer.Callback {
     }
 
     private fun initUI() {
-        viewModel.loadItems().observe(viewLifecycleOwner, Observer {
+        viewModel.loadItems().observe(viewLifecycleOwner, {
             it?.let {
                 adapter.setItems(it)
             }
         })
         deleteAll.setOnClickListener {
-            viewModel.clearNotifications().observe(viewLifecycleOwner, Observer {
+            viewModel.clearNotifications().observe(viewLifecycleOwner, {
                 if (it) adapter.setItems(listOf())
             })
         }
     }
 
     override fun onDeleteNotification(id: Int) {
-        viewModel.delete(id).observe(viewLifecycleOwner, Observer { adapter.setItems(it) })
+        viewModel.delete(id).observe(viewLifecycleOwner, { adapter.setItems(it) })
     }
 
     override fun onNavigate(id: Int, type: NotificationType, entityId: Int) {

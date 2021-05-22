@@ -1,7 +1,6 @@
 package com.ort.studyup.repositories
 
 import com.ort.studyup.common.models.*
-import com.ort.studyup.services.DeckService
 import com.ort.studyup.services.ExamService
 import com.ort.studyup.services.check
 

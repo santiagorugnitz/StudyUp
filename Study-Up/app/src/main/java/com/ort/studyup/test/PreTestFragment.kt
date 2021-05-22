@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ort.studyup.R
@@ -51,7 +50,7 @@ class PreTestFragment : BaseFragment(), ConfirmationDialog.Callback {
     }
 
     private fun initViewModel(examId: Int) {
-        viewModel.loadExam(examId).observe(viewLifecycleOwner, Observer {
+        viewModel.loadExam(examId).observe(viewLifecycleOwner, {
             initUI(it.first)
             initResults(it.second)
         })
@@ -85,7 +84,7 @@ class PreTestFragment : BaseFragment(), ConfirmationDialog.Callback {
         swipeRefresh.isEnabled = true
         swipeRefresh.setOnRefreshListener {
             swipeRefresh.isRefreshing = false
-            viewModel.reloadResults(examId).observe(viewLifecycleOwner, Observer {
+            viewModel.reloadResults(examId).observe(viewLifecycleOwner, {
                 initResults(it)
             })
         }

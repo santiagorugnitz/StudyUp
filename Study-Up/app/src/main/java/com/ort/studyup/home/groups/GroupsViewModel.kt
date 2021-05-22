@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import com.ort.studyup.common.models.DeckItem
 import com.ort.studyup.common.renderers.AssignDeckItemRenderer
 import com.ort.studyup.common.renderers.DeletableDeckItemRenderer
-import com.ort.studyup.common.renderers.SubtitleRenderer
 import com.ort.studyup.common.ui.BaseViewModel
 import com.ort.studyup.repositories.DeckRepository
 import com.ort.studyup.repositories.GroupRepository

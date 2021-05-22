@@ -5,7 +5,6 @@ import android.speech.tts.TextToSpeech
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import com.ort.studyup.R
 import com.ort.studyup.common.DECK_ID_KEY
 import com.ort.studyup.common.INTERNAL_ERROR_CODE
@@ -50,7 +49,7 @@ class StudyFragment : BaseFragment(), TextToSpeech.OnInitListener, CommentDialog
     }
 
     private fun initViewModel(deckId: Int) {
-        viewModel.loadFlashcards(deckId).observe(viewLifecycleOwner, Observer {
+        viewModel.loadFlashcards(deckId).observe(viewLifecycleOwner, {
             it?.let {
                 onNewCard(it)
             } ?: run {
@@ -62,12 +61,12 @@ class StudyFragment : BaseFragment(), TextToSpeech.OnInitListener, CommentDialog
 
     private fun initUI() {
         wrongButton.setOnClickListener {
-            viewModel.onWrong().observe(viewLifecycleOwner, Observer {
+            viewModel.onWrong().observe(viewLifecycleOwner, {
                 onNewCard(it)
             })
         }
         correctButton.setOnClickListener {
-            viewModel.onCorrect().observe(viewLifecycleOwner, Observer {
+            viewModel.onCorrect().observe(viewLifecycleOwner, {
                 onNewCard(it)
             })
         }

@@ -10,7 +10,6 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidmads.library.qrgenearator.QRGContents
 import androidmads.library.qrgenearator.QRGEncoder
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.zxing.WriterException
 import com.ort.studyup.R
@@ -37,7 +36,7 @@ class ProfileFragment : BaseFragment() {
     }
 
     private fun initUI() {
-        viewModel.currentUser().observe(viewLifecycleOwner, Observer {
+        viewModel.currentUser().observe(viewLifecycleOwner, {
             it?.let {
                 username.text = it.username
                 loadQR(it.username)

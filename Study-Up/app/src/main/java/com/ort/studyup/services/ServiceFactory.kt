@@ -11,7 +11,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
-import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
@@ -59,7 +58,7 @@ class ServiceFactory(private val context: Context) {
         sslContext.init(null, trustAllCerts, java.security.SecureRandom())
         clientBuilder
             .sslSocketFactory(sslContext.socketFactory, trustAllCerts[0] as X509TrustManager)
-            .hostnameVerifier(HostnameVerifier { _, _ -> true })
+            .hostnameVerifier({ _, _ -> true })
         return clientBuilder
     }
 

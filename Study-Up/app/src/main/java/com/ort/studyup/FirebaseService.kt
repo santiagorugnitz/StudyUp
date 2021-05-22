@@ -1,29 +1,18 @@
 package com.ort.studyup
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
-import android.os.Build
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.room.Room
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.ort.studyup.common.*
+import com.ort.studyup.common.NOTIFICATION_BODY_EXTRA
+import com.ort.studyup.common.NOTIFICATION_ENTITY_ID_EXTRA
+import com.ort.studyup.common.NOTIFICATION_TITLE_EXTRA
+import com.ort.studyup.common.NOTIFICATION_TYPE_EXTRA
 import com.ort.studyup.common.models.Notification
-import com.ort.studyup.common.ui.CustomLoader
-import com.ort.studyup.services.ServiceError
-import com.ort.studyup.services.ServiceException
-import com.ort.studyup.splash.SplashActivity
 import com.ort.studyup.storage.dao.AppDatabase
 import com.ort.studyup.storage.dao.Converters
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import org.koin.android.ext.koin.androidContext
-import java.lang.Exception
 
 class FirebaseService : FirebaseMessagingService() {
 

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import com.ort.studyup.R
 import com.ort.studyup.common.ANSWER_KEY
 import com.ort.studyup.common.DECK_ID_KEY
@@ -61,7 +60,7 @@ class NewFlashcardFragment : BaseFragment(), ConfirmationDialog.Callback {
         saveButton.setOnClickListener {
             viewModel.sendData(
                 deckId ?: 0, questionInput.text.toString(), answerInput.text.toString()
-            ).observe(viewLifecycleOwner, Observer {
+            ).observe(viewLifecycleOwner, {
                 if (it > 0)
                     requireActivity().onBackPressed()
             })
@@ -70,7 +69,7 @@ class NewFlashcardFragment : BaseFragment(), ConfirmationDialog.Callback {
     }
 
     override fun onButtonClick() {
-        viewModel.deleteFlashcard().observe(viewLifecycleOwner, Observer {
+        viewModel.deleteFlashcard().observe(viewLifecycleOwner, {
             if (it) {
                 requireActivity().onBackPressed()
                 requireActivity().onBackPressed()

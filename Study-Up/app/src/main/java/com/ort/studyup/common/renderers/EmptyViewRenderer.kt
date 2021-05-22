@@ -1,12 +1,10 @@
 package com.ort.studyup.common.renderers
 
-import android.graphics.Typeface
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.DrawableRes
 import com.ort.studyup.R
 import com.thinkup.easycore.ViewRenderer
-import kotlinx.android.synthetic.main.confirmation_dialog.view.*
 import kotlinx.android.synthetic.main.empty_view.view.*
 
 class EmptyViewRenderer : ViewRenderer<EmptyViewRenderer.Item, View>(Item::class) {

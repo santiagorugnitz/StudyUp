@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ort.studyup.R
@@ -45,7 +44,7 @@ class ExamsFragment : BaseFragment(), ExamItemRenderer.Callback {
     }
 
     private fun initViewModel() {
-        viewModel.loadExams().observe(viewLifecycleOwner, Observer {
+        viewModel.loadExams().observe(viewLifecycleOwner, {
             adapter.setItems(it)
         })
     }
@@ -59,7 +58,7 @@ class ExamsFragment : BaseFragment(), ExamItemRenderer.Callback {
     }
 
     override fun onAssignExam(examId: Int, groupId: Int) {
-        viewModel.onAssignExam(examId, groupId).observe(viewLifecycleOwner, Observer {
+        viewModel.onAssignExam(examId, groupId).observe(viewLifecycleOwner, {
             initViewModel()
         })
     }
