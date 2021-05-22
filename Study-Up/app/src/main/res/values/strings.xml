@@ -76,6 +76,8 @@
     <string name="notifications">Notifications</string>
     <string name="start_exam_confirmation">Begin attempt? You will not be able to pause or retry later.</string>
     <string name="exam_finished">Exam finished! \nScore: %1$s points</string>
+    <string name="group_prefix">Group:</string>
+    <string name="answer_prefix">A:</string>
 
     <string-array name="difficulties">
         <item>Easy</item>
