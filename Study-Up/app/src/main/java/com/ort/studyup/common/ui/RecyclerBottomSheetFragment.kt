@@ -75,10 +75,6 @@ class RecyclerBottomSheetFragment : BottomSheetDialogFragment(), SwipeCallback.C
         adapter.setItems(mappedItems)
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
-
     override fun onDetach() {
         super.onDetach()
         callback = null

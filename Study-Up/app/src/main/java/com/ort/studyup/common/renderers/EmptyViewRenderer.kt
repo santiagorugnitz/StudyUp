@@ -9,7 +9,7 @@ import com.thinkup.easycore.ViewRenderer
 import kotlinx.android.synthetic.main.confirmation_dialog.view.*
 import kotlinx.android.synthetic.main.empty_view.view.*
 
-class EmptyViewRenderer() : ViewRenderer<EmptyViewRenderer.Item, View>(Item::class) {
+class EmptyViewRenderer : ViewRenderer<EmptyViewRenderer.Item, View>(Item::class) {
 
     override fun create(parent: ViewGroup): View = inflate(R.layout.empty_view, parent, false)
 

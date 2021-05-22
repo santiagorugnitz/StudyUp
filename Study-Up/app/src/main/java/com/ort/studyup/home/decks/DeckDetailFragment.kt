@@ -72,7 +72,7 @@ class DeckDetailFragment : BaseFragment(), FlashcardItemRenderer.Callback {
                     it.id,
                     it.question,
                     it.answer,
-                    mutableListOf<Comment>().apply { addAll(it.comments ?: listOf()) }
+                    mutableListOf<Comment>().apply { addAll(it.comments) }
                 )
             })
             initUI(deck)

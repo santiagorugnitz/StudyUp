@@ -8,7 +8,7 @@ import com.thinkup.easycore.ViewRenderer
 import kotlinx.android.synthetic.main.item_result.view.*
 import kotlin.math.roundToInt
 
-class ResultItemRenderer() : ViewRenderer<ResultItemRenderer.Item, View>(Item::class) {
+class ResultItemRenderer : ViewRenderer<ResultItemRenderer.Item, View>(Item::class) {
 
     override fun create(parent: ViewGroup): View = inflate(R.layout.item_result, parent, false)
 

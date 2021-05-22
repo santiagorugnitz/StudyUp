@@ -36,7 +36,7 @@ class SwipeCallback(val callback: Callback) : ItemTouchHelper.SimpleCallback(0, 
         val iconBottom = iconTop + icon.intrinsicHeight
         if (dX > 0) { // Swiping to the right
             val iconLeft = itemView.left + iconMargin
-            val iconRight = iconLeft + icon.intrinsicWidth;
+            val iconRight = iconLeft + icon.intrinsicWidth
             icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
             background.setBounds(
                 itemView.left, itemView.top,
