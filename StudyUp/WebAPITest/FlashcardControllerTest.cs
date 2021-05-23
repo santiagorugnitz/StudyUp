@@ -5,9 +5,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using WebAPI.Controllers;
 using WebAPI.Models;
+using WebAPI.Models.RequestModels;
 
 namespace WebAPITest
 {
@@ -103,7 +103,7 @@ namespace WebAPITest
         [TestMethod]
         public void GetRatedFlashcardOkTest()
         {
-            logicMock.Setup(x => x.GetRatedFlashcards(It.IsAny<int>(), It.IsAny<string>())).Returns(new List<Tuple<Flashcard, int>>() 
+            logicMock.Setup(x => x.GetRatedFlashcards(It.IsAny<int>(), It.IsAny<string>())).Returns(new List<Tuple<Flashcard, int>>()
             { new Tuple<Flashcard, int>(flashcardExample, 10) });
 
             var result = controller.GetRatedFlashcards(flashcardModelExample.ToEntity().Id, userModelExample.Token);
@@ -130,7 +130,12 @@ namespace WebAPITest
         {
             logicMock.Setup(x => x.CommentFlashcard(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>()));
 
-            var result = controller.CommentFlashcard(1, userModelExample.Token, "New comment");
+            CommentModel commentModel = new CommentModel()
+            {
+                Comment = "New Comment"
+            };
+
+            var result = controller.CommentFlashcard(1, userModelExample.Token, commentModel);
             var okResult = result as OkObjectResult;
 
             logicMock.VerifyAll();

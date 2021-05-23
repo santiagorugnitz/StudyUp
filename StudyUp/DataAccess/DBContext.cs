@@ -1,8 +1,5 @@
 ﻿using Domain;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 
 namespace DataAccess
@@ -15,7 +12,6 @@ namespace DataAccess
         public DbSet<Group> Groups { get; set; }
         public DbSet<Exam> Exams { get; set; }
         public DbSet<DeckGroup> DeckGroups { get; set; }
-        //public DbSet<ExamGroup> ExamGroups { get; set; }
         public DbSet<UserGroup> UserGroups { get; set; }
 
         public DBContext(DbContextOptions options) : base(options) { }
@@ -88,19 +84,6 @@ namespace DataAccess
                 .WithMany(c => c.DeckGroups)
                 .HasForeignKey(bc => bc.GroupId)
                 .OnDelete(DeleteBehavior.NoAction);
-
-            //modelBuilder.Entity<ExamGroup>()
-            //    .HasKey(b => new { b.GroupId, b.ExamId });
-            //modelBuilder.Entity<ExamGroup>()
-            //    .HasOne(bc => bc.Exam)
-            //    .WithMany(b => b.ExamGroups)
-            //    .HasForeignKey(bc => bc.ExamId)
-            //    .OnDelete(DeleteBehavior.NoAction);
-            //modelBuilder.Entity<ExamGroup>()
-            //    .HasOne(bc => bc.Group)
-            //    .WithMany(c => c.ExamGroups)
-            //    .HasForeignKey(bc => bc.GroupId)
-            //    .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<FlashcardScore>()
                 .HasKey(b => new { b.FlashcardId, b.UserId });

@@ -3,15 +3,8 @@ using DataAccessInterface;
 using Domain;
 using Domain.Enumerations;
 using Exceptions;
-using FirebaseAdmin;
-using FirebaseAdmin.Messaging;
-using Google.Apis.Auth.OAuth2;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
 
 namespace BusinessLogic
 {
@@ -29,7 +22,8 @@ namespace BusinessLogic
         public DeckLogic(IRepository<Deck> repository, IRepository<User> userRepository,
             IUserRepository userTokenRepository, IRepository<Flashcard> flashcardRepository,
             IRepository<DeckGroup> deckGroupRepository, IRepository<Group> groupRepository,
-            INotifications notificationsInterface, IRepository<FlashcardComment> flashcardCommentRepository)
+            INotifications notificationsInterface,
+            IRepository<FlashcardComment> flashcardCommentRepository)
         {
             this.deckRepository = repository;
             this.userRepository = userRepository;
@@ -83,10 +77,13 @@ namespace BusinessLogic
         }
 
 
-        public Deck EditDeck(int deckId, string newName, Difficulty newDifficulty, bool newVisibility, string subject)
+        public Deck EditDeck(int deckId, string newName, Difficulty newDifficulty, bool newVisibility,
+            string subject)
         {
             Deck deck = deckRepository.GetById(deckId);
-            ICollection<Deck> sameName = deckRepository.FindByCondition(a => a.Name == newName && a.Id != deckId);
+            ICollection<Deck> sameName = deckRepository.FindByCondition(a => a.Name == newName
+                && a.Id != deckId);
+
             if (sameName != null && sameName.Count > 0)
                 throw new AlreadyExistsException(DeckMessage.DECK_ALREADY_EXISTS);
             if ((int)newDifficulty > 2 || (int)newDifficulty < 0)
@@ -103,7 +100,6 @@ namespace BusinessLogic
                 deckRepository.Update(deck);
                 return deck;
             }
-
             else throw new NotFoundException(DeckMessage.DECK_NOT_FOUND);
         }
 

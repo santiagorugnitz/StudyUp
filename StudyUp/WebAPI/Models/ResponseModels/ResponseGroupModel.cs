@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace WebAPI.Models
+﻿namespace WebAPI.Models
 {
     public class ResponseGroupModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string TeachersName { get; set; }
         public bool Subscribed { get; set; }
+        public string TeachersName { get; set; }
     }
 }
