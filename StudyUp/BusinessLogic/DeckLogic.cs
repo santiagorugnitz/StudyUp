@@ -3,15 +3,8 @@ using DataAccessInterface;
 using Domain;
 using Domain.Enumerations;
 using Exceptions;
-using FirebaseAdmin;
-using FirebaseAdmin.Messaging;
-using Google.Apis.Auth.OAuth2;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
 
 namespace BusinessLogic
 {

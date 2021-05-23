@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -14,7 +11,6 @@ namespace WebAPI.Filters
         private static readonly int BAD_REQUEST_STATUS_CODE = 400;
         private static readonly int UNAUTHENTICATED_STATUS_CODE = 401;
         private static readonly int NOT_FOUND_STATUS_CODE = 404;
-
 
         public void OnException(ExceptionContext context)
         {

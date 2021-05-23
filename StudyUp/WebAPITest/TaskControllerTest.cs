@@ -5,8 +5,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using WebAPI;
 using WebAPI.Controllers;
 using WebAPI.Models.ResponseModels;
 
