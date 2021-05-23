@@ -3,7 +3,7 @@ package com.ort.studyup.services
 import android.content.Context
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
-import com.ort.studyup.common.API_URL
+import com.ort.studyup.BuildConfig
 import com.ort.studyup.services.interceptors.HeaderInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -40,7 +40,7 @@ class ServiceFactory(private val context: Context) {
     }
 
     private fun retrofit() = Retrofit.Builder()
-        .baseUrl(API_URL)
+        .baseUrl(BuildConfig.API_URL)
         .client(okHttpClient)
         .addConverterFactory(gsonConverterFactory())
         .build()

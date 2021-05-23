@@ -17,8 +17,6 @@ const val ANSWER_KEY = "answer_key"
 const val EXAM_CARD_ID_KEY = "exam_card_id_key"
 const val IS_OWNER_EXTRA = "is_owner_extra"
 
-const val API_URL = "https://192.168.1.11:45457/"
-
 const val REGEX_MAIL = "^([A-Z0-9._%+-]+)(@)([A-Z0-9.-]+)(\\.)([A-Z]{2,})\$"
 const val REGEX_PASSWORD = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)[A-Za-z\\d\$&+,:;=?@#|'<>.^*()%!-]{1,}\$"
 
