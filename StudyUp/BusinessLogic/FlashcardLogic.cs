@@ -19,8 +19,10 @@ namespace BusinessLogic
         private INotifications notificationsInterface;
 
         public FlashcardLogic(IRepository<Flashcard> repository, IRepository<User> userRepository,
-            IUserRepository userTokenRepository, IRepository<Deck> deckRepository, IRepository<FlashcardScore> flashcardScoreRepository,
-            IRepository<FlashcardComment> flashcardCommentRepository, INotifications notificationsInterface)
+            IUserRepository userTokenRepository, IRepository<Deck> deckRepository,
+            IRepository<FlashcardScore> flashcardScoreRepository,
+            IRepository<FlashcardComment> flashcardCommentRepository,
+            INotifications notificationsInterface)
         {
             this.flashcardRepository = repository;
             this.userRepository = userRepository;
@@ -83,7 +85,7 @@ namespace BusinessLogic
                 CreatedOn = DateTime.Now,
                 CreatorUsername = user.Username
             };
-            
+
             flashcardCommentRepository.Add(commentModel);
 
             this.notificationsInterface.NotifyComments(commentModel, flashcard.Deck.Author);
@@ -126,7 +128,7 @@ namespace BusinessLogic
 
             if (!user.Token.Equals(token))
                 throw new InvalidException(FlashcardMessage.NOT_AUTHORIZED_TO_DELETE);
-            
+
             Deck deck = flashcard.Deck;
             deck.Flashcards.Remove(flashcard);
             deckRepository.Update(deck);
@@ -134,7 +136,8 @@ namespace BusinessLogic
             return true;
         }
 
-        public Flashcard EditFlashcard(string token, int flashcardId, string newQuestion, string newAnswer)
+        public Flashcard EditFlashcard(string token, int flashcardId, string newQuestion,
+            string newAnswer)
         {
             Flashcard flashcard = flashcardRepository.GetById(flashcardId);
             User user = userTokenRepository.GetUserByToken(token);
@@ -172,7 +175,8 @@ namespace BusinessLogic
 
             foreach (var flashcard in deck.Flashcards)
             {
-                var flashcardScore = flashcardScoreRepository.FindByCondition(fs => fs.FlashcardId == flashcard.Id && fs.UserId == user.Id);
+                var flashcardScore = flashcardScoreRepository.FindByCondition(fs => fs.FlashcardId == flashcard.Id
+                && fs.UserId == user.Id);
                 if (flashcardScore.Count() == 0)
                 {
                     Tuple<Flashcard, int> assigningTuple = new Tuple<Flashcard, int>(flashcard, 0);
@@ -180,7 +184,8 @@ namespace BusinessLogic
                 }
                 else
                 {
-                    Tuple<Flashcard, int> assigningTuple = new Tuple<Flashcard, int>(flashcard, flashcardScore.First().Score);
+                    Tuple<Flashcard, int> assigningTuple = new Tuple<Flashcard, int>(flashcard,
+                        flashcardScore.First().Score);
                     returningList.Add(assigningTuple);
                 }
             }
@@ -200,19 +205,23 @@ namespace BusinessLogic
                 throw new InvalidException(FlashcardMessage.NOT_AUTHORIZED);
 
             var flashcardScore = flashcardScoreRepository.FindByCondition(fs => fs.FlashcardId == flashcard.Id && fs.UserId == user.Id);
-            
-            if(flashcardScore.Count() == 0)
+
+            if (flashcardScore.Count() == 0)
             {
                 var addingFlashcard = new FlashcardScore()
-                { 
-                    FlashcardId = flashcard.Id, Flashcard = flashcard, User = user, UserId = user.Id, Score = score 
+                {
+                    FlashcardId = flashcard.Id,
+                    Flashcard = flashcard,
+                    User = user,
+                    UserId = user.Id,
+                    Score = score
                 };
 
                 flashcardScoreRepository.Add(addingFlashcard);
 
                 flashcard.UserScores.Add(addingFlashcard);
                 flashcardRepository.Update(flashcard);
-            } 
+            }
             else
             {
                 var editingFlashcard = flashcardScore.First();
@@ -225,7 +234,5 @@ namespace BusinessLogic
             }
             return flashcard;
         }
-
-
     }
 }

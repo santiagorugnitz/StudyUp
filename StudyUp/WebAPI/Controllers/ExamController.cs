@@ -76,9 +76,9 @@ namespace WebAPI.Controllers
                 toAdd.Id = exam.Id;
                 toAdd.Name = exam.Name;
                 if (exam.Group is null)
-                    toAdd.groupsName = "";
+                    toAdd.GroupsName = "";
                 else
-                    toAdd.groupsName = exam.Group.Name;
+                    toAdd.GroupsName = exam.Group.Name;
                 toReturn.Add(toAdd);
             }
             return toReturn;

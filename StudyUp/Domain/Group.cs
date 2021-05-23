@@ -5,11 +5,11 @@ namespace Domain
     public class Group
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public virtual User Creator { get; set; }
-        public virtual List<UserGroup> UserGroups { get; set; }
-        public virtual List<DeckGroup> DeckGroups { get; set; }
         public virtual List<Exam> AssignedExams { get; set; }
+        public virtual User Creator { get; set; }
+        public virtual List<DeckGroup> DeckGroups { get; set; }
+        public string Name { get; set; }
+        public virtual List<UserGroup> UserGroups { get; set; }
 
         public override bool Equals(object o)
         {
@@ -22,6 +22,6 @@ namespace Domain
                 Group anotherGroup = (Group)o;
                 return this.Creator.Equals(anotherGroup.Creator) && this.Name.ToString().Equals(anotherGroup.Name.ToString());
             }
-        } 
+        }
     }
 }

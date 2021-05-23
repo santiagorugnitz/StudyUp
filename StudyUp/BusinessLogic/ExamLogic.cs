@@ -107,7 +107,8 @@ namespace BusinessLogic
 
             try
             {
-                userExam = exam.AlreadyPerformed.Find(ue => ue.UserId == user.Id && ue.ExamId == exam.Id);
+                userExam = exam.AlreadyPerformed.Find(ue => ue.UserId == user.Id
+                    && ue.ExamId == exam.Id);
             }
             catch (NullReferenceException) { }
 
@@ -123,8 +124,15 @@ namespace BusinessLogic
         {
             if (userExam == null)
             {
-                exam.AlreadyPerformed.Add(new UserExam() { User = user, UserId = user.Id, Exam = exam, ExamId = exam.Id, Score = score });
-            } 
+                exam.AlreadyPerformed.Add(new UserExam()
+                {
+                    User = user,
+                    UserId = user.Id,
+                    Exam = exam,
+                    ExamId = exam.Id,
+                    Score = score
+                });
+            }
             else
             {
                 userExam.Score = score;
@@ -137,7 +145,7 @@ namespace BusinessLogic
         {
             if (totalQuestions == 0) return 0;
             var answersPercentage = (double)correctAnswers / totalQuestions;
-            return answersPercentage / ((double)time/60);
+            return answersPercentage / ((double)time / 60);
         }
 
         public Exam GetExamById(int id, string token)
@@ -161,7 +169,7 @@ namespace BusinessLogic
 
             foreach (var perform in exam.AlreadyPerformed)
             {
-                if (perform.Score != null) 
+                if (perform.Score != null)
                     result.Add(new Tuple<string, double>(perform.User.Username, (double)perform.Score));
             }
 

@@ -4,6 +4,6 @@
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string groupsName { get; set; }
+        public string GroupsName { get; set; }
     }
 }

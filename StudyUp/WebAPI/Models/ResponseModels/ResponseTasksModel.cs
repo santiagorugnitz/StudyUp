@@ -11,8 +11,8 @@ namespace WebAPI.Models.ResponseModels
     public class ResponseTaskExamModel
     {
         public int Id { get; set; }
-        public string Name { get; set; }
         public string GroupsName { get; set; }
+        public string Name { get; set; }
     }
     public class ResponseTasksModel
     {
