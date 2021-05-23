@@ -112,7 +112,7 @@ namespace BusinessLogic
             catch (NullReferenceException) { }
 
             if (userExam != null && userExam.Score != null)
-                throw new InvalidException(ExamMessage.ALREADY_COMPLEATED);
+                throw new InvalidException(ExamMessage.ALREADY_COMPLETED);
 
             double score = CalculateScore(time, correctAnswers, exam.ExamCards.Count());
 

@@ -71,7 +71,7 @@ namespace BusinessLogic
                 throw new NotFoundException(UserMessage.USER_NOT_FOUND);
 
             if (flashcard.Deck != null && flashcard.Deck.Author == user)
-                throw new InvalidException(FlashcardMessage.FLASHCARDS_AUTHOR_CANNOT_COMMENT_HIS_FLASHCARD);
+                throw new InvalidException(FlashcardMessage.FLASHCARDS_AUTHOR_CANNOT_COMMENT_THEIR_FLASHCARD);
 
             if (comment.Length > 180)
                 throw new InvalidException(FlashcardMessage.LARGE_COMMENT);
@@ -146,7 +146,7 @@ namespace BusinessLogic
                 throw new NotFoundException(FlashcardMessage.FLASHCARD_NOT_FOUND);
 
             else if (user.Id != flashcard.Deck.Author.Id)
-                throw new InvalidException(FlashcardMessage.NOT_AUTHORIZED_EDIT);
+                throw new InvalidException(FlashcardMessage.NOT_AUTHORIZED_TO_EDIT);
 
             else if (flashcard != null && user != null)
             {
