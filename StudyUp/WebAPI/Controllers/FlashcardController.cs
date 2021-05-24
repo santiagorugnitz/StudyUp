@@ -24,15 +24,17 @@ namespace WebAPI.Controllers
         public IActionResult Post([FromBody] FlashcardModel flashcardModel, [FromHeader] string token)
         {
             Flashcard newFlashcard = logic.AddFlashcard(flashcardModel.ToEntity(), flashcardModel.DeckId, token);
-            return Ok(newFlashcard);
+
+            var result = Ok(new ResponseFlashcardModel { Id = newFlashcard.Id, Answer = newFlashcard.Answer, Question = newFlashcard.Question });
+            return result;
         }
 
         [HttpPut("{id}")]
         public IActionResult EditFlashcard([FromRoute] int id, [FromHeader] string token,
             [FromBody] EditFlashcardModel editFlashcardModel)
         {
-            return Ok(logic.EditFlashcard(token, id, editFlashcardModel.Question,
-                editFlashcardModel.Answer));
+            var result = logic.EditFlashcard(token, id, editFlashcardModel.Question, editFlashcardModel.Answer);
+            return Ok(new ResponseFlashcardModel { Id = result.Id, Answer = result.Answer, Question = result.Question });
         }
 
         [HttpPost("study")]
@@ -74,10 +76,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("{id}/comments")]
-        public IActionResult CommentFlashcard([FromRoute] int id,[FromHeader] string token, [FromBody] CommentModel comment)
+        public IActionResult CommentFlashcard([FromRoute] int id, [FromHeader] string token, [FromBody] CommentModel comment)
         {
             logic.CommentFlashcard(id, token, comment.Comment);
-           
+
             return Ok();
         }
 

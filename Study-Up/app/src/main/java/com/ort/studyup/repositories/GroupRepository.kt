@@ -25,16 +25,16 @@ class GroupRepository(
         groupService.unsubscribe(id).check()
     }
 
-    suspend fun assignDeck(groupId:Int,deckId:Int){
-        groupService.assign(groupId, deckId)
+    suspend fun assignDeck(groupId: Int, deckId: Int) {
+        groupService.assign(deckId, groupId).check()
     }
 
-    suspend fun unassignDeck(groupId:Int,deckId:Int){
-        groupService.unassign(groupId, deckId)
+    suspend fun unassignDeck(groupId: Int, deckId: Int) {
+        groupService.unassign(deckId, groupId).check()
     }
 
 
-    suspend fun groups():List<Group>{
+    suspend fun groups(): List<Group> {
         return groupService.groups().check()
     }
 

@@ -132,7 +132,6 @@ namespace BusinessLogic
             Deck deck = flashcard.Deck;
             deck.Flashcards.Remove(flashcard);
             deckRepository.Update(deck);
-            userRepository.Update(deck.Author);
             return true;
         }
 

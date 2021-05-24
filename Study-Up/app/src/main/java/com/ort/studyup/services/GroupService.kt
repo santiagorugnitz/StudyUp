@@ -25,8 +25,8 @@ interface GroupService {
     suspend fun groups(): Response<List<Group>>
 
     @POST("api/decks/{id}/assign")
-    suspend fun assign(@Path("id") deckId: Int, @Query("groupId") groupId: Int): Response<*>
+    suspend fun assign(@Path("id") deckId: Int, @Query("groupId") groupId: Int): Response<Unit>
 
     @DELETE("api/decks/{id}/unassign")
-    suspend fun unassign(@Path("id") deckId: Int, @Query("groupId") groupId: Int): Response<*>
+    suspend fun unassign(@Path("id") deckId: Int, @Query("groupId") groupId: Int): Response<Unit>
 }

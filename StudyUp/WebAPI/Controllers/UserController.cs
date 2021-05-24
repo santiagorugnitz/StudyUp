@@ -71,13 +71,15 @@ namespace WebAPI.Controllers
         [HttpPost("/api/users/follow")]
         public IActionResult FollowUser([FromHeader] string token, [FromQuery] string username)
         {
-            return Ok(logic.FollowUser(token, username));
+            logic.FollowUser(token, username);
+            return Ok();
         }
 
         [HttpDelete("/api/users/unfollow")]
         public IActionResult UnfollowUser([FromHeader] string token, [FromQuery] string username)
         {
-            return Ok(logic.UnfollowUser(token, username));
+            logic.UnfollowUser(token, username);
+            return Ok();
         }
 
         [HttpGet]

@@ -84,7 +84,7 @@ namespace BusinessLogic
             {
                 title = "New comment on your deck",
                 body = $"{comment.CreatorUsername} has commented on one of your decks",
-                entityId = comment.Id,
+                entityId = comment.Flashcard.Deck.Id,
                 type = NotificationType.COMMENT
             };
 

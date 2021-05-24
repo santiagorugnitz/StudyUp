@@ -128,14 +128,16 @@ namespace WebAPI.Controllers
         public IActionResult Assign([FromHeader] string token, [FromRoute] int deckId,
             [FromQuery] int groupId)
         {
-            return Ok(logic.Assign(token, groupId, deckId));
+            logic.Assign(token, groupId, deckId);
+            return Ok();
         }
 
         [HttpDelete("{deckId}/unassign")]
         public IActionResult Unassign([FromHeader] string token, [FromRoute] int deckId,
             [FromQuery] int groupId)
         {
-            return Ok(logic.Unassign(token, groupId, deckId));
+            logic.Unassign(token, groupId, deckId);
+            return Ok();
         }
     }
 }
