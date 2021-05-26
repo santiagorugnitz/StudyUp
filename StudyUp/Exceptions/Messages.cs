@@ -38,6 +38,7 @@
         public const string EXAM_NOT_FOUND = "This exam does not exist.";
         public const string INVALID_DIFFICULTY = "Choose a valid difficulty for this exam.";
         public const string INVALID_USER = "Logged user and exam author are different.";
+        public const string NO_EXAMCARDS = "Cannot assign an exam with no examcards";
         public const string NOT_A_TEACHER = "Only teachers can create and/or edit exams.";
         public const string NOT_AUTHORIZED = "Only this groups teacher can assign an exam.";
     }

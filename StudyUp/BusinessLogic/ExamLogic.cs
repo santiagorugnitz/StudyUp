@@ -81,6 +81,12 @@ namespace BusinessLogic
             if (!group.Creator.Equals(user))
                 throw new InvalidException(ExamMessage.NOT_AUTHORIZED);
 
+            ICollection<ExamCard> cards = this.examCardRepository.FindByCondition(
+                ex => ex.Exam.Equals(exam));
+
+            if (cards.Count < 1)
+                throw new InvalidException(ExamMessage.NO_EXAMCARDS);
+
             this.notificationsInterface.NotifyExams(exam, group);
 
             exam.Group = group;
