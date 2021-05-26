@@ -24,7 +24,7 @@ class GroupsViewModel(
         executeService {
             val user = userRepository.getUser()
             user?.let {
-                val decks = deckRepository.decksFromUser(user.id).map { DeckItem(it.id, it.name) }
+                val decks = deckRepository.decksFromUser(user.id).filter { it.flashcardCount ?: 0 > 0 }.map { DeckItem(it.id, it.name) }
                 val response = groupRepository.groups()
                 items.clear()
                 response.forEach { group ->

@@ -78,6 +78,7 @@
     <string name="exam_finished">Exam finished! \nScore: %1$s points</string>
     <string name="group_prefix">Group:</string>
     <string name="answer_prefix">A:</string>
+    <string name="deck_has_no_cards">Deck has no cards yet</string>
 
     <string-array name="difficulties">
         <item>Easy</item>

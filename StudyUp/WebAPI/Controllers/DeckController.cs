@@ -41,7 +41,8 @@ namespace WebAPI.Controllers
                 Name = deck.Name,
                 Subject = deck.Subject,
                 Difficulty = deck.Difficulty,
-                IsHidden = deck.IsHidden
+                IsHidden = deck.IsHidden,
+                FlashcardCount = deck.Flashcards.Count
             });
         }
 

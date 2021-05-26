@@ -10,6 +10,7 @@ import com.ort.studyup.common.DECK_ID_KEY
 import com.ort.studyup.common.INTERNAL_ERROR_CODE
 import com.ort.studyup.common.IS_OWNER_EXTRA
 import com.ort.studyup.common.models.RatedFlashcard
+import com.ort.studyup.common.ui.BaseActivity
 import com.ort.studyup.common.ui.BaseFragment
 import com.ort.studyup.common.ui.CommentDialog
 import kotlinx.android.synthetic.main.fragment_study.*
@@ -53,8 +54,13 @@ class StudyFragment : BaseFragment(), TextToSpeech.OnInitListener, CommentDialog
             it?.let {
                 onNewCard(it)
             } ?: run {
-                showError(INTERNAL_ERROR_CODE, getString(R.string.no_flashcards_error))
                 requireActivity().finish()
+                showError(INTERNAL_ERROR_CODE, getString(R.string.no_flashcards_error))
+                CommentDialog(requireContext(),object :CommentDialog.Callback{
+                    override fun onComment(comment: String) {
+                        TODO("Not yet implemented")
+                    }
+                }).show()
             }
         })
     }

@@ -57,10 +57,15 @@ class DeckDetailFragment : BaseFragment(), FlashcardItemRenderer.Callback {
             findNavController().navigate(R.id.action_deckDetailFragment_to_newFlashcardFragment, Bundle().apply { putInt(DECK_ID_KEY, deck.id) })
         }
         playButton.setOnClickListener {
-            val intent = Intent(requireActivity(), StudyActivity::class.java)
-            intent.putExtra(DECK_ID_KEY, deckId)
-            intent.putExtra(IS_OWNER_EXTRA, viewModel.isOwner)
-            startActivity(intent)
+            if (adapter.itemCount > 0) {
+                val intent = Intent(requireActivity(), StudyActivity::class.java)
+                intent.putExtra(DECK_ID_KEY, deckId)
+                intent.putExtra(IS_OWNER_EXTRA, viewModel.isOwner)
+                startActivity(intent)
+            }
+            else{
+                showError(INTERNAL_ERROR_CODE,getString(R.string.deck_has_no_cards))
+            }
         }
     }
 
@@ -92,7 +97,7 @@ class DeckDetailFragment : BaseFragment(), FlashcardItemRenderer.Callback {
     override fun onShowComments(flashcardId: Int, comments: MutableList<Comment>) {
         requireActivity().supportFragmentManager.let {
             val frag = RecyclerBottomSheetFragment.getInstance()
-                frag.apply {
+            frag.apply {
                 setCallback(object : RecyclerBottomSheetFragment.Callback {
                     override fun onDelete(id: Int) {
                         viewModel.deleteComment(flashcardId, id).observe(viewLifecycleOwner, {

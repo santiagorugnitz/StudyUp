@@ -10,5 +10,6 @@ namespace WebAPI.Models
         public bool IsHidden { get; set; }
         public string Name { get; set; }
         public string Subject { get; set; }
+        public int FlashcardCount { get; set; }
     }
 }

@@ -119,17 +119,19 @@ namespace WebAPI.Controllers
 
             foreach (var deck in deckList)
             {
-                ResponseDeckModel responseDeck = new ResponseDeckModel()
+                if (!deck.IsHidden && deck.Flashcards.Count > 0)
                 {
-                    Id = deck.Id,
-                    Author = deck.Author.Username,
-                    Name = deck.Name,
-                    Subject = deck.Subject,
-                    Difficulty = deck.Difficulty,
-                    IsHidden = deck.IsHidden
-                };
-
-                responseList.Add(responseDeck);
+                    ResponseDeckModel responseDeck = new ResponseDeckModel()
+                    {
+                        Id = deck.Id,
+                        Author = deck.Author.Username,
+                        Name = deck.Name,
+                        Subject = deck.Subject,
+                        Difficulty = deck.Difficulty,
+                        IsHidden = deck.IsHidden
+                    };
+                    responseList.Add(responseDeck);
+                }
             }
             return Ok(responseList);
         }
