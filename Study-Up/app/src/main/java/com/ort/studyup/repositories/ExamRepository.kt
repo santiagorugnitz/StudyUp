@@ -27,7 +27,7 @@ class ExamRepository(
     }
 
     suspend fun results(id: Int): List<ExamResult> {
-        return examService.results(id).check()
+        return examService.results(id).check().sortedByDescending { it.score }
     }
 
     suspend fun sendResults(id: Int, time: Int, correctAnswers: Int) {

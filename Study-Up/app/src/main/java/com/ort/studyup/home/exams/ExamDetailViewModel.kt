@@ -37,7 +37,6 @@ class ExamDetailViewModel(
         executeService {
             items.clear()
             val response = examRepository.results(id)
-            response.sortedByDescending { it.score }
             items.addAll(
                 response.mapIndexed { pos, it ->
                     ResultItemRenderer.Item(
