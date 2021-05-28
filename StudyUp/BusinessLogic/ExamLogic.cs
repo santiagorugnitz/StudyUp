@@ -150,7 +150,7 @@ namespace BusinessLogic
         private double CalculateScore(int time, int correctAnswers, int totalQuestions)
         {
             if (totalQuestions == 0) return 0;
-            var answersPercentage = (double)correctAnswers / totalQuestions;
+            var answersPercentage = (double)correctAnswers*2 - totalQuestions;
             return answersPercentage / ((double)time / 60);
         }
 

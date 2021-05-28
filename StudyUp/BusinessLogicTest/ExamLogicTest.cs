@@ -316,6 +316,7 @@ namespace BusinessLogicTest
             groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
             groupRepositoryMock.Setup(m => m.Update(It.IsAny<Group>()));
             examRepositoryMock.Setup(e => e.GetById(It.IsAny<int>())).Returns(examExample);
+            examCardRepositoryMock.Setup(e => e.FindByCondition(It.IsAny<Expression<Func<ExamCard, bool>>>())).Returns(new List<ExamCard>() { new ExamCard() { Exam = examExample } });
             examRepositoryMock.Setup(e => e.Update(examExample));
             notificationsInterfaceMock.Setup(e => e.NotifyExams(It.IsAny<Exam>(), It.IsAny<Group>()));
 
