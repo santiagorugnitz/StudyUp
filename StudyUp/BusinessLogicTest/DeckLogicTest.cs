@@ -504,7 +504,7 @@ namespace BusinessLogicTest
         public void UnassignNotFoundGroupTest()
         {
             userTokenRepository.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
-            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns((Group)null);
+            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
             deckGroupRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<DeckGroup,
                 bool>>>())).Returns(new List<DeckGroup>() { });
 
@@ -541,6 +541,36 @@ namespace BusinessLogicTest
             deckRepositoryMock.VerifyAll();
 
             Assert.AreEqual(1, result.ToList().Count);
+        }
+
+        [ExpectedException(typeof(NotFoundException))]
+        [TestMethod]
+        public void GetFlashcardsCommentsNoFlashcard()
+        {
+            FlashcardComment flashcardCommentExample = new FlashcardComment()
+            {
+                Comment = "comment",
+                CreatedOn = DateTime.Today,
+                CreatorUsername = userExample.Username,
+                Id = 1
+            };
+
+            Flashcard flashcardExample = new Flashcard()
+            {
+                Id = 1,
+                Question = "This is a question",
+                Answer = "This is the answer",
+                Comments = new List<FlashcardComment>() { flashcardCommentExample },
+                Deck = deckExample,
+                UserScores = new List<FlashcardScore>()
+            };
+            flashcardCommentExample.Flashcard = flashcardExample;
+
+            flashcardRepositoryMock.Setup(f => f.GetById(It.IsAny<int>())).Returns((Flashcard)null);
+            flashcardCommentRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<FlashcardComment,
+                bool>>>())).Returns(new List<FlashcardComment>() { flashcardCommentExample });
+
+            var result = deckLogic.GetFlashcardsComments(1);
         }
     }
 }

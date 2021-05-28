@@ -177,9 +177,16 @@ namespace WebAPITest
         [TestMethod]
         public void GetDecksOk()
         {
-            logicMock.Setup(x => x.GetDecksFromFollowing(It.IsAny<string>())).Returns(new List<Deck>());
+            logicMock.Setup(x => x.GetDecksFromFollowing(It.IsAny<string>())).Returns(new List<Deck>() { new Deck() { Id = 1,
+                        Author = new User() { Username = "Username"},
+                        Name = "Name",
+                        Subject = "Subject",
+                        Difficulty = Domain.Enumerations.Difficulty.Easy,
+                        IsHidden = false,
+                        Flashcards = new List<Flashcard>() { new Flashcard() }
+            } });
 
-            var result = controller.GetDecks("token");
+            var result = controller.GetFollowingDecks("token");
             var okResult = result as OkObjectResult;
             var value = okResult.Value as IEnumerable<ResponseDeckModel>;
 
@@ -193,7 +200,7 @@ namespace WebAPITest
                 Name = "name", Subject = "subject", Difficulty = Domain.Enumerations.Difficulty.Easy, IsHidden = true } };
             logicMock.Setup(x => x.GetDecksFromFollowing(It.IsAny<string>())).Returns(deckList);
 
-            var result = controller.GetDecks("token");
+            var result = controller.GetFollowingDecks("token");
             var okResult = result as OkObjectResult;
             var value = okResult.Value as IEnumerable<ResponseDeckModel>;
 
@@ -215,7 +222,7 @@ namespace WebAPITest
         [TestMethod]
         public void RankingWithDataOk()
         {
-            var userList = new List<User>() { new User() { Username = "User" } };
+            var userList = new List<User>() { new User() { Username = "User" }, new User() { Username = "AAnother User" } };
             logicMock.Setup(x => x.GetUsersForRanking(It.IsAny<string>())).Returns(userList);
             logicMock.Setup(x => x.GetScore(It.IsAny<string>())).Returns(10);
 

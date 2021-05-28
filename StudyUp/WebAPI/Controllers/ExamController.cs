@@ -91,9 +91,13 @@ namespace WebAPI.Controllers
 
             string groupName;
             if (exam.Group is null)
+            {
                 groupName = "";
+            }
             else
+            {
                 groupName = exam.Group.Name;
+            }
 
             return Ok(new ResponseFullExamModel()
             {

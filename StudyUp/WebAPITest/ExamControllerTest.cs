@@ -95,6 +95,7 @@ namespace WebAPITest
         public void GetExamByIdOkTest()
         {
             var exam = examModelExample.ToEntity();
+            exam.Group = new Group() { Name = "Group" };
             exam.ExamCards = new List<ExamCard>();
             exam.Author = new User { Username = "test" };
             logicMock.Setup(x => x.GetExamById(1, "token")).Returns(exam);

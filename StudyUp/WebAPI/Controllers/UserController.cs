@@ -112,7 +112,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("/api/decks/following")]
-        public IActionResult GetDecks([FromHeader] string token)
+        public IActionResult GetFollowingDecks([FromHeader] string token)
         {
             var deckList = logic.GetDecksFromFollowing(token);
             List<ResponseDeckModel> responseList = new List<ResponseDeckModel>();
