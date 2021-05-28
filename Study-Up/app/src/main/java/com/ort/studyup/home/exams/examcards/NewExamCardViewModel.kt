@@ -7,7 +7,6 @@ import com.ort.studyup.common.INTERNAL_ERROR_CODE
 import com.ort.studyup.common.ui.BaseViewModel
 import com.ort.studyup.common.ui.ResourceWrapper
 import com.ort.studyup.repositories.ExamCardRepository
-import com.ort.studyup.repositories.FlashcardRepository
 import com.ort.studyup.services.ServiceError
 
 class NewExamCardViewModel(

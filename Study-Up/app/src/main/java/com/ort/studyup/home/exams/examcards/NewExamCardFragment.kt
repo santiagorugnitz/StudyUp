@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import com.ort.studyup.R
-import com.ort.studyup.common.*
+import com.ort.studyup.common.ANSWER_KEY
+import com.ort.studyup.common.EXAM_CARD_ID_KEY
+import com.ort.studyup.common.EXAM_ID_KEY
+import com.ort.studyup.common.QUESTION_KEY
 import com.ort.studyup.common.ui.BaseFragment
 import com.ort.studyup.common.ui.ConfirmationDialog
 import kotlinx.android.synthetic.main.fragment_new_exam_card.*
@@ -61,7 +63,7 @@ class NewExamCardFragment : BaseFragment(), ConfirmationDialog.Callback {
                 examId ?: 0,
                 questionInput.text.toString(),
                 answerInput.spinner.selectedItemPosition == 0
-            ).observe(viewLifecycleOwner, Observer {
+            ).observe(viewLifecycleOwner, {
                 if (it > 0)
                     requireActivity().onBackPressed()
             })
@@ -70,7 +72,7 @@ class NewExamCardFragment : BaseFragment(), ConfirmationDialog.Callback {
     }
 
     override fun onButtonClick() {
-        viewModel.deleteExamCard().observe(viewLifecycleOwner, Observer {
+        viewModel.deleteExamCard().observe(viewLifecycleOwner, {
             if (it) {
                 requireActivity().onBackPressed()
                 requireActivity().onBackPressed()

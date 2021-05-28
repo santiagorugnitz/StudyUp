@@ -2,10 +2,8 @@
 using DataAccessInterface;
 using Domain;
 using Exceptions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace BusinessLogic
 {
@@ -43,8 +41,8 @@ namespace BusinessLogic
             if (!exam.Author.Equals(user))
                 throw new InvalidException(ExamCardMessage.INVALID_AUTHOR);
 
-            IEnumerable<ExamCard> sameQuestion = examCardRepository.GetAll().Where(a => a.Exam.Id == examId &&
-            a.Question.ToUpper().Equals(examCard.Question.ToUpper()));
+            IEnumerable<ExamCard> sameQuestion = examCardRepository.GetAll().Where(
+                a => a.Exam.Id == examId && a.Question.ToUpper().Equals(examCard.Question.ToUpper()));
 
             if (sameQuestion != null && (sameQuestion.Count() > 0))
                 throw new AlreadyExistsException(ExamCardMessage.EXAMCARD_ALREADY_EXISTS);

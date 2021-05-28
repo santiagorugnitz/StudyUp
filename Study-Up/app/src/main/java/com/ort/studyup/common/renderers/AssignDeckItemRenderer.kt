@@ -4,7 +4,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Spinner
 import com.ort.studyup.R
 import com.ort.studyup.common.models.DeckItem
 import com.thinkup.easycore.ViewRenderer

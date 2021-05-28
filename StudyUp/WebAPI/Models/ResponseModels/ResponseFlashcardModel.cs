@@ -1,22 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Domain;
-using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using WebAPI.Models.ResponseModels;
 
 namespace WebAPI.Models
 {
-    public class FlashcardModel
+    public class ResponseFlashcardModel
     {
-        public int DeckId { get; set; }
-        public string Question { get; set; }
+        public int Id { get; set; }
         public string Answer { get; set; }
+        public IEnumerable<ResponseFlashcardCommentsModel> Comments { get; set; }
+        public string Question { get; set; }
 
-        public Flashcard ToEntity() => new Flashcard()
-        {
-           Question = this.Question,
-           Answer = this.Answer
-        };
     }
 }

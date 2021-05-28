@@ -10,8 +10,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ort.studyup.R
 import com.ort.studyup.common.*
-import com.ort.studyup.common.models.Deck
 import com.ort.studyup.common.models.Comment
+import com.ort.studyup.common.models.Deck
 import com.ort.studyup.common.models.DeckData
 import com.ort.studyup.common.renderers.FlashcardItemRenderer
 import com.ort.studyup.common.ui.BaseFragment
@@ -19,7 +19,6 @@ import com.ort.studyup.common.ui.RecyclerBottomSheetFragment
 import com.ort.studyup.study.StudyActivity
 import com.thinkup.easylist.RendererAdapter
 import kotlinx.android.synthetic.main.fragment_deck_detail.*
-import java.util.*
 
 class DeckDetailFragment : BaseFragment(), FlashcardItemRenderer.Callback {
 
@@ -58,35 +57,27 @@ class DeckDetailFragment : BaseFragment(), FlashcardItemRenderer.Callback {
             findNavController().navigate(R.id.action_deckDetailFragment_to_newFlashcardFragment, Bundle().apply { putInt(DECK_ID_KEY, deck.id) })
         }
         playButton.setOnClickListener {
-            val intent = Intent(requireActivity(), StudyActivity::class.java)
-            intent.putExtra(DECK_ID_KEY, deckId)
-            intent.putExtra(IS_OWNER_EXTRA, viewModel.isOwner)
-            startActivity(intent)
+            if (adapter.itemCount > 0) {
+                val intent = Intent(requireActivity(), StudyActivity::class.java)
+                intent.putExtra(DECK_ID_KEY, deckId)
+                intent.putExtra(IS_OWNER_EXTRA, viewModel.isOwner)
+                startActivity(intent)
+            }
+            else{
+                showError(INTERNAL_ERROR_CODE,getString(R.string.deck_has_no_cards))
+            }
         }
     }
 
     private fun initViewModel(id: Int) {
         viewModel.loadDetails(id).observe(viewLifecycleOwner, { deck ->
             adapter.setItems(deck.flashcards.map {
-                if (it.question == "Back Off") {
-                    FlashcardItemRenderer.Item(
-                        it.id,
-                        it.question,
-                        it.answer,
-                        mutableListOf(
-                            Comment(1, "muy bueno", "Santiago", Date()),
-                            Comment(1, "muy bueno", "Santiago", Date()),
-                            Comment(1, "muy bueno", "Santiago", Date()),
-                        )
-                    )
-                } else {
-                    FlashcardItemRenderer.Item(
-                        it.id,
-                        it.question,
-                        it.answer,
-                        mutableListOf<Comment>().apply { addAll(it.comments ?: listOf()) }
-                    )
-                }
+                FlashcardItemRenderer.Item(
+                    it.id,
+                    it.question,
+                    it.answer,
+                    mutableListOf<Comment>().apply { addAll(it.comments) }
+                )
             })
             initUI(deck)
         }
@@ -105,11 +96,13 @@ class DeckDetailFragment : BaseFragment(), FlashcardItemRenderer.Callback {
 
     override fun onShowComments(flashcardId: Int, comments: MutableList<Comment>) {
         requireActivity().supportFragmentManager.let {
-            RecyclerBottomSheetFragment.getInstance().apply {
+            val frag = RecyclerBottomSheetFragment.getInstance()
+            frag.apply {
                 setCallback(object : RecyclerBottomSheetFragment.Callback {
                     override fun onDelete(id: Int) {
                         viewModel.deleteComment(flashcardId, id).observe(viewLifecycleOwner, {
                             if (it) adapter.notifyDataSetChanged()
+                            frag.checkDismiss()
                         })
                     }
 

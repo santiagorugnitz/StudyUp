@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using BusinessLogicInterface;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Filters;
 using WebAPI.Models;
+using WebAPI.Models.RequestModels;
 
 namespace WebAPI.Controllers
 {
@@ -26,15 +24,17 @@ namespace WebAPI.Controllers
         public IActionResult Post([FromBody] FlashcardModel flashcardModel, [FromHeader] string token)
         {
             Flashcard newFlashcard = logic.AddFlashcard(flashcardModel.ToEntity(), flashcardModel.DeckId, token);
-            return Ok(newFlashcard);
+
+            var result = Ok(new ResponseFlashcardModel { Id = newFlashcard.Id, Answer = newFlashcard.Answer, Question = newFlashcard.Question });
+            return result;
         }
 
         [HttpPut("{id}")]
         public IActionResult EditFlashcard([FromRoute] int id, [FromHeader] string token,
             [FromBody] EditFlashcardModel editFlashcardModel)
         {
-            return Ok(logic.EditFlashcard(token, id, editFlashcardModel.Question,
-                editFlashcardModel.Answer));
+            var result = logic.EditFlashcard(token, id, editFlashcardModel.Question, editFlashcardModel.Answer);
+            return Ok(new ResponseFlashcardModel { Id = result.Id, Answer = result.Answer, Question = result.Question });
         }
 
         [HttpPost("study")]
@@ -75,11 +75,11 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-        [HttpPost("{id}/comment")]
-        public IActionResult CommentFlashcard([FromRoute] int id,[FromHeader] string token, [FromBody] string comment)
+        [HttpPost("{id}/comments")]
+        public IActionResult CommentFlashcard([FromRoute] int id, [FromHeader] string token, [FromBody] CommentModel comment)
         {
-            logic.CommentFlashcard(id, token, comment);
-           
+            logic.CommentFlashcard(id, token, comment.Comment);
+
             return Ok();
         }
 

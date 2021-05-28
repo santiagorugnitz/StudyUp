@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.ort.studyup.R
 import com.ort.studyup.common.EXAM_ID_KEY
@@ -75,7 +74,7 @@ class TestFragment : BaseFragment(), ConfirmationDialog.Callback {
     }
 
     private fun initViewModel(deckId: Int) {
-        viewModel.loadCards(deckId).observe(viewLifecycleOwner, Observer {
+        viewModel.loadCards(deckId).observe(viewLifecycleOwner, {
             it?.let {
                 total = viewModel.getTotal()
                 onNewCard(it)
@@ -88,12 +87,12 @@ class TestFragment : BaseFragment(), ConfirmationDialog.Callback {
 
     private fun initUI() {
         falseButton.setOnClickListener {
-            viewModel.onAnswer(false).observe(viewLifecycleOwner, Observer {
+            viewModel.onAnswer(false).observe(viewLifecycleOwner, {
                 onNewCard(it)
             })
         }
         trueButton.setOnClickListener {
-            viewModel.onAnswer(true).observe(viewLifecycleOwner, Observer {
+            viewModel.onAnswer(true).observe(viewLifecycleOwner, {
                 onNewCard(it)
             })
         }

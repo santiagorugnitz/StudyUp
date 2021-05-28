@@ -18,10 +18,10 @@ class GroupSearchResultRenderer(private val callback: Callback) : ViewRenderer<G
         }
         if (model.subscribed) {
             view.followButton.text = view.context.getString(R.string.unsub)
-            view.followButton.setBackgroundColor(view.resources.getColor(R.color.error))
+            view.followButton.setBackgroundColor(view.resources.getColor(R.color.error,null))
         } else {
             view.followButton.text = view.context.getString(R.string.sub)
-            view.followButton.setBackgroundColor(view.resources.getColor(R.color.green))
+            view.followButton.setBackgroundColor(view.resources.getColor(R.color.green,null))
         }
     }
 

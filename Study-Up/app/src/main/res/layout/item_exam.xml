@@ -32,7 +32,7 @@
         android:layout_marginTop="4dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="Group: "
+        android:text="@string/group_prefix"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

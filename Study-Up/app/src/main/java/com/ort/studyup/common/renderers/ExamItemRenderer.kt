@@ -1,18 +1,14 @@
 package com.ort.studyup.common.renderers
 
-import android.icu.number.Scale.none
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.ort.studyup.R
 import com.ort.studyup.common.models.ExamItem
-import com.ort.studyup.common.models.Group
 import com.ort.studyup.common.models.GroupItem
 import com.thinkup.easycore.ViewRenderer
-import kotlinx.android.synthetic.main.item_assign_deck.view.*
 import kotlinx.android.synthetic.main.item_exam.view.*
-import kotlinx.android.synthetic.main.item_exam.view.spinner
 
 class ExamItemRenderer(private val callback: Callback) : ViewRenderer<ExamItemRenderer.Item, View>(Item::class) {
 

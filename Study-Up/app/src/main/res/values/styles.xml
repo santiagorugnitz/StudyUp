@@ -43,8 +43,4 @@
         <item name="android:layout_marginTop">48dp</item>
     </style>
 
-    <style name="InputTitle">
-<!--        TODO-->
-    </style>
-
 </resources>

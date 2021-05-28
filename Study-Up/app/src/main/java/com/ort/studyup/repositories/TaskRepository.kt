@@ -1,8 +1,6 @@
 package com.ort.studyup.repositories
 
-import com.ort.studyup.common.models.*
-import com.ort.studyup.services.ExamCardService
-import com.ort.studyup.services.FlashcardService
+import com.ort.studyup.common.models.TaskResponse
 import com.ort.studyup.services.TaskService
 import com.ort.studyup.services.check
 

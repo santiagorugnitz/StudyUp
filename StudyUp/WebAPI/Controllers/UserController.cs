@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using BusinessLogicInterface;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Models;
 using Domain;
-using Exceptions;
 using WebAPI.Filters;
 using WebAPI.Models.ResponseModels;
 
@@ -74,13 +71,15 @@ namespace WebAPI.Controllers
         [HttpPost("/api/users/follow")]
         public IActionResult FollowUser([FromHeader] string token, [FromQuery] string username)
         {
-            return Ok(logic.FollowUser(token, username));
+            logic.FollowUser(token, username);
+            return Ok();
         }
 
         [HttpDelete("/api/users/unfollow")]
         public IActionResult UnfollowUser([FromHeader] string token, [FromQuery] string username)
         {
-            return Ok(logic.UnfollowUser(token, username));
+            logic.UnfollowUser(token, username);
+            return Ok();
         }
 
         [HttpGet]
@@ -120,17 +119,19 @@ namespace WebAPI.Controllers
 
             foreach (var deck in deckList)
             {
-                ResponseDeckModel responseDeck = new ResponseDeckModel()
+                if (!deck.IsHidden && deck.Flashcards.Count > 0)
                 {
-                    Id = deck.Id,
-                    Author = deck.Author.Username,
-                    Name = deck.Name,
-                    Subject = deck.Subject,
-                    Difficulty = deck.Difficulty,
-                    IsHidden = deck.IsHidden
-                };
-
-                responseList.Add(responseDeck);
+                    ResponseDeckModel responseDeck = new ResponseDeckModel()
+                    {
+                        Id = deck.Id,
+                        Author = deck.Author.Username,
+                        Name = deck.Name,
+                        Subject = deck.Subject,
+                        Difficulty = deck.Difficulty,
+                        IsHidden = deck.IsHidden
+                    };
+                    responseList.Add(responseDeck);
+                }
             }
             return Ok(responseList);
         }

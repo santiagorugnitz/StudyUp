@@ -44,9 +44,7 @@ class ConfirmationDialog(
             val root = getActivity()?.findViewById<FrameLayout>(android.R.id.content)
             val view = root?.findViewById<FrameLayout>(R.id.dialogContainer)
             root?.removeView(view)
-        } catch (e: Exception) {
-            e
-        }
+        } catch (e: Exception) { }
     }
 
     interface Callback {

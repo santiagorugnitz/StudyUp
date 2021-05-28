@@ -1,8 +1,9 @@
 package com.ort.studyup.repositories
 
-import com.ort.studyup.common.models.*
+import com.ort.studyup.common.models.EditExamCardRequest
+import com.ort.studyup.common.models.ExamCard
+import com.ort.studyup.common.models.NewExamCardRequest
 import com.ort.studyup.services.ExamCardService
-import com.ort.studyup.services.FlashcardService
 import com.ort.studyup.services.check
 
 class ExamCardRepository(

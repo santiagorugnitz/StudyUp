@@ -44,7 +44,6 @@
     <string name="unfollow">Unfollow</string>
     <string name="unsub">unsubscribe</string>
     <string name="sub">Subscribe</string>
-    <string name="author">Author</string>
     <string name="following">Following</string>
     <string name="everyone">Everyone</string>
     <string name="decks_from_friends">Decks from friends</string>
@@ -73,11 +72,13 @@
     <string name="comments">Comments</string>
     <string name="swipe_to_delete">Swipe the comments to remove them from the list</string>
     <string name="no_exams_assigned">There are no exams assigned yet</string>
-    <string name="no_decks">There are no decks to study yet</string>
+    <string name="no_decks">There are no decks to study yet.\nTry joining more groups!</string>
     <string name="notifications">Notifications</string>
-    <string name="begin">Begin</string>
     <string name="start_exam_confirmation">Begin attempt? You will not be able to pause or retry later.</string>
     <string name="exam_finished">Exam finished! \nScore: %1$s points</string>
+    <string name="group_prefix">Group:</string>
+    <string name="answer_prefix">A:</string>
+    <string name="deck_has_no_cards">Deck has no cards yet</string>
 
     <string-array name="difficulties">
         <item>Easy</item>

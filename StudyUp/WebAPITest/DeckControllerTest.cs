@@ -4,9 +4,7 @@ using Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using WebAPI.Controllers;
 using WebAPI.Models;
 
@@ -170,11 +168,10 @@ namespace WebAPITest
         public void AssingOkTest()
         {
             logicMock.Setup(x => x.Assign(It.IsAny<string>(), It.IsAny<int>(),
-                It.IsAny<int>())).Returns(It.IsAny<Group>());
+                It.IsAny<int>())).Returns(new Group());
 
             var result = controller.Assign("token", 1, 1);
             var okResult = result as OkObjectResult;
-            var value = okResult.Value as Group;
 
             logicMock.VerifyAll();
         }
@@ -187,7 +184,6 @@ namespace WebAPITest
 
             var result = controller.Unassign("token", 1, 1);
             var okResult = result as OkObjectResult;
-            var value = okResult.Value as Group;
 
             logicMock.VerifyAll();
         }

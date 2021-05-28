@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
-import androidx.annotation.DrawableRes
 import com.ort.studyup.R
 import com.ort.studyup.common.getActivity
 import kotlinx.android.synthetic.main.confirmation_dialog.view.*
@@ -37,9 +36,7 @@ class ScoreDialog(
             val root = getActivity()?.findViewById<FrameLayout>(android.R.id.content)
             val view = root?.findViewById<FrameLayout>(R.id.dialogContainer)
             root?.removeView(view)
-        } catch (e: Exception) {
-            e
-        }
+        } catch (e: Exception) { }
     }
 
 }

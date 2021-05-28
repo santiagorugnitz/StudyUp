@@ -5,12 +5,12 @@ import android.speech.tts.TextToSpeech
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import com.ort.studyup.R
 import com.ort.studyup.common.DECK_ID_KEY
 import com.ort.studyup.common.INTERNAL_ERROR_CODE
 import com.ort.studyup.common.IS_OWNER_EXTRA
 import com.ort.studyup.common.models.RatedFlashcard
+import com.ort.studyup.common.ui.BaseActivity
 import com.ort.studyup.common.ui.BaseFragment
 import com.ort.studyup.common.ui.CommentDialog
 import kotlinx.android.synthetic.main.fragment_study.*
@@ -50,24 +50,29 @@ class StudyFragment : BaseFragment(), TextToSpeech.OnInitListener, CommentDialog
     }
 
     private fun initViewModel(deckId: Int) {
-        viewModel.loadFlashcards(deckId).observe(viewLifecycleOwner, Observer {
+        viewModel.loadFlashcards(deckId).observe(viewLifecycleOwner, {
             it?.let {
                 onNewCard(it)
             } ?: run {
-                showError(INTERNAL_ERROR_CODE, getString(R.string.no_flashcards_error))
                 requireActivity().finish()
+                showError(INTERNAL_ERROR_CODE, getString(R.string.no_flashcards_error))
+                CommentDialog(requireContext(),object :CommentDialog.Callback{
+                    override fun onComment(comment: String) {
+                        TODO("Not yet implemented")
+                    }
+                }).show()
             }
         })
     }
 
     private fun initUI() {
         wrongButton.setOnClickListener {
-            viewModel.onWrong().observe(viewLifecycleOwner, Observer {
+            viewModel.onWrong().observe(viewLifecycleOwner, {
                 onNewCard(it)
             })
         }
         correctButton.setOnClickListener {
-            viewModel.onCorrect().observe(viewLifecycleOwner, Observer {
+            viewModel.onCorrect().observe(viewLifecycleOwner, {
                 onNewCard(it)
             })
         }

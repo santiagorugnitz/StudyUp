@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ort.studyup.R
@@ -66,7 +65,7 @@ class TaskFragment : BaseFragment(), DeckItemRenderer.Callback, ExamItemRenderer
     }
 
     private fun initUI() {
-        viewModel.loadItems().observe(viewLifecycleOwner, Observer {
+        viewModel.loadItems().observe(viewLifecycleOwner, {
             it?.let {
                 examAdapter.setItems(it.first)
                 deckAdapter.setItems(it.second)

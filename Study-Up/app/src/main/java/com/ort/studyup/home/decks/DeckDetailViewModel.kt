@@ -3,8 +3,6 @@ package com.ort.studyup.home.decks
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ort.studyup.common.models.Deck
-import com.ort.studyup.common.models.Flashcard
-import com.ort.studyup.common.models.User
 import com.ort.studyup.common.ui.BaseViewModel
 import com.ort.studyup.repositories.DeckRepository
 import com.ort.studyup.repositories.FlashcardRepository
@@ -31,7 +29,7 @@ class DeckDetailViewModel(
     fun deleteComment(flashcardId: Int, commentId: Int): LiveData<Boolean> {
         val result = MutableLiveData<Boolean>()
         executeService {
-            //TODO:
+            flashcardRepository.deleteComment(flashcardId, commentId)
             result.postValue(true)
         }
         return result

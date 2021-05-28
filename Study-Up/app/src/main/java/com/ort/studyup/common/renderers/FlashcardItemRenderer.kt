@@ -35,9 +35,9 @@ class FlashcardItemRenderer(private val callback: Callback) : ViewRenderer<Flash
 
     private fun setAnswerVisibility(view: View, visible: Boolean) {
         if (visible) {
-            view.answer.setBackgroundColor(view.resources.getColor(R.color.white))
+            view.answer.setBackgroundColor(view.resources.getColor(R.color.white,null))
         } else {
-            view.answer.setBackgroundColor(view.resources.getColor(R.color.black))
+            view.answer.setBackgroundColor(view.resources.getColor(R.color.black,null))
         }
     }
 

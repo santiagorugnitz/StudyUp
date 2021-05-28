@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BusinessLogicInterface;
-using Exceptions;
 using Domain;
 using WebAPI.Models;
 using WebAPI.Filters;
@@ -79,9 +76,9 @@ namespace WebAPI.Controllers
                 toAdd.Id = exam.Id;
                 toAdd.Name = exam.Name;
                 if (exam.Group is null)
-                    toAdd.groupsName = "";
+                    toAdd.GroupsName = "";
                 else
-                    toAdd.groupsName = exam.Group.Name;
+                    toAdd.GroupsName = exam.Group.Name;
                 toReturn.Add(toAdd);
             }
             return toReturn;

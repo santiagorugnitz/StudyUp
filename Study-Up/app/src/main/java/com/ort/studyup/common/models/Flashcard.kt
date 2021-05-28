@@ -42,5 +42,5 @@ class Comment(
     @SerializedName("id") val id: Int,
     @SerializedName("comment") val comment: String,
     @SerializedName("authorUsername") val username: String,
-    @SerializedName("time") val date: Date
+    @SerializedName("time") val time: Date
 )

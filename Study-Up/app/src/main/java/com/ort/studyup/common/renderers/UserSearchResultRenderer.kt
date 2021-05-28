@@ -17,10 +17,10 @@ class UserSearchResultRenderer(private val callback: Callback) : ViewRenderer<Us
         }
         if (model.following) {
             view.followButton.text = view.context.getString(R.string.unfollow)
-            view.followButton.setBackgroundColor(view.resources.getColor(R.color.error))
+            view.followButton.setBackgroundColor(view.resources.getColor(R.color.error,null))
         } else {
             view.followButton.text = view.context.getString(R.string.follow)
-            view.followButton.setBackgroundColor(view.resources.getColor(R.color.green))
+            view.followButton.setBackgroundColor(view.resources.getColor(R.color.green,null))
         }
     }
 

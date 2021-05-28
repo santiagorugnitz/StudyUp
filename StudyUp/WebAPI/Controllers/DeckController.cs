@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BusinessLogicInterface;
-using Exceptions;
 using Domain;
 using WebAPI.Models;
 using WebAPI.Filters;
@@ -44,7 +41,8 @@ namespace WebAPI.Controllers
                 Name = deck.Name,
                 Subject = deck.Subject,
                 Difficulty = deck.Difficulty,
-                IsHidden = deck.IsHidden
+                IsHidden = deck.IsHidden,
+                FlashcardCount = deck.Flashcards.Count
             });
         }
 
@@ -111,7 +109,9 @@ namespace WebAPI.Controllers
                 ResponseFlashcardCommentsModel toAdd = new ResponseFlashcardCommentsModel()
                 {
                     Comment = comment.Comment,
-                    CommentId = comment.Id
+                    Id = comment.Id,
+                    Time = comment.CreatedOn.ToUniversalTime(),
+                    AuthorUsername = comment.CreatorUsername
                 };
                 toReturn.Add(toAdd);
             }
@@ -129,14 +129,16 @@ namespace WebAPI.Controllers
         public IActionResult Assign([FromHeader] string token, [FromRoute] int deckId,
             [FromQuery] int groupId)
         {
-            return Ok(logic.Assign(token, groupId, deckId));
+            logic.Assign(token, groupId, deckId);
+            return Ok();
         }
 
         [HttpDelete("{deckId}/unassign")]
         public IActionResult Unassign([FromHeader] string token, [FromRoute] int deckId,
             [FromQuery] int groupId)
         {
-            return Ok(logic.Unassign(token, groupId, deckId));
+            logic.Unassign(token, groupId, deckId);
+            return Ok();
         }
     }
 }

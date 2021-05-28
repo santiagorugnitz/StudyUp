@@ -8,7 +8,6 @@ import androidx.core.widget.doOnTextChanged
 import com.ort.studyup.R
 import com.ort.studyup.common.getActivity
 import kotlinx.android.synthetic.main.comment_dialog.view.*
-import kotlinx.android.synthetic.main.confirmation_dialog.view.*
 import kotlinx.android.synthetic.main.confirmation_dialog.view.closeIcon
 import kotlinx.android.synthetic.main.confirmation_dialog.view.dialogButton
 
@@ -43,9 +42,7 @@ class CommentDialog(
             val root = getActivity()?.findViewById<FrameLayout>(android.R.id.content)
             val view = root?.findViewById<FrameLayout>(R.id.dialogContainer)
             root?.removeView(view)
-        } catch (e: Exception) {
-            e
-        }
+        } catch (e: Exception) { }
     }
 
     interface Callback {

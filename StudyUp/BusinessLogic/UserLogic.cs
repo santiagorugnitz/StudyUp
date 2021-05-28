@@ -32,7 +32,9 @@ namespace BusinessLogic
             if (sameEmail != null && (sameEmail.Count() > 0))
                 throw new AlreadyExistsException(UserMessage.EMAIL_ALREADY_EXISTS);
 
-            IEnumerable<User> sameUsername = repository.GetAll().Where(x => x.Username.ToUpper().Equals(user.Username.ToUpper()));
+            IEnumerable<User> sameUsername = repository.GetAll().Where(
+                x => x.Username.ToUpper().Equals(user.Username.ToUpper()));
+
             if (sameUsername != null && (sameUsername.Count() > 0))
                 throw new AlreadyExistsException(UserMessage.USERNAME_ALREADY_EXISTS);
 
@@ -45,7 +47,6 @@ namespace BusinessLogic
             user.Token = Guid.NewGuid().ToString();
             repository.Add(user);
             return user;
-
         }
 
         public User FollowUser(string token, string username)
@@ -115,11 +116,12 @@ namespace BusinessLogic
 
         public User CheckUsername(string username)
         {
-            IEnumerable<User> usernamedUsers = repository.FindByCondition(user => user.Username.Equals(username));
+            IEnumerable<User> usernamedUsers = repository.FindByCondition(
+                user => user.Username.Equals(username));
+
             if (usernamedUsers.Count() < 1)
-            {
                 throw new InvalidException(UserMessage.USER_NOT_FOUND);
-            }
+
             return usernamedUsers.First();
         }
 
@@ -134,13 +136,15 @@ namespace BusinessLogic
                 return GetListWithFollowingFilter(authenticatedUser, orderedList);
             }
 
-            var filteredList = repository.FindByCondition(user => user.Username.Contains(queryFilter) && user.Id != authenticatedUser.Id);
+            var filteredList = repository.FindByCondition(user => user.Username.Contains(queryFilter)
+                && user.Id != authenticatedUser.Id);
             var orderedFilteredList = filteredList.OrderBy(user => user.Username.Length);
 
             return GetListWithFollowingFilter(authenticatedUser, orderedFilteredList);
         }
 
-        private IEnumerable<Tuple<User, bool>> GetListWithFollowingFilter(User user, IEnumerable<User> convertingList)
+        private IEnumerable<Tuple<User, bool>> GetListWithFollowingFilter(User user,
+            IEnumerable<User> convertingList)
         {
             List<Tuple<User, bool>> convertedList = new List<Tuple<User, bool>>();
 
@@ -235,7 +239,8 @@ namespace BusinessLogic
             UserExam obtainedExam;
             try
             {
-                obtainedExam = user.SolvedExams.Find(solved => solved.ExamId == exam.Id && solved.UserId == user.Id);
+                obtainedExam = user.SolvedExams.Find(solved => solved.ExamId == exam.Id
+                    && solved.UserId == user.Id);
             }
             catch (NullReferenceException)
             {

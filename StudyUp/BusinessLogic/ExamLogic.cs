@@ -5,7 +5,6 @@ using Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace BusinessLogic
 {
@@ -82,6 +81,12 @@ namespace BusinessLogic
             if (!group.Creator.Equals(user))
                 throw new InvalidException(ExamMessage.NOT_AUTHORIZED);
 
+            ICollection<ExamCard> cards = this.examCardRepository.FindByCondition(
+                ex => ex.Exam.Equals(exam));
+
+            if (cards.Count < 1)
+                throw new InvalidException(ExamMessage.NO_EXAMCARDS);
+
             this.notificationsInterface.NotifyExams(exam, group);
 
             exam.Group = group;
@@ -108,12 +113,13 @@ namespace BusinessLogic
 
             try
             {
-                userExam = exam.AlreadyPerformed.Find(ue => ue.UserId == user.Id && ue.ExamId == exam.Id);
+                userExam = exam.AlreadyPerformed.Find(ue => ue.UserId == user.Id
+                    && ue.ExamId == exam.Id);
             }
             catch (NullReferenceException) { }
 
             if (userExam != null && userExam.Score != null)
-                throw new InvalidException(ExamMessage.ALREADY_COMPLEATED);
+                throw new InvalidException(ExamMessage.ALREADY_COMPLETED);
 
             double score = CalculateScore(time, correctAnswers, exam.ExamCards.Count());
 
@@ -124,8 +130,15 @@ namespace BusinessLogic
         {
             if (userExam == null)
             {
-                exam.AlreadyPerformed.Add(new UserExam() { User = user, UserId = user.Id, Exam = exam, ExamId = exam.Id, Score = score });
-            } 
+                exam.AlreadyPerformed.Add(new UserExam()
+                {
+                    User = user,
+                    UserId = user.Id,
+                    Exam = exam,
+                    ExamId = exam.Id,
+                    Score = score
+                });
+            }
             else
             {
                 userExam.Score = score;
@@ -137,8 +150,8 @@ namespace BusinessLogic
         private double CalculateScore(int time, int correctAnswers, int totalQuestions)
         {
             if (totalQuestions == 0) return 0;
-            var answersPercentage = (double)correctAnswers / totalQuestions;
-            return answersPercentage / ((double)time/60);
+            var answersPercentage = (double)correctAnswers*2 - totalQuestions;
+            return answersPercentage / ((double)time / 60);
         }
 
         public Exam GetExamById(int id, string token)
@@ -162,7 +175,7 @@ namespace BusinessLogic
 
             foreach (var perform in exam.AlreadyPerformed)
             {
-                if (perform.Score != null) 
+                if (perform.Score != null)
                     result.Add(new Tuple<string, double>(perform.User.Username, (double)perform.Score));
             }
 

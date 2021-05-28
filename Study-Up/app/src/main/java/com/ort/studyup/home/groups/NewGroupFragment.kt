@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.ort.studyup.R
 import com.ort.studyup.common.ui.BaseFragment
@@ -26,7 +25,7 @@ class NewGroupFragment : BaseFragment() {
 
     private fun initUI() {
         saveButton.setOnClickListener {
-            viewModel.createGroup(nameInput.text.toString()).observe(viewLifecycleOwner, Observer {
+            viewModel.createGroup(nameInput.text.toString()).observe(viewLifecycleOwner, {
                 findNavController().navigate(R.id.action_newGroupFragment_to_groupsFragment)
             })
         }

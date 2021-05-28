@@ -1,7 +1,5 @@
-﻿using BusinessLogicInterface;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using System;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Collections.Generic;

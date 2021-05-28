@@ -20,10 +20,10 @@ interface UserService {
     suspend fun searchUser(@Query("username") query: String): Response<List<UserSearchResponse>>
 
     @DELETE("api/users/unfollow")
-    suspend fun unfollow(@Query("username") username: String): Response<*>
+    suspend fun unfollow(@Query("username") username: String): Response<Unit>
 
     @POST("api/users/follow")
-    suspend fun follow(@Query("username") username: String): Response<*>
+    suspend fun follow(@Query("username") username: String): Response<Unit>
 
     @GET("api/users/ranking")
     suspend fun ranking(): Response<List<RankingResponse>>

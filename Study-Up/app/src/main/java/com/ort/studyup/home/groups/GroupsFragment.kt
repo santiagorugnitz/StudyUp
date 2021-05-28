@@ -1,20 +1,16 @@
 package com.ort.studyup.home.groups
 
-import android.opengl.GLSurfaceView
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ort.studyup.R
 import com.ort.studyup.common.renderers.AssignDeckItemRenderer
 import com.ort.studyup.common.renderers.DeletableDeckItemRenderer
-import com.ort.studyup.common.renderers.FlashcardItemRenderer
 import com.ort.studyup.common.ui.BaseFragment
 import com.thinkup.easylist.RendererAdapter
-import kotlinx.android.synthetic.main.fragment_deck_detail.*
 import kotlinx.android.synthetic.main.fragment_groups.*
 
 class GroupsFragment : BaseFragment(), DeletableDeckItemRenderer.Callback, AssignDeckItemRenderer.Callback {
@@ -43,19 +39,19 @@ class GroupsFragment : BaseFragment(), DeletableDeckItemRenderer.Callback, Assig
     }
 
     private fun loadItems(){
-        viewModel.loadGroups().observe(viewLifecycleOwner, Observer {
+        viewModel.loadGroups().observe(viewLifecycleOwner, {
             adapter.setItems(it)
         })
     }
 
     override fun onDeleteDeck(groupId: Int, deckId: Int) {
-        viewModel.unassignDeck(groupId, deckId).observe(viewLifecycleOwner, Observer {
+        viewModel.unassignDeck(groupId, deckId).observe(viewLifecycleOwner, {
             loadItems()
         })
     }
 
     override fun onAssignDeck(groupId: Int, deckId: Int) {
-        viewModel.assignDeck(groupId, deckId).observe(viewLifecycleOwner, Observer {
+        viewModel.assignDeck(groupId, deckId).observe(viewLifecycleOwner, {
             loadItems()
         })
     }
