@@ -4,6 +4,7 @@ using Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Collections.Generic;
 using WebAPI.Controllers;
 using WebAPI.Models;
@@ -133,7 +134,8 @@ namespace WebAPITest
         public void GetDeckByIdOkTest()
         {
             var deck = deckModelExample.ToEntity();
-            deck.Flashcards = new List<Flashcard>();
+            var commentsList = new List<FlashcardComment>() { new FlashcardComment() { Comment = "New comment", Id = 1, CreatorUsername = "Name", CreatedOn = new DateTime() } };
+            deck.Flashcards = new List<Flashcard>() { new Flashcard() { Id = 1, Question = "Question", Answer = "Answer", Comments = commentsList} };
             deck.Author = new User { Username = "test" };
             logicMock.Setup(x => x.GetDeckById(1)).Returns(deck);
 
