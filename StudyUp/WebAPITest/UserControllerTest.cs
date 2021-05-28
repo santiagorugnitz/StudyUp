@@ -159,7 +159,6 @@ namespace WebAPITest
 
             var result = controller.FollowUser("token", "Name");
             var okResult = result as OkObjectResult;
-            var value = okResult.Value as User;
 
             logicMock.VerifyAll();
         }
@@ -171,7 +170,6 @@ namespace WebAPITest
 
             var result = controller.UnfollowUser("token", "Name");
             var okResult = result as OkObjectResult;
-            var value = okResult.Value as User;
 
             logicMock.VerifyAll();
         }
