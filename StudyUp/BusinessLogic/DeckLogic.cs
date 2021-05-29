@@ -77,11 +77,14 @@ namespace BusinessLogic
         }
 
 
-        //public Deck EditDeck(int deckId, string newName, Difficulty newDifficulty, bool newVisibility,
-        //    string subject)
-        public Deck EditDeck(int deckId, Deck newDeck)
+        public Deck EditDeck(int deckId, Deck newDeck, string token)
         {
+            User user = UserByToken(token);
             Deck deck = deckRepository.GetById(deckId);
+
+            if (deck != null && !user.Equals(deck.Author))
+                throw new InvalidException(DeckMessage.CANNOT_EDIT);
+
             ICollection<Deck> sameName = deckRepository.FindByCondition(a => a.Name == newDeck.Name
                 && a.Id != deckId);
 

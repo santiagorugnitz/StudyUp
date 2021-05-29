@@ -62,7 +62,8 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update([FromRoute] int id, [FromBody] UpdateDeckModel updateDeckModel)
+        public IActionResult Update([FromRoute] int id, [FromHeader] string token,
+            [FromBody] UpdateDeckModel updateDeckModel)
         {
             Deck updatedDeck = new Deck()
             {
@@ -72,7 +73,7 @@ namespace WebAPI.Controllers
                 Subject = updateDeckModel.Subject
             };
 
-            Deck deck = logic.EditDeck(id, updatedDeck);
+            Deck deck = logic.EditDeck(id, updatedDeck, token);
 
             return Ok(new ResponseDeckModel()
             {

@@ -215,8 +215,9 @@ namespace BusinessLogicTest
             deckRepositoryMock.Setup(m => m.GetById(1)).Returns(deckExample);
             deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == updatedDeck.Name
                     && a.Id != 1)).Returns(new List<Deck>() { });
+            userTokenRepository.Setup(u => u.GetUserByToken(It.IsAny<string>())).Returns(userExample); ;
 
-            var result = deckLogic.EditDeck(1, updatedDeck);
+            var result = deckLogic.EditDeck(1, updatedDeck, userExample.Token);
 
             deckRepositoryMock.VerifyAll();
 
@@ -239,6 +240,7 @@ namespace BusinessLogicTest
             };
 
             deckRepositoryMock.Setup(m => m.GetById(1)).Returns(deckExample);
+            userTokenRepository.Setup(u => u.GetUserByToken(It.IsAny<string>())).Returns(userExample); ;
 
             string newSubject = anotherDeckExample.Subject;
             string newName = anotherDeckExample.Name;
@@ -246,7 +248,7 @@ namespace BusinessLogicTest
             deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == anotherDeckExample.Name
                 && a.Id != deckId)).Returns(new List<Deck>() { anotherDeckExample });
 
-            var result = deckLogic.EditDeck(1, anotherDeckExample);
+            var result = deckLogic.EditDeck(1, anotherDeckExample, userExample.Token);
         }
 
         [ExpectedException(typeof(InvalidException))]
@@ -267,8 +269,9 @@ namespace BusinessLogicTest
             deckRepositoryMock.Setup(m => m.GetById(1)).Returns(deckExample);
             deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == updatedDeck.Name
                 && a.Id != 1)).Returns(new List<Deck>());
+            userTokenRepository.Setup(u => u.GetUserByToken(It.IsAny<string>())).Returns(userExample); ;
 
-            var result = deckLogic.EditDeck(1, updatedDeck);
+            var result = deckLogic.EditDeck(1, updatedDeck, userExample.Token);
         }
 
 
@@ -289,8 +292,9 @@ namespace BusinessLogicTest
             deckRepositoryMock.Setup(m => m.GetById(1)).Returns(deckExample);
             deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == updatedDeck.Name
                 && a.Id != 1)).Returns(new List<Deck>());
+            userTokenRepository.Setup(u => u.GetUserByToken(It.IsAny<string>())).Returns(userExample); ;
 
-            var result = deckLogic.EditDeck(1, updatedDeck);
+            var result = deckLogic.EditDeck(1, updatedDeck, userExample.Token);
         }
 
         [ExpectedException(typeof(NotFoundException))]
@@ -311,8 +315,9 @@ namespace BusinessLogicTest
             deckRepositoryMock.Setup(m => m.GetById(1)).Returns((Deck)null);
             deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == updatedDeck.Name
                     && a.Id != 1)).Returns(new List<Deck>());
+            userTokenRepository.Setup(u => u.GetUserByToken(It.IsAny<string>())).Returns(userExample); ;
 
-            var result = deckLogic.EditDeck(1, updatedDeck);
+            var result = deckLogic.EditDeck(1, updatedDeck, userExample.Token);
         }
 
         [ExpectedException(typeof(InvalidException))]
@@ -329,8 +334,9 @@ namespace BusinessLogicTest
             deckRepositoryMock.Setup(m => m.GetById(1)).Returns(deckExample);
             deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == updatedDeck.Name
                 && a.Id != 1)).Returns(new List<Deck>());
+            userTokenRepository.Setup(u => u.GetUserByToken(It.IsAny<string>())).Returns(userExample); ;
 
-            var result = deckLogic.EditDeck(1, updatedDeck);
+            var result = deckLogic.EditDeck(1, updatedDeck, userExample.Token);
         }
 
         [TestMethod]

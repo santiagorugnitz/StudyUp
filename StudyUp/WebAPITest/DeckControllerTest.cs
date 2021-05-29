@@ -127,12 +127,12 @@ namespace WebAPITest
             };
 
             logicMock.Setup(x => x.AddDeck(It.IsAny<Deck>(), userModelExample.Token)).Returns(deck);
-            logicMock.Setup(x => x.EditDeck(1, updatedDeck)).Returns(deck);
+            logicMock.Setup(x => x.EditDeck(1, updatedDeck, "Token")).Returns(deck);
 
 
             controller.Post(deckModelExample, userModelExample.Token);
 
-            var result = controller.Update(1, updateDeckModel);
+            var result = controller.Update(1, "Token", updateDeckModel);
             var okResult = result as OkObjectResult;
             var value = okResult.Value as Deck;
 
