@@ -64,8 +64,16 @@ namespace WebAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult Update([FromRoute] int id, [FromBody] UpdateDeckModel updateDeckModel)
         {
-            Deck deck = logic.EditDeck(id, updateDeckModel.Name,
-                updateDeckModel.Difficulty, updateDeckModel.IsHidden, updateDeckModel.Subject);
+            Deck updatedDeck = new Deck()
+            {
+                Difficulty = updateDeckModel.Difficulty,
+                IsHidden = updateDeckModel.IsHidden,
+                Name = updateDeckModel.Name,
+                Subject = updateDeckModel.Subject
+            };
+
+            Deck deck = logic.EditDeck(id, updatedDeck);
+
             return Ok(new ResponseDeckModel()
             {
                 Id = deck.Id,

@@ -9,8 +9,9 @@ namespace BusinessLogicInterface
         Deck AddDeck(Deck deck, string userToken);
         Group Assign(string token, int groupId, int deckId);
         bool DeleteDeck(int deckId, string token);
-        Deck EditDeck(int deckId, string newName, Difficulty newDifficulty, bool newVisibility,
-            string subject);
+        //Deck EditDeck(int deckId, string newName, Difficulty newDifficulty, bool newVisibility,
+        //    string subject);
+        Deck EditDeck(int deckId, Deck newDeck);
         IEnumerable<Deck> GetAllDecks();
         IEnumerable<Deck> GetDecksByAuthor(int userId);
         Deck GetDeckById(int deckId);

@@ -325,7 +325,7 @@ namespace BusinessLogicTest
             Assert.AreEqual(examExample, result);
         }
 
-        [ExpectedException(typeof(InvalidException))]
+        [ExpectedException(typeof(NotAuthenticatedException))]
         [TestMethod]
         public void AssignNullUserTest()
         {
@@ -458,7 +458,7 @@ namespace BusinessLogicTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NotFoundException))]
+        [ExpectedException(typeof(NotAuthenticatedException))]
         public void AssignExamResultsNullUserTest()
         {
             examRepositoryMock.Setup(b => b.Update(It.IsAny<Exam>()));

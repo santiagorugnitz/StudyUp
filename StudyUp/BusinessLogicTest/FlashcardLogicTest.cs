@@ -162,7 +162,7 @@ namespace BusinessLogicTest
             var result = flashcardLogic.AddFlashcard(toAdd, flashcardExample.Deck.Id, userExample.Token);
         }
 
-        [ExpectedException(typeof(InvalidException))]
+        [ExpectedException(typeof(NotAuthenticatedException))]
         [TestMethod]
         public void AddFlashcardInvalidTokenTest()
         {
@@ -299,7 +299,7 @@ namespace BusinessLogicTest
             var result = flashcardLogic.EditFlashcard("different token", 1, "new question", "new answer");
         }
 
-        [ExpectedException(typeof(NotFoundException))]
+        [ExpectedException(typeof(NotAuthenticatedException))]
         [TestMethod]
         public void EditFlashcardNullAuthorTest()
         {
@@ -382,7 +382,7 @@ namespace BusinessLogicTest
             var result = flashcardLogic.GetRatedFlashcards(1, "Token");
         }
 
-        [ExpectedException(typeof(InvalidException))]
+        [ExpectedException(typeof(NotAuthenticatedException))]
         [TestMethod]
         public void GetRatedFlashcardsNullUserTest()
         {
@@ -438,7 +438,7 @@ namespace BusinessLogicTest
             var result = flashcardLogic.UpdateScore(1, 5, "Token");
         }
 
-        [ExpectedException(typeof(InvalidException))]
+        [ExpectedException(typeof(NotAuthenticatedException))]
         [TestMethod]
         public void UpdateFlascardScoreNullUserTest()
         {

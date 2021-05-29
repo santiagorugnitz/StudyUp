@@ -224,7 +224,7 @@ namespace BusinessLogic
             User user = userTokenRepository.GetUserByToken(token);
 
             if (user is null)
-                throw new InvalidException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
+                throw new NotAuthenticatedException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
             else
                 return user;
         }

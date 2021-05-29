@@ -203,20 +203,20 @@ namespace BusinessLogicTest
         [TestMethod]
         public void EditDeckOkTest()
         {
-            string newSubject = "new subject";
-            string newName = "new name";
-            Difficulty newDifficulty = Difficulty.Hard;
-            bool newVisibility = true;
+            Deck updatedDeck = new Deck()
+            {
+                Name = "new name",
+                IsHidden = true,
+                Difficulty = Difficulty.Hard,
+                Subject = "new subject"
+            };
 
             deckRepositoryMock.Setup(m => m.Update(It.IsAny<Deck>()));
             deckRepositoryMock.Setup(m => m.GetById(1)).Returns(deckExample);
-            deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == newName && a.Id != 1)).Returns(new List<Deck>() { });
+            deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == updatedDeck.Name
+                    && a.Id != 1)).Returns(new List<Deck>() { });
 
-            deckExample.Name = newName;
-            deckExample.IsHidden = newVisibility;
-            deckExample.Difficulty = newDifficulty;
-            deckExample.Subject = newSubject;
-            var result = deckLogic.EditDeck(1, newName, newDifficulty, newVisibility, newSubject);
+            var result = deckLogic.EditDeck(1, updatedDeck);
 
             deckRepositoryMock.VerifyAll();
 
@@ -238,17 +238,15 @@ namespace BusinessLogicTest
                 Subject = "P.E"
             };
 
-            Difficulty newDifficulty = Difficulty.Hard;
-            bool newVisibility = true;
-
             deckRepositoryMock.Setup(m => m.GetById(1)).Returns(deckExample);
 
             string newSubject = anotherDeckExample.Subject;
             string newName = anotherDeckExample.Name;
             int deckId = deckExample.Id;
-            deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == newName && a.Id != deckId)).Returns(new List<Deck>() { anotherDeckExample });
+            deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == anotherDeckExample.Name
+                && a.Id != deckId)).Returns(new List<Deck>() { anotherDeckExample });
 
-            var result = deckLogic.EditDeck(1, anotherDeckExample.Name, newDifficulty, newVisibility, newSubject);
+            var result = deckLogic.EditDeck(1, anotherDeckExample);
         }
 
         [ExpectedException(typeof(InvalidException))]
@@ -258,10 +256,19 @@ namespace BusinessLogicTest
             Difficulty newDifficulty = Difficulty.Hard;
             bool newVisibility = true;
 
-            deckRepositoryMock.Setup(m => m.GetById(1)).Returns(deckExample);
-            deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == "Name" && a.Id != 1)).Returns(new List<Deck>());
+            Deck updatedDeck = new Deck()
+            {
+                Difficulty = newDifficulty,
+                IsHidden = newVisibility,
+                Subject = "",
+                Name = "Name"
+            };
 
-            var result = deckLogic.EditDeck(1, "Name", newDifficulty, newVisibility, "");
+            deckRepositoryMock.Setup(m => m.GetById(1)).Returns(deckExample);
+            deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == updatedDeck.Name
+                && a.Id != 1)).Returns(new List<Deck>());
+
+            var result = deckLogic.EditDeck(1, updatedDeck);
         }
 
 
@@ -272,10 +279,18 @@ namespace BusinessLogicTest
             Difficulty newDifficulty = Difficulty.Hard;
             bool newVisibility = true;
 
+            Deck updatedDeck = new Deck()
+            {
+                Difficulty = newDifficulty,
+                IsHidden = newVisibility,
+                Name = "Name",
+                Subject = null
+            };
             deckRepositoryMock.Setup(m => m.GetById(1)).Returns(deckExample);
-            deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == "Name" && a.Id != 1)).Returns(new List<Deck>());
+            deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == updatedDeck.Name
+                && a.Id != 1)).Returns(new List<Deck>());
 
-            var result = deckLogic.EditDeck(1, "Name", newDifficulty, newVisibility, null);
+            var result = deckLogic.EditDeck(1, updatedDeck);
         }
 
         [ExpectedException(typeof(NotFoundException))]
@@ -285,22 +300,37 @@ namespace BusinessLogicTest
             bool newVisibility = true;
             Difficulty newDifficulty = Difficulty.Hard;
 
-            deckRepositoryMock.Setup(m => m.GetById(1)).Returns((Deck)null);
-            deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == "Name" && a.Id != 1)).Returns(new List<Deck>());
+            Deck updatedDeck = new Deck()
+            {
+                Name = "Name",
+                Difficulty = newDifficulty,
+                IsHidden = newVisibility,
+                Subject = "Subject"
+            };
 
-            var result = deckLogic.EditDeck(1, "Name", newDifficulty, newVisibility, "Subject");
+            deckRepositoryMock.Setup(m => m.GetById(1)).Returns((Deck)null);
+            deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == updatedDeck.Name
+                    && a.Id != 1)).Returns(new List<Deck>());
+
+            var result = deckLogic.EditDeck(1, updatedDeck);
         }
 
         [ExpectedException(typeof(InvalidException))]
         [TestMethod]
         public void EditDeckWrongDifficultyTest()
         {
-            bool newVisibility = true;
-
+            Deck updatedDeck = new Deck()
+            {
+                Name = "Name",
+                Difficulty = (Difficulty)3,
+                IsHidden = true,
+                Subject = "Subject"
+            };
             deckRepositoryMock.Setup(m => m.GetById(1)).Returns(deckExample);
-            deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == "Name" && a.Id != 1)).Returns(new List<Deck>());
+            deckRepositoryMock.Setup(m => m.FindByCondition(a => a.Name == updatedDeck.Name
+                && a.Id != 1)).Returns(new List<Deck>());
 
-            var result = deckLogic.EditDeck(1, "Name", (Difficulty)3, newVisibility, "Subject");
+            var result = deckLogic.EditDeck(1, updatedDeck);
         }
 
         [TestMethod]

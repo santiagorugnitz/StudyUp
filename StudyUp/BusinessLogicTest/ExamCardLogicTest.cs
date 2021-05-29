@@ -179,7 +179,7 @@ namespace BusinessLogicTest
             var result = examCardLogic.EditExamCard("token", 1, "new question", false);
         }
 
-        [ExpectedException(typeof(NotFoundException))]
+        [ExpectedException(typeof(NotAuthenticatedException))]
         [TestMethod]
         public void EditExamCardUserNullTest()
         {

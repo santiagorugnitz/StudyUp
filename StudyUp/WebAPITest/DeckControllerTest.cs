@@ -110,10 +110,6 @@ namespace WebAPITest
         [TestMethod]
         public void UpdateDeckTest()
         {
-            logicMock.Setup(x => x.AddDeck(It.IsAny<Deck>(), userModelExample.Token)).Returns(deck);
-            logicMock.Setup(x => x.EditDeck(1, "new name", Domain.Enumerations.Difficulty.Easy,
-                true, "new subject")).Returns(deck);
-
             UpdateDeckModel updateDeckModel = new UpdateDeckModel()
             {
                 Difficulty = Domain.Enumerations.Difficulty.Easy,
@@ -121,6 +117,19 @@ namespace WebAPITest
                 IsHidden = true,
                 Subject = "new subject"
             };
+
+            Deck updatedDeck = new Deck()
+            {
+                Difficulty = updateDeckModel.Difficulty,
+                Name = updateDeckModel.Name,
+                IsHidden = updateDeckModel.IsHidden,
+                Subject = updateDeckModel.Subject
+            };
+
+            logicMock.Setup(x => x.AddDeck(It.IsAny<Deck>(), userModelExample.Token)).Returns(deck);
+            logicMock.Setup(x => x.EditDeck(1, updatedDeck)).Returns(deck);
+
+
             controller.Post(deckModelExample, userModelExample.Token);
 
             var result = controller.Update(1, updateDeckModel);
@@ -135,7 +144,7 @@ namespace WebAPITest
         {
             var deck = deckModelExample.ToEntity();
             var commentsList = new List<FlashcardComment>() { new FlashcardComment() { Comment = "New comment", Id = 1, CreatorUsername = "Name", CreatedOn = new DateTime() } };
-            deck.Flashcards = new List<Flashcard>() { new Flashcard() { Id = 1, Question = "Question", Answer = "Answer", Comments = commentsList} };
+            deck.Flashcards = new List<Flashcard>() { new Flashcard() { Id = 1, Question = "Question", Answer = "Answer", Comments = commentsList } };
             deck.Author = new User { Username = "test" };
             logicMock.Setup(x => x.GetDeckById(1)).Returns(deck);
 

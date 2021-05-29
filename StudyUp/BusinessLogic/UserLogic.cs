@@ -107,6 +107,7 @@ namespace BusinessLogic
         public User CheckToken(string token)
         {
             User user = userRepository.GetUserByToken(token);
+            
             if (user == null)
             {
                 throw new NotAuthenticatedException(UnauthenticatedMessage.UNAUTHENTICATED_USER);

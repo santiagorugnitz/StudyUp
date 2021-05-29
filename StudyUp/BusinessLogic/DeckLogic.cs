@@ -77,26 +77,27 @@ namespace BusinessLogic
         }
 
 
-        public Deck EditDeck(int deckId, string newName, Difficulty newDifficulty, bool newVisibility,
-            string subject)
+        //public Deck EditDeck(int deckId, string newName, Difficulty newDifficulty, bool newVisibility,
+        //    string subject)
+        public Deck EditDeck(int deckId, Deck newDeck)
         {
             Deck deck = deckRepository.GetById(deckId);
-            ICollection<Deck> sameName = deckRepository.FindByCondition(a => a.Name == newName
+            ICollection<Deck> sameName = deckRepository.FindByCondition(a => a.Name == newDeck.Name
                 && a.Id != deckId);
 
             if (sameName != null && sameName.Count > 0)
                 throw new AlreadyExistsException(DeckMessage.DECK_ALREADY_EXISTS);
-            if ((int)newDifficulty > 2 || (int)newDifficulty < 0)
+            if ((int)newDeck.Difficulty > 2 || (int)newDeck.Difficulty < 0)
                 throw new InvalidException(DeckMessage.INVALID_DIFFICULTY);
-            if (subject is null || subject.Trim().Length == 0)
+            if (newDeck.Subject is null || newDeck.Subject.Trim().Length == 0)
                 throw new InvalidException(DeckMessage.EMPTY_SUBJECT);
 
             if (deck != null)
             {
-                deck.Name = newName;
-                deck.Difficulty = newDifficulty;
-                deck.IsHidden = newVisibility;
-                deck.Subject = subject;
+                deck.Name = newDeck.Name;
+                deck.Difficulty = newDeck.Difficulty;
+                deck.IsHidden = newDeck.IsHidden;
+                deck.Subject = newDeck.Subject;
                 deckRepository.Update(deck);
                 return deck;
             }
