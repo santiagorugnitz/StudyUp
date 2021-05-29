@@ -38,7 +38,7 @@ class StudyFragment : BaseFragment(), TextToSpeech.OnInitListener, CommentDialog
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val deckId = requireActivity().intent.extras?.getInt(DECK_ID_KEY)
-        isOwner = requireActivity().intent.getBooleanExtra(IS_OWNER_EXTRA,false)
+        isOwner = requireActivity().intent.getBooleanExtra(IS_OWNER_EXTRA, false)
         tts = TextToSpeech(requireContext(), this)
         deckId?.let {
             initViewModel(deckId)
@@ -56,11 +56,6 @@ class StudyFragment : BaseFragment(), TextToSpeech.OnInitListener, CommentDialog
             } ?: run {
                 requireActivity().finish()
                 showError(INTERNAL_ERROR_CODE, getString(R.string.no_flashcards_error))
-                CommentDialog(requireContext(),object :CommentDialog.Callback{
-                    override fun onComment(comment: String) {
-                        TODO("Not yet implemented")
-                    }
-                }).show()
             }
         })
     }
@@ -77,8 +72,11 @@ class StudyFragment : BaseFragment(), TextToSpeech.OnInitListener, CommentDialog
             })
         }
         flipButton.setOnClickListener { onFlip() }
-        if(!isOwner){
+        if (!isOwner) {
+            commentButton.visibility = View.VISIBLE
             commentButton.setOnClickListener { onComment() }
+        } else {
+            commentButton.visibility = View.INVISIBLE
         }
     }
 
