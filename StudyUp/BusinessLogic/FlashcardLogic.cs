@@ -39,11 +39,7 @@ namespace BusinessLogic
                 || flashcard.Question.Length == 0 || flashcard.Answer.Length == 0)
                 throw new InvalidException(FlashcardMessage.EMPTY_QUESTION_OR_ANSWER);
 
-            User userLoggedByToken = userTokenRepository.GetUserByToken(token);
-            if (userLoggedByToken == null)
-            {
-                throw new InvalidException(FlashcardMessage.NOT_AUTHORIZED);
-            }
+            User userLoggedByToken = UserByToken(token);
 
             Deck deck = deckRepository.GetById(deckId);
             if (deck == null)
@@ -96,12 +92,9 @@ namespace BusinessLogic
 
         public bool DeleteComment(string token, int flashcardId, int commentId)
         {
-            User user = userTokenRepository.GetUserByToken(token);
+            User user = UserByToken(token);
             Flashcard flashcard = flashcardRepository.GetById(flashcardId);
             FlashcardComment comment = flashcardCommentRepository.GetById(commentId);
-
-            if (user is null)
-                throw new NotFoundException(UserMessage.USER_NOT_FOUND);
 
             if (flashcard is null)
                 throw new NotFoundException(FlashcardMessage.FLASHCARD_NOT_FOUND);
@@ -139,12 +132,9 @@ namespace BusinessLogic
             string newAnswer)
         {
             Flashcard flashcard = flashcardRepository.GetById(flashcardId);
-            User user = userTokenRepository.GetUserByToken(token);
+            User user = UserByToken(token);
 
-            if (user is null)
-                throw new NotFoundException(UserMessage.USER_NOT_FOUND);
-
-            else if (flashcard is null)
+            if (flashcard is null)
                 throw new NotFoundException(FlashcardMessage.FLASHCARD_NOT_FOUND);
 
             else if (user.Id != flashcard.Deck.Author.Id)
@@ -166,9 +156,7 @@ namespace BusinessLogic
             if (deck == null)
                 throw new NotFoundException(DeckMessage.DECK_NOT_FOUND);
 
-            User user = userTokenRepository.GetUserByToken(token);
-            if (user == null)
-                throw new InvalidException(FlashcardMessage.NOT_AUTHORIZED);
+            User user = UserByToken(token);
 
             List<Tuple<Flashcard, int>> returningList = new List<Tuple<Flashcard, int>>();
 
@@ -188,7 +176,6 @@ namespace BusinessLogic
                     returningList.Add(assigningTuple);
                 }
             }
-
             return returningList;
         }
 
@@ -199,9 +186,7 @@ namespace BusinessLogic
             if (flashcard is null)
                 throw new NotFoundException(FlashcardMessage.FLASHCARD_NOT_FOUND);
 
-            User user = userTokenRepository.GetUserByToken(token);
-            if (user == null)
-                throw new InvalidException(FlashcardMessage.NOT_AUTHORIZED);
+            User user = UserByToken(token);
 
             var flashcardScore = flashcardScoreRepository.FindByCondition(fs => fs.FlashcardId == flashcard.Id && fs.UserId == user.Id);
 
@@ -232,6 +217,16 @@ namespace BusinessLogic
                 flashcardScoreRepository.Update(editingFlashcard);
             }
             return flashcard;
+        }
+
+        private User UserByToken(string token)
+        {
+            User user = userTokenRepository.GetUserByToken(token);
+
+            if (user is null)
+                throw new InvalidException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
+            else
+                return user;
         }
     }
 }

@@ -31,10 +31,7 @@ namespace BusinessLogic
 
         public Exam AddExam(Exam exam, string userToken)
         {
-            User user = userTokenRepository.GetUserByToken(userToken);
-
-            if (user is null)
-                throw new NotAuthenticatedException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
+            User user = UserByToken(userToken);
 
             if (user.IsStudent)
                 throw new InvalidException(ExamMessage.NOT_A_TEACHER);
@@ -62,12 +59,9 @@ namespace BusinessLogic
 
         public Exam AssignExam(string token, int groupId, int examId)
         {
-            User user = userTokenRepository.GetUserByToken(token);
+            User user = UserByToken(token);
             Exam exam = examRepository.GetById(examId);
             Group group = groupRepository.GetById(groupId);
-
-            if (user is null)
-                throw new InvalidException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
 
             if (group is null)
                 throw new NotFoundException(GroupMessage.GROUP_NOT_FOUND);
@@ -99,10 +93,7 @@ namespace BusinessLogic
 
         public void AssignResults(int examId, string token, int time, int correctAnswers)
         {
-            User user = userTokenRepository.GetUserByToken(token);
-
-            if (user is null)
-                throw new NotFoundException(UserMessage.USER_NOT_FOUND);
+            User user = UserByToken(token);
 
             Exam exam = this.examRepository.GetById(examId);
 
@@ -195,6 +186,16 @@ namespace BusinessLogic
 
             var teachersExams = examRepository.FindByCondition(t => t.Author.Equals(user));
             return teachersExams;
+        }
+
+        private User UserByToken(string token)
+        {
+            User user = userTokenRepository.GetUserByToken(token);
+
+            if (user is null)
+                throw new InvalidException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
+            else
+                return user;
         }
     }
 }

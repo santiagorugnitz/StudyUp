@@ -25,10 +25,7 @@ namespace BusinessLogic
 
         public ExamCard AddExamCard(int examId, ExamCard examCard, string token)
         {
-            User user = userTokenRepository.GetUserByToken(token);
-
-            if (user is null)
-                throw new NotAuthenticatedException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
+            User user = UserByToken(token);
 
             if (user.IsStudent)
                 throw new InvalidException(ExamMessage.NOT_A_TEACHER);
@@ -78,12 +75,9 @@ namespace BusinessLogic
         public ExamCard EditExamCard(string token, int examCardId, string newQuestion, bool newAnswer)
         {
             ExamCard examcard = examCardRepository.GetById(examCardId);
-            User user = userTokenRepository.GetUserByToken(token);
+            User user = UserByToken(token);
 
-            if (user is null)
-                throw new NotFoundException(UserMessage.USER_NOT_FOUND);
-
-            else if (examcard is null)
+            if (examcard is null)
                 throw new NotFoundException(ExamCardMessage.EXAMCARD_NOT_FOUND);
 
             else if (user.Id != examcard.Exam.Author.Id)
@@ -98,6 +92,16 @@ namespace BusinessLogic
 
             ExamCard updatedExamcard = examCardRepository.GetById(examCardId);
             return updatedExamcard;
+        }
+
+        private User UserByToken(string token)
+        {
+            User user = userTokenRepository.GetUserByToken(token);
+
+            if (user is null)
+                throw new InvalidException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
+            else
+                return user;
         }
     }
 }

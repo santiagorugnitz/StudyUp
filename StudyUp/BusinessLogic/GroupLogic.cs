@@ -33,7 +33,8 @@ namespace BusinessLogic
 
         public Group AddGroup(Group group, string creatorsToken)
         {
-            User user = userTokenRepository.GetUserByToken(creatorsToken);
+            User user = UserByToken(creatorsToken);
+
             if (user.Groups.Exists(auxGroup => auxGroup.Name == group.Name))
             {
                 throw new AlreadyExistsException(GroupMessage.GROUP_ALREADY_EXISTS);
@@ -60,11 +61,8 @@ namespace BusinessLogic
 
         public bool Subscribe(string token, int id)
         {
-            User user = userTokenRepository.GetUserByToken(token);
+            User user = UserByToken(token);
             Group group = groupRepository.GetById(id);
-
-            if (user is null)
-                throw new InvalidException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
 
             if (group is null)
                 throw new NotFoundException(GroupMessage.GROUP_NOT_FOUND);
@@ -90,11 +88,8 @@ namespace BusinessLogic
 
         public bool Unsubscribe(string token, int id)
         {
-            User user = userTokenRepository.GetUserByToken(token);
+            User user = UserByToken(token);
             Group group = groupRepository.GetById(id);
-
-            if (user is null)
-                throw new InvalidException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
 
             if (group is null)
                 throw new NotFoundException(GroupMessage.GROUP_NOT_FOUND);
@@ -113,10 +108,7 @@ namespace BusinessLogic
 
         public bool UserIsSubscribed(string token, int id)
         {
-            User user = userTokenRepository.GetUserByToken(token);
-
-            if (user is null)
-                throw new InvalidException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
+            User user = UserByToken(token);
 
             var resultFind = userGroupRepository.FindByCondition(t => t.GroupId == id
                                  && t.UserId == user.Id);
@@ -150,6 +142,16 @@ namespace BusinessLogic
             }
 
             return toReturn;
+        }
+
+        private User UserByToken(string token)
+        {
+            User user = userTokenRepository.GetUserByToken(token);
+
+            if (user is null)
+                throw new InvalidException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
+            else
+                return user;
         }
     }
 }

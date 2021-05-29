@@ -127,12 +127,9 @@ namespace BusinessLogic
 
         public Group Assign(string token, int groupId, int deckId)
         {
-            User user = userTokenRepository.GetUserByToken(token);
+            User user = UserByToken(token);
             Deck deck = deckRepository.GetById(deckId);
             Group group = groupRepository.GetById(groupId);
-
-            if (user is null)
-                throw new InvalidException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
 
             if (group is null)
                 throw new NotFoundException(GroupMessage.GROUP_NOT_FOUND);
@@ -166,11 +163,8 @@ namespace BusinessLogic
 
         public Group Unassign(string token, int groupId, int deckId)
         {
-            User user = userTokenRepository.GetUserByToken(token);
+            User user = UserByToken(token);
             Group group = groupRepository.GetById(groupId);
-
-            if (user is null)
-                throw new InvalidException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
 
             if (group is null)
                 throw new NotFoundException(GroupMessage.GROUP_NOT_FOUND);
@@ -202,6 +196,16 @@ namespace BusinessLogic
                 c => c.Flashcard.Id == flashcardId);
 
             return flashcardsComments;
+        }
+
+        private User UserByToken(string token)
+        {
+            User user = userTokenRepository.GetUserByToken(token);
+
+            if (user is null)
+                throw new InvalidException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
+            else
+                return user;
         }
     }
 }
