@@ -22,10 +22,7 @@ class LoginViewModel(
             executeService {
                 result.postValue( userRepository.login(user, password))
             }
-        } else {
-            result.postValue(null)
         }
-
         return result
     }
 
