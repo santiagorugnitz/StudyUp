@@ -80,6 +80,7 @@
     <string name="answer_prefix">A:</string>
     <string name="deck_has_no_cards">Deck has no cards yet</string>
     <string name="no_groups">No groups yet.\nTry creating one with the button below.</string>
+    <string name="no_exams">No exams yet.\nTry creating one with the button below.</string>
     <string name="no_notifications">Up to date!\nAll missed notifications will appear here.</string>
     <string name="no_following_decks">No decks to show.\nTry following more people.</string>
     <string name="no_decks">No decks yet.\nTry creating one with the button below.</string>

@@ -85,7 +85,7 @@ object KoinWrapper {
     }
 
     private fun repositories() = module {
-        factory { UserRepository(get(), get(), get()) }
+        factory { UserRepository(get(), get(), get(),get()) }
         factory { DeckRepository(get()) }
         factory { FlashcardRepository(get()) }
         factory { GroupRepository(get()) }

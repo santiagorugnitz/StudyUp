@@ -11,6 +11,7 @@ import com.ort.studyup.common.EXAM_ID_KEY
 import com.ort.studyup.common.EXAM_NAME_KEY
 import com.ort.studyup.common.GROUP_NAME_KEY
 import com.ort.studyup.common.models.ExamItem
+import com.ort.studyup.common.renderers.EmptyViewRenderer
 import com.ort.studyup.common.renderers.ExamItemRenderer
 import com.ort.studyup.common.renderers.SubtitleRenderer
 import com.ort.studyup.common.ui.BaseFragment
@@ -39,6 +40,7 @@ class ExamsFragment : BaseFragment(), ExamItemRenderer.Callback {
         }
         adapter.addRenderer(SubtitleRenderer())
         adapter.addRenderer(ExamItemRenderer(this))
+        adapter.setEmptyItem(EmptyViewRenderer.Item(getString(R.string.no_exams)), EmptyViewRenderer())
         examList.layoutManager = LinearLayoutManager(requireContext())
         examList.adapter = adapter
     }
