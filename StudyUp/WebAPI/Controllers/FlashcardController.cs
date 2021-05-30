@@ -33,12 +33,25 @@ namespace WebAPI.Controllers
         public IActionResult EditFlashcard([FromRoute] int id, [FromHeader] string token,
             [FromBody] EditFlashcardModel editFlashcardModel)
         {
-            var result = logic.EditFlashcard(token, id, editFlashcardModel.Question, editFlashcardModel.Answer);
-            return Ok(new ResponseFlashcardModel { Id = result.Id, Answer = result.Answer, Question = result.Question });
+            Flashcard editedFlashcard = new Flashcard()
+            {
+                Answer = editFlashcardModel.Answer,
+                Question = editFlashcardModel.Question
+            };
+
+            var result = logic.EditFlashcard(token, id, editedFlashcard);
+
+            return Ok(new ResponseFlashcardModel
+            {
+                Id = result.Id,
+                Answer = result.Answer,
+                Question = result.Question
+            });
         }
 
         [HttpPost("study")]
-        public IActionResult EditScore([FromHeader] string token, [FromBody] List<SingleFlashcardModel> scoredFlashcards)
+        public IActionResult EditScore([FromHeader] string token, 
+            [FromBody] List<SingleFlashcardModel> scoredFlashcards)
         {
             foreach (var scoredFlashcard in scoredFlashcards)
             {

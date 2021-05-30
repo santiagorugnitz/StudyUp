@@ -1,4 +1,5 @@
 ﻿using BusinessLogicInterface;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Filters;
 using WebAPI.Models.RequestModels;
@@ -34,8 +35,13 @@ namespace WebAPI.Controllers
         public IActionResult EditExamCard([FromRoute] int id, [FromHeader] string token,
            [FromBody] EditExamCardModel editExamCardModel)
         {
-            return Ok(logic.EditExamCard(token, id, editExamCardModel.Question,
-                editExamCardModel.Answer));
+            ExamCard newExamCard = new ExamCard()
+            {
+                Answer = editExamCardModel.Answer,
+                Question = editExamCardModel.Question
+            };
+
+            return Ok(logic.EditExamCard(token, id, newExamCard));
         }
     }
 }
