@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ort.studyup.R
 import com.ort.studyup.common.renderers.AssignDeckItemRenderer
 import com.ort.studyup.common.renderers.DeletableDeckItemRenderer
+import com.ort.studyup.common.renderers.EmptyViewRenderer
 import com.ort.studyup.common.ui.BaseFragment
 import com.thinkup.easylist.RendererAdapter
 import kotlinx.android.synthetic.main.fragment_groups.*
@@ -33,6 +34,7 @@ class GroupsFragment : BaseFragment(), DeletableDeckItemRenderer.Callback, Assig
 
         adapter.addRenderer(DeletableDeckItemRenderer(this))
         adapter.addRenderer(AssignDeckItemRenderer(this))
+        adapter.setEmptyItem(EmptyViewRenderer.Item(getString(R.string.no_groups)),EmptyViewRenderer())
         groupList.layoutManager = LinearLayoutManager(requireContext())
         groupList.adapter = adapter
         loadItems()

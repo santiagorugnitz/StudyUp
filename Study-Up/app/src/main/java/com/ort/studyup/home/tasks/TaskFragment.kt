@@ -59,7 +59,7 @@ class TaskFragment : BaseFragment(), DeckItemRenderer.Callback, ExamItemRenderer
         deckList.layoutManager = LinearLayoutManager(requireContext())
         deckList.adapter = deckAdapter
         deckAdapter.setEmptyItem(
-            EmptyViewRenderer.Item(getString(R.string.no_decks)),
+            EmptyViewRenderer.Item(getString(R.string.no_study_decks)),
             EmptyViewRenderer()
         )
     }

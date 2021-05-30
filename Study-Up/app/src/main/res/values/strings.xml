@@ -72,13 +72,21 @@
     <string name="comments">Comments</string>
     <string name="swipe_to_delete">Swipe the comments to remove them from the list</string>
     <string name="no_exams_assigned">There are no exams assigned yet</string>
-    <string name="no_decks">There are no decks to study yet.\nTry joining more groups!</string>
+    <string name="no_study_decks">There are no decks to study yet.\nTry joining more groups!</string>
     <string name="notifications">Notifications</string>
     <string name="start_exam_confirmation">Begin attempt? You will not be able to pause or retry later.</string>
     <string name="exam_finished">Exam finished! \nScore: %1$s points</string>
     <string name="group_prefix">Group:</string>
     <string name="answer_prefix">A:</string>
     <string name="deck_has_no_cards">Deck has no cards yet</string>
+    <string name="no_groups">No groups yet.\nTry creating one with the button below.</string>
+    <string name="no_notifications">Up to date!\nAll missed notifications will appear here.</string>
+    <string name="no_following_decks">No decks to show.\nTry following more people.</string>
+    <string name="no_decks">No decks yet.\nTry creating one with the button below.</string>
+    <string name="no__search_results">No results.</string>
+    <string name="unassigned_exams">Unassigned exams</string>
+    <string name="assigned_exams">Assigned exams</string>
+
 
     <string-array name="difficulties">
         <item>Easy</item>

@@ -47,7 +47,7 @@ class ServiceFactory(private val context: Context) {
 
     private fun gsonConverterFactory() = GsonConverterFactory.create(
         GsonBuilder()
-            .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+            .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
             .setLenient()
             .create()
     )

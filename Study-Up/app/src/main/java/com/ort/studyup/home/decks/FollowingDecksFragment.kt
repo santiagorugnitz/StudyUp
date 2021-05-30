@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ort.studyup.R
 import com.ort.studyup.common.DECK_ID_KEY
 import com.ort.studyup.common.renderers.DeckItemRenderer
+import com.ort.studyup.common.renderers.EmptyViewRenderer
 import com.ort.studyup.common.renderers.SubtitleRenderer
 import com.ort.studyup.common.ui.BaseFragment
 import com.ort.studyup.study.StudyActivity
@@ -38,6 +39,7 @@ class FollowingDecksFragment : BaseFragment(), DeckItemRenderer.Callback {
     private fun initUI() {
         adapter.addRenderer(SubtitleRenderer())
         adapter.addRenderer(DeckItemRenderer(this))
+        adapter.setEmptyItem(EmptyViewRenderer.Item(getString(R.string.no_following_decks)), EmptyViewRenderer())
         deckList.layoutManager = LinearLayoutManager(requireContext())
         deckList.adapter = adapter
 

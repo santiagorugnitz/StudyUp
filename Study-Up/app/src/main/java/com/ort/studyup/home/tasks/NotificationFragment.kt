@@ -11,6 +11,7 @@ import com.ort.studyup.R
 import com.ort.studyup.common.DECK_ID_KEY
 import com.ort.studyup.common.EXAM_ID_KEY
 import com.ort.studyup.common.models.NotificationType
+import com.ort.studyup.common.renderers.EmptyViewRenderer
 import com.ort.studyup.common.renderers.NotificationItemRenderer
 import com.ort.studyup.common.ui.BaseFragment
 import com.ort.studyup.study.StudyActivity
@@ -37,6 +38,7 @@ class NotificationFragment : BaseFragment(), NotificationItemRenderer.Callback {
     private fun prepareList() {
         adapter.addRenderer(NotificationItemRenderer(this))
         notificationList.layoutManager = LinearLayoutManager(requireContext())
+        adapter.setEmptyItem(EmptyViewRenderer.Item(getString(R.string.no_notifications),R.drawable.ic_ok), EmptyViewRenderer())
         notificationList.adapter = adapter
     }
 
