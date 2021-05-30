@@ -62,7 +62,7 @@ namespace BusinessLogic
 
             User user = this.userRepository.GetById(examCard.Exam.Author.Id);
 
-            if (user!=null && !user.Token.Equals(token))
+            if (user != null && !user.Token.Equals(token))
                 throw new InvalidException(ExamCardMessage.NOT_AUTHORIZED_TO_DELETE);
 
             Exam exam = examCard.Exam;
@@ -72,7 +72,8 @@ namespace BusinessLogic
             return true;
         }
 
-        public ExamCard EditExamCard(string token, int examCardId, string newQuestion, bool newAnswer)
+
+        public ExamCard EditExamCard(string token, int examCardId, ExamCard newExamCard )
         {
             ExamCard examcard = examCardRepository.GetById(examCardId);
             User user = UserByToken(token);
@@ -85,8 +86,8 @@ namespace BusinessLogic
 
             else if (examcard != null && user != null)
             {
-                examcard.Question = newQuestion;
-                examcard.Answer = newAnswer;
+                examcard.Question = newExamCard.Question;
+                examcard.Answer = newExamCard.Answer;
                 examCardRepository.Update(examcard);
             }
 

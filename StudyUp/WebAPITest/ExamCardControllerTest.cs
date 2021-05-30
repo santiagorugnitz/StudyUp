@@ -81,8 +81,14 @@ namespace WebAPITest
                 Question = "new question"
             };
 
-            logicMock.Setup(x => x.EditExamCard(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
-                It.IsAny<bool>())).Returns(new ExamCardModel().ToEntity());
+            ExamCard newExamCard = new ExamCard()
+            {
+                Answer = editExamCardModel.Answer,
+                Question = editExamCardModel.Question
+            };
+
+            logicMock.Setup(x => x.EditExamCard(It.IsAny<string>(), It.IsAny<int>(),
+                It.IsAny<ExamCard>())).Returns(new ExamCardModel().ToEntity());
 
             var result = controller.EditExamCard(1, "token", editExamCardModel);
             var okResult = result as OkObjectResult;

@@ -9,6 +9,7 @@
     public static class DeckMessage
     {
         public const string ALREADY_ASSIGNED = "Already assigned this deck to this group.";
+        public const string CANNOT_EDIT = "Only this decks author can edit it.";
         public const string DECK_ALREADY_EXISTS = "Name already exists.";
         public const string DECK_NOT_FOUND = "This deck does not exist.";
         public const string EMPTY_NAME = "Name field cannot be empty.";

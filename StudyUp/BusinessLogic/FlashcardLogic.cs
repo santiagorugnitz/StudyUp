@@ -128,8 +128,7 @@ namespace BusinessLogic
             return true;
         }
 
-        public Flashcard EditFlashcard(string token, int flashcardId, string newQuestion,
-            string newAnswer)
+        public Flashcard EditFlashcard(string token, int flashcardId, Flashcard editedFlashcard)
         {
             Flashcard flashcard = flashcardRepository.GetById(flashcardId);
             User user = UserByToken(token);
@@ -142,8 +141,8 @@ namespace BusinessLogic
 
             else if (flashcard != null && user != null)
             {
-                flashcard.Question = newQuestion;
-                flashcard.Answer = newAnswer;
+                flashcard.Question = editedFlashcard.Question;
+                flashcard.Answer = editedFlashcard.Answer;
                 flashcardRepository.Update(flashcard);
             }
             Flashcard updatedFlashcard = flashcardRepository.GetById(flashcardId);

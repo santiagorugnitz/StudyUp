@@ -6,6 +6,6 @@ namespace BusinessLogicInterface
     {
         ExamCard AddExamCard(int examId, ExamCard examCard, string token);
         bool DeleteExamCard(int id, string token);
-        ExamCard EditExamCard(string token, int examCardId, string newQuestion, bool newAnswer);
+        ExamCard EditExamCard(string token, int examCardId, ExamCard newExamcard);
     }
 }

@@ -268,11 +268,17 @@ namespace BusinessLogicTest
                 Deck = deckExample
             };
 
+            Flashcard editedFlashcard = new Flashcard()
+            {
+                Answer = "new answer",
+                Question = "new question"
+            };
+
             flashcardRepositoryMock.Setup(m => m.GetById(1)).Returns(flashcardAfterEdit);
             flashcardRepositoryMock.Setup(f => f.Update(It.IsAny<Flashcard>()));
             userTokenRepository.Setup(u => u.GetUserByToken(It.IsAny<string>())).Returns(userExample);
 
-            var result = flashcardLogic.EditFlashcard("token", 1, "new question", "new answer");
+            var result = flashcardLogic.EditFlashcard("token", 1, editedFlashcard);
 
             flashcardRepositoryMock.VerifyAll();
             Assert.AreEqual(flashcardAfterEdit, result);
@@ -293,10 +299,16 @@ namespace BusinessLogicTest
                 Username = "Another User"
             };
 
+            Flashcard editedFlashcard = new Flashcard()
+            {
+                Answer = "new answer",
+                Question = "new question"
+            };
+
             flashcardRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(flashcardExample);
             userTokenRepository.Setup(u => u.GetUserByToken("different token")).Returns(anotherUserExample);
 
-            var result = flashcardLogic.EditFlashcard("different token", 1, "new question", "new answer");
+            var result = flashcardLogic.EditFlashcard("different token", 1, editedFlashcard);
         }
 
         [ExpectedException(typeof(NotAuthenticatedException))]
@@ -314,10 +326,16 @@ namespace BusinessLogicTest
                 Username = "Another User"
             };
 
+            Flashcard editedFlashcard = new Flashcard()
+            {
+                Answer = "new answer",
+                Question = "new question"
+            };
+
             flashcardRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(flashcardExample);
             userTokenRepository.Setup(u => u.GetUserByToken("different token")).Returns((User)null);
 
-            var result = flashcardLogic.EditFlashcard("different token", 1, "new question", "new answer");
+            var result = flashcardLogic.EditFlashcard("different token", 1, editedFlashcard);
         }
 
         [ExpectedException(typeof(NotFoundException))]
@@ -335,10 +353,16 @@ namespace BusinessLogicTest
                 Username = "Another User"
             };
 
+            Flashcard editedFlashcard = new Flashcard()
+            {
+                Answer = "new answer",
+                Question = "new question"
+            };
+
             flashcardRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns((Flashcard)null);
             userTokenRepository.Setup(u => u.GetUserByToken("different token")).Returns(anotherUserExample);
 
-            var result = flashcardLogic.EditFlashcard("different token", 1, "new question", "new answer");
+            var result = flashcardLogic.EditFlashcard("different token", 1, editedFlashcard);
         }
 
         [TestMethod]
