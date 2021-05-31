@@ -26,7 +26,8 @@ namespace WebAPI.Controllers
         public IActionResult Assign([FromHeader] string token, [FromRoute] int examId,
             [FromQuery] int groupId)
         {
-            return Ok(logic.AssignExam(token, groupId, examId));
+            logic.AssignExam(token, groupId, examId);
+            return Ok();
         }
 
         [HttpPost]

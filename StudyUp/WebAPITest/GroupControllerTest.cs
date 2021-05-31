@@ -46,7 +46,6 @@ namespace WebAPITest
 
             var result = controller.Post(groupModelExample, "token");
             var okResult = result as OkObjectResult;
-            var value = okResult.Value as User;
 
             logicMock.VerifyAll();
         }
@@ -58,7 +57,6 @@ namespace WebAPITest
 
             var result = controller.Subscribe("token", 1);
             var okResult = result as OkObjectResult;
-            var value = okResult.Value as User;
 
             logicMock.VerifyAll();
         }
@@ -70,7 +68,6 @@ namespace WebAPITest
 
             var result = controller.Unsubscribe("token", 1);
             var okResult = result as OkObjectResult;
-            var value = okResult.Value as User;
 
             logicMock.VerifyAll();
         }

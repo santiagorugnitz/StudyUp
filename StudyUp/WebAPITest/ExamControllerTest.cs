@@ -147,7 +147,6 @@ namespace WebAPITest
 
             var result = controller.Assign("token", 1, 1);
             var okResult = result as OkObjectResult;
-            var value = okResult.Value as Exam;
 
             logicMock.VerifyAll();
         }
