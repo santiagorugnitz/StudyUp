@@ -38,19 +38,23 @@ class ExamsViewModel(
             }
 
             val groupItems = groups.map { GroupItem(it.id, it.name) }
+            if (unassigned.isNotEmpty()) {
+                items.add(
+                    SubtitleRenderer.Item(resourceWrapper.getString(R.string.unassigned_exams))
+                )
+                items.addAll(
+                    unassigned.map { ExamItemRenderer.Item(it.id, it.name, it.groupName, groupItems) }
+                )
+            }
+            if (assigned.isNotEmpty()) {
+                items.add(
+                    SubtitleRenderer.Item(resourceWrapper.getString(R.string.assigned_exams))
+                )
+                items.addAll(
+                    assigned.map { ExamItemRenderer.Item(it.id, it.name, it.groupName, groupItems) }
+                )
+            }
 
-            items.add(
-                SubtitleRenderer.Item(resourceWrapper.getString(R.string.unassigned))
-            )
-            items.addAll(
-                unassigned.map { ExamItemRenderer.Item(it.id, it.name, it.groupName, groupItems) }
-            )
-            items.add(
-                SubtitleRenderer.Item(resourceWrapper.getString(R.string.assigned))
-            )
-            items.addAll(
-                assigned.map { ExamItemRenderer.Item(it.id, it.name, it.groupName, groupItems) }
-            )
 
             result.postValue(items)
         }

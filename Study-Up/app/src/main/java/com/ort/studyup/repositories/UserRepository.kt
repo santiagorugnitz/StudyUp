@@ -6,14 +6,16 @@ import com.ort.studyup.common.models.*
 import com.ort.studyup.common.utils.EncryptedPreferencesHelper
 import com.ort.studyup.services.UserService
 import com.ort.studyup.services.check
+import com.ort.studyup.storage.dao.NotificationDao
 import com.ort.studyup.storage.dao.UserDao
 import kotlinx.coroutines.tasks.await
 
 class UserRepository(
     private val userService: UserService,
     private val userDao: UserDao,
-    private val preferenceHelper: EncryptedPreferencesHelper
-) {
+    private val preferenceHelper: EncryptedPreferencesHelper,
+    private val notificationDao: NotificationDao,
+    ) {
 
     suspend fun login(username: String, password: String): User {
         val token = FirebaseMessaging.getInstance().token.await()
@@ -38,6 +40,7 @@ class UserRepository(
 
     suspend fun logout() {
         userDao.deleteUser()
+        notificationDao.deleteAll()
         userService.logout()
         preferenceHelper.clear(TOKEN_KEY)
     }

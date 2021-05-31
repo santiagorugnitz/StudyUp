@@ -92,7 +92,6 @@ namespace WebAPITest
 
             var result = controller.EditExamCard(1, "token", editExamCardModel);
             var okResult = result as OkObjectResult;
-            var value = okResult.Value as ExamCard;
 
             logicMock.VerifyAll();
         }

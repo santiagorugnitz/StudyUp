@@ -16,7 +16,7 @@ interface ExamService {
     suspend fun getExam(@Path("id") id: Int): Response<Exam>
 
     @POST("api/exams/{id}/assign")
-    suspend fun assignToGroup(@Path("id") id: Int, @Query("groupId") groupId: Int): Response<*>
+    suspend fun assignToGroup(@Path("id") id: Int, @Query("groupId") groupId: Int): Response<Unit>
 
     @GET("api/exams/{id}/results")
     suspend fun results(@Path("id") id: Int): Response<List<ExamResult>>

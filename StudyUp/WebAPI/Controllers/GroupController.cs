@@ -40,19 +40,22 @@ namespace WebAPI.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] GroupModel groupModel, [FromHeader] string token)
         {
-            return Ok(logic.AddGroup(groupModel.ToEntity(), token));
+            logic.AddGroup(groupModel.ToEntity(), token);
+            return Ok();
         }
 
         [HttpPost("{id}/subscribe")]
         public IActionResult Subscribe([FromHeader] string token, [FromRoute] int id)
         {
-            return Ok(logic.Subscribe(token, id));
+            logic.Subscribe(token, id);
+            return Ok();
         }
 
         [HttpDelete("{id}/unsubscribe")]
         public IActionResult Unsubscribe([FromHeader] string token, [FromRoute] int id)
         {
-            return Ok(logic.Unsubscribe(token, id));
+            logic.Unsubscribe(token, id);
+            return Ok();
         }
 
         [HttpGet]

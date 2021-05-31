@@ -10,16 +10,16 @@ interface GroupService {
 
 
     @POST("api/groups")
-    suspend fun createGroup(@Body data: NewGroupRequest): Response<*>
+    suspend fun createGroup(@Body data: NewGroupRequest): Response<Unit>
 
     @GET("api/groups/filter")
     suspend fun searchGroup(@Query("name") query: String): Response<List<GroupSearchResponse>>
 
     @DELETE("api/groups/{id}/unsubscribe")
-    suspend fun unsubscribe(@Path("id") id: Int): Response<*>
+    suspend fun unsubscribe(@Path("id") id: Int): Response<Unit>
 
     @POST("api/groups/{id}/subscribe")
-    suspend fun subscribe(@Path("id") id: Int): Response<*>
+    suspend fun subscribe(@Path("id") id: Int): Response<Unit>
 
     @GET("api/groups")
     suspend fun groups(): Response<List<Group>>

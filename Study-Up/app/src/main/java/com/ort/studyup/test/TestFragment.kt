@@ -7,8 +7,7 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.navigation.fragment.findNavController
 import com.ort.studyup.R
-import com.ort.studyup.common.EXAM_ID_KEY
-import com.ort.studyup.common.INTERNAL_ERROR_CODE
+import com.ort.studyup.common.*
 import com.ort.studyup.common.models.ExamCard
 import com.ort.studyup.common.ui.BaseFragment
 import com.ort.studyup.common.ui.ConfirmationDialog
@@ -24,6 +23,7 @@ class TestFragment : BaseFragment(), ConfirmationDialog.Callback {
     private var total = 0
     private var count = 0
     private var shouldExit = false
+    private var seconds = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreate(savedInstanceState)
@@ -34,14 +34,14 @@ class TestFragment : BaseFragment(), ConfirmationDialog.Callback {
         super.onStart()
         timer.start()
         if (shouldExit) {
-            findNavController().navigate(R.id.action_testFragment_to_preTestFragment)
+            navigateToResults()
         }
     }
 
     override fun onPause() {
         super.onPause()
         val time = timer.text.toString().split(":")
-        val seconds = (time[1].toIntOrNull() ?: 0) + (time[0].toIntOrNull() ?: 0) * 60
+        seconds = (time[1].toIntOrNull() ?: 0) + (time[0].toIntOrNull() ?: 0) * 60
         viewModel.sendAnswers(seconds)
         shouldExit = true
     }
@@ -54,7 +54,7 @@ class TestFragment : BaseFragment(), ConfirmationDialog.Callback {
             initViewModel(examId)
             initUI()
         } ?: run {
-            findNavController().navigate(R.id.action_testFragment_to_preTestFragment)
+            navigateToResults()
         }
         dialog = ConfirmationDialog(
             requireContext(),
@@ -80,7 +80,7 @@ class TestFragment : BaseFragment(), ConfirmationDialog.Callback {
                 onNewCard(it)
             } ?: run {
                 showError(INTERNAL_ERROR_CODE, getString(R.string.no_questions_error))
-                findNavController().navigate(R.id.action_testFragment_to_preTestFragment)
+                navigateToResults()
             }
         })
     }
@@ -105,13 +105,25 @@ class TestFragment : BaseFragment(), ConfirmationDialog.Callback {
             count++
             counter.text = "$count/$total"
         } ?: run {
-            findNavController().navigate(R.id.action_testFragment_to_preTestFragment)
+            navigateToResults()
         }
     }
 
     override fun onButtonClick() {
         dialog.hide()
-        findNavController().navigate(R.id.action_testFragment_to_preTestFragment)
+        navigateToResults()
+    }
+
+    private fun navigateToResults() {
+        if (seconds == 0) {
+            val time = timer.text.toString().split(":")
+            seconds = (time[1].toIntOrNull() ?: 0) + (time[0].toIntOrNull() ?: 0) * 60
+        }
+        findNavController().navigate(R.id.action_testFragment_to_preTestFragment, Bundle().apply {
+            putInt(CORRECT_ANSWERS_KEY, viewModel.correctAnswers)
+            putInt(TOTAL_KEY, total)
+            putInt(SECONDS_KEY, seconds)
+        })
     }
 
 }

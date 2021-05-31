@@ -10,7 +10,6 @@ import com.ort.studyup.common.DECK_ID_KEY
 import com.ort.studyup.common.INTERNAL_ERROR_CODE
 import com.ort.studyup.common.IS_OWNER_EXTRA
 import com.ort.studyup.common.models.RatedFlashcard
-import com.ort.studyup.common.ui.BaseActivity
 import com.ort.studyup.common.ui.BaseFragment
 import com.ort.studyup.common.ui.CommentDialog
 import kotlinx.android.synthetic.main.fragment_study.*
@@ -38,7 +37,7 @@ class StudyFragment : BaseFragment(), TextToSpeech.OnInitListener, CommentDialog
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val deckId = requireActivity().intent.extras?.getInt(DECK_ID_KEY)
-        isOwner = requireActivity().intent.getBooleanExtra(IS_OWNER_EXTRA,false)
+        isOwner = requireActivity().intent.getBooleanExtra(IS_OWNER_EXTRA, false)
         tts = TextToSpeech(requireContext(), this)
         deckId?.let {
             initViewModel(deckId)
@@ -56,11 +55,6 @@ class StudyFragment : BaseFragment(), TextToSpeech.OnInitListener, CommentDialog
             } ?: run {
                 requireActivity().finish()
                 showError(INTERNAL_ERROR_CODE, getString(R.string.no_flashcards_error))
-                CommentDialog(requireContext(),object :CommentDialog.Callback{
-                    override fun onComment(comment: String) {
-                        TODO("Not yet implemented")
-                    }
-                }).show()
             }
         })
     }
@@ -77,8 +71,11 @@ class StudyFragment : BaseFragment(), TextToSpeech.OnInitListener, CommentDialog
             })
         }
         flipButton.setOnClickListener { onFlip() }
-        if(!isOwner){
+        if (!isOwner) {
+            commentButton.visibility = View.VISIBLE
             commentButton.setOnClickListener { onComment() }
+        } else {
+            commentButton.visibility = View.INVISIBLE
         }
     }
 

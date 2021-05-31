@@ -11,14 +11,16 @@ import kotlin.math.roundToInt
 
 class ScoreDialog(
     context: Context,
-    private val score: Double,
+    private val correct: Int,
+    private val total: Int,
+    private val seconds: Int,
     attrs: AttributeSet? = null
 ) : View(context, attrs) {
 
 
     fun show() {
         val view = inflate()
-        view.dialogMsg.text = view.context.getString(R.string.exam_finished,((score * 10).roundToInt() / 10.0).toString())
+        view.dialogMsg.text = view.context.getString(R.string.exam_finished, correct, total, seconds)
         view.dialogButton.setOnClickListener { hide() }
         view.closeIcon.setOnClickListener { hide() }
     }
@@ -36,7 +38,8 @@ class ScoreDialog(
             val root = getActivity()?.findViewById<FrameLayout>(android.R.id.content)
             val view = root?.findViewById<FrameLayout>(R.id.dialogContainer)
             root?.removeView(view)
-        } catch (e: Exception) { }
+        } catch (e: Exception) {
+        }
     }
 
 }

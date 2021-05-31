@@ -14,7 +14,6 @@ class PreTestViewModel(
     private val userRepository: UserRepository
 ) : BaseViewModel() {
 
-    var examResult: Double? = null
     var user: User? = null
 
     fun loadExam(id: Int): LiveData<Pair<Exam, List<Any>>> {
@@ -23,7 +22,6 @@ class PreTestViewModel(
             user = userRepository.getUser()
             val exam = examRepository.getExam(id)
             val results = examRepository.results(id)
-            examResult = results.find { it.username == user?.username }?.score
             result.postValue(Pair(exam, results.mapIndexed { pos, it ->
                 ResultItemRenderer.Item(
                     pos + 1,
@@ -39,7 +37,6 @@ class PreTestViewModel(
         val result = MutableLiveData<List<Any>>()
         executeService {
             val results = examRepository.results(id)
-            examResult = results.find { it.username == user?.username }?.score
             result.postValue(results.mapIndexed { pos, it ->
                 ResultItemRenderer.Item(
                     pos + 1,
