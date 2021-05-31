@@ -7,7 +7,10 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ort.studyup.R
+import com.ort.studyup.common.CORRECT_ANSWERS_KEY
 import com.ort.studyup.common.EXAM_ID_KEY
+import com.ort.studyup.common.SECONDS_KEY
+import com.ort.studyup.common.TOTAL_KEY
 import com.ort.studyup.common.models.Exam
 import com.ort.studyup.common.renderers.EmptyViewRenderer
 import com.ort.studyup.common.renderers.ResultItemRenderer
@@ -23,7 +26,6 @@ class PreTestFragment : BaseFragment(), ConfirmationDialog.Callback {
     private val adapter = RendererAdapter()
     private var examId = 0
     private lateinit var dialog: ConfirmationDialog
-    private var shouldShowDialog = true
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreate(savedInstanceState)
@@ -37,8 +39,6 @@ class PreTestFragment : BaseFragment(), ConfirmationDialog.Callback {
             getString(R.string.start_exam_confirmation),
             this,
         )
-        examId = requireActivity().intent.extras?.getInt(EXAM_ID_KEY) ?: 0
-        initViewModel(examId)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -47,6 +47,22 @@ class PreTestFragment : BaseFragment(), ConfirmationDialog.Callback {
         adapter.setEmptyItem(EmptyViewRenderer.Item(getString(R.string.no_results_yet)), EmptyViewRenderer())
         resultList.layoutManager = LinearLayoutManager(requireContext())
         resultList.adapter = adapter
+        if (arguments?.containsKey(SECONDS_KEY) == true) {
+            ScoreDialog(
+                requireContext(),
+                arguments?.getInt(CORRECT_ANSWERS_KEY) ?: 0,
+                arguments?.getInt(TOTAL_KEY) ?: 0,
+                arguments?.getInt(SECONDS_KEY) ?: 0
+            ).show()
+            startButton.visibility = View.GONE
+        } else {
+            startButton.visibility = View.VISIBLE
+            startButton.setOnClickListener {
+                dialog.show()
+            }
+        }
+        examId = requireActivity().intent.extras?.getInt(EXAM_ID_KEY) ?: 0
+        initViewModel(examId)
     }
 
     private fun initViewModel(examId: Int) {
@@ -58,29 +74,11 @@ class PreTestFragment : BaseFragment(), ConfirmationDialog.Callback {
 
     private fun initResults(list: List<Any>) {
         adapter.setItems(list)
-        viewModel.examResult?.let { score ->
-            if (shouldShowDialog) {
-                ScoreDialog(requireContext(), score).show()
-                shouldShowDialog = false
-            }
-        }
     }
 
     private fun initUI(exam: Exam) {
         title.text = exam.name
         difficulty.text = resources.getStringArray(R.array.difficulties)[exam.difficulty]
-        viewModel.examResult?.let {
-            if (shouldShowDialog) {
-                ScoreDialog(requireContext(), it)
-                shouldShowDialog = false
-            }
-            startButton.visibility = View.GONE
-        } ?: run {
-            startButton.visibility = View.VISIBLE
-            startButton.setOnClickListener {
-                dialog.show()
-            }
-        }
         swipeRefresh.isEnabled = true
         swipeRefresh.setOnRefreshListener {
             swipeRefresh.isRefreshing = false
