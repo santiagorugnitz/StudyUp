@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BusinessLogicInterface;
-using Exceptions;
 using Domain;
 using WebAPI.Models;
 using WebAPI.Filters;
+using WebAPI.Models.ResponseModels;
 
 namespace WebAPI.Controllers
 {
@@ -25,25 +23,26 @@ namespace WebAPI.Controllers
 
         [HttpGet]
         public IActionResult GetAllDecks([FromQuery] int userId = -1)
-        {   
+        {
             if (userId > 0)
             {
                 return Ok(ConvertDecks(logic.GetDecksByAuthor(userId)));
-            } 
-            
+            }
+
             return Ok(ConvertDecks(logic.GetAllDecks()));
         }
 
         private IEnumerable<ResponseDeckModel> ConvertDecks(IEnumerable<Deck> decksList)
         {
-            return decksList.Select(deck => new ResponseDeckModel() 
-            { 
-                Id = deck.Id, 
-                Author = deck.Author.Username, 
-                Name = deck.Name, 
-                Subject = deck.Subject, 
-                Difficulty = deck.Difficulty, 
-                IsHidden = deck.IsHidden
+            return decksList.Select(deck => new ResponseDeckModel()
+            {
+                Id = deck.Id,
+                Author = deck.Author.Username,
+                Name = deck.Name,
+                Subject = deck.Subject,
+                Difficulty = deck.Difficulty,
+                IsHidden = deck.IsHidden,
+                FlashcardCount = deck.Flashcards.Count
             });
         }
 
@@ -63,10 +62,19 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update([FromRoute] int id, [FromBody] UpdateDeckModel updateDeckModel)
+        public IActionResult Update([FromRoute] int id, [FromHeader] string token,
+            [FromBody] UpdateDeckModel updateDeckModel)
         {
-            Deck deck = logic.EditDeck(id, updateDeckModel.Name,
-                updateDeckModel.Difficulty, updateDeckModel.IsHidden, updateDeckModel.Subject);
+            Deck updatedDeck = new Deck()
+            {
+                Difficulty = updateDeckModel.Difficulty,
+                IsHidden = updateDeckModel.IsHidden,
+                Name = updateDeckModel.Name,
+                Subject = updateDeckModel.Subject
+            };
+
+            Deck deck = logic.EditDeck(id, updatedDeck, token);
+
             return Ok(new ResponseDeckModel()
             {
                 Id = deck.Id,
@@ -94,15 +102,51 @@ namespace WebAPI.Controllers
                 {
                     Id = flashcard.Id,
                     Question = flashcard.Question,
-                    Answer = flashcard.Answer
+                    Answer = flashcard.Answer,
+                    Comments = ListFlashcardsComments(flashcard.Id)
                 })
             });
+        }
+
+        private IEnumerable<ResponseFlashcardCommentsModel> ListFlashcardsComments(int flashcardsId)
+        {
+            IEnumerable<FlashcardComment> flashcardsComments = logic.GetFlashcardsComments(flashcardsId);
+            List<ResponseFlashcardCommentsModel> toReturn = new List<ResponseFlashcardCommentsModel>();
+
+            foreach (FlashcardComment comment in flashcardsComments)
+            {
+                ResponseFlashcardCommentsModel toAdd = new ResponseFlashcardCommentsModel()
+                {
+                    Comment = comment.Comment,
+                    Id = comment.Id,
+                    Time = comment.CreatedOn.ToUniversalTime(),
+                    AuthorUsername = comment.CreatorUsername
+                };
+                toReturn.Add(toAdd);
+            }
+            return toReturn;
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete([FromRoute] int id, [FromHeader] string token)
         {
             logic.DeleteDeck(id, token);
+            return Ok();
+        }
+
+        [HttpPost("{deckId}/assign")]
+        public IActionResult Assign([FromHeader] string token, [FromRoute] int deckId,
+            [FromQuery] int groupId)
+        {
+            logic.Assign(token, groupId, deckId);
+            return Ok();
+        }
+
+        [HttpDelete("{deckId}/unassign")]
+        public IActionResult Unassign([FromHeader] string token, [FromRoute] int deckId,
+            [FromQuery] int groupId)
+        {
+            logic.Unassign(token, groupId, deckId);
             return Ok();
         }
     }

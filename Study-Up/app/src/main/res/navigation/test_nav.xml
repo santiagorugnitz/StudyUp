@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/test_nav"
+    app:startDestination="@id/preTestFragment">
+    <fragment
+        android:id="@+id/testFragment"
+        android:name="com.ort.studyup.test.TestFragment"
+        android:label="TestFragment" >
+        <action
+            android:id="@+id/action_testFragment_to_preTestFragment"
+            app:destination="@id/preTestFragment"
+            app:popUpTo="@+id/preTestFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/preTestFragment"
+        android:name="com.ort.studyup.test.PreTestFragment"
+        android:label="PreTestFragment" >
+        <action
+            android:id="@+id/action_preTestFragment_to_testFragment"
+            app:destination="@id/testFragment" />
+    </fragment>
+</navigation>

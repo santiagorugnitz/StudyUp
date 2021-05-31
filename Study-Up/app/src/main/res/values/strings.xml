@@ -29,6 +29,7 @@
     <string name="delete">Delete</string>
     <string name="delete_deck_confirmation">Are you sure you want to delete this deck? This can not be undone</string>
     <string name="delete_flashcard_confirmation">Are you sure you want to delete this flashcard? This can not be undone</string>
+    <string name="delete_exam_card_confirmation">Are you sure you want to delete this exam card? This can not be undone</string>
     <string name="edit">Edit</string>
     <string name="new_flashcard">New Flashcard</string>
     <string name="question">Question</string>
@@ -43,13 +44,49 @@
     <string name="unfollow">Unfollow</string>
     <string name="unsub">unsubscribe</string>
     <string name="sub">Subscribe</string>
-    <string name="author">Author</string>
     <string name="following">Following</string>
     <string name="everyone">Everyone</string>
     <string name="decks_from_friends">Decks from friends</string>
     <string name="no_flashcards_error">Deck has no flashcards</string>
     <string name="end_study">Stop studying and save progress?</string>
     <string name="assign_deck">Assign deck</string>
+    <string name="exams">Exams</string>
+    <string name="unassigned">Unassigned</string>
+    <string name="assigned">Assigned</string>
+    <string name="new_exam">New exam</string>
+    <string name="none">None</string>
+    <string name="true_string">True</string>
+    <string name="false_string">False</string>
+    <string name="edit_examcard">Edit exam card</string>
+    <string name="new_exam_card">New exam card</string>
+    <string name="default_notification_channel_id">notification_channel</string>
+    <string name="tasks">Tasks</string>
+    <string name="end_test">End attempt and send answers? You won\'t be able to continue</string>
+    <string name="no_questions_error">Exam has no questions</string>
+    <string name="no_results_yet">No results yet.\nTry again later</string>
+    <string name="qr_description">Scan this qr to search your username automatically</string>
+    <string name="ranking">Ranking</string>
+    <string name="send">Send</string>
+    <string name="comment">Comment</string>
+    <string name="comment_description">Leave a comment to the author</string>
+    <string name="comments">Comments</string>
+    <string name="swipe_to_delete">Swipe the comments to remove them from the list</string>
+    <string name="no_exams_assigned">There are no exams assigned yet</string>
+    <string name="no_study_decks">There are no decks to study yet.\nTry joining more groups!</string>
+    <string name="notifications">Notifications</string>
+    <string name="start_exam_confirmation">Begin attempt? You will not be able to pause or retry later.</string>
+    <string name="exam_finished">Exam finished! \nYou answered %1$d out of %2$d questions correctly in %3$d seconds</string>
+    <string name="group_prefix">Group:</string>
+    <string name="answer_prefix">A:</string>
+    <string name="deck_has_no_cards">Deck has no cards yet</string>
+    <string name="no_groups">No groups yet.\nTry creating one with the button below.</string>
+    <string name="no_exams">No exams yet.\nTry creating one with the button below.</string>
+    <string name="no_notifications">Up to date!\nAll missed notifications will appear here.</string>
+    <string name="no_following_decks">No decks to show.\nTry following more people.</string>
+    <string name="no_decks">No decks yet.\nTry creating one with the button below.</string>
+    <string name="no__search_results">No results.</string>
+    <string name="unassigned_exams">Unassigned exams</string>
+    <string name="assigned_exams">Assigned exams</string>
 
 
     <string-array name="difficulties">
@@ -66,6 +103,11 @@
     <string-array name="roles">
         <item>Student</item>
         <item>Teacher</item>
+    </string-array>
+
+    <string-array name="exam_answer">
+        <item>True</item>
+        <item>False</item>
     </string-array>
 </resources>
 

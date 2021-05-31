@@ -63,6 +63,60 @@ namespace WebAPI.Migrations
                     b.ToTable("DeckGroups");
                 });
 
+            modelBuilder.Entity("Domain.Exam", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("AuthorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Difficulty")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Subject")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("Exams");
+                });
+
+            modelBuilder.Entity("Domain.ExamCard", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Answer")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ExamId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Question")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExamId");
+
+                    b.ToTable("ExamCard");
+                });
+
             modelBuilder.Entity("Domain.Flashcard", b =>
                 {
                     b.Property<int>("Id")
@@ -84,6 +138,32 @@ namespace WebAPI.Migrations
                     b.HasIndex("DeckId");
 
                     b.ToTable("Flashcards");
+                });
+
+            modelBuilder.Entity("Domain.FlashcardComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorUsername")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("FlashcardId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FlashcardId");
+
+                    b.ToTable("FlashcardComment");
                 });
 
             modelBuilder.Entity("Domain.FlashcardScore", b =>
@@ -154,6 +234,24 @@ namespace WebAPI.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Domain.UserExam", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ExamId")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("Score")
+                        .HasColumnType("float");
+
+                    b.HasKey("UserId", "ExamId");
+
+                    b.HasIndex("ExamId");
+
+                    b.ToTable("UserExam");
+                });
+
             modelBuilder.Entity("Domain.UserFollowing", b =>
                 {
                     b.Property<int>("FollowingUserId")
@@ -213,6 +311,33 @@ namespace WebAPI.Migrations
                     b.Navigation("Group");
                 });
 
+            modelBuilder.Entity("Domain.Exam", b =>
+                {
+                    b.HasOne("Domain.User", "Author")
+                        .WithMany("Exams")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Domain.Group", "Group")
+                        .WithMany("AssignedExams")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Group");
+                });
+
+            modelBuilder.Entity("Domain.ExamCard", b =>
+                {
+                    b.HasOne("Domain.Exam", "Exam")
+                        .WithMany("ExamCards")
+                        .HasForeignKey("ExamId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Exam");
+                });
+
             modelBuilder.Entity("Domain.Flashcard", b =>
                 {
                     b.HasOne("Domain.Deck", "Deck")
@@ -221,6 +346,16 @@ namespace WebAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Deck");
+                });
+
+            modelBuilder.Entity("Domain.FlashcardComment", b =>
+                {
+                    b.HasOne("Domain.Flashcard", "Flashcard")
+                        .WithMany("Comments")
+                        .HasForeignKey("FlashcardId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Flashcard");
                 });
 
             modelBuilder.Entity("Domain.FlashcardScore", b =>
@@ -250,6 +385,25 @@ namespace WebAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Creator");
+                });
+
+            modelBuilder.Entity("Domain.UserExam", b =>
+                {
+                    b.HasOne("Domain.Exam", "Exam")
+                        .WithMany("AlreadyPerformed")
+                        .HasForeignKey("ExamId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.User", "User")
+                        .WithMany("SolvedExams")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Exam");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.UserFollowing", b =>
@@ -297,13 +451,24 @@ namespace WebAPI.Migrations
                     b.Navigation("Flashcards");
                 });
 
+            modelBuilder.Entity("Domain.Exam", b =>
+                {
+                    b.Navigation("AlreadyPerformed");
+
+                    b.Navigation("ExamCards");
+                });
+
             modelBuilder.Entity("Domain.Flashcard", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("UserScores");
                 });
 
             modelBuilder.Entity("Domain.Group", b =>
                 {
+                    b.Navigation("AssignedExams");
+
                     b.Navigation("DeckGroups");
 
                     b.Navigation("UserGroups");
@@ -313,6 +478,8 @@ namespace WebAPI.Migrations
                 {
                     b.Navigation("Decks");
 
+                    b.Navigation("Exams");
+
                     b.Navigation("FlashcardScores");
 
                     b.Navigation("FollowedUsers");
@@ -320,6 +487,8 @@ namespace WebAPI.Migrations
                     b.Navigation("FollowingUsers");
 
                     b.Navigation("Groups");
+
+                    b.Navigation("SolvedExams");
 
                     b.Navigation("UserGroups");
                 });

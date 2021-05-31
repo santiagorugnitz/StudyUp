@@ -12,12 +12,17 @@ namespace BusinessLogic
     {
         private IRepository<User> repository;
         private IUserRepository userRepository;
+        private IRepository<UserFollowing> userFollowingRepository;
+        private IRepository<UserExam> userExamRepository;
         private ValidationService validationService;
 
-        public UserLogic(IRepository<User> repository, IUserRepository userRepository)
+        public UserLogic(IRepository<User> repository, IUserRepository userRepository,
+            IRepository<UserExam> userExamRepository, IRepository<UserFollowing> userFollowingRepository)
         {
             this.repository = repository;
             this.userRepository = userRepository;
+            this.userExamRepository = userExamRepository;
+            this.userFollowingRepository = userFollowingRepository;
             validationService = new ValidationService();
         }
 
@@ -26,6 +31,12 @@ namespace BusinessLogic
             IEnumerable<User> sameEmail = repository.GetAll().Where(x => x.Email.Equals(user.Email));
             if (sameEmail != null && (sameEmail.Count() > 0))
                 throw new AlreadyExistsException(UserMessage.EMAIL_ALREADY_EXISTS);
+
+            IEnumerable<User> sameUsername = repository.GetAll().Where(
+                x => x.Username.ToUpper().Equals(user.Username.ToUpper()));
+
+            if (sameUsername != null && (sameUsername.Count() > 0))
+                throw new AlreadyExistsException(UserMessage.USERNAME_ALREADY_EXISTS);
 
             if (!validationService.PasswordValidation(user.Password))
                 throw new InvalidException(UserMessage.INVALID_PASSWORD);
@@ -36,14 +47,16 @@ namespace BusinessLogic
             user.Token = Guid.NewGuid().ToString();
             repository.Add(user);
             return user;
-
         }
 
         public User FollowUser(string token, string username)
         {
             User authenticatedUser = CheckToken(token);
             User userToFollow = CheckUsername(username);
-            
+
+            if (authenticatedUser.Equals(userToFollow))
+                throw new InvalidException(UserMessage.SAME_USERS);
+
             UserFollowing follow = new UserFollowing
             {
                 FollowingUserId = userToFollow.Id,
@@ -94,6 +107,7 @@ namespace BusinessLogic
         public User CheckToken(string token)
         {
             User user = userRepository.GetUserByToken(token);
+            
             if (user == null)
             {
                 throw new NotAuthenticatedException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
@@ -103,11 +117,12 @@ namespace BusinessLogic
 
         public User CheckUsername(string username)
         {
-            IEnumerable<User> usernamedUsers = repository.FindByCondition(user => user.Username.Equals(username));
+            IEnumerable<User> usernamedUsers = repository.FindByCondition(
+                user => user.Username.Equals(username));
+
             if (usernamedUsers.Count() < 1)
-            {
                 throw new InvalidException(UserMessage.USER_NOT_FOUND);
-            }
+
             return usernamedUsers.First();
         }
 
@@ -120,24 +135,26 @@ namespace BusinessLogic
                 var list = repository.FindByCondition(user => user.Id != authenticatedUser.Id);
                 var orderedList = list.OrderBy(user => user.Username.Length);
                 return GetListWithFollowingFilter(authenticatedUser, orderedList);
-            } 
+            }
 
-            var filteredList = repository.FindByCondition(user => user.Username.Contains(queryFilter) && user.Id != authenticatedUser.Id);
+            var filteredList = repository.FindByCondition(user => user.Username.Contains(queryFilter)
+                && user.Id != authenticatedUser.Id);
             var orderedFilteredList = filteredList.OrderBy(user => user.Username.Length);
 
             return GetListWithFollowingFilter(authenticatedUser, orderedFilteredList);
         }
 
-        private IEnumerable<Tuple<User, bool>> GetListWithFollowingFilter(User user, IEnumerable<User> convertingList)
+        private IEnumerable<Tuple<User, bool>> GetListWithFollowingFilter(User user,
+            IEnumerable<User> convertingList)
         {
             List<Tuple<User, bool>> convertedList = new List<Tuple<User, bool>>();
-            
+
             foreach (var listedUser in convertingList)
             {
-                if(user.FollowedUsers.FindAll(user => user.FollowingUserId == listedUser.Id).Count() > 0)
+                if (user.FollowedUsers.FindAll(user => user.FollowingUserId == listedUser.Id).Count() > 0)
                 {
                     convertedList.Add(new Tuple<User, bool>(listedUser, true));
-                } 
+                }
                 else
                 {
                     convertedList.Add(new Tuple<User, bool>(listedUser, false));
@@ -185,11 +202,103 @@ namespace BusinessLogic
             {
                 foreach (var deck in user.FollowingUser.Decks)
                 {
-                    if(!deck.IsHidden) deckFromFollowing.Add(deck);
-                } 
+                    if (!deck.IsHidden) deckFromFollowing.Add(deck);
+                }
             }
 
             return deckFromFollowing;
+        }
+
+        public Tuple<List<Deck>, List<Exam>> GetTasks(string token)
+        {
+            User authenticatedUser = CheckToken(token);
+            List<Deck> decks = new List<Deck>();
+            List<Exam> exams = new List<Exam>();
+
+            foreach (var iter in authenticatedUser.UserGroups)
+            {
+                Group group = iter.Group;
+                foreach (DeckGroup deckGroup in group.DeckGroups)
+                {
+                    decks.Add(deckGroup.Deck);
+                }
+
+                foreach (Exam exam in group.AssignedExams)
+                {
+                    if (!MadeExam(authenticatedUser, exam))
+                    {
+                        exams.Add(exam);
+                    }
+                }
+            }
+
+            return new Tuple<List<Deck>, List<Exam>>(decks, exams);
+        }
+
+        private bool MadeExam(User user, Exam exam)
+        {
+            UserExam obtainedExam;
+            try
+            {
+                obtainedExam = user.SolvedExams.Find(solved => solved.ExamId == exam.Id
+                    && solved.UserId == user.Id);
+            }
+            catch (NullReferenceException)
+            {
+                return false;
+            }
+
+            if (obtainedExam != null && obtainedExam.Score != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public List<User> GetUsersForRanking(string token)
+        {
+            User authenticatedUser = CheckToken(token);
+            ICollection<UserFollowing> following =
+                userFollowingRepository.FindByCondition(a => a.FollowerUserId == authenticatedUser.Id);
+
+            List<User> toReturn = new List<User>();
+
+            if (!(following is null))
+            {
+                foreach (UserFollowing userFollowing in following)
+                {
+                    User user = repository.GetById(userFollowing.FollowingUserId);
+                    if (user.IsStudent)
+                        toReturn.Add(user);
+                }
+            }
+            toReturn.Add(authenticatedUser);
+
+            return toReturn;
+        }
+
+        public double GetScore(string username)
+        {
+            User user = repository.FindByCondition(a => a.Username.Equals(username)).FirstOrDefault();
+
+            if (user is null)
+                throw new InvalidException(UserMessage.USER_NOT_FOUND);
+
+            ICollection<UserExam> usersExams = userExamRepository.FindByCondition(f => f.UserId == user.Id);
+
+            double score = 0;
+            foreach (UserExam userExam in usersExams)
+                score += (int)userExam.Score;
+
+            return score;
+        }
+
+        public void Logout(string token)
+        {
+            User user = CheckToken(token);
+            user.FirebaseToken = null;
+            repository.Update(user);
         }
     }
 }

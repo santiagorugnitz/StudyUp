@@ -5,9 +5,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using WebAPI.Controllers;
 using WebAPI.Models;
+using WebAPI.Models.RequestModels;
 
 namespace WebAPITest
 {
@@ -79,8 +79,14 @@ namespace WebAPITest
                 Question = "new question"
             };
 
-            logicMock.Setup(x => x.EditFlashcard(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(),
-                It.IsAny<string>())).Returns(new FlashcardModel().ToEntity());
+            Flashcard editedFlashcard = new Flashcard()
+            {
+                Answer = editFlashcardModel.Answer,
+                Question = editFlashcardModel.Question
+            };
+
+            logicMock.Setup(x => x.EditFlashcard(It.IsAny<string>(), It.IsAny<int>(), 
+                It.IsAny<Flashcard>())).Returns(new FlashcardModel().ToEntity());
 
             var result = controller.EditFlashcard(1, "token", editFlashcardModel);
             var okResult = result as OkObjectResult;
@@ -103,7 +109,7 @@ namespace WebAPITest
         [TestMethod]
         public void GetRatedFlashcardOkTest()
         {
-            logicMock.Setup(x => x.GetRatedFlashcards(It.IsAny<int>(), It.IsAny<string>())).Returns(new List<Tuple<Flashcard, int>>() 
+            logicMock.Setup(x => x.GetRatedFlashcards(It.IsAny<int>(), It.IsAny<string>())).Returns(new List<Tuple<Flashcard, int>>()
             { new Tuple<Flashcard, int>(flashcardExample, 10) });
 
             var result = controller.GetRatedFlashcards(flashcardModelExample.ToEntity().Id, userModelExample.Token);
@@ -120,6 +126,33 @@ namespace WebAPITest
 
             var singleModel = new SingleFlashcardModel { FlashcardId = flashcardModelExample.ToEntity().Id, Score = 10 };
             var result = controller.EditScore(userModelExample.Token, new List<SingleFlashcardModel> { singleModel });
+            var okResult = result as OkObjectResult;
+
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void PostCommentOkTest()
+        {
+            logicMock.Setup(x => x.CommentFlashcard(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>()));
+
+            CommentModel commentModel = new CommentModel()
+            {
+                Comment = "New Comment"
+            };
+
+            var result = controller.CommentFlashcard(1, userModelExample.Token, commentModel);
+            var okResult = result as OkObjectResult;
+
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void DeleteCommentOkTest()
+        {
+            logicMock.Setup(x => x.DeleteComment(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(true);
+
+            var result = controller.DeleteComment(userModelExample.Token, 1, 1);
             var okResult = result as OkObjectResult;
 
             logicMock.VerifyAll();

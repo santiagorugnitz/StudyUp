@@ -1,5 +1,6 @@
 package com.ort.studyup.home.decks
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +10,12 @@ import android.widget.TextView
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ort.studyup.R
+import com.ort.studyup.common.DECK_ID_KEY
 import com.ort.studyup.common.renderers.DeckItemRenderer
+import com.ort.studyup.common.renderers.EmptyViewRenderer
 import com.ort.studyup.common.renderers.SubtitleRenderer
 import com.ort.studyup.common.ui.BaseFragment
+import com.ort.studyup.study.StudyActivity
 import com.thinkup.easylist.RendererAdapter
 import kotlinx.android.synthetic.main.fragment_following_decks.*
 import kotlinx.android.synthetic.main.item_spinner.view.*
@@ -35,6 +39,7 @@ class FollowingDecksFragment : BaseFragment(), DeckItemRenderer.Callback {
     private fun initUI() {
         adapter.addRenderer(SubtitleRenderer())
         adapter.addRenderer(DeckItemRenderer(this))
+        adapter.setEmptyItem(EmptyViewRenderer.Item(getString(R.string.no_following_decks)), EmptyViewRenderer())
         deckList.layoutManager = LinearLayoutManager(requireContext())
         deckList.adapter = adapter
 
@@ -45,8 +50,7 @@ class FollowingDecksFragment : BaseFragment(), DeckItemRenderer.Callback {
                 }
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-            }
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
     }
 
@@ -58,7 +62,9 @@ class FollowingDecksFragment : BaseFragment(), DeckItemRenderer.Callback {
     }
 
     override fun onDeckClicked(deckId: Int) {
-        //TODO:
+        val intent = Intent(requireActivity(), StudyActivity::class.java)
+        intent.putExtra(DECK_ID_KEY, deckId)
+        startActivity(intent)
     }
 
 }

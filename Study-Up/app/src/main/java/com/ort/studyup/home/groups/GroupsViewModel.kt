@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import com.ort.studyup.common.models.DeckItem
 import com.ort.studyup.common.renderers.AssignDeckItemRenderer
 import com.ort.studyup.common.renderers.DeletableDeckItemRenderer
-import com.ort.studyup.common.renderers.SubtitleRenderer
 import com.ort.studyup.common.ui.BaseViewModel
 import com.ort.studyup.repositories.DeckRepository
 import com.ort.studyup.repositories.GroupRepository
@@ -25,7 +24,7 @@ class GroupsViewModel(
         executeService {
             val user = userRepository.getUser()
             user?.let {
-                val decks = deckRepository.decksFromUser(user.id).map { DeckItem(it.id, it.name) }
+                val decks = deckRepository.decksFromUser(user.id).filter { it.flashcardCount ?: 0 > 0 }.map { DeckItem(it.id, it.name) }
                 val response = groupRepository.groups()
                 items.clear()
                 response.forEach { group ->

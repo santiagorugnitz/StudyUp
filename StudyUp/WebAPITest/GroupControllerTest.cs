@@ -1,12 +1,9 @@
 ﻿using BusinessLogicInterface;
 using Domain;
-using Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using WebAPI.Controllers;
 using WebAPI.Models;
 
@@ -49,7 +46,6 @@ namespace WebAPITest
 
             var result = controller.Post(groupModelExample, "token");
             var okResult = result as OkObjectResult;
-            var value = okResult.Value as User;
 
             logicMock.VerifyAll();
         }
@@ -61,7 +57,6 @@ namespace WebAPITest
 
             var result = controller.Subscribe("token", 1);
             var okResult = result as OkObjectResult;
-            var value = okResult.Value as User;
 
             logicMock.VerifyAll();
         }
@@ -73,7 +68,6 @@ namespace WebAPITest
 
             var result = controller.Unsubscribe("token", 1);
             var okResult = result as OkObjectResult;
-            var value = okResult.Value as User;
 
             logicMock.VerifyAll();
         }
@@ -91,27 +85,14 @@ namespace WebAPITest
         }
 
         [TestMethod]
-        public void AssingOkTest()
+        public void GetGroupsWithoutNameOkTest()
         {
-            logicMock.Setup(x => x.Assign(It.IsAny<string>(), It.IsAny<int>(),
-                It.IsAny<int>())).Returns(It.IsAny<Group>());
+            logicMock.Setup(x => x.GetTeachersGroups(It.IsAny<string>())).Returns(new List<Group>() { groupModelExample.ToEntity() });
+            logicMock.Setup(x => x.GetGroupDecks(It.IsAny<int>())).Returns(new List<Deck>() { new Deck() { Id = 1, Name = "name" } });
 
-            var result = controller.Assign("token", 1, 1);
+            var result = controller.Get("token");
             var okResult = result as OkObjectResult;
-            var value = okResult.Value as Group;
-
-            logicMock.VerifyAll();
-        }
-
-        [TestMethod]
-        public void UnassignOkTest()
-        {
-            logicMock.Setup(x => x.Unassign(It.IsAny<string>(), It.IsAny<int>(),
-                It.IsAny<int>())).Returns(It.IsAny<Group>());
-
-            var result = controller.Unassign("token", 1, 1);
-            var okResult = result as OkObjectResult;
-            var value = okResult.Value as Group;
+            var value = okResult.Value as List<ResponseGroupModel>;
 
             logicMock.VerifyAll();
         }

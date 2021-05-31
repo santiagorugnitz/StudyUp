@@ -1,4 +1,5 @@
 ﻿using BusinessLogic;
+using BusinessLogicInterface;
 using DataAccessInterface;
 using Domain;
 using Domain.Enumerations;
@@ -9,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace BusinessLogicTest
 {
@@ -28,6 +28,7 @@ namespace BusinessLogicTest
         Mock<IRepository<DeckGroup>> deckGroupRepositoryMock;
         Mock<IRepository<UserGroup>> userGroupRepositoryMock;
         GroupLogic groupLogic;
+        Mock<INotifications> notificationsInterfaceMock;
 
         [TestInitialize]
         public void SetUp()
@@ -90,13 +91,14 @@ namespace BusinessLogicTest
             userGroupRepositoryMock = new Mock<IRepository<UserGroup>>(MockBehavior.Strict);
             deckGroupRepositoryMock = new Mock<IRepository<DeckGroup>>(MockBehavior.Strict);
             deckRepositoryMock = new Mock<IRepository<Deck>>(MockBehavior.Strict);
+            notificationsInterfaceMock = new Mock<INotifications>(MockBehavior.Strict);
             groupLogic = new GroupLogic(groupRepositoryMock.Object, userTokenRepositoryMock.Object,
                 userRepositoryMock.Object, userGroupRepositoryMock.Object, deckRepositoryMock.Object,
-                deckGroupRepositoryMock.Object);
+                deckGroupRepositoryMock.Object, notificationsInterfaceMock.Object);
         }
 
         [TestMethod]
-        public void AddDeckOkTest()
+        public void AddGroupOkTest()
         {
             groupRepositoryMock.Setup(m => m.Add(It.IsAny<Group>()));
             userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
@@ -110,7 +112,7 @@ namespace BusinessLogicTest
 
         [TestMethod]
         [ExpectedException(typeof(AlreadyExistsException))]
-        public void AddDeckRepeatedNameTest()
+        public void AddGroupRepeatedNameTest()
         {
             userExample.Groups.Add(groupExample);
             groupRepositoryMock.Setup(m => m.Add(It.IsAny<Group>()));
@@ -125,7 +127,7 @@ namespace BusinessLogicTest
 
         [TestMethod]
         [ExpectedException(typeof(InvalidException))]
-        public void AddDeckEmptyNameTest()
+        public void AddGroupEmptyNameTest()
         {
             groupExample.Name = "   ";
             groupRepositoryMock.Setup(m => m.Add(It.IsAny<Group>()));
@@ -152,6 +154,38 @@ namespace BusinessLogicTest
             Assert.IsTrue(result);
         }
 
+        [ExpectedException(typeof(InvalidException))]
+        [TestMethod]
+        public void SubscribeNullUserTest()
+        {
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns((User)null);
+            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
+
+            var result = groupLogic.Subscribe(userExample.Token, 1);
+        }
+
+        [ExpectedException(typeof(NotFoundException))]
+        [TestMethod]
+        public void SubscribeNullGroupTest()
+        {
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns((Group)null);
+
+            var result = groupLogic.Subscribe(userExample.Token, 1);
+        }
+
+        [ExpectedException(typeof(AlreadyExistsException))]
+        [TestMethod]
+        public void SubscribeNotSuscribedTest()
+        {
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
+            userGroupRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<UserGroup,
+                bool>>>())).Returns(new List<UserGroup>() { userGroupExample });
+
+            var result = groupLogic.Subscribe(userExample.Token, 1);
+        }
+
         [TestMethod]
         public void UnsubscribeOkTest()
         {
@@ -165,6 +199,38 @@ namespace BusinessLogicTest
             var result = groupLogic.Unsubscribe(userExample.Token, 1);
             groupRepositoryMock.VerifyAll();
             Assert.IsTrue(result);
+        }
+
+        [ExpectedException(typeof(InvalidException))]
+        [TestMethod]
+        public void UnsubscribeNullUserTest()
+        {
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns((User) null);
+            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
+            
+            var result = groupLogic.Unsubscribe(userExample.Token, 1);
+        }
+
+        [ExpectedException(typeof(NotFoundException))]
+        [TestMethod]
+        public void UnsubscribeNullGroupTest()
+        {
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns((Group)null);
+
+            var result = groupLogic.Unsubscribe(userExample.Token, 1);
+        }
+
+        [ExpectedException(typeof(InvalidException))]
+        [TestMethod]
+        public void UnsubscribeNotSuscribedTest()
+        {
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
+            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
+            userGroupRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<UserGroup,
+                bool>>>())).Returns(new List<UserGroup>() { });
+            
+            var result = groupLogic.Unsubscribe(userExample.Token, 1);
         }
 
         [TestMethod]
@@ -195,7 +261,7 @@ namespace BusinessLogicTest
         [ExpectedException(typeof(InvalidException))]
         public void UserIsSubscribedUnauthenticatedTest()
         {
-            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Throws(new InvalidException(It.IsAny<string>()));
+            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns((User)null);
 
             var result = groupLogic.UserIsSubscribed("wrongtoken", 1);
             groupRepositoryMock.VerifyAll();
@@ -223,33 +289,24 @@ namespace BusinessLogicTest
         }
 
         [TestMethod]
-        public void AssignOkTest()
+        public void GetAllGroupsNullKeywordTest()
         {
-            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
-            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
-            deckRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(deckExample);
-            groupRepositoryMock.Setup(a => a.Update(It.IsAny<Group>()));
-            deckGroupRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<DeckGroup,
-               bool>>>())).Returns(new List<DeckGroup>() { });
+            Group group = new Group()
+            {
+                Creator = userExample,
+                Id = 2,
+                Name = "Grupo",
+                UserGroups = new List<UserGroup>()
+            };
 
-            var result = groupLogic.Assign(userExample.Token, 1, 1);
+            groupRepositoryMock.Setup(b => b.FindByCondition(It.IsAny<Expression<Func<Group,
+                bool>>>())).Returns(new List<Group>() { group });
+
+            var result = groupLogic.GetAllGroups(null).Count();
+
             groupRepositoryMock.VerifyAll();
-            Assert.AreEqual(groupExample, result);
-        }
 
-        [TestMethod]
-        public void UnassignOkTest()
-        {
-            userTokenRepositoryMock.Setup(m => m.GetUserByToken(It.IsAny<string>())).Returns(userExample);
-            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns(groupExample);
-            deckGroupRepositoryMock.Setup(a => a.FindByCondition(It.IsAny<Expression<Func<DeckGroup,
-                bool>>>())).Returns(new List<DeckGroup>() { It.IsAny<DeckGroup>() });
-            deckGroupRepositoryMock.Setup(a => a.Delete(It.IsAny<DeckGroup>()));
-            groupRepositoryMock.Setup(b => b.Update(It.IsAny<Group>()));
-
-            var result = groupLogic.Unassign(userExample.Token, 1, 1);
-            groupRepositoryMock.VerifyAll();
-            Assert.AreEqual(result, groupExample);
+            Assert.AreEqual(1, result);
         }
 
         [TestMethod]
@@ -297,6 +354,23 @@ namespace BusinessLogicTest
             groupRepositoryMock.VerifyAll();
 
             Assert.AreEqual(1, result);
+        }
+
+        [ExpectedException(typeof(NotFoundException))]
+        [TestMethod]
+        public void GetGroupDecksGroupNotFoundTest()
+        {
+            DeckGroup deckGroup = new DeckGroup()
+            {
+                Deck = deckExample,
+                DeckId = deckExample.Id,
+                Group = groupExample,
+                GroupId = groupExample.Id
+            };
+
+            groupRepositoryMock.Setup(m => m.GetById(It.IsAny<int>())).Returns((Group)null);
+            
+            var result = groupLogic.GetGroupDecks(groupExample.Id).Count();
         }
     }
 }

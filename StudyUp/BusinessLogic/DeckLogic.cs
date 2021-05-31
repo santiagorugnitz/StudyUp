@@ -3,15 +3,8 @@ using DataAccessInterface;
 using Domain;
 using Domain.Enumerations;
 using Exceptions;
-using FirebaseAdmin;
-using FirebaseAdmin.Messaging;
-using Google.Apis.Auth.OAuth2;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
 
 namespace BusinessLogic
 {
@@ -19,16 +12,27 @@ namespace BusinessLogic
     {
         private IRepository<Deck> deckRepository;
         private IRepository<User> userRepository;
+        private IRepository<Group> groupRepository;
         private IRepository<Flashcard> flashcardRepository;
+        private IRepository<FlashcardComment> flashcardCommentRepository;
+        private IRepository<DeckGroup> deckGroupRepository;
         private IUserRepository userTokenRepository;
+        private INotifications notificationsInterface;
 
         public DeckLogic(IRepository<Deck> repository, IRepository<User> userRepository,
-            IUserRepository userTokenRepository, IRepository<Flashcard> flashcardRepository)
+            IUserRepository userTokenRepository, IRepository<Flashcard> flashcardRepository,
+            IRepository<DeckGroup> deckGroupRepository, IRepository<Group> groupRepository,
+            INotifications notificationsInterface,
+            IRepository<FlashcardComment> flashcardCommentRepository)
         {
             this.deckRepository = repository;
             this.userRepository = userRepository;
             this.userTokenRepository = userTokenRepository;
             this.flashcardRepository = flashcardRepository;
+            this.deckGroupRepository = deckGroupRepository;
+            this.groupRepository = groupRepository;
+            this.notificationsInterface = notificationsInterface;
+            this.flashcardCommentRepository = flashcardCommentRepository;
         }
 
         public Deck AddDeck(Deck deck, string userToken)
@@ -37,11 +41,11 @@ namespace BusinessLogic
             if (sameName != null && (sameName.Count() > 0))
                 throw new AlreadyExistsException(DeckMessage.DECK_ALREADY_EXISTS);
             else if (deck.Name is null)
-                throw new InvalidException(DeckMessage.EMPTY_NAME_MESSAGE);
+                throw new InvalidException(DeckMessage.EMPTY_NAME);
             else if ((int)deck.Difficulty < 0 || (int)deck.Difficulty > 2)
-                throw new InvalidException(DeckMessage.INVALID_DIFFICULTY_MESSAGE);
+                throw new InvalidException(DeckMessage.INVALID_DIFFICULTY);
             else if (deck.Subject is null)
-                throw new InvalidException(DeckMessage.EMPTY_SUBJECT_MESSAGE);
+                throw new InvalidException(DeckMessage.EMPTY_SUBJECT);
 
             User user = userTokenRepository.GetUserByToken(userToken);
             if (user == null)
@@ -73,27 +77,33 @@ namespace BusinessLogic
         }
 
 
-        public Deck EditDeck(int deckId, string newName, Difficulty newDifficulty, bool newVisibility, string subject)
+        public Deck EditDeck(int deckId, Deck newDeck, string token)
         {
+            User user = UserByToken(token);
             Deck deck = deckRepository.GetById(deckId);
-            ICollection<Deck> sameName = deckRepository.FindByCondition(a => a.Name == newName && a.Id != deckId);
+
+            if (deck != null && !user.Equals(deck.Author))
+                throw new InvalidException(DeckMessage.CANNOT_EDIT);
+
+            ICollection<Deck> sameName = deckRepository.FindByCondition(a => a.Name == newDeck.Name
+                && a.Id != deckId);
+
             if (sameName != null && sameName.Count > 0)
                 throw new AlreadyExistsException(DeckMessage.DECK_ALREADY_EXISTS);
-            if ((int)newDifficulty > 2 || (int)newDifficulty < 0)
+            if ((int)newDeck.Difficulty > 2 || (int)newDeck.Difficulty < 0)
                 throw new InvalidException(DeckMessage.INVALID_DIFFICULTY);
-            if (subject is null || subject.Trim().Length == 0)
-                throw new InvalidException(DeckMessage.EMPTY_SUBJECT_MESSAGE);
+            if (newDeck.Subject is null || newDeck.Subject.Trim().Length == 0)
+                throw new InvalidException(DeckMessage.EMPTY_SUBJECT);
 
             if (deck != null)
             {
-                deck.Name = newName;
-                deck.Difficulty = newDifficulty;
-                deck.IsHidden = newVisibility;
-                deck.Subject = subject;
+                deck.Name = newDeck.Name;
+                deck.Difficulty = newDeck.Difficulty;
+                deck.IsHidden = newDeck.IsHidden;
+                deck.Subject = newDeck.Subject;
                 deckRepository.Update(deck);
                 return deck;
             }
-
             else throw new NotFoundException(DeckMessage.DECK_NOT_FOUND);
         }
 
@@ -110,9 +120,6 @@ namespace BusinessLogic
         {
             Deck deck = GetDeckById(deckId);
 
-            if (deck is null)
-                throw new NotFoundException(DeckMessage.DECK_NOT_FOUND);
-
             if (deck.Author.Token != token)
             {
                 throw new InvalidException(DeckMessage.NOT_AUTHORIZED);
@@ -120,6 +127,89 @@ namespace BusinessLogic
 
             deckRepository.Delete(deck);
             return true;
+        }
+
+        public Group Assign(string token, int groupId, int deckId)
+        {
+            User user = UserByToken(token);
+            Deck deck = deckRepository.GetById(deckId);
+            Group group = groupRepository.GetById(groupId);
+
+            if (group is null)
+                throw new NotFoundException(GroupMessage.GROUP_NOT_FOUND);
+
+            if (deck is null)
+                throw new NotFoundException(DeckMessage.DECK_NOT_FOUND);
+
+            if (!group.Creator.Equals(user))
+                throw new InvalidException(GroupMessage.NOT_AUTHORIZED);
+
+            var resultFind = deckGroupRepository.FindByCondition(t => t.GroupId == groupId
+                    && t.DeckId == deckId);
+
+            if (resultFind.Count > 0)
+                throw new AlreadyExistsException(DeckMessage.ALREADY_ASSIGNED);
+
+            DeckGroup deckGroup = new DeckGroup()
+            {
+                Deck = deck,
+                DeckId = deckId,
+                Group = group,
+                GroupId = groupId
+            };
+
+            this.notificationsInterface.NotifyMaterial(deck, group);
+
+            group.DeckGroups.Add(deckGroup);
+            groupRepository.Update(group);
+            return group;
+        }
+
+        public Group Unassign(string token, int groupId, int deckId)
+        {
+            User user = UserByToken(token);
+            Group group = groupRepository.GetById(groupId);
+
+            if (group is null)
+                throw new NotFoundException(GroupMessage.GROUP_NOT_FOUND);
+
+            if (!group.Creator.Equals(user))
+                throw new InvalidException(GroupMessage.NOT_AUTHORIZED);
+
+            var resultFind = deckGroupRepository.FindByCondition(t => t.GroupId == groupId
+                    && t.DeckId == deckId);
+
+            if (resultFind.Count == 0)
+                throw new NotFoundException(DeckMessage.NOT_ASSIGNED);
+
+            deckGroupRepository.Delete(resultFind.First());
+            group.DeckGroups.Remove(resultFind.First());
+            groupRepository.Update(group);
+            return group;
+        }
+
+        public IEnumerable<FlashcardComment> GetFlashcardsComments(int flashcardId)
+        {
+            Flashcard flashcard = flashcardRepository.GetById(flashcardId);
+
+            if (flashcard is null)
+                throw new NotFoundException(FlashcardMessage.FLASHCARD_NOT_FOUND);
+
+            IEnumerable<FlashcardComment> flashcardsComments = new List<FlashcardComment>();
+            flashcardsComments = this.flashcardCommentRepository.FindByCondition(
+                c => c.Flashcard.Id == flashcardId);
+
+            return flashcardsComments;
+        }
+
+        private User UserByToken(string token)
+        {
+            User user = userTokenRepository.GetUserByToken(token);
+
+            if (user is null)
+                throw new InvalidException(UnauthenticatedMessage.UNAUTHENTICATED_USER);
+            else
+                return user;
         }
     }
 }

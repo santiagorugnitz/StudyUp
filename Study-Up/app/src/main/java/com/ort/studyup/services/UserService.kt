@@ -10,6 +10,8 @@ interface UserService {
     @POST("login")
     suspend fun login(@Body request: LoginRequest): Response<UserResponse>
 
+    @DELETE("logout")
+    suspend fun logout(): Response<Unit>
 
     @POST("api/users")
     suspend fun register(@Body request: RegisterRequest): Response<UserResponse>
@@ -18,9 +20,11 @@ interface UserService {
     suspend fun searchUser(@Query("username") query: String): Response<List<UserSearchResponse>>
 
     @DELETE("api/users/unfollow")
-    suspend fun unfollow(@Query("username") username: String): Response<*>
+    suspend fun unfollow(@Query("username") username: String): Response<Unit>
 
     @POST("api/users/follow")
-    suspend fun follow(@Query("username") username:String): Response<*>
+    suspend fun follow(@Query("username") username: String): Response<Unit>
 
+    @GET("api/users/ranking")
+    suspend fun ranking(): Response<List<RankingResponse>>
 }

@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/tasks_nav"
+        android:enabled="true"
+        android:icon="@drawable/ic_subject"
+        android:title="@string/tasks" />
+    <item
         android:id="@+id/decks_nav"
         android:enabled="true"
         android:icon="@drawable/ic_deck"
-        android:title="@string/decks"/>
-    <item
-        android:id="@+id/profile_nav"
-        android:enabled="true"
-        android:icon="@drawable/ic_profile"
-        android:title="@string/profile"/>
+        android:title="@string/decks" />
     <item
         android:id="@+id/search_nav"
         android:enabled="true"
         android:icon="@drawable/ic_search"
-        android:title="@string/search"/>
+        android:title="@string/search" />
     <item
         android:id="@+id/following_nav"
         android:enabled="true"
         android:icon="@drawable/ic_star"
-        android:title="@string/following"/>
+        android:title="@string/following" />
+    <item
+        android:id="@+id/profile_nav"
+        android:enabled="true"
+        android:icon="@drawable/ic_profile"
+        android:title="@string/profile" />
 </menu>

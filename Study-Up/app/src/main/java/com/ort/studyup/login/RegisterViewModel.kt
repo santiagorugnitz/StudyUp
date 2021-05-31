@@ -28,8 +28,6 @@ class RegisterViewModel(
             executeService {
                 result.postValue(userRepository.register(user, mail, password,isStudent))
             }
-        } else {
-            result.postValue(null)
         }
 
         return result

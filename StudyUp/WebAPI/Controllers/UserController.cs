@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using BusinessLogicInterface;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Models;
 using Domain;
-using Exceptions;
 using WebAPI.Filters;
+using WebAPI.Models.ResponseModels;
 
 namespace WebAPI.Controllers
 {
@@ -42,11 +40,11 @@ namespace WebAPI.Controllers
         public IActionResult Login([FromBody] LoginModel loginModel)
         {
             User loguedUser = new User();
-            
+
             if (loginModel.Username != null && loginModel.Username.Trim().Length > 0)
             {
                 loguedUser = logic.LoginByUsername(loginModel.Username, loginModel.Password, loginModel.FirebaseToken);
-            } 
+            }
             else
             {
                 loguedUser = logic.Login(loginModel.Email, loginModel.Password, loginModel.FirebaseToken);
@@ -63,16 +61,25 @@ namespace WebAPI.Controllers
             return Ok(responseUserModel);
         }
 
+        [HttpDelete("/logout")]
+        public IActionResult Logout([FromHeader] string token)
+        {
+            logic.Logout(token);
+            return Ok();
+        }
+
         [HttpPost("/api/users/follow")]
         public IActionResult FollowUser([FromHeader] string token, [FromQuery] string username)
         {
-            return Ok(logic.FollowUser(token, username));
+            logic.FollowUser(token, username);
+            return Ok();
         }
 
         [HttpDelete("/api/users/unfollow")]
         public IActionResult UnfollowUser([FromHeader] string token, [FromQuery] string username)
         {
-            return Ok(logic.UnfollowUser(token, username));
+            logic.UnfollowUser(token, username);
+            return Ok();
         }
 
         [HttpGet]
@@ -85,7 +92,7 @@ namespace WebAPI.Controllers
 
             var userList = logic.GetUsers(token, username);
             List<ResponseFollowedUserModel> responseList = new List<ResponseFollowedUserModel>();
-            
+
             foreach (var tuple in userList)
             {
                 ResponseFollowedUserModel responseUserModel = new ResponseFollowedUserModel()
@@ -99,34 +106,54 @@ namespace WebAPI.Controllers
                 };
 
                 responseList.Add(responseUserModel);
-            }    
+            }
 
             return Ok(responseList);
         }
 
         [HttpGet("/api/decks/following")]
-        public IActionResult GetDecks([FromHeader] string token)
+        public IActionResult GetFollowingDecks([FromHeader] string token)
         {
             var deckList = logic.GetDecksFromFollowing(token);
             List<ResponseDeckModel> responseList = new List<ResponseDeckModel>();
 
             foreach (var deck in deckList)
             {
-                ResponseDeckModel responseDeck = new ResponseDeckModel()
+                if (!deck.IsHidden && deck.Flashcards.Count > 0)
                 {
-                    Id = deck.Id,
-                    Author = deck.Author.Username,
-                    Name = deck.Name,
-                    Subject = deck.Subject,
-                    Difficulty = deck.Difficulty,
-                    IsHidden = deck.IsHidden
-                };
-
-                responseList.Add(responseDeck);
+                    ResponseDeckModel responseDeck = new ResponseDeckModel()
+                    {
+                        Id = deck.Id,
+                        Author = deck.Author.Username,
+                        Name = deck.Name,
+                        Subject = deck.Subject,
+                        Difficulty = deck.Difficulty,
+                        IsHidden = deck.IsHidden
+                    };
+                    responseList.Add(responseDeck);
+                }
             }
-
             return Ok(responseList);
         }
 
+        [HttpGet("ranking")]
+        public IActionResult Ranking([FromHeader] string token)
+        {
+            List<User> followedUsers = logic.GetUsersForRanking(token);
+            List<ResponseRankingModel> toReturn = new List<ResponseRankingModel>();
+            if (!(followedUsers is null))
+            {
+                foreach (User user in followedUsers)
+                {
+                    ResponseRankingModel toAdd = new ResponseRankingModel()
+                    {
+                        Username = user.Username,
+                        Score = logic.GetScore(user.Username)
+                    };
+                    toReturn.Add(toAdd);
+                }
+            }
+            return Ok(toReturn.OrderBy(a => a.Score));
+        }
     }
 }

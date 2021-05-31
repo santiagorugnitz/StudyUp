@@ -1,11 +1,8 @@
 ﻿using BusinessLogicInterface;
 using Domain;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using WebAPI.Filters;
 using WebAPI.Models;
 
@@ -23,7 +20,7 @@ namespace WebAPI.Controllers
             this.logic = logic;
         }
 
-        [HttpGet("/filter")]
+        [HttpGet("filter")]
         public IActionResult Get([FromHeader] string token, [FromQuery] string name)
         {
             return Ok(ConvertGroups(logic.GetAllGroups(name), token).OrderBy(a => a.Name.Length));
@@ -43,33 +40,22 @@ namespace WebAPI.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] GroupModel groupModel, [FromHeader] string token)
         {
-            return Ok(logic.AddGroup(groupModel.ToEntity(), token));
+            logic.AddGroup(groupModel.ToEntity(), token);
+            return Ok();
         }
 
         [HttpPost("{id}/subscribe")]
         public IActionResult Subscribe([FromHeader] string token, [FromRoute] int id)
         {
-            return Ok(logic.Subscribe(token, id));
+            logic.Subscribe(token, id);
+            return Ok();
         }
 
         [HttpDelete("{id}/unsubscribe")]
         public IActionResult Unsubscribe([FromHeader] string token, [FromRoute] int id)
         {
-            return Ok(logic.Unsubscribe(token, id));
-        }
-
-        [HttpPost("{groupId}/assign")]
-        public IActionResult Assign([FromHeader] string token, [FromRoute] int groupId,
-            [FromQuery] int deckId)
-        {
-            return Ok(logic.Assign(token, groupId, deckId));
-        }
-
-        [HttpDelete("{groupId}/unassign")]
-        public IActionResult Unassign([FromHeader] string token, [FromRoute] int groupId,
-            [FromQuery] int deckId)
-        {
-            return Ok(logic.Unassign(token, groupId, deckId));
+            logic.Unsubscribe(token, id);
+            return Ok();
         }
 
         [HttpGet]

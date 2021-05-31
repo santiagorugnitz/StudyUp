@@ -1,7 +1,6 @@
 package com.ort.studyup.home
 
 import android.os.Bundle
-import android.view.MenuItem
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import com.ort.studyup.R
@@ -17,7 +16,6 @@ class StudentHomeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_student_home)
         if (savedInstanceState == null) setUpBottomNavigationBar()
-
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -26,7 +24,14 @@ class StudentHomeActivity : BaseActivity() {
     }
 
     private fun setUpBottomNavigationBar() {
-        val navGraphsIds = listOf(R.navigation.decks_nav,R.navigation.profile_nav,R.navigation.search_nav,R.navigation.following_nav)
+        val navGraphsIds =
+            listOf(
+                R.navigation.tasks_nav,
+                R.navigation.decks_nav,
+                R.navigation.search_nav,
+                R.navigation.following_nav,
+                R.navigation.profile_nav,
+            )
 
         val controller = bottomBar.setupWithNavController(
             navGraphsIds,

@@ -33,7 +33,7 @@ class ConfirmationDialog(
 
 
     private fun inflate(): View {
-        val view = getActivity()?.findViewById<View>(R.id.confirmationDialogContainer)
+        val view = getActivity()?.findViewById<View>(R.id.dialogContainer)
         if (view != null) return view
         val root = getActivity()?.findViewById<FrameLayout>(android.R.id.content)
         return inflate(context, R.layout.confirmation_dialog, root)
@@ -42,11 +42,9 @@ class ConfirmationDialog(
     fun hide() {
         try {
             val root = getActivity()?.findViewById<FrameLayout>(android.R.id.content)
-            val view = root?.findViewById<FrameLayout>(R.id.confirmationDialogContainer)
+            val view = root?.findViewById<FrameLayout>(R.id.dialogContainer)
             root?.removeView(view)
-        } catch (e: Exception) {
-            e
-        }
+        } catch (e: Exception) { }
     }
 
     interface Callback {

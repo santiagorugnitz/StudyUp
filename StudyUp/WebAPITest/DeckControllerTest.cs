@@ -6,7 +6,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using WebAPI.Controllers;
 using WebAPI.Models;
 
@@ -47,11 +46,11 @@ namespace WebAPITest
             deck = new Deck
             {
                 Id = 1,
-                Author = new User { Username=""},
+                Author = new User { Username = "" },
                 Difficulty = Domain.Enumerations.Difficulty.Easy,
                 Name = "",
-                Subject="",
-                IsHidden=true,
+                Subject = "",
+                IsHidden = true,
             };
         }
 
@@ -78,7 +77,7 @@ namespace WebAPITest
                 IsHidden = false,
                 Subject = "Latin"
             };
-            logicMock.Setup(x => x.AddDeck(anotherDeckModelExample.ToEntity(), userModelExample.Token)).Throws(new InvalidException(DeckMessage.EMPTY_NAME_MESSAGE));
+            logicMock.Setup(x => x.AddDeck(anotherDeckModelExample.ToEntity(), userModelExample.Token)).Throws(new InvalidException(DeckMessage.EMPTY_NAME));
 
             var result = controller.Post(anotherDeckModelExample, userModelExample.Token);
             var okResult = result as BadRequestObjectResult;
@@ -111,10 +110,6 @@ namespace WebAPITest
         [TestMethod]
         public void UpdateDeckTest()
         {
-            logicMock.Setup(x => x.AddDeck(It.IsAny<Deck>(), userModelExample.Token)).Returns(deck);
-            logicMock.Setup(x => x.EditDeck(1, "new name", Domain.Enumerations.Difficulty.Easy,
-                true, "new subject")).Returns(deck);
-
             UpdateDeckModel updateDeckModel = new UpdateDeckModel()
             {
                 Difficulty = Domain.Enumerations.Difficulty.Easy,
@@ -122,9 +117,22 @@ namespace WebAPITest
                 IsHidden = true,
                 Subject = "new subject"
             };
+
+            Deck updatedDeck = new Deck()
+            {
+                Difficulty = updateDeckModel.Difficulty,
+                Name = updateDeckModel.Name,
+                IsHidden = updateDeckModel.IsHidden,
+                Subject = updateDeckModel.Subject
+            };
+
+            logicMock.Setup(x => x.AddDeck(It.IsAny<Deck>(), userModelExample.Token)).Returns(deck);
+            logicMock.Setup(x => x.EditDeck(1, updatedDeck, "Token")).Returns(deck);
+
+
             controller.Post(deckModelExample, userModelExample.Token);
 
-            var result = controller.Update(1, updateDeckModel);
+            var result = controller.Update(1, "Token", updateDeckModel);
             var okResult = result as OkObjectResult;
             var value = okResult.Value as Deck;
 
@@ -135,7 +143,8 @@ namespace WebAPITest
         public void GetDeckByIdOkTest()
         {
             var deck = deckModelExample.ToEntity();
-            deck.Flashcards = new List<Flashcard>();
+            var commentsList = new List<FlashcardComment>() { new FlashcardComment() { Comment = "New comment", Id = 1, CreatorUsername = "Name", CreatedOn = new DateTime() } };
+            deck.Flashcards = new List<Flashcard>() { new Flashcard() { Id = 1, Question = "Question", Answer = "Answer", Comments = commentsList } };
             deck.Author = new User { Username = "test" };
             logicMock.Setup(x => x.GetDeckById(1)).Returns(deck);
 
@@ -163,6 +172,30 @@ namespace WebAPITest
 
             var result = controller.Delete(1, "token");
             var okResult = result as OkObjectResult;
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void AssingOkTest()
+        {
+            logicMock.Setup(x => x.Assign(It.IsAny<string>(), It.IsAny<int>(),
+                It.IsAny<int>())).Returns(new Group());
+
+            var result = controller.Assign("token", 1, 1);
+            var okResult = result as OkObjectResult;
+
+            logicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void UnassignOkTest()
+        {
+            logicMock.Setup(x => x.Unassign(It.IsAny<string>(), It.IsAny<int>(),
+                It.IsAny<int>())).Returns(It.IsAny<Group>());
+
+            var result = controller.Unassign("token", 1, 1);
+            var okResult = result as OkObjectResult;
+
             logicMock.VerifyAll();
         }
     }

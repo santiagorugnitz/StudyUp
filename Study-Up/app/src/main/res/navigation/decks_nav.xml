@@ -20,10 +20,14 @@
         android:label="NewDeckFragment" >
         <action
             android:id="@+id/action_newDeckFragment_to_deckDetailFragment"
-            app:destination="@id/deckDetailFragment" />
+            app:destination="@id/deckDetailFragment"
+            app:popUpTo="@+id/deckDetailFragment"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_newDeckFragment_to_decksFragment"
-            app:destination="@id/decksFragment" />
+            app:destination="@id/decksFragment"
+            app:popUpTo="@+id/decksFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/deckDetailFragment"
@@ -38,6 +42,6 @@
     </fragment>
     <fragment
         android:id="@+id/newFlashcardFragment"
-        android:name="com.ort.studyup.home.flashcards.NewFlashcardFragment"
+        android:name="com.ort.studyup.home.decks.flashcards.NewFlashcardFragment"
         android:label="NewFlashcardFragment" />
 </navigation>

@@ -1,8 +1,5 @@
 ﻿using Domain;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 
 namespace DataAccess
@@ -13,6 +10,7 @@ namespace DataAccess
         public DbSet<Deck> Decks { get; set; }
         public DbSet<Flashcard> Flashcards { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<Exam> Exams { get; set; }
         public DbSet<DeckGroup> DeckGroups { get; set; }
         public DbSet<UserGroup> UserGroups { get; set; }
 
@@ -24,6 +22,7 @@ namespace DataAccess
             modelBuilder.Entity<Deck>().HasKey(d => d.Id);
             modelBuilder.Entity<Flashcard>().HasKey(f => f.Id);
             modelBuilder.Entity<Group>().HasKey(f => f.Id);
+            modelBuilder.Entity<Exam>().HasKey(f => f.Id);
 
             modelBuilder.Entity<User>()
                 .HasMany(g => g.Groups)
@@ -35,9 +34,29 @@ namespace DataAccess
                 .WithOne(a => a.Author)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<User>()
+                .HasMany(d => d.Exams)
+                .WithOne(a => a.Author)
+                .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<Deck>()
                 .HasMany(f => f.Flashcards)
                 .WithOne(d => d.Deck)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Flashcard>()
+                .HasMany(c => c.Comments)
+                .WithOne(f => f.Flashcard)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Group>()
+                .HasMany(e => e.AssignedExams)
+                .WithOne(g => g.Group)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Exam>()
+                .HasMany(f => f.ExamCards)
+                .WithOne(d => d.Exam)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<UserGroup>()
@@ -92,6 +111,18 @@ namespace DataAccess
                 .HasForeignKey(bc => bc.FollowerUserId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<UserExam>()
+                .HasKey(b => new { b.UserId, b.ExamId });
+            modelBuilder.Entity<UserExam>()
+                .HasOne(bc => bc.Exam)
+                .WithMany(b => b.AlreadyPerformed)
+                .HasForeignKey(bc => bc.ExamId)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<UserExam>()
+                .HasOne(bc => bc.User)
+                .WithMany(c => c.SolvedExams)
+                .HasForeignKey(bc => bc.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { optionsBuilder.UseLazyLoadingProxies(); }
 

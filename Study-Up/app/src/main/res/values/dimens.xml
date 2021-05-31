@@ -2,5 +2,7 @@
 <resources>
 
     <dimen name="elevation">8dp</dimen>
+    <dimen name="margin_8dp">8dp</dimen>
+    <dimen name="margin_24dp">24dp</dimen>
 
 </resources>

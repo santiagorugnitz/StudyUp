@@ -6,11 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ort.studyup.R
 import com.ort.studyup.common.QR_EXTRA
 import com.ort.studyup.common.SCAN_ACTIVITY_REQUEST_CODE
+import com.ort.studyup.common.renderers.EmptyViewRenderer
 import com.ort.studyup.common.renderers.GroupSearchResultRenderer
 import com.ort.studyup.common.renderers.UserSearchResultRenderer
 import com.ort.studyup.common.ui.BaseFragment
@@ -37,6 +37,7 @@ class SearchFragment : BaseFragment(), UserSearchResultRenderer.Callback, GroupS
     private fun prepareList() {
         adapter.addRenderer(UserSearchResultRenderer(this))
         adapter.addRenderer(GroupSearchResultRenderer(this))
+        adapter.setEmptyItem(EmptyViewRenderer.Item(getString(R.string.no__search_results),R.drawable.ic_no_results), EmptyViewRenderer())
         searchResultsList.layoutManager = LinearLayoutManager(requireContext())
         searchResultsList.adapter = adapter
     }
@@ -95,13 +96,13 @@ class SearchFragment : BaseFragment(), UserSearchResultRenderer.Callback, GroupS
 
     private fun onSearch(query: String) {
         hideKeyboard()
-        viewModel.search(query).observe(viewLifecycleOwner, Observer {
+        viewModel.search(query).observe(viewLifecycleOwner, {
             adapter.setItems(it)
         })
     }
 
     override fun onFollowChange(position: Int) {
-        viewModel.onFollowChange(position).observe(viewLifecycleOwner, Observer {
+        viewModel.onFollowChange(position).observe(viewLifecycleOwner, {
             if (it) {
                 adapter.notifyDataSetChanged()
             }
@@ -109,7 +110,7 @@ class SearchFragment : BaseFragment(), UserSearchResultRenderer.Callback, GroupS
     }
 
     override fun onSubChange(position: Int) {
-        viewModel.onSubChange(position).observe(viewLifecycleOwner, Observer {
+        viewModel.onSubChange(position).observe(viewLifecycleOwner, {
             if (it) {
                 adapter.notifyDataSetChanged()
             }

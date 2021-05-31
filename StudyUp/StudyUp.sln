@@ -24,6 +24,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPITest", "WebAPITest\We
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exceptions", "Exceptions\Exceptions.csproj", "{64330351-E96C-4D00-8DB8-D29BDDE1647E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessTest", "DataAccessTest\DataAccessTest.csproj", "{15DEB460-D32B-4E41-8ED4-ACACFB7A4829}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,10 @@ Global
 		{64330351-E96C-4D00-8DB8-D29BDDE1647E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64330351-E96C-4D00-8DB8-D29BDDE1647E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64330351-E96C-4D00-8DB8-D29BDDE1647E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15DEB460-D32B-4E41-8ED4-ACACFB7A4829}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15DEB460-D32B-4E41-8ED4-ACACFB7A4829}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15DEB460-D32B-4E41-8ED4-ACACFB7A4829}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15DEB460-D32B-4E41-8ED4-ACACFB7A4829}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,20 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using BusinessLogic;
 using BusinessLogicInterface;
 using DataAccess;
 using DataAccessInterface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using WebAPI.Filters;
 
@@ -60,6 +53,10 @@ namespace StudyUp
             services.AddScoped<IDeckLogic, DeckLogic>();
             services.AddScoped<IFlashcardLogic, FlashcardLogic>();
             services.AddScoped<IGroupLogic, GroupLogic>();
+            services.AddScoped<IExamLogic, ExamLogic>();
+            services.AddScoped<IExamCardLogic, ExamCardLogic>();
+            services.AddScoped<INotifications, FirebaseNotificationsImplementation>();
+
             services.AddScoped<ExceptionFilter>();
 
             services.AddSwaggerGen(options =>

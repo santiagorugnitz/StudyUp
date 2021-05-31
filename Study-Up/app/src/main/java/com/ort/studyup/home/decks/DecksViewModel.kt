@@ -2,7 +2,6 @@ package com.ort.studyup.home.decks
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.ort.studyup.common.models.DeckData
 import com.ort.studyup.common.renderers.DeckItemRenderer
 import com.ort.studyup.common.renderers.SubtitleRenderer
 import com.ort.studyup.common.ui.BaseViewModel
@@ -23,7 +22,7 @@ class DecksViewModel(
             val user = userRepository.getUser()
             user?.let {
                 var decks = deckRepository.decksFromUser(user.id)
-                decks = decks.sortedWith(Comparator { a, b -> a.subject.compareTo(b.subject) })
+                decks = decks.sortedWith({ a, b -> a.subject.compareTo(b.subject) })
 
                 var currentSubject = ""
                 decks.forEach {

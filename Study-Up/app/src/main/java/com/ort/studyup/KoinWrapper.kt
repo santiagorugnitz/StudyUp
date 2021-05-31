@@ -1,29 +1,34 @@
 package com.ort.studyup
 
 import android.app.Application
-import android.widget.SearchView
 import androidx.room.Room
 import com.ort.studyup.common.ui.ResourceWrapper
 import com.ort.studyup.common.utils.EncryptedPreferencesHelper
-import com.ort.studyup.game.StudyViewModel
+import com.ort.studyup.study.StudyViewModel
 import com.ort.studyup.home.decks.DeckDetailViewModel
 import com.ort.studyup.home.decks.DecksViewModel
 import com.ort.studyup.home.decks.FollowingDecksViewModel
 import com.ort.studyup.home.decks.NewDeckViewModel
-import com.ort.studyup.home.flashcards.NewFlashcardViewModel
+import com.ort.studyup.home.exams.ExamDetailViewModel
+import com.ort.studyup.home.exams.ExamsViewModel
+import com.ort.studyup.home.exams.NewExamViewModel
+import com.ort.studyup.home.decks.flashcards.NewFlashcardViewModel
+import com.ort.studyup.home.exams.examcards.NewExamCardViewModel
 import com.ort.studyup.home.groups.GroupsViewModel
 import com.ort.studyup.home.groups.NewGroupViewModel
 import com.ort.studyup.home.profile.ProfileViewModel
+import com.ort.studyup.home.profile.RankingViewModel
 import com.ort.studyup.home.search.SearchViewModel
+import com.ort.studyup.home.tasks.NotificationViewModel
+import com.ort.studyup.home.tasks.TaskViewModel
 import com.ort.studyup.login.LoginViewModel
 import com.ort.studyup.login.RegisterViewModel
-import com.ort.studyup.repositories.DeckRepository
-import com.ort.studyup.repositories.FlashcardRepository
-import com.ort.studyup.repositories.GroupRepository
-import com.ort.studyup.repositories.UserRepository
+import com.ort.studyup.repositories.*
 import com.ort.studyup.services.*
 import com.ort.studyup.splash.SplashViewModel
 import com.ort.studyup.storage.dao.AppDatabase
+import com.ort.studyup.test.PreTestViewModel
+import com.ort.studyup.test.TestViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -56,9 +61,9 @@ object KoinWrapper {
     private fun viewModels() = module {
         factory { LoginViewModel(get(), get()) }
         factory { RegisterViewModel(get(), get()) }
-        factory { SplashViewModel(get()) }
+        factory { SplashViewModel(get(), get()) }
         factory { DecksViewModel(get(), get()) }
-        factory { DeckDetailViewModel(get()) }
+        factory { DeckDetailViewModel(get(), get(), get()) }
         factory { NewDeckViewModel(get(), get()) }
         factory { NewFlashcardViewModel(get(), get()) }
         factory { NewGroupViewModel(get(), get()) }
@@ -67,14 +72,27 @@ object KoinWrapper {
         factory { FollowingDecksViewModel(get(), get()) }
         factory { StudyViewModel(get()) }
         factory { GroupsViewModel(get(), get(), get()) }
+        factory { ExamsViewModel(get(), get(), get()) }
+        factory { ExamDetailViewModel(get()) }
+        factory { NewExamViewModel(get(), get()) }
+        factory { NewExamCardViewModel(get(), get()) }
+        factory { TaskViewModel(get()) }
+        factory { PreTestViewModel(get(), get()) }
+        factory { TestViewModel(get()) }
+        factory { RankingViewModel(get()) }
+        factory { NotificationViewModel(get()) }
+
     }
 
     private fun repositories() = module {
-        factory { UserRepository(get(), get(), get()) }
+        factory { UserRepository(get(), get(), get(),get()) }
         factory { DeckRepository(get()) }
         factory { FlashcardRepository(get()) }
         factory { GroupRepository(get()) }
-
+        factory { ExamRepository(get()) }
+        factory { ExamCardRepository(get()) }
+        factory { TaskRepository(get()) }
+        factory { NotificationRepository(get()) }
     }
 
     private fun services() = module {
@@ -82,6 +100,9 @@ object KoinWrapper {
         factory { ServiceFactory(get()).createInstance(DeckService::class.java) }
         factory { ServiceFactory(get()).createInstance(FlashcardService::class.java) }
         factory { ServiceFactory(get()).createInstance(GroupService::class.java) }
+        factory { ServiceFactory(get()).createInstance(ExamService::class.java) }
+        factory { ServiceFactory(get()).createInstance(ExamCardService::class.java) }
+        factory { ServiceFactory(get()).createInstance(TaskService::class.java) }
     }
 
     private fun database() = module {
@@ -94,6 +115,8 @@ object KoinWrapper {
                 .build()
         }
         factory { get<AppDatabase>().userDao() }
+        factory { get<AppDatabase>().notificationDao() }
+
     }
 
 }
