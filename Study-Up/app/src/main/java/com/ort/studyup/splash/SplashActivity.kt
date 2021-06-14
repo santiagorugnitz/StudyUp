@@ -52,8 +52,8 @@ class SplashActivity : BaseActivity() {
         viewModel.saveNotification(
             intent.getStringExtra(NOTIFICATION_TITLE_EXTRA),
             intent.getStringExtra(NOTIFICATION_BODY_EXTRA),
-            intent.getIntExtra(NOTIFICATION_TYPE_EXTRA, -1),
-            intent.getIntExtra(NOTIFICATION_ENTITY_ID_EXTRA, -1),
+            intent.getStringExtra(NOTIFICATION_TYPE_EXTRA)?.toIntOrNull()?:-1,
+            intent.getStringExtra(NOTIFICATION_ENTITY_ID_EXTRA)?.toIntOrNull()?:-1,
         )
     }
 

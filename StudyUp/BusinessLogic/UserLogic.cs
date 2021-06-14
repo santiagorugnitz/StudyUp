@@ -220,7 +220,7 @@ namespace BusinessLogic
                 Group group = iter.Group;
                 foreach (DeckGroup deckGroup in group.DeckGroups)
                 {
-                    decks.Add(deckGroup.Deck);
+                    if(!decks.Contains(deckGroup.Deck))decks.Add(deckGroup.Deck);
                 }
 
                 foreach (Exam exam in group.AssignedExams)
